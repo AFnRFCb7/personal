@@ -875,20 +875,11 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "stage-beta" ;
-                                                                                                                runtimeInputs = [ condition-alpha argument-value compare condition-init condition-release pkgs.jq pkgs.redis value-argument ] ;
+                                                                                                                runtimeInputs = [ compare condition-alpha argument-value compare condition-init condition-release pkgs.jq pkgs.redis value-argument ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         cleanup ( ) {
-                                                                                                                            STATUS="$?"
-                                                                                                                            if [[ "$STATUS" == 0 ]]
-                                                                                                                            then
-                                                                                                                                redis-cli PUBLISH beta-signal 0
-                                                                                                                            elif [[ "$STATUS" == 66 ]]
-                                                                                                                            then
-                                                                                                                                redis-cli PUBLISH beta-signal 66
-                                                                                                                            else
-                                                                                                                                redis-cli PUBLISH beta-signal 64
-                                                                                                                            fi
+                                                                                                                            redis-cli PUBLISH "$?"
                                                                                                                         }
                                                                                                                         trap cleanup EXIT
                                                                                                                         ARGUMENT="$( value-argument "$@" )" || failure 31872
