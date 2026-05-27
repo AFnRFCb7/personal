@@ -565,8 +565,14 @@
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/init" ;
                                                                                                                             release =
-                                                                                                                                ''
-                                                                                                                                '' ;
+                                                                                                                                let
+                                                                                                                                    application =
+                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                            {
+                                                                                                                                                name = "release" ;
+                                                                                                                                                text = "" ;
+                                                                                                                                            } ;
+                                                                                                                                    in "${ application }/bin/resolve" ;
                                                                                                                             resolve =
                                                                                                                                 {
                                                                                                                                     init =
