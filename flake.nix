@@ -915,7 +915,7 @@
                                                                                                                                 jq \
                                                                                                                                     --null-input \
                                                                                                                                     '{
-                                                                                                                                    }' | compare message valid-release 10 11989 3<&3
+                                                                                                                                    }' | compare message invalid-release 10 11989 3<&3
                                                                                                                                 echo "$ARGUMENT" "$FRESH_INDEX" "$TARGET"
                                                                                                                                 files \
                                                                                                                                     --ceiling "$ALPHA" 0 0 \
