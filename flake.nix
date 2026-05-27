@@ -758,7 +758,7 @@
                                                                                                                                         "standard-output" : $STANDARD_OUTPUT ,
                                                                                                                                         "targets" : [ $TARGET ] ,
                                                                                                                                         "transient" : false
-                                                                                                                                    }' | compare message valid-init 10 23788 3<&3
+                                                                                                                                    }' | compare message valid-init 10 15631 3<&3
                                                                                                                                 jq \
                                                                                                                                     --null-input \
                                                                                                                                     --arg INDEX "$DISTRACTOR_INDEX" \
@@ -774,7 +774,7 @@
                                                                                                                                         "standard-output" : $STANDARD_OUTPUT ,
                                                                                                                                         "targets" : [ $TARGET ] ,
                                                                                                                                         "transient" : false
-                                                                                                                                    }' | compare message valid-init 10 23788 3<&3
+                                                                                                                                    }' | compare message valid-init 10 16512 3<&3
 
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 10 13 \
