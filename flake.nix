@@ -869,7 +869,7 @@
                                                                                                                                     --uuid 28422
                                                                                                                             fi
                                                                                                                         fi
-                                                                                                                        block 10 19895
+                                                                                                                        block 10 19895 3<&3
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     stage-beta =
@@ -905,6 +905,7 @@
                                                                                                                         INIT="$( condition-init "$@" )" || failure 20502
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 26251
                                                                                                                         TARGET="$( value-target "$@" )" || failure 18128
+                                                                                                                        block 10 17224 <&3
                                                                                                                         if [[ "$INIT" == true ]]
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE" == "true" ]]
