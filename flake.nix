@@ -889,6 +889,7 @@
                                                                                                                         value-argument
                                                                                                                         value-distractor-index
                                                                                                                         value-fresh-index
+                                                                                                                        value-target
                                                                                                                     ] ;
                                                                                                                 text =
                                                                                                                     ''
@@ -896,11 +897,13 @@
                                                                                                                             redis-cli PUBLISH beta-status "$?"
                                                                                                                         }
                                                                                                                         trap cleanup EXIT
+                                                                                                                        ALPHA=$( condition-alpha "$@" )" || failure 24196
                                                                                                                         ARGUMENT="$( value-argument "$@" )" || failure 31872
                                                                                                                         DISTRACTOR_INDEX="$( value-distractor-index "$@" )" || failure 11438
                                                                                                                         FRESH_INDEX="$( value-fresh-index "$@" )" || failure 17489
                                                                                                                         INIT="$( condition-init "$@" )" || failure 20502
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 26251
+                                                                                                                        TARGET="$( value-target "$@" )" || failure 18128
                                                                                                                         if [[ "$INIT" == true ]]
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE" == "true" ]]
@@ -910,13 +913,17 @@
                                                                                                                                     --null-input \
                                                                                                                                     --arg ARGUMENT "$ARGUMENT" \
                                                                                                                                     --arg INDEX "$FRESH_INDEX" \
+                                                                                                                                    --arg TARGET "$TARGET" \
                                                                                                                                     '{
                                                                                                                                         "arguments" : [ $ARGUMENT ] ,
-                                                                                                                                        "index" : $INDEX
+                                                                                                                                        "index" : $INDEX ,
+                                                                                                                                        "targets" : [ $TARGET ]
                                                                                                                                     }' | compare message valid-init 10 11989
                                                                                                                                 files \
+                                                                                                                                    --ceiling "$ALPHA" 0 0 \
                                                                                                                                     --equal "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
                                                                                                                                     --not-equals "$FRESH_INDEX" "$DISTRACTOR_INDEX" \
+                                                                                                                                    --file "$FRESH_INDEX/$TARGET" \
                                                                                                                                     --uuid 27035
                                                                                                                             else
                                                                                                                                 true
