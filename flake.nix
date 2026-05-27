@@ -887,6 +887,7 @@
                                                                                                                         pkgs.jq
                                                                                                                         pkgs.redis
                                                                                                                         value-argument
+                                                                                                                        value-distractor-index
                                                                                                                         value-fresh-index
                                                                                                                     ] ;
                                                                                                                 text =
@@ -896,6 +897,7 @@
                                                                                                                         }
                                                                                                                         trap cleanup EXIT
                                                                                                                         ARGUMENT="$( value-argument "$@" )" || failure 31872
+                                                                                                                        DISTRACTOR_INDEX="$( value-distractor-index "$@" )" || failure 11438
                                                                                                                         FRESH_INDEX="$( value-fresh-index "$@" )" || failure 17489
                                                                                                                         INIT="$( condition-init "$@" )" || failure 20502
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 26251
@@ -912,7 +914,10 @@
                                                                                                                                         "arguments" : [ $ARGUMENT ] ,
                                                                                                                                         "index" : $INDEX
                                                                                                                                     }' | compare message valid-init 10 11989
-                                                                                                                                echo "$FRESH"
+                                                                                                                                files \
+                                                                                                                                    --equal "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
+                                                                                                                                    --not-equals "$FRESH_INDEX "$DISTRACTOR_INDEX" \
+                                                                                                                                    --uuid 27035
                                                                                                                             else
                                                                                                                                 true
                                                                                                                             fi
@@ -969,7 +974,7 @@
                                                                                                                 runtimeInputs = [ condition-alpha failure pkgs.coreutils ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        ALPHA="$( condition-alpha )" || failure 24132
+                                                                                                                        ALPHA="$( condition-alpha "$@" )" || failure 24132
                                                                                                                         printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 7 ))
                                                                                                                         echo -en "$DISTRACTOR_INDEX"
                                                                                                                     '' ;
@@ -981,7 +986,7 @@
                                                                                                                 runtimeInputs = [ condition-alpha failure pkgs.coreutils ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        ALPHA="$( condition-alpha )" || failure 24132
+                                                                                                                        ALPHA="$( condition-alpha "$@" )" || failure 24132
                                                                                                                         printf -v FRESH_INDEX "%016d" $(( ALPHA + 7 ))
                                                                                                                         echo -en "$FRESH_INDEX"
                                                                                                                     '' ;
