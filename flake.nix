@@ -820,29 +820,12 @@
                                                                                                                                         "targets" : { "expected" : [ $TARGET ] , "observed" : [ $TARGET ] } ,
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message invalid-init 10 26077 3<&3
-                                                                                                                                jq \
-                                                                                                                                    --null-input \
-                                                                                                                                    --arg INDEX "$DISTRACTOR_INDEX" \
-                                                                                                                                    --rawfile SCRIPT "$RELEASE_SCRIPT" \
-                                                                                                                                    --argjson SEED "$SEED" \
-                                                                                                                                    --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
-                                                                                                                                    --argjson STATUS "$STATUS" \
-                                                                                                                                    --arg TARGET "$TARGET" \
-                                                                                                                                    '{
-                                                                                                                                        "index" : $INDEX ,
-                                                                                                                                        "script" : $SCRIPT ,
-                                                                                                                                        "seed" : $SEED ,
-                                                                                                                                        "standard-output" : $STANDARD_OUTPUT ,
-                                                                                                                                        "status" : $STATUS ,
-                                                                                                                                        "targets" : { "expected" : [ $TARGET ] , "observed" : [ $TARGET ] } ,
-                                                                                                                                        "transient" : false
-                                                                                                                                    }' | compare message valid-release 10 23493 3<&3
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 10 13 \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
                                                                                                                                     --file "$DISTRACTOR/$TARGET" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" \
-                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$DISTRACTOR_INDEX" \
+                                                                                                                                    --executable "/home/${ config.personal.name }/resources/invalid-init/$DISTRACTOR_INDEX/default/resolve.sh" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$DISTRACTOR_INDEX" \
                                                                                                                                     --uuid 30838
                                                                                                                             else
@@ -874,7 +857,7 @@
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
                                                                                                                                     --file "$DISTRACTOR/$TARGET" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" \
-                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$DISTRACTOR_INDEX" \
+                                                                                                                                    --executable "/home/${ config.personal.name }/resources/invalid-init/$DISTRACTOR_INDEX/default/resolve.sh" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$DISTRACTOR_INDEX" \
                                                                                                                                     --uuid 28422
                                                                                                                             fi
