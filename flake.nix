@@ -874,7 +874,7 @@
                                                                                                                                 jq \
                                                                                                                                     --null-input \
                                                                                                                                     --arg INDEX "$DISTRACTOR_INDEX" \
-                                                                                                                                    --rawfile SCRIPT "$RELEASE_SCRIPT" \
+                                                                                                                                    --arg SCRIPT "$RELEASE_SCRIPT" \
                                                                                                                                     --argjson SEED "$SEED" \
                                                                                                                                     --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                                     --argjson STATUS "$STATUS" \
