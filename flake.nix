@@ -902,13 +902,21 @@
                                                                                                                             redis-cli PUBLISH beta-status "$STATUS"
                                                                                                                         }
                                                                                                                         trap cleanup EXIT
+                                                                                                                        echo 16717 >&2
                                                                                                                         ALPHA="$( condition-alpha "$@" )" || failure 24196
+                                                                                                                        echo 6909 >&2
                                                                                                                         ARGUMENT="$( value-argument "$@" )" || failure 31872
+                                                                                                                        echo 31508 >&2
                                                                                                                         DISTRACTOR_INDEX="$( value-distractor-index "$@" )" || failure 11438
+                                                                                                                        echo 15495 >&2
                                                                                                                         FRESH_INDEX="$( value-fresh-index "$@" )" || failure 17489
+                                                                                                                        echo 21670 >&2
                                                                                                                         INIT="$( condition-init "$@" )" || failure 20502
+                                                                                                                        echo 4592 >&2
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 26251
+                                                                                                                        echo 13292 >&2
                                                                                                                         TARGET="$( value-target "$@" )" || failure 18128
+                                                                                                                        echo 18429 >&2
                                                                                                                         if [[ "$INIT" == true ]]
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE" == "true" ]]
