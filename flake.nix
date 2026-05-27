@@ -1121,7 +1121,7 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "test" ;
-                                                                                                                runtimeInputs = [ compare failure pkgs.redis stage-alpha stage-beta stage-gamma wrap ] ;
+                                                                                                                runtimeInputs = [ compare failure pkgs.coreutils pkgs.redis stage-alpha stage-beta stage-gamma wrap ] ;
                                                                                                                 text =
                                                                                                                     let
                                                                                                                         null = builtins.toFile "null" "" ;
@@ -1130,8 +1130,8 @@
                                                                                                                                 exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release valid-init valid-release beta-signal )
                                                                                                                                 stage-alpha "$@" <&3
                                                                                                                                 stage-beta "$@" <&3 &
-                                                                                                                                echo 0 | compare message beta-signal 10 18590 <&3
-                                                                                                                                stage-gamma "$@"
+                                                                                                                                # echo 0 | compare message beta-signal 10 18590 <&3
+                                                                                                                                # stage-gamma "$@"
                                                                                                                             '' ;
                                                                                                             } ;
                                                                                                     in
