@@ -891,28 +891,28 @@
                                                                                                                 runtimeInputs = [ condition-alpha argument-value condition-init condition-release ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        cleanup ( ) {
-                                                                                                                            echo "$?" > "$MOUNT/temporary/$BETA_SEQUENTIAL"
-                                                                                                                        }
-                                                                                                                        trap cleanup EXIT
-                                                                                                                        INIT="$( condition-init )" || failure 20502
-                                                                                                                        RELEASE="$( condition-release )" || failure 26251
-                                                                                                                        if [[ "$INIT" == true ]]
-                                                                                                                        then
-                                                                                                                            if [[ "$RELEASE" == "true" ]]
-                                                                                                                            then
-                                                                                                                                true
-                                                                                                                            else
-                                                                                                                                true
-                                                                                                                            fi
-                                                                                                                        else
-                                                                                                                            if [[ "$RELEASE" == "true" ]]
-                                                                                                                            then
-                                                                                                                                true
-                                                                                                                            else
-                                                                                                                                true
-                                                                                                                            fi
-                                                                                                                        fi
+#                                                                                                                        cleanup ( ) {
+#                                                                                                                            echo "$?" > "$MOUNT/temporary/$BETA_SEQUENTIAL"
+#                                                                                                                        }
+#                                                                                                                        trap cleanup EXIT
+#                                                                                                                        INIT="$( condition-init )" || failure 20502
+#                                                                                                                        RELEASE="$( condition-release )" || failure 26251
+#                                                                                                                        if [[ "$INIT" == true ]]
+#                                                                                                                        then
+#                                                                                                                            if [[ "$RELEASE" == "true" ]]
+#                                                                                                                            then
+#                                                                                                                                true
+#                                                                                                                            else
+#                                                                                                                                true
+#                                                                                                                            fi
+#                                                                                                                        else
+#                                                                                                                            if [[ "$RELEASE" == "true" ]]
+#                                                                                                                            then
+#                                                                                                                                true
+#                                                                                                                            else
+#                                                                                                                                true
+#                                                                                                                            fi
+#                                                                                                                        fi
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     stage-gamma =
