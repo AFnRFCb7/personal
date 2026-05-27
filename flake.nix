@@ -879,7 +879,7 @@
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         cleanup ( ) {
-                                                                                                                            redis-cli PUBLISH "$?"
+                                                                                                                            redis-cli PUBLISH beta-status "$?"
                                                                                                                         }
                                                                                                                         trap cleanup EXIT
                                                                                                                         ARGUMENT="$( value-argument "$@" )" || failure 31872
