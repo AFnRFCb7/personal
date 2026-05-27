@@ -1121,12 +1121,12 @@
                                                                                                                                 BETA_SEQUENCE="$( sequential )" || failure 28922
                                                                                                                                 wrap ${ null } "temporary/$BETA_SEQUENCE" 0600
                                                                                                                                 BETA_SEQUENCE="$BETA_SEQUENCE" MOUNT="$MOUNT" stage-beta "$@" <&3 &
-                                                                                                                                # inotifywait --event "$MOUNT/temporary/$BETA_SEQUENCE"
-                                                                                                                                # BETA_STATUS="$( cat "$MOUNT/temporary/$BETA_SEQUENCE" )" || failure 11251
-                                                                                                                                # if [[ "$BETA_STATUS" != 0 ]]
-                                                                                                                                # then
-                                                                                                                                #     failure 18142 BETA_STATUS "$BETA_STATUS"
-                                                                                                                                # fi
+                                                                                                                                inotifywait --event close_write "$MOUNT/temporary/$BETA_SEQUENCE"
+                                                                                                                                BETA_STATUS="$( cat "$MOUNT/temporary/$BETA_SEQUENCE" )" || failure 11251
+                                                                                                                                if [[ "$BETA_STATUS" != 0 ]]
+                                                                                                                                then
+                                                                                                                                    failure 18142 BETA_STATUS "$BETA_STATUS"
+                                                                                                                                fi
                                                                                                                                 stage-gamma "$@"
                                                                                                                             '' ;
                                                                                                             } ;
