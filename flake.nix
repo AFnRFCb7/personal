@@ -911,19 +911,17 @@
                                                                                                                                 FRESH=${ resources.checks.targets.true.true { failure = 14283 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
                                                                                                                                 jq \
                                                                                                                                     --null-input \
-                                                                                                                                    --arg ARGUMENT "$ARGUMENT" \
-                                                                                                                                    --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                    --arg TARGET "$TARGET" \
                                                                                                                                     '{
-                                                                                                                                        "arguments" : [ $ARGUMENT ] ,
-                                                                                                                                        "index" : $INDEX ,
-                                                                                                                                        "targets" : [ $TARGET ]
                                                                                                                                     }' | compare message valid-init 10 11989
+                                                                                                                                echo "$ARGUMENT" "$FRESH_INDEX" "$TARGET"
                                                                                                                                 files \
                                                                                                                                     --ceiling "$ALPHA" 0 0 \
-                                                                                                                                    --equal "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
+                                                                                                                                    --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
                                                                                                                                     --not-equals "$FRESH_INDEX" "$DISTRACTOR_INDEX" \
                                                                                                                                     --file "$FRESH_INDEX/$TARGET" \
+                                                                                                                                    --executable "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
+                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX" \
+                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                     --uuid 27035
                                                                                                                             else
                                                                                                                                 true
