@@ -878,6 +878,7 @@
                                                                                                                 name = "stage-beta" ;
                                                                                                                 runtimeInputs =
                                                                                                                     [
+                                                                                                                        block
                                                                                                                         compare
                                                                                                                         condition-alpha
                                                                                                                         argument-value
