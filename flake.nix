@@ -874,31 +874,38 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "stage-beta" ;
-                                                                                                                runtimeInputs = [ condition-alpha argument-value condition-init condition-release ] ;
+                                                                                                                runtimeInputs = [ condition-alpha argument-value compare condition-init condition-release pkgs.jq value-argument ] ;
                                                                                                                 text =
                                                                                                                     ''
-#                                                                                                                        cleanup ( ) {
-#                                                                                                                            echo "$?" > "$MOUNT/temporary/$BETA_SEQUENTIAL"
-#                                                                                                                        }
-#                                                                                                                        trap cleanup EXIT
-#                                                                                                                        INIT="$( condition-init )" || failure 20502
-#                                                                                                                        RELEASE="$( condition-release )" || failure 26251
-#                                                                                                                        if [[ "$INIT" == true ]]
-#                                                                                                                        then
-#                                                                                                                            if [[ "$RELEASE" == "true" ]]
-#                                                                                                                            then
-#                                                                                                                                true
-#                                                                                                                            else
-#                                                                                                                                true
-#                                                                                                                            fi
-#                                                                                                                        else
-#                                                                                                                            if [[ "$RELEASE" == "true" ]]
-#                                                                                                                            then
-#                                                                                                                                true
-#                                                                                                                            else
-#                                                                                                                                true
-#                                                                                                                            fi
-#                                                                                                                        fi
+                                                                                                                        cleanup ( ) {
+                                                                                                                            echo "$?" > "$MOUNT/temporary/$BETA_SEQUENTIAL"
+                                                                                                                        }
+                                                                                                                        trap cleanup EXIT
+                                                                                                                        ARGUMENT="$( value-argument "$@" )" || failure 31872
+                                                                                                                        INIT="$( condition-init )" || failure 20502
+                                                                                                                        RELEASE="$( condition-release )" || failure 26251
+                                                                                                                        if [[ "$INIT" == true ]]
+                                                                                                                        then
+                                                                                                                            if [[ "$RELEASE" == "true" ]]
+                                                                                                                            then
+                                                                                                                                DISTRACTOR=${ resources.checks.targets.true.true { failure = 11456 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
+                                                                                                                                jq \
+                                                                                                                                    --null-input \
+                                                                                                                                    --arg ARGUMENT "$ARGUMENT" \
+                                                                                                                                    '{
+                                                                                                                                        "arguments" : [ $ARGUMENT ]
+                                                                                                                                    }' | compare message valid-init 10 11989
+                                                                                                                            else
+                                                                                                                                true
+                                                                                                                            fi
+                                                                                                                        else
+                                                                                                                            if [[ "$RELEASE" == "true" ]]
+                                                                                                                            then
+                                                                                                                                true
+                                                                                                                            else
+                                                                                                                                true
+                                                                                                                            fi
+                                                                                                                        fi
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     stage-gamma =
@@ -910,6 +917,33 @@
                                                                                                                     ''
                                                                                                                     '' ;
                                                                                                             } ;
+                                                                                                    value-argument =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "value-argument" ;
+                                                                                                                runtimeInputs = [ condition-init condition-release failure pkgs.coreutils ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        INIT="$( condition-init "$@" )" || failure 20167
+                                                                                                                        RELEASE="$( condition-init "$@" )" || failure 14068
+                                                                                                                        if [[ "$INIT" == "true" ]]
+                                                                                                                        then
+                                                                                                                            if [[ "$RELEASE" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo -en 19031
+                                                                                                                            else
+                                                                                                                                echo -en 19031
+                                                                                                                            fi
+                                                                                                                        else
+                                                                                                                            if [[ "$RELEASE" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo -en 26242
+                                                                                                                            else
+                                                                                                                                echo -en 29785
+                                                                                                                            fi
+                                                                                                                        fi
+                                                                                                                    '' ;
+                                                                                                            }
                                                                                                     value-init-script =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
