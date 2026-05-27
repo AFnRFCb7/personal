@@ -730,6 +730,7 @@
                                                                                                                         echo 2 | compare subscribe invalid-release 10 26959 3<&3
                                                                                                                         echo 3 | compare subscribe valid-init 10 4666 3<&3
                                                                                                                         echo 4 | compare subscribe valid-release 10 20782 3<&3
+                                                                                                                        echo 5 | compare subscribe beta-signal 10 21684 3<&3
                                                                                                                         ALPHA="$( condition-alpha "$@" )" || failure 14402
                                                                                                                         printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 7 ))
                                                                                                                         INIT="$( condition-init "$@" )" || failure 7005
@@ -878,7 +879,7 @@
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         cleanup ( ) {
-                                                                                                                            echo "$?" > "$MOUNT/temporary/$BETA_SEQUENTIAL"
+                                                                                                                            redis-cli PUBLISH beta-signal "$?"
                                                                                                                         }
                                                                                                                         trap cleanup EXIT
                                                                                                                         ARGUMENT="$( value-argument "$@" )" || failure 31872
@@ -943,7 +944,7 @@
                                                                                                                                 echo -en 29785
                                                                                                                             fi
                                                                                                                         fi
-                                                                                                               @     '' ;
+                                                                                                                    '' ;
                                                                                                             } ;
                                                                                                     value-init-script =
                                                                                                         pkgs.writeShellApplication
@@ -1111,23 +1112,16 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "test" ;
-                                                                                                                runtimeInputs = [ failure pkgs.inotify-tools pkgs.redis sequential stage-alpha stage-beta stage-gamma wrap ] ;
+                                                                                                                runtimeInputs = [ compare failure pkgs.redis stage-alpha stage-beta stage-gamma wrap ] ;
                                                                                                                 text =
                                                                                                                     let
                                                                                                                         null = builtins.toFile "null" "" ;
                                                                                                                         in
                                                                                                                             ''
-                                                                                                                                exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release valid-init valid-release )
+                                                                                                                                exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release valid-init valid-release beta-signal )
                                                                                                                                 stage-alpha "$@" <&3
-                                                                                                                                BETA_SEQUENCE="$( sequential )" || failure 28922
-                                                                                                                                wrap ${ null } "temporary/$BETA_SEQUENCE" 0600
-                                                                                                                                BETA_SEQUENCE="$BETA_SEQUENCE" MOUNT="$MOUNT" stage-beta "$@" <&3 &
-                                                                                                                                inotifywait --event close_write "$MOUNT/temporary/$BETA_SEQUENCE"
-                                                                                                                                BETA_STATUS="$( cat "$MOUNT/temporary/$BETA_SEQUENCE" )" || failure 11251
-                                                                                                                                if [[ "$BETA_STATUS" != 0 ]]
-                                                                                                                                then
-                                                                                                                                    failure 18142 BETA_STATUS "$BETA_STATUS"
-                                                                                                                                fi
+                                                                                                                                stage-beta "$@" <&3 &
+                                                                                                                                echo 0 | compare message beta-signal 10 18590 <&3
                                                                                                                                 stage-gamma "$@"
                                                                                                                             '' ;
                                                                                                             } ;
