@@ -875,7 +875,7 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "stage-beta" ;
-                                                                                                                runtimeInputs = [ condition-alpha argument-value compare condition-init condition-release pkgs.jq value-argument ] ;
+                                                                                                                runtimeInputs = [ condition-alpha argument-value compare condition-init condition-release pkgs.jq pkgs.redis value-argument ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         cleanup ( ) {
@@ -1130,7 +1130,7 @@
                                                                                                                                 exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release valid-init valid-release beta-signal )
                                                                                                                                 stage-alpha "$@" <&3
                                                                                                                                 stage-beta "$@" <&3 &
-                                                                                                                                # echo 0 | compare message beta-signal 10 18590 <&3
+                                                                                                                                echo 0 | compare message beta-signal 10 18590 <&3
                                                                                                                                 # stage-gamma "$@"
                                                                                                                             '' ;
                                                                                                             } ;
