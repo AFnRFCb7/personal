@@ -916,7 +916,7 @@
                                                                                                                                     }' | compare message valid-init 10 11989
                                                                                                                                 files \
                                                                                                                                     --equal "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
-                                                                                                                                    --not-equals "$FRESH_INDEX "$DISTRACTOR_INDEX" \
+                                                                                                                                    --not-equals "$FRESH_INDEX" "$DISTRACTOR_INDEX" \
                                                                                                                                     --uuid 27035
                                                                                                                             else
                                                                                                                                 true
