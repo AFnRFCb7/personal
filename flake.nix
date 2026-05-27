@@ -958,7 +958,7 @@
                                                                                                                         printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 7 ))
                                                                                                                         echo -en "$DISTRACTOR_INDEX"
                                                                                                                     '' ;
-                                                                                                            }
+                                                                                                            } ;
                                                                                                     value-init-script =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
