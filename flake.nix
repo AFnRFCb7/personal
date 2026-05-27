@@ -883,8 +883,8 @@
                                                                                                                         }
                                                                                                                         trap cleanup EXIT
                                                                                                                         ARGUMENT="$( value-argument "$@" )" || failure 31872
-                                                                                                                        INIT="$( condition-init )" || failure 20502
-                                                                                                                        RELEASE="$( condition-release )" || failure 26251
+                                                                                                                        INIT="$( condition-init "$@" )" || failure 20502
+                                                                                                                        RELEASE="$( condition-release "$@" )" || failure 26251
                                                                                                                         if [[ "$INIT" == true ]]
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE" == "true" ]]
