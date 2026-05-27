@@ -943,7 +943,7 @@
                                                                                                                             fi
                                                                                                                         fi
                                                                                                                     '' ;
-                                                                                                            }
+                                                                                                            } ;
                                                                                                     value-init-script =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
