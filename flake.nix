@@ -759,6 +759,23 @@
                                                                                                                                         "targets" : [ $TARGET ] ,
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message valid-init 10 23788 3<&3
+                                                                                                                                jq \
+                                                                                                                                    --null-input \
+                                                                                                                                    --arg INDEX "$DISTRACTOR_INDEX" \
+                                                                                                                                    --rawfile SCRIPT "$INIT_SCRIPT" \
+                                                                                                                                    --argjson SEED "$SEED" \
+                                                                                                                                    --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
+                                                                                                                                    --arg TARGET "$TARGET" \
+                                                                                                                                    '{
+                                                                                                                                        "arguments" : [ ] ,
+                                                                                                                                        "index" : $INDEX ,
+                                                                                                                                        "script" : $SCRIPT ,
+                                                                                                                                        "seed" : $SEED ,
+                                                                                                                                        "standard-output" : $STANDARD_OUTPUT ,
+                                                                                                                                        "targets" : [ $TARGET ] ,
+                                                                                                                                        "transient" : false
+                                                                                                                                    }' | compare message valid-init 10 23788 3<&3
+
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 10 13 \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
@@ -820,6 +837,25 @@
                                                                                                                                         "targets" : { "expected" : [ $TARGET ] , "observed" : [ $TARGET ] } ,
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message invalid-init 10 26077 3<&3
+                                                                                                                                jq \
+                                                                                                                                    --null-input \
+                                                                                                                                    --arg INDEX "$DISTRACTOR_INDEX" \
+                                                                                                                                    --rawfile SCRIPT "$RELEASE_SCRIPT" \
+                                                                                                                                    --argjson SEED "$SEED" \
+                                                                                                                                    --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
+                                                                                                                                    --argjson STATUS "$STATUS" \
+                                                                                                                                    --arg TARGET "$TARGET" \
+                                                                                                                                    '{
+                                                                                                                                        "arguments" : [ ] ,
+                                                                                                                                        "index" : $INDEX ,
+                                                                                                                                        "script" : $SCRIPT ,
+                                                                                                                                        "seed" : $SEED ,
+                                                                                                                                        "standard-error" : "" ,
+                                                                                                                                        "standard-output" : $STANDARD_OUTPUT ,
+                                                                                                                                        "status" : $STATUS ,
+                                                                                                                                        "targets" : { "expected" : [ $TARGET ] , "observed" : [ $TARGET ] } ,
+                                                                                                                                        "transient" : false
+                                                                                                                                    }' | compare message invalid-release 10 26077 3<&3
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 10 13 \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
@@ -843,6 +879,24 @@
                                                                                                                                     --arg TARGET "$TARGET" \
                                                                                                                                     '{
                                                                                                                                         "arguments" : [ ] ,
+                                                                                                                                        "index" : $INDEX ,
+                                                                                                                                        "script" : $SCRIPT ,
+                                                                                                                                        "seed" : $SEED ,
+                                                                                                                                        "standard-error" : "" ,
+                                                                                                                                        "standard-output" : $STANDARD_OUTPUT ,
+                                                                                                                                        "status" : $STATUS ,
+                                                                                                                                        "targets" : { "expected" : [ $TARGET ] , "observed" : [ $TARGET ] } ,
+                                                                                                                                        "transient" : false
+                                                                                                                                    }' | compare message invalid-init 10 15099 3<&3
+                                                                                                                                jq \
+                                                                                                                                    --null-input \
+                                                                                                                                    --arg INDEX "$DISTRACTOR_INDEX" \
+                                                                                                                                    --rawfile SCRIPT "$RELEASE_SCRIPT" \
+                                                                                                                                    --argjson SEED "$SEED" \
+                                                                                                                                    --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
+                                                                                                                                    --argjson STATUS "$STATUS" \
+                                                                                                                                    --arg TARGET "$TARGET" \
+                                                                                                                                    '{
                                                                                                                                         "index" : $INDEX ,
                                                                                                                                         "script" : $SCRIPT ,
                                                                                                                                         "seed" : $SEED ,
