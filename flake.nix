@@ -871,6 +871,7 @@
                                                                                                                                         "targets" : { "expected" : [ $TARGET ] , "observed" : [ $TARGET ] } ,
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message invalid-init 10 27644 3<&3
+                                                                                                                                echo 15174 RELEASE_SCRIPT "$RELEASE_SCRIPT"
                                                                                                                                 jq \
                                                                                                                                     --null-input \
                                                                                                                                     --arg INDEX "$DISTRACTOR_INDEX" \
