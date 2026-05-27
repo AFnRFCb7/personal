@@ -572,7 +572,7 @@
                                                                                                                                                 name = "release" ;
                                                                                                                                                 text = "" ;
                                                                                                                                             } ;
-                                                                                                                                    in "${ application }/bin/resolve" ;
+                                                                                                                                    in "${ application }/bin/release" ;
                                                                                                                             resolve =
                                                                                                                                 {
                                                                                                                                     init =
