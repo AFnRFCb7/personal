@@ -717,6 +717,7 @@
                                                                                                                         files
                                                                                                                         pkgs.jq
                                                                                                                         condition-release
+                                                                                                                        value-distractor-index
                                                                                                                         value-standard-output
                                                                                                                         value-init-script
                                                                                                                         value-release-script
@@ -732,7 +733,7 @@
                                                                                                                         echo 4 | compare subscribe valid-release 10 20782 3<&3
                                                                                                                         echo 5 | compare subscribe beta-signal 10 21684 3<&3
                                                                                                                         ALPHA="$( condition-alpha "$@" )" || failure 14402
-                                                                                                                        printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 7 ))
+                                                                                                                        DISTRACTOR_INDEX="$( distractor-index "$@" )" || failure 18674
                                                                                                                         INIT="$( condition-init "$@" )" || failure 7005
                                                                                                                         INIT_SCRIPT="$( value-init-script "$@" )" || failure 18622
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 17709
@@ -946,6 +947,18 @@
                                                                                                                         fi
                                                                                                                     '' ;
                                                                                                             } ;
+                                                                                                    value-distractor-index =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "value-distractor-index" ;
+                                                                                                                runtimeInputs = [ condition-alpha failure pkgs.coreutils ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        ALPHA="$( condition-alpha )" || failure 24132
+                                                                                                                        printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 7 ))
+                                                                                                                        echo -en "$DISTRACTOR_INDEX"
+                                                                                                                    '' ;
+                                                                                                            }
                                                                                                     value-init-script =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
