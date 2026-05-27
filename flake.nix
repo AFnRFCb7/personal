@@ -879,10 +879,11 @@
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         cleanup ( ) {
-                                                                                                                            if [[ "$?" == 0 ]]
+                                                                                                                            STATUS="$?"
+                                                                                                                            if [[ "$STATUS" == 0 ]]
                                                                                                                             then
                                                                                                                                 redis-cli PUBLISH beta-signal 0
-                                                                                                                            elif [[ "$?" == 66 ]]
+                                                                                                                            elif [[ "$STATUS" == 66 ]]
                                                                                                                             then
                                                                                                                                 redis-cli PUBLISH beta-signal 66
                                                                                                                             else
