@@ -907,8 +907,10 @@
                                                                                                                                 jq \
                                                                                                                                     --null-input \
                                                                                                                                     --arg ARGUMENT "$ARGUMENT" \
+                                                                                                                                    --arg INDEX "$FRESH_INDEX" \
                                                                                                                                     '{
-                                                                                                                                        "arguments" : [ $ARGUMENT ]
+                                                                                                                                        "arguments" : [ $ARGUMENT ] ,
+                                                                                                                                        "index" : $INDEX
                                                                                                                                     }' | compare message valid-init 10 11989
                                                                                                                                 echo "$FRESH"
                                                                                                                             else
