@@ -943,7 +943,7 @@
                                                                                                                                 echo -en 29785
                                                                                                                             fi
                                                                                                                         fi
-                                                                                                                    '' ;
+                                                                                                               @     '' ;
                                                                                                             } ;
                                                                                                     value-init-script =
                                                                                                         pkgs.writeShellApplication
