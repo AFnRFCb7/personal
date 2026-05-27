@@ -733,7 +733,7 @@
                                                                                                                         echo 4 | compare subscribe valid-release 10 20782 3<&3
                                                                                                                         echo 5 | compare subscribe beta-signal 10 21684 3<&3
                                                                                                                         ALPHA="$( condition-alpha "$@" )" || failure 14402
-                                                                                                                        DISTRACTOR_INDEX="$( distractor-index "$@" )" || failure 18674
+                                                                                                                        DISTRACTOR_INDEX="$( value-distractor-index "$@" )" || failure 18674
                                                                                                                         INIT="$( condition-init "$@" )" || failure 7005
                                                                                                                         INIT_SCRIPT="$( value-init-script "$@" )" || failure 18622
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 17709
@@ -876,7 +876,19 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "stage-beta" ;
-                                                                                                                runtimeInputs = [ compare condition-alpha argument-value compare condition-init condition-release pkgs.jq pkgs.redis value-argument ] ;
+                                                                                                                runtimeInputs =
+                                                                                                                    [
+                                                                                                                        compare
+                                                                                                                        condition-alpha
+                                                                                                                        argument-value
+                                                                                                                        compare
+                                                                                                                        condition-init
+                                                                                                                        condition-release
+                                                                                                                        pkgs.jq
+                                                                                                                        pkgs.redis
+                                                                                                                        value-argument
+                                                                                                                        value-fresh-index
+                                                                                                                    ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         cleanup ( ) {
@@ -884,6 +896,7 @@
                                                                                                                         }
                                                                                                                         trap cleanup EXIT
                                                                                                                         ARGUMENT="$( value-argument "$@" )" || failure 31872
+                                                                                                                        FRESH_INDEX="$( value-fresh-index "$@" )" || failure 17489
                                                                                                                         INIT="$( condition-init "$@" )" || failure 20502
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 26251
                                                                                                                         if [[ "$INIT" == true ]]
@@ -957,6 +970,18 @@
                                                                                                                         ALPHA="$( condition-alpha )" || failure 24132
                                                                                                                         printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 7 ))
                                                                                                                         echo -en "$DISTRACTOR_INDEX"
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    value-fresh-index =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "value-fresh-index" ;
+                                                                                                                runtimeInputs = [ condition-alpha failure pkgs.coreutils ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        ALPHA="$( condition-alpha )" || failure 24132
+                                                                                                                        printf -v FRESH_INDEX "%016d" $(( ALPHA + 7 ))
+                                                                                                                        echo -en "$FRESH_INDEX"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     value-init-script =
@@ -1125,18 +1150,25 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "test" ;
-                                                                                                                runtimeInputs = [ compare failure pkgs.coreutils pkgs.redis stage-alpha stage-beta stage-gamma wrap ] ;
+                                                                                                                runtimeInputs =
+                                                                                                                    [
+                                                                                                                        compare
+                                                                                                                        failure
+                                                                                                                        pkgs.coreutils
+                                                                                                                        pkgs.redis
+                                                                                                                        stage-alpha
+                                                                                                                        stage-beta
+                                                                                                                        stage-gamma
+                                                                                                                        wrap
+                                                                                                                    ] ;
                                                                                                                 text =
-                                                                                                                    let
-                                                                                                                        null = builtins.toFile "null" "" ;
-                                                                                                                        in
-                                                                                                                            ''
-                                                                                                                                exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release valid-init valid-release beta-signal )
-                                                                                                                                stage-alpha "$@" <&3
-                                                                                                                                stage-beta "$@" <&3 &
-                                                                                                                                echo 0 | compare message beta-signal 10 18590 <&3
-                                                                                                                                # stage-gamma "$@"
-                                                                                                                            '' ;
+                                                                                                                    ''
+                                                                                                                        exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release valid-init valid-release beta-signal )
+                                                                                                                        stage-alpha "$@" <&3
+                                                                                                                        stage-beta "$@" <&3 &
+                                                                                                                        echo 0 | compare message beta-signal 10 18590 <&3
+                                                                                                                        # stage-gamma "$@"
+                                                                                                                    '' ;
                                                                                                             } ;
                                                                                                     in
                                                                                                         ''
