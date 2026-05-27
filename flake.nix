@@ -1410,7 +1410,7 @@
                                                                                                                     echo -en 1954271241196411
                                                                                                                 '' ;
                                                                                                         } ;
-                                                                                                in "${ application }/bin/init" ;
+                                                                                                in "${ application }/bin/release" ;
                                                                                     targets = [ "2862437261978116" ] ;
                                                                                 } ;
                                                                     } ;
