@@ -871,6 +871,24 @@
                                                                                                                                         "targets" : { "expected" : [ $TARGET ] , "observed" : [ $TARGET ] } ,
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message invalid-init 10 27644 3<&3
+                                                                                                                                jq \
+                                                                                                                                    --null-input \
+                                                                                                                                    --arg INDEX "$DISTRACTOR_INDEX" \
+                                                                                                                                    --rawfile SCRIPT "$RELEASE_SCRIPT" \
+                                                                                                                                    --argjson SEED "$SEED" \
+                                                                                                                                    --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
+                                                                                                                                    --argjson STATUS "$STATUS" \
+                                                                                                                                    --arg TARGET "$TARGET" \
+                                                                                                                                    '{
+                                                                                                                                        "index" : $INDEX ,
+                                                                                                                                        "script" : $SCRIPT ,
+                                                                                                                                        "seed" : $SEED ,
+                                                                                                                                        "standard-error" : "" ,
+                                                                                                                                        "standard-output" : $STANDARD_OUTPUT ,
+                                                                                                                                        "status" : $STATUS ,
+                                                                                                                                        "targets" : { "expected" : [ $TARGET ] , "observed" : [ $TARGET ] } ,
+                                                                                                                                        "transient" : false
+                                                                                                                                    }' | compare message invalid-release 10 27644 3<&3
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 10 17 \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
@@ -881,7 +899,7 @@
                                                                                                                                     --uuid 28422
                                                                                                                             fi
                                                                                                                         fi
-                                                                                                                        block 1 19895
+                                                                                                                        block 10 19895
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     stage-beta =
