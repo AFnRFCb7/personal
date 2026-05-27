@@ -879,7 +879,15 @@
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         cleanup ( ) {
-                                                                                                                            redis-cli PUBLISH beta-signal "$?"
+                                                                                                                            if [[ "$?" == 0 ]]
+                                                                                                                            then
+                                                                                                                                redis-cli PUBLISH beta-signal 0
+                                                                                                                            elif [[ "$?" == 66 ]]
+                                                                                                                            then
+                                                                                                                                redis-cli PUBLISH beta-signal 66
+                                                                                                                            else
+                                                                                                                                redis-cli PUBLISH beta-signal 64
+                                                                                                                            fi
                                                                                                                         }
                                                                                                                         trap cleanup EXIT
                                                                                                                         ARGUMENT="$( value-argument "$@" )" || failure 31872
@@ -889,14 +897,14 @@
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE" == "true" ]]
                                                                                                                             then
-                                                                                                                                DISTRACTOR=${ resources.checks.targets.true.true { failure = 11456 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
+                                                                                                                                FRESH=${ resources.checks.targets.true.true { failure = 14283 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
                                                                                                                                 jq \
                                                                                                                                     --null-input \
                                                                                                                                     --arg ARGUMENT "$ARGUMENT" \
                                                                                                                                     '{
                                                                                                                                         "arguments" : [ $ARGUMENT ]
                                                                                                                                     }' | compare message valid-init 10 11989
-                                                                                                                                    echo "$DISTRACTOR"
+                                                                                                                                echo "$FRESH"
                                                                                                                             else
                                                                                                                                 true
                                                                                                                             fi
