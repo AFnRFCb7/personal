@@ -895,6 +895,7 @@
                                                                                                                                     '{
                                                                                                                                         "arguments" : [ $ARGUMENT ]
                                                                                                                                     }' | compare message valid-init 10 11989
+                                                                                                                                    echo "$DISTRACTOR"
                                                                                                                             else
                                                                                                                                 true
                                                                                                                             fi
