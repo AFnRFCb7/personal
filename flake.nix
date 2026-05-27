@@ -897,7 +897,7 @@
                                                                                                                             redis-cli PUBLISH beta-status "$?"
                                                                                                                         }
                                                                                                                         trap cleanup EXIT
-                                                                                                                        ALPHA=$( condition-alpha "$@" )" || failure 24196
+                                                                                                                        ALPHA="$( condition-alpha "$@" )" || failure 24196
                                                                                                                         ARGUMENT="$( value-argument "$@" )" || failure 31872
                                                                                                                         DISTRACTOR_INDEX="$( value-distractor-index "$@" )" || failure 11438
                                                                                                                         FRESH_INDEX="$( value-fresh-index "$@" )" || failure 17489
