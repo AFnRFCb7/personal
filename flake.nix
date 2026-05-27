@@ -887,7 +887,7 @@
                                                                                                                                         "status" : $STATUS ,
                                                                                                                                         "targets" : { "expected" : [ $TARGET ] , "observed" : [ $TARGET ] } ,
                                                                                                                                         "transient" : false
-                                                                                                                                    }' | compare message invalid-init 10 15099 3<&3
+                                                                                                                                    }' | compare message invalid-init 10 27644 3<&3
                                                                                                                                 jq \
                                                                                                                                     --null-input \
                                                                                                                                     --arg INDEX "$DISTRACTOR_INDEX" \
@@ -905,7 +905,7 @@
                                                                                                                                         "status" : $STATUS ,
                                                                                                                                         "targets" : { "expected" : [ $TARGET ] , "observed" : [ $TARGET ] } ,
                                                                                                                                         "transient" : false
-                                                                                                                                    }' | compare message invalid-init 10 15099 3<&3
+                                                                                                                                    }' | compare message invalid-init 10 25001 3<&3
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 10 17 \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
