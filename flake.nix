@@ -923,7 +923,7 @@
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE" == "true" ]]
                                                                                                                             then
-                                                                                                                                FRESH=${ resources.checks.targets.true.true { failure = 14283 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
+                                                                                                                                FRESH=${ resources.checks.targets.true.true { failure = 14283 ; setup = setup : ''${ setup } "888888"'' ; } }
                                                                                                                                 jq \
                                                                                                                                     --null-input \
                                                                                                                                     '{
