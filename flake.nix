@@ -776,7 +776,7 @@
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 10 13 \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
-                                                                                                                                    --file "/home/${ config.personal.name }/resources/originator-pids/$DISTRACTOR_INDEX/$ORIGINATOR_PID" \
+                                                                                                                                    --file "/home/${ config.personal.name }/resources/pids/$DISTRACTOR_INDEX/$ORIGINATOR_PID" \
                                                                                                                                     --file "$DISTRACTOR/$TARGET" \
                                                                                                                                     --executable "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$DISTRACTOR_INDEX" \
@@ -803,7 +803,7 @@
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 10 13 \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
-                                                                                                                                    --file "/home/${ config.personal.name }/resources/originator-pids/$DISTRACTOR_INDEX/$ORIGINATOR_PID" \
+                                                                                                                                    --file "/home/${ config.personal.name }/resources/pids/$DISTRACTOR_INDEX/$ORIGINATOR_PID" \
                                                                                                                                     --file "$DISTRACTOR/$TARGET" \
                                                                                                                                     --executable "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$DISTRACTOR_INDEX" \
