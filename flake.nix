@@ -907,6 +907,7 @@
                                                                                                                         cleanup ( ) {
                                                                                                                             STATUS="$?"
                                                                                                                             echo 15957 "$INIT" "$RELEASE" "$STATUS"
+                                                                                                                            sleep 5
                                                                                                                             redis-cli PUBLISH beta-status "$STATUS"
                                                                                                                         }
                                                                                                                         trap cleanup EXIT
@@ -1192,7 +1193,7 @@
                                                                                                                         exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release valid-init valid-release beta-signal )
                                                                                                                         stage-alpha "$@" <&3
                                                                                                                         stage-beta "$@" <&3 &
-                                                                                                                        echo 0 | compare message beta-signal 10 18590 3<&3
+                                                                                                                        echo 0 | compare message beta-signal 10 18590 <&3
 #                                                                                                                       # stage-gamma "$@"
                                                                                                                     '' ;
                                                                                                             } ;
