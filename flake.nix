@@ -1193,28 +1193,13 @@
                                                                                                                         exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release valid-init valid-release beta-signal )
                                                                                                                         stage-alpha "$@" <&3
                                                                                                                         stage-beta "$@" <&3 &
-                                                                                                                        read -r -t 10 -u 3 TYPE || failure 26911
-                                                                                                                        read -r -t 10 -u 3 CHANNEL || failure 12852
-                                                                                                                        read -r -t 10 -u 3 PAYLOAD || failure 27410
-                                                                                                                        if [[ "$TYPE" != "message" ]]
-                                                                                                                        then
-                                                                                                                            failure 15032
-                                                                                                                        fi
-                                                                                                                        if [[ "$CHANNEL" != "beta-signal" ]]
-                                                                                                                        then
-                                                                                                                            failure 21049
-                                                                                                                        fi
-                                                                                                                        if [[ "$PAYLOAD" != 0 ]]
-                                                                                                                        then
-                                                                                                                            failure 17996
-                                                                                                                        fi
-                                                                                                                        # echo 0 | compare message beta-signal 10 18590 3<&3
+                                                                                                                        echo 0 | compare message beta-signal 10 18590 3<&3
 #                                                                                                                       # stage-gamma "$@"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in
                                                                                                         ''
-                                                                                                            wrap ${ test }/bin/test test 0500 --literal plain "@" --literal plain PATH --literal plain TYPE --literal plain CHANNEL --literal plain PAYLOAD --uuid 7483697565341694
+                                                                                                            wrap ${ test }/bin/test test 0500 --literal plain "@" --literal plain PATH --uuid 7483697565341694
                                                                                                         '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/init" ;
