@@ -742,7 +742,7 @@
                                                                                                                         DISTRACTOR_INDEX="$( value-distractor-index "$@" )" || failure 18674
                                                                                                                         INIT="$( condition-init "$@" )" || failure 7005
                                                                                                                         INIT_SCRIPT="$( value-init-script "$@" )" || failure 18622
-                                                                                                                        ORIGIN_PID="$PPID"
+                                                                                                                        ORIGINATOR_PID="$PPID"
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 17709
                                                                                                                         SEED="$( value-seed "$@" )" || failure 26515
                                                                                                                         STANDARD_OUTPUT="$( value-standard-output "$@" )" || failure 10277
@@ -776,6 +776,7 @@
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 10 13 \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
+                                                                                                                                    --file "/home/${ config.personal.name }/resources/originator-pids/$DISTRACTOR_INDEX/$ORIGINATOR_PID" \
                                                                                                                                     --file "$DISTRACTOR/$TARGET" \
                                                                                                                                     --executable "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$DISTRACTOR_INDEX" \
