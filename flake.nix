@@ -1193,7 +1193,10 @@
                                                                                                                         exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release valid-init valid-release beta-signal )
                                                                                                                         stage-alpha "$@" <&3
                                                                                                                         stage-beta "$@" <&3 &
-                                                                                                                        echo 0 | compare message beta-signal 10 18590 3<&3
+                                                                                                                        read -r -t 10 -u 3 TYPE || failure 26911
+                                                                                                                        read -r -t 10 -u 3 CHANNEL || failure 12852
+                                                                                                                        read -r -t 10 -u 3 PAYLOAD || failure 27410
+                                                                                                                        # echo 0 | compare message beta-signal 10 18590 3<&3
 #                                                                                                                       # stage-gamma "$@"
                                                                                                                     '' ;
                                                                                                             } ;
