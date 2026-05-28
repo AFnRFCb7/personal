@@ -903,8 +903,10 @@
                                                                                                                     ] ;
                                                                                                                 text =
                                                                                                                     ''
+                                                                                                                        echo 27807
                                                                                                                         cleanup ( ) {
                                                                                                                             STATUS="$?"
+                                                                                                                            echo 15957 "$INIT" "$RELEASE" "$STATUS"
                                                                                                                             redis-cli PUBLISH beta-status "$STATUS"
                                                                                                                         }
                                                                                                                         trap cleanup EXIT
