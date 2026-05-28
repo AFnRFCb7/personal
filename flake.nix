@@ -907,7 +907,7 @@
                                                                                                                         cleanup ( ) {
                                                                                                                             STATUS="$?"
                                                                                                                             echo 15957 "$INIT" "$RELEASE" "$STATUS"
-                                                                                                                            block 10 29498 <&3
+                                                                                                                            block 10 29498 3<&3
                                                                                                                             redis-cli PUBLISH beta-signal "$STATUS"
                                                                                                                         }
                                                                                                                         trap cleanup EXIT
@@ -918,12 +918,12 @@
                                                                                                                         INIT="$( condition-init "$@" )" || failure 20502
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 26251
                                                                                                                         TARGET="$( value-target "$@" )" || failure 18128
-                                                                                                                        block 10 17224 <&3
+                                                                                                                        block 10 17224 3<&3
                                                                                                                         if [[ "$INIT" == true ]]
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE" == "true" ]]
                                                                                                                             then
-                                                                                                                                FRESH=${ resources.checks.targets.true.true { failure = 14283 ; setup = setup : ''${ setup } "888888"'' ; } }
+                                                                                                                                FRESH=${ resources.checks.targets.true.true { failure = 14283 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
                                                                                                                                 jq \
                                                                                                                                     --null-input \
                                                                                                                                     '{
