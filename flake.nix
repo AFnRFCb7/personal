@@ -908,7 +908,7 @@
                                                                                                                             STATUS="$?"
                                                                                                                             echo 15957 "$INIT" "$RELEASE" "$STATUS"
                                                                                                                             block 10 29498 <&3
-                                                                                                                            redis-cli PUBLISH beta-status "$STATUS"
+                                                                                                                            redis-cli PUBLISH beta-signal "$STATUS"
                                                                                                                         }
                                                                                                                         trap cleanup EXIT
                                                                                                                         ALPHA="$( condition-alpha "$@" )" || failure 24196
