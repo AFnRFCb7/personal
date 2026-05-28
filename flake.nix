@@ -1196,6 +1196,18 @@
                                                                                                                         read -r -t 10 -u 3 TYPE || failure 26911
                                                                                                                         read -r -t 10 -u 3 CHANNEL || failure 12852
                                                                                                                         read -r -t 10 -u 3 PAYLOAD || failure 27410
+                                                                                                                        if [[ "$TYPE" != "message" ]]
+                                                                                                                        then
+                                                                                                                            failure 15032
+                                                                                                                        fi
+                                                                                                                        if [[ "$CHANNEL" != "beta-signal" ]]
+                                                                                                                        then
+                                                                                                                            failure 21049
+                                                                                                                        fi
+                                                                                                                        if [[ "$PAYLOAD" != 0 ]]
+                                                                                                                        then
+                                                                                                                            failure 17996
+                                                                                                                        fi
                                                                                                                         # echo 0 | compare message beta-signal 10 18590 3<&3
 #                                                                                                                       # stage-gamma "$@"
                                                                                                                     '' ;
