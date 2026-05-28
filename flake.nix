@@ -1137,7 +1137,7 @@
                                                                                                                                 echo -en 0
                                                                                                                             fi
                                                                                                                         else
-                                                                                                                            if [[ "$INIT" == "true" ]]
+                                                                                                                            if [[ "$RELEASE" == "true" ]]
                                                                                                                             then
                                                                                                                                 echo -en 118
                                                                                                                             else
