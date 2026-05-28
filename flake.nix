@@ -1189,8 +1189,8 @@
                                                                                                                     ''
                                                                                                                         exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release valid-init valid-release beta-signal )
                                                                                                                         stage-alpha "$@" <&3
-                                                                                                                        # stage-beta "$@" <&3 &
-                                                                                                                        # echo 0 | compare message beta-signal 10 18590 3<&3
+                                                                                                                        stage-beta "$@" <&3 &
+                                                                                                                        echo 0 | compare message beta-signal 10 18590 3<&3
 #                                                                                                                       # stage-gamma "$@"
                                                                                                                     '' ;
                                                                                                             } ;
