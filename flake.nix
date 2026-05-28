@@ -1139,7 +1139,7 @@
                                                                                                                         else
                                                                                                                             if [[ "$RELEASE" == "true" ]]
                                                                                                                             then
-                                                                                                                                echo -en 118
+                                                                                                                                echo -en 114
                                                                                                                             else
                                                                                                                                 echo -en 117
                                                                                                                             fi
