@@ -3130,7 +3130,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        timeout 1m "$SCRIPT/test" 3 true true
+                                                                                        timeout 1m "$SCRIPT/test" 3 false true
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
