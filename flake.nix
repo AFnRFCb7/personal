@@ -907,7 +907,7 @@
                                                                                                                         cleanup ( ) {
                                                                                                                             STATUS="$?"
                                                                                                                             echo 15957 "$INIT" "$RELEASE" "$STATUS"
-                                                                                                                            sleep 5
+                                                                                                                            block 10 29498 <&3
                                                                                                                             redis-cli PUBLISH beta-status "$STATUS"
                                                                                                                         }
                                                                                                                         trap cleanup EXIT
