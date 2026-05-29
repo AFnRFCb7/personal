@@ -427,7 +427,6 @@
                                                                                                                                                 ZERO="$( find "$ROOT" -type f -mindepth 1 -maxdepth 1 -exec ceiling {} "$INDEX" \; )" || failure 7516122857653918 ROOT "$ROOT" INDEX "$INDEX"
                                                                                                                                                 if [[ -n "$ZERO" ]]
                                                                                                                                                 then
-                                                                                                                                                then
                                                                                                                                                     failure 4894458326934832 ROOT "$ROOT" INDEX "$INDEX" ZERO "$ZERO" "$*"
                                                                                                                                                 fi
                                                                                                                                             fi
