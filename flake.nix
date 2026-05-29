@@ -914,6 +914,7 @@
                                                                                                                             echo 15957 "$INIT" "$RELEASE" "$STATUS"
                                                                                                                             block 10 29498 3<&3
                                                                                                                             redis-cli PUBLISH beta-signal "$STATUS"
+                                                                                                                            cat /home/${ config.personal.name }/resources/logs/trace.log.yaml
                                                                                                                         }
                                                                                                                         trap cleanup EXIT
                                                                                                                         ALPHA="$( condition-alpha "$@" )" || failure 24196
@@ -941,7 +942,6 @@
                                                                                                                                 FRESH=${ resources.checks.targets.true.true { failure = 14283 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
                                                                                                                                 trace 17766
                                                                                                                                 echo 20184 FRESH "$FRESH" >&2
-                                                                                                                                ${ pkgs.findutils }/bin/find /home/${ config.personal.name }/resources
                                                                                                                                 cat /home/${ config.personal.name }/resources/logs/trace.log.yaml
                                                                                                                                 ps -ef >&2
                                                                                                                                 jq \
