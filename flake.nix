@@ -925,6 +925,10 @@
                                                                                                                             then
                                                                                                                                 # shellcheck disable=SC2016
                                                                                                                                 echo '20184 ${ resources.checks.targets.true.true { failure = 19675 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }' >&2
+                                                                                                                                jq \
+                                                                                                                                    --null-input \
+                                                                                                                                    '{
+                                                                                                                                    }' | compare message valid-release 10 10864 3<&3
                                                                                                                                 FRESH=${ resources.checks.targets.true.true { failure = 14283 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
                                                                                                                                 jq \
                                                                                                                                     --null-input \
