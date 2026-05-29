@@ -900,6 +900,7 @@
                                                                                                                         condition-release
                                                                                                                         pkgs.jq
                                                                                                                         pkgs.redis
+                                                                                                                        trace
                                                                                                                         value-argument
                                                                                                                         value-distractor-index
                                                                                                                         value-fresh-index
@@ -936,9 +937,11 @@
 #                                                                                                                                    '{
 #                                                                                                                                    }' | compare message valid-release 10 10864 3<&3
                                                                                                                                 block 10 21733 3<&3
+                                                                                                                                trace 12912
                                                                                                                                 FRESH=${ resources.checks.targets.true.true { failure = 14283 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
+                                                                                                                                trace 17766
                                                                                                                                 echo 20184 FRESH "$FRESH" >&2
-                                                                                                                                cat /home/${ config.personal.name }/resources/log/trace.yaml
+                                                                                                                                cat /home/${ config.personal.name }/resources/logs/trace.yaml
                                                                                                                                 ps -ef >&2
                                                                                                                                 jq \
                                                                                                                                     --null-input \
