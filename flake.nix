@@ -757,7 +757,7 @@
                                                                                                                             then
 
                                                                                                                                 echo 20184 ORIGINATOR_PID "$ORIGINATOR_PID" >&2
-                                                                                                                                ps -pf "$USER" >&2
+                                                                                                                                ps -pf "$ORIGINATOR_PID" >&2
 
 
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.true { failure = 32621 ; } }
@@ -938,7 +938,7 @@
                                                                                                                                 block 10 21733 3<&3
                                                                                                                                 FRESH=${ resources.checks.targets.true.true { failure = 14283 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
                                                                                                                                 echo 20184 FRESH "$FRESH" >&2
-                                                                                                                                ps -u "$USER" >&2
+                                                                                                                                ps -ef >&2
                                                                                                                                 jq \
                                                                                                                                     --null-input \
                                                                                                                                     '{
