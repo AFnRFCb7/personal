@@ -757,7 +757,7 @@
                                                                                                                             then
 
                                                                                                                                 echo 20184 ORIGINATOR_PID "$ORIGINATOR_PID" >&2
-                                                                                                                                ps -pf "$ORIGINATOR_PID" >&2
+                                                                                                                                ps -p "$ORIGINATOR_PID" >&2
 
 
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.true { failure = 32621 ; } }
