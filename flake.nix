@@ -748,7 +748,7 @@
                                                                                                                         STANDARD_OUTPUT="$( value-standard-output "$@" )" || failure 10277
                                                                                                                         STATUS="$( value-status "$@" )" || failure 12017
                                                                                                                         TARGET="$( value-target "$@" )" || failure 20759
-                                                                                                                        echo 20184 ORIGINATOR_PID "ORIGINATOR_PID" >&2
+                                                                                                                        echo 20184 ORIGINATOR_PID "$ORIGINATOR_PID" >&2
                                                                                                                         ps -u "$USER" >&2
                                                                                                                         echo | files \
                                                                                                                             --ceiling "$ALPHA" 0 5 \
