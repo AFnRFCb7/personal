@@ -932,7 +932,7 @@
                                                                                                                                 # shellcheck disable=SC2016
                                                                                                                                 echo '20184 ${ resources.checks.targets.true.true { failure = 19675 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }' >&2
                                                                                                                                 echo 20184 DISTRACTOR_INDEX "$DISTRACTOR_INDEX" >&2
-                                                                                                                                ps -u "$USER" >&2
+                                                                                                                                ps -ef >&2
 #                                                                                                                                jq \
 #                                                                                                                                    --null-input \
 #                                                                                                                                    '{
