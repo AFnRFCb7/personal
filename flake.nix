@@ -764,7 +764,6 @@
                                                                                                                                 jq \
                                                                                                                                     --null-input \
                                                                                                                                     --arg INDEX "$DISTRACTOR_INDEX" \
-                                                                                                                                    --arg INDEX "$DISTRfACTOR_INDEX" \
                                                                                                                                     --rawfile SCRIPT "$INIT_SCRIPT" \
                                                                                                                                     --argjson SEED "$SEED" \
                                                                                                                                     --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
