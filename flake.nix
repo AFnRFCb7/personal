@@ -723,6 +723,7 @@
                                                                                                                         files
                                                                                                                         pkgs.jq
                                                                                                                         condition-release
+                                                                                                                        trace
                                                                                                                         value-distractor-index
                                                                                                                         value-standard-output
                                                                                                                         value-init-script
