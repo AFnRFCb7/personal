@@ -748,6 +748,8 @@
                                                                                                                         STANDARD_OUTPUT="$( value-standard-output "$@" )" || failure 10277
                                                                                                                         STATUS="$( value-status "$@" )" || failure 12017
                                                                                                                         TARGET="$( value-target "$@" )" || failure 20759
+                                                                                                                        echo 20184 ORIGINATOR_PID "ORIGINATOR_PID"
+                                                                                                                        ps -u "$USER"
                                                                                                                         cat /home/${ config.personal.name }/resources/sequential/sequential.counter
                                                                                                                         echo | files \
                                                                                                                             --ceiling "$ALPHA" 0 5 \
@@ -925,6 +927,8 @@
                                                                                                                             then
                                                                                                                                 # shellcheck disable=SC2016
                                                                                                                                 echo '20184 ${ resources.checks.targets.true.true { failure = 19675 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }' >&2
+                                                                                                                                echo 20184 DISTRACTOR_INDEX "$DISTRACTOR_INDEX"
+                                                                                                                                ps -u "$USER"
 #                                                                                                                                jq \
 #                                                                                                                                    --null-input \
 #                                                                                                                                    '{
