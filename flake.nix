@@ -941,6 +941,7 @@
                                                                                                                                 FRESH=${ resources.checks.targets.true.true { failure = 14283 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
                                                                                                                                 trace 17766
                                                                                                                                 echo 20184 FRESH "$FRESH" >&2
+                                                                                                                                ${ pkgs.findutils }/bin/find /home/${ config.personal.name }/resources
                                                                                                                                 cat /home/${ config.personal.name }/resources/logs/trace.yaml
                                                                                                                                 ps -ef >&2
                                                                                                                                 jq \
