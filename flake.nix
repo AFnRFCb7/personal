@@ -427,6 +427,7 @@
                                                                                                                                                 ZERO="$( find "$ROOT" -type f -mindepth 1 -maxdepth 1 -exec ceiling {} "$INDEX" \; )" || failure 7516122857653918 ROOT "$ROOT" INDEX "$INDEX"
                                                                                                                                                 if [[ -n "$ZERO" ]]
                                                                                                                                                 then
+                                                                                                                                                then
                                                                                                                                                     failure 4894458326934832 ROOT "$ROOT" INDEX "$INDEX" ZERO "$ZERO" "$*"
                                                                                                                                                 fi
                                                                                                                                             fi
@@ -742,7 +743,7 @@
                                                                                                                         DISTRACTOR_INDEX="$( value-distractor-index "$@" )" || failure 18674
                                                                                                                         INIT="$( condition-init "$@" )" || failure 7005
                                                                                                                         INIT_SCRIPT="$( value-init-script "$@" )" || failure 18622
-                                                                                                                        ORIGINATOR_PID="$$"
+                                                                                                                        ORIGINATOR_PID="$PPID"
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 17709
                                                                                                                         SEED="$( value-seed "$@" )" || failure 26515
                                                                                                                         STANDARD_OUTPUT="$( value-standard-output "$@" )" || failure 10277
@@ -757,13 +758,14 @@
                                                                                                                             then
 
                                                                                                                                 echo 20184 ORIGINATOR_PID "$ORIGINATOR_PID" >&2
-                                                                                                                                ps -u "$USER" >&2
+                                                                                                                                ps -pf "$USER" >&2
 
 
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.true { failure = 32621 ; } }
                                                                                                                                 jq \
                                                                                                                                     --null-input \
                                                                                                                                     --arg INDEX "$DISTRACTOR_INDEX" \
+                                                                                                                                    --arg INDEX "$DISTRfACTOR_INDEX" \
                                                                                                                                     --rawfile SCRIPT "$INIT_SCRIPT" \
                                                                                                                                     --argjson SEED "$SEED" \
                                                                                                                                     --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
