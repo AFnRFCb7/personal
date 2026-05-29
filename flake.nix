@@ -911,35 +911,35 @@
                                                                                                                             redis-cli PUBLISH beta-signal "$STATUS"
                                                                                                                         }
                                                                                                                         trap cleanup EXIT
-#                                                                                                                        ALPHA="$( condition-alpha "$@" )" || failure 24196
-#                                                                                                                        ARGUMENT="$( value-argument "$@" )" || failure 31872
-#                                                                                                                        DISTRACTOR_INDEX="$( value-distractor-index "$@" )" || failure 11438
-#                                                                                                                        FRESH_INDEX="$( value-fresh-index "$@" )" || failure 17489
-#                                                                                                                        INIT="$( condition-init "$@" )" || failure 20502
-#                                                                                                                        RELEASE="$( condition-release "$@" )" || failure 26251
-#                                                                                                                        TARGET="$( value-target "$@" )" || failure 18128
+                                                                                                                        ALPHA="$( condition-alpha "$@" )" || failure 24196
+                                                                                                                        ARGUMENT="$( value-argument "$@" )" || failure 31872
+                                                                                                                        DISTRACTOR_INDEX="$( value-distractor-index "$@" )" || failure 11438
+                                                                                                                        FRESH_INDEX="$( value-fresh-index "$@" )" || failure 17489
+                                                                                                                        INIT="$( condition-init "$@" )" || failure 20502
+                                                                                                                        RELEASE="$( condition-release "$@" )" || failure 26251
+                                                                                                                        TARGET="$( value-target "$@" )" || failure 18128
                                                                                                                         block 10 17224 3<&3
                                                                                                                         if [[ "$INIT" == true ]]
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE" == "true" ]]
                                                                                                                             then
                                                                                                                                 # shellcheck disable=SC2016
-                                                                                                                                echo '20184 ${ resources.checks.targets.true.true { failure = 14283 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }' >&2
-#                                                                                                                                FRESH=${ resources.checks.targets.true.true { failure = 14283 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
-#                                                                                                                                jq \
-#                                                                                                                                    --null-input \
-#                                                                                                                                    '{
-#                                                                                                                                    }' | compare message valid-release 10 11989 3<&3
-#                                                                                                                                echo "$ARGUMENT" "$FRESH_INDEX" "$TARGET"
-#                                                                                                                                files \
-#                                                                                                                                    --ceiling "$ALPHA" 0 0 \
-#                                                                                                                                    --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
-#                                                                                                                                    --not-equals "$FRESH_INDEX" "$DISTRACTOR_INDEX" \
-#                                                                                                                                    --file "$FRESH_INDEX/$TARGET" \
-#                                                                                                                                    --executable "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
-#                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX" \
-#                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
-#                                                                                                                                    --uuid 27035
+                                                                                                                                echo '20184 ${ resources.checks.targets.true.true { failure = 19675 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }' >&2
+                                                                                                                                FRESH=${ resources.checks.targets.true.true { failure = 14283 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
+                                                                                                                                jq \
+                                                                                                                                    --null-input \
+                                                                                                                                    '{
+                                                                                                                                    }' | compare message valid-release 10 11989 3<&3
+                                                                                                                                echo "$ARGUMENT" "$FRESH_INDEX" "$TARGET"
+                                                                                                                                files \
+                                                                                                                                    --ceiling "$ALPHA" 0 0 \
+                                                                                                                                    --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
+                                                                                                                                    --not-equals "$FRESH_INDEX" "$DISTRACTOR_INDEX" \
+                                                                                                                                    --file "$FRESH_INDEX/$TARGET" \
+                                                                                                                                    --executable "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
+                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX" \
+                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
+                                                                                                                                    --uuid 27035
                                                                                                                             else
                                                                                                                                 true
                                                                                                                             fi
