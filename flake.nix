@@ -908,11 +908,8 @@
                                                                                                                     ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        echo 27807
                                                                                                                         cleanup ( ) {
                                                                                                                             STATUS="$?"
-                                                                                                                            echo 15957 "$INIT" "$RELEASE" "$STATUS"
-                                                                                                                            block 10 29498 3<&3
                                                                                                                             redis-cli PUBLISH beta-signal "$STATUS"
                                                                                                                             cat /home/${ config.personal.name }/resources/logs/trace.log.yaml
                                                                                                                         }
@@ -930,9 +927,6 @@
                                                                                                                             if [[ "$RELEASE" == "true" ]]
                                                                                                                             then
                                                                                                                                 # shellcheck disable=SC2016
-                                                                                                                                echo '20184 ${ resources.checks.targets.true.true { failure = 19675 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }' >&2
-                                                                                                                                echo 20184 DISTRACTOR_INDEX "$DISTRACTOR_INDEX" >&2
-                                                                                                                                ps -ef >&2
 #                                                                                                                                jq \
 #                                                                                                                                    --null-input \
 #                                                                                                                                    '{
@@ -941,13 +935,11 @@
                                                                                                                                 trace 12912
                                                                                                                                 FRESH=${ resources.checks.targets.true.true { failure = 14283 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
                                                                                                                                 trace 17766
-                                                                                                                                echo 20184 FRESH "$FRESH" >&2
-                                                                                                                                cat /home/${ config.personal.name }/resources/logs/trace.log.yaml
-                                                                                                                                ps -ef >&2
                                                                                                                                 jq \
                                                                                                                                     --null-input \
                                                                                                                                     '{
                                                                                                                                     }' | compare message valid-release 10 11989 3<&3
+                                                                                                                                trace 4258
                                                                                                                                 echo "$ARGUMENT" "$FRESH_INDEX" "$TARGET"
                                                                                                                                 files \
                                                                                                                                     --ceiling "$ALPHA" 0 0 \
