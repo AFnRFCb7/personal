@@ -755,11 +755,7 @@
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE" == "true" ]]
                                                                                                                             then
-
-                                                                                                                                echo 20184 ORIGINATOR_PID "$ORIGINATOR_PID" >&2
-                                                                                                                                ps -p "$ORIGINATOR_PID" >&2
-
-
+                                                                                                                                trace 7666
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.true { failure = 32621 ; } }
                                                                                                                                 jq \
                                                                                                                                     --null-input \
