@@ -742,14 +742,12 @@
                                                                                                                         DISTRACTOR_INDEX="$( value-distractor-index "$@" )" || failure 18674
                                                                                                                         INIT="$( condition-init "$@" )" || failure 7005
                                                                                                                         INIT_SCRIPT="$( value-init-script "$@" )" || failure 18622
-                                                                                                                        ORIGINATOR_PID="$PPID"
+                                                                                                                        ORIGINATOR_PID="$$"
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 17709
                                                                                                                         SEED="$( value-seed "$@" )" || failure 26515
                                                                                                                         STANDARD_OUTPUT="$( value-standard-output "$@" )" || failure 10277
                                                                                                                         STATUS="$( value-status "$@" )" || failure 12017
                                                                                                                         TARGET="$( value-target "$@" )" || failure 20759
-                                                                                                                        echo 20184 ORIGINATOR_PID "$ORIGINATOR_PID" >&2
-                                                                                                                        ps -u "$USER" >&2
                                                                                                                         echo | files \
                                                                                                                             --ceiling "$ALPHA" 0 5 \
                                                                                                                             --uuid 17389
@@ -757,6 +755,11 @@
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE" == "true" ]]
                                                                                                                             then
+
+                                                                                                                                echo 20184 ORIGINATOR_PID "$ORIGINATOR_PID" >&2
+                                                                                                                                ps -u "$USER" >&2
+
+
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.true { failure = 32621 ; } }
                                                                                                                                 jq \
                                                                                                                                     --null-input \
@@ -934,6 +937,8 @@
 #                                                                                                                                    }' | compare message valid-release 10 10864 3<&3
                                                                                                                                 block 10 21733 3<&3
                                                                                                                                 FRESH=${ resources.checks.targets.true.true { failure = 14283 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
+                                                                                                                                echo 20184 FRESH "$FRESH" >&2
+                                                                                                                                ps -u "$USER" >&2
                                                                                                                                 jq \
                                                                                                                                     --null-input \
                                                                                                                                     '{
