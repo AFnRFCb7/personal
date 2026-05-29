@@ -942,7 +942,7 @@
                                                                                                                                 trace 17766
                                                                                                                                 echo 20184 FRESH "$FRESH" >&2
                                                                                                                                 ${ pkgs.findutils }/bin/find /home/${ config.personal.name }/resources
-                                                                                                                                cat /home/${ config.personal.name }/resources/logs/trace.yaml
+                                                                                                                                cat /home/${ config.personal.name }/resources/logs/trace.log.yaml
                                                                                                                                 ps -ef >&2
                                                                                                                                 jq \
                                                                                                                                     --null-input \
