@@ -938,6 +938,7 @@
                                                                                                                                 block 10 21733 3<&3
                                                                                                                                 FRESH=${ resources.checks.targets.true.true { failure = 14283 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
                                                                                                                                 echo 20184 FRESH "$FRESH" >&2
+                                                                                                                                cat /home/${ config.personal.name }/resources/log/trace.yaml
                                                                                                                                 ps -ef >&2
                                                                                                                                 jq \
                                                                                                                                     --null-input \
