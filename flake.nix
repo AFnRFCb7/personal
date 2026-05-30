@@ -935,7 +935,7 @@
                                                                                                                                 trace 17766
                                                                                                                                 ${ pkgs.findutils }/bin/find /home/${ config.personal.name }/resources/pids -type f | while read -r PID
                                                                                                                                 do
-                                                                                                                                    trace "11004" "PID" "$PID" "$( ps -p "$PID" )""
+                                                                                                                                    trace "11004" "PID" "$PID" "$( ps -p "$PID" )"
                                                                                                                                 done
                                                                                                                                 trace 31788
                                                                                                                                 trace "$( cat "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" )"
