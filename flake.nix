@@ -2813,7 +2813,7 @@
                                                                             pkgs.writeShellApplication
                                                                                 {
                                                                                     name = "archive-resources" ;
-                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.gnutar pkgs.nix pkgs.zstd ] ;
+                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.gnutar pkgs.nix pkgs.xz pkgs.zstd ] ;
                                                                                     text =
                                                                                         ''
                                                                                             ARCHIVE="$( mktemp --suffix ".tar.xz" )" || exit 63
