@@ -924,10 +924,6 @@
                                                                                                                             if [[ "$RELEASE" == "true" ]]
                                                                                                                             then
                                                                                                                                 # shellcheck disable=SC2016
-#                                                                                                                                jq \
-#                                                                                                                                    --null-input \
-#                                                                                                                                    '{
-#                                                                                                                                    }' | compare message valid-release 10 10864 3<&3
                                                                                                                                 block 10 21733 3<&3
                                                                                                                                 trace 12912
                                                                                                                                 FRESH=${ resources.checks.targets.true.true { failure = 14283 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
