@@ -928,6 +928,7 @@
                                                                                                                                 trace 12912
                                                                                                                                 FRESH=${ resources.checks.targets.true.true { failure = 14283 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
                                                                                                                                 trace 17766
+                                                                                                                                trace "$( cat "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" )"
                                                                                                                                 jq \
                                                                                                                                     --null-input \
                                                                                                                                     '{
