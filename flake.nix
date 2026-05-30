@@ -2473,7 +2473,7 @@
                                                                                             pkgs.writeShellApplication
                                                                                                 {
                                                                                                     name = "clean" ;
-                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.inotify-tools] ;
+                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.gnutar pkgs.inotify-tools pkgs.xz ] ;
                                                                                                     text =
                                                                                                         ''
                                                                                                             if [[ -d /home/${ config.personal.name }/resources/release ]]
