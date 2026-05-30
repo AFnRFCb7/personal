@@ -928,7 +928,7 @@
                                                                                                                                 trace 12912
                                                                                                                                 ${ pkgs.findutils }/bin/find /home/${ config.personal.name }/resources/pids -type f | while read -r PID
                                                                                                                                 do
-                                                                                                                                    trace "19750" "PID" "$PID" "$( ps -p "$PID" )"
+                                                                                                                                    trace "19750" "PID" "$PID" " ps -p $PID"
                                                                                                                                 done
                                                                                                                                 trace 16920
                                                                                                                                 FRESH=${ resources.checks.targets.true.true { failure = 14283 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
