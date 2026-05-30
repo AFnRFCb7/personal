@@ -2813,13 +2813,11 @@
                                                                             pkgs.writeShellApplication
                                                                                 {
                                                                                     name = "archive-resources" ;
-                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.gnutar pkgs.nix pkgs.xz pkgs.zstd trace ] ;
+                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.gnutar pkgs.nix pkgs.xz pkgs.zstd ] ;
                                                                                     text =
                                                                                         ''
                                                                                             ARCHIVE="$( mktemp --suffix ".tar.xz" )" || exit 63
-                                                                                            trace 14584
                                                                                             tar --create --file "$ARCHIVE" --remove-files /home/${ config.personal.name }/.gc-roots /home/${ config.personal.name }/resources
-                                                                                            trace 20225
                                                                                             nix-collect-garbage
                                                                                         '' ;
                                                                                 }
