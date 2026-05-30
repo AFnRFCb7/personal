@@ -924,7 +924,7 @@
                                                                                                                             if [[ "$RELEASE" == "true" ]]
                                                                                                                             then
                                                                                                                                 # shellcheck disable=SC2016
-                                                                                                                                block 10 21733 3<&3
+                                                                                                                                block 300 21733 3<&3
                                                                                                                                 trace 12912
                                                                                                                                 ${ pkgs.findutils }/bin/find /home/${ config.personal.name }/resources/pids -type f | while read -r PID
                                                                                                                                 do
