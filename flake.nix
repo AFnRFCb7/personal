@@ -931,7 +931,7 @@
                                                                                                                                 jq \
                                                                                                                                     --null-input \
                                                                                                                                     '{
-                                                                                                                                    }' | compare message valid-release 10 11989 3<&3
+                                                                                                                                    }' | compare message valid-init 10 11989 3<&3
                                                                                                                                 trace 4258
                                                                                                                                 echo "$ARGUMENT" "$FRESH_INDEX" "$TARGET"
                                                                                                                                 files \
