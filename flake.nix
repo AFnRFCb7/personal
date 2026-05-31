@@ -936,8 +936,6 @@
                                                                                                                                 do
                                                                                                                                     trace 27123 11004 "I just created the resource and these are my pids $PID"
                                                                                                                                 done
-                                                                                                                                trace 31788
-                                                                                                                                trace "$( cat "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" )"
                                                                                                                                 jq \
                                                                                                                                     --null-input \
                                                                                                                                     '{
