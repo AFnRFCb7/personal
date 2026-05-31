@@ -3103,6 +3103,7 @@
 #                                        resource--false-false =
 #                                            pkgs.nixosTest
 #                                                {
+#                                                {
 #                                                    name = "resource-false-false" ;
 #                                                    nodes.machine = { ... } : { imports = builtins.concatLists [ [ user ] private ] ; } ;
 #                                                    testScript =
