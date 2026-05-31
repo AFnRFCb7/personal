@@ -3100,7 +3100,7 @@
                                                             resources-directory = "/build/resources" ;
                                                         } ;
                                                 in
-                                                    factory.check { expected = "/nix/store/yjskiqiz3xb6dbl37snhv3w07b667pv1-setup/bin/setup" ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
+                                                    factory.check { expected = "/nix/store/x9a8c6nms51748f36mabglkgs23kjgr1-setup/bin/setup" ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
                                         resource--false-false =
                                             pkgs.nixosTest
                                                 {
