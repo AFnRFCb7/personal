@@ -756,7 +756,6 @@
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE" == "true" ]]
                                                                                                                             then
-                                                                                                                                trace 7666
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.true { failure = 32621 ; } }
                                                                                                                                 jq \
                                                                                                                                     --null-input \
@@ -925,17 +924,17 @@
                                                                                                                             then
                                                                                                                                 # shellcheck disable=SC2016
                                                                                                                                 block 300 21733 3<&3
-                                                                                                                                trace 12912
+                                                                                                                                trace 27123 12912 "About to print out the pids"
                                                                                                                                 ${ pkgs.findutils }/bin/find /home/${ config.personal.name }/resources/pids -type f | while read -r PID
                                                                                                                                 do
-                                                                                                                                    trace "19750" "PID" "$PID" " ps -p $PID"
+                                                                                                                                    trace 27123 19750 "Before creation I have PID"
                                                                                                                                 done
-                                                                                                                                trace 16920
+                                                                                                                                trace 27123 16920 "I just verified there are no messages and I just printed out the pids.  I am about to print the create the FRESH resource"
                                                                                                                                 FRESH=${ resources.checks.targets.true.true { failure = 14283 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
-                                                                                                                                trace 17766
+                                                                                                                                trace 27123 17766 "I just created the FRESH resource"
                                                                                                                                 ${ pkgs.findutils }/bin/find /home/${ config.personal.name }/resources/pids -type f | while read -r PID
                                                                                                                                 do
-                                                                                                                                    trace "11004" "PID" "$PID" "$( ps -p "$PID" )"
+                                                                                                                                    trace 27123 11004 "I just created the resource and these are my pids"
                                                                                                                                 done
                                                                                                                                 trace 31788
                                                                                                                                 trace "$( cat "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" )"
