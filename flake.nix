@@ -927,14 +927,14 @@
                                                                                                                                 trace 27123 12912 "About to print out the pids"
                                                                                                                                 ${ pkgs.findutils }/bin/find /home/${ config.personal.name }/resources/pids -type f | while read -r PID
                                                                                                                                 do
-                                                                                                                                    trace 27123 19750 "Before creation I have PID"
+                                                                                                                                    trace 27123 19750 "Before creation I have PID $PID"
                                                                                                                                 done
                                                                                                                                 trace 27123 16920 "I just verified there are no messages and I just printed out the pids.  I am about to print the create the FRESH resource"
                                                                                                                                 FRESH=${ resources.checks.targets.true.true { failure = 14283 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
                                                                                                                                 trace 27123 17766 "I just created the FRESH resource"
                                                                                                                                 ${ pkgs.findutils }/bin/find /home/${ config.personal.name }/resources/pids -type f | while read -r PID
                                                                                                                                 do
-                                                                                                                                    trace 27123 11004 "I just created the resource and these are my pids"
+                                                                                                                                    trace 27123 11004 "I just created the resource and these are my pids $PID"
                                                                                                                                 done
                                                                                                                                 trace 31788
                                                                                                                                 trace "$( cat "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" )"
