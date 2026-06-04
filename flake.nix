@@ -910,6 +910,8 @@
                                                                                                                             cat /home/${ config.personal.name }/resources/logs/trace.log.yaml
                                                                                                                             echo OUTPUT
                                                                                                                             cat /tmp/output
+                                                                                                                            echo ERROR
+                                                                                                                            cat /tmp/error
                                                                                                                         }
                                                                                                                         trap cleanup EXIT
                                                                                                                         ALPHA="$( condition-alpha "$@" )" || failure 24196
