@@ -908,6 +908,8 @@
                                                                                                                             STATUS="$?"
                                                                                                                             redis-cli PUBLISH beta-signal "$STATUS"
                                                                                                                             cat /home/${ config.personal.name }/resources/logs/trace.log.yaml
+                                                                                                                            echo JSON
+                                                                                                                            cat /tmp/json
                                                                                                                             echo OUTPUT
                                                                                                                             cat /tmp/output
                                                                                                                             echo ERROR
