@@ -908,6 +908,7 @@
                                                                                                                             STATUS="$?"
                                                                                                                             redis-cli PUBLISH beta-signal "$STATUS"
                                                                                                                             cat /home/${ config.personal.name }/resources/logs/trace.log.yaml
+                                                                                                                            cat /tmp/output
                                                                                                                         }
                                                                                                                         trap cleanup EXIT
                                                                                                                         ALPHA="$( condition-alpha "$@" )" || failure 24196
