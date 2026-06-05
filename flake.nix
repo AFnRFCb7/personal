@@ -908,6 +908,7 @@
                                                                                                                         DISTRACTOR_INDEX="$( value-distractor-index "$@" )" || failure 11438
                                                                                                                         FRESH_INDEX="$( value-fresh-index "$@" )" || failure 17489
                                                                                                                         INIT="$( condition-init "$@" )" || failure 20502
+                                                                                                                        INIT_SCRIPT="$( value-init-script "$@" )" || failure 11353
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 26251
                                                                                                                         TARGET="$( value-target "$@" )" || failure 18128
                                                                                                                         block 10 17224 3<&3
@@ -923,10 +924,12 @@
                                                                                                                                 jq \
                                                                                                                                     --arg ARGUMENT "$ARGUMENT" \
                                                                                                                                     --arg INDEX "$FRESH_INDEX" \
+                                                                                                                                    --arg INIT_SCRIPT "$INIT_SCRIPT" \
                                                                                                                                     --null-input \
                                                                                                                                     '{
                                                                                                                                         "arguments" : [ $ARGUMENT ] ,
-                                                                                                                                        "index" : $INDEX
+                                                                                                                                        "index" : $INDEX ,
+                                                                                                                                        "script" : $SCRIPT
                                                                                                                                     }' | compare message valid-init 300 11989 3<&3
                                                                                                                                 trace 17630 158 "$ARGUMENT" "$FRESH_INDEX" "$TARGET"
                                                                                                                                 files \
