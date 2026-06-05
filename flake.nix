@@ -436,6 +436,7 @@
                                                                                                                         failure
                                                                                                                         pkgs.coreutils
                                                                                                                         pkgs.findutils
+                                                                                                                        trace
                                                                                                                     ] ;
                                                                                                                 text =
                                                                                                                     ''
