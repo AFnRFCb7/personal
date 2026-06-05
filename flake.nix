@@ -901,6 +901,7 @@
                                                                                                                         value-fresh-index
                                                                                                                         value-init-script
                                                                                                                         value-seed
+                                                                                                                        value-standard-output
                                                                                                                         value-target
                                                                                                                     ] ;
                                                                                                                 text =
