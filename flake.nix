@@ -899,6 +899,7 @@
                                                                                                                         value-argument
                                                                                                                         value-distractor-index
                                                                                                                         value-fresh-index
+                                                                                                                        value-init-script
                                                                                                                         value-target
                                                                                                                     ] ;
                                                                                                                 text =
