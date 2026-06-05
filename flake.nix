@@ -900,6 +900,7 @@
                                                                                                                         value-distractor-index
                                                                                                                         value-fresh-index
                                                                                                                         value-init-script
+                                                                                                                        value-seed
                                                                                                                         value-target
                                                                                                                     ] ;
                                                                                                                 text =
@@ -911,6 +912,7 @@
                                                                                                                         INIT="$( condition-init "$@" )" || failure 20502
                                                                                                                         INIT_SCRIPT="$( value-init-script "$@" )" || failure 11353
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 26251
+                                                                                                                        SEED="$( value-seed "$@" )" || failure 19252
                                                                                                                         TARGET="$( value-target "$@" )" || failure 18128
                                                                                                                         block 10 17224 3<&3
                                                                                                                         if [[ "$INIT" == true ]]
@@ -926,11 +928,13 @@
                                                                                                                                     --arg ARGUMENT "$ARGUMENT" \
                                                                                                                                     --arg INDEX "$FRESH_INDEX" \
                                                                                                                                     --rawfile SCRIPT "$INIT_SCRIPT" \
+                                                                                                                                    --argjson SEED "$SEED" \
                                                                                                                                     --null-input \
                                                                                                                                     '{
                                                                                                                                         "arguments" : [ $ARGUMENT ] ,
                                                                                                                                         "index" : $INDEX ,
-                                                                                                                                        "script" : $SCRIPT
+                                                                                                                                        "script" : $SCRIPT ,
+                                                                                                                                        "seed" : $SEED
                                                                                                                                     }' | compare message valid-init 300 11989 3<&3
                                                                                                                                 trace 17630 158 "$ARGUMENT" "$FRESH_INDEX" "$TARGET"
                                                                                                                                 files \
@@ -1198,7 +1202,6 @@
                                                                                                                             if [[ -d /home/${ config.personal.name }/resources/logs/trace.log.yaml ]]
                                                                                                                             then
                                                                                                                                 cat /home/${ config.personal.name }/resources/logs/trace.log.yaml
-                                                                                                                                exit 67
                                                                                                                             fi
                                                                                                                         }
                                                                                                                         trap cleanup EXIT
