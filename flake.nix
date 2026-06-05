@@ -925,10 +925,12 @@
                                                                                                                                 jq \
                                                                                                                                     --arg ARGUMENT "$ARGUMENT" \
                                                                                                                                     --arg INDEX "$FRESH_INDEX" \
+                                                                                                                                    --arg SCRIPT "$INIT_SCRIPT" \
                                                                                                                                     --null-input \
                                                                                                                                     '{
                                                                                                                                         "arguments" : [ $ARGUMENT ] ,
-                                                                                                                                        "index" : $INDEX
+                                                                                                                                        "index" : $INDEX ,
+                                                                                                                                        "script" : $SCRIPT
                                                                                                                                     }' | compare message valid-init 300 11989 3<&3
                                                                                                                                 trace 17630 158 "$ARGUMENT" "$FRESH_INDEX" "$TARGET"
                                                                                                                                 files \
