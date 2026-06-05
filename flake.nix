@@ -922,7 +922,6 @@
                                                                                                                                 trace 17630 11171 "We are about to create the FRESH"
                                                                                                                                 FRESH=${ resources.checks.targets.true.true { failure = 14283 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
                                                                                                                                 trace 17630 25490 "We just created the FRESH FRESH=$FRESH" SCRIPT "$INIT_SCRIPT"
-                                                                                                                                echo 17630 SCRIPT "$INIT_SCRIPT" >&2
                                                                                                                                 jq \
                                                                                                                                     --arg ARGUMENT "$ARGUMENT" \
                                                                                                                                     --arg INDEX "$FRESH_INDEX" \
