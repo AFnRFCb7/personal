@@ -1015,7 +1015,7 @@
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         ALPHA="$( condition-alpha "$@" )" || failure 24132
-                                                                                                                        printf -v FRESH_INDEX "%016d" $(( ALPHA + 7 ))
+                                                                                                                        printf -v FRESH_INDEX "%016d" $(( ALPHA + 15 ))
                                                                                                                         echo -en "$FRESH_INDEX"
                                                                                                                     '' ;
                                                                                                             } ;
