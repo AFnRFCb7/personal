@@ -925,7 +925,7 @@
                                                                                                                                 jq \
                                                                                                                                     --arg ARGUMENT "$ARGUMENT" \
                                                                                                                                     --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                    --arg SCRIPT "$INIT_SCRIPT" \
+                                                                                                                                    --rawfile SCRIPT "$INIT_SCRIPT" \
                                                                                                                                     --null-input \
                                                                                                                                     '{
                                                                                                                                         "arguments" : [ $ARGUMENT ] ,
