@@ -944,7 +944,7 @@
                                                                                                                                         "targets" : [ $TARGET ] ,
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message valid-init 300 11989 3<&3
-                                                                                                                                trace 17630 158 "$ARGUMENT" "$FRESH_INDEX" "$TARGET"
+                                                                                                                                trace 17630 158 "$ARGUMENT" "$FRESH_INDEX" "$TARGET" "$ALPHA" "$DISTRACTOR_INDEX"
 #                                                                                                                                files \
 #                                                                                                                                    --ceiling "$ALPHA" 0 0 \
 #                                                                                                                                    --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
