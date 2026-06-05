@@ -738,7 +738,6 @@
                                                                                                                         echo 2 | compare subscribe invalid-release 10 26959 3<&3
                                                                                                                         echo 3 | compare subscribe valid-init 10 4666 3<&3
                                                                                                                         echo 4 | compare subscribe valid-release 10 20782 3<&3
-                                                                                                                        echo 5 | compare subscribe beta-signal 10 21684 3<&3
                                                                                                                         ALPHA="$( condition-alpha "$@" )" || failure 14402
                                                                                                                         DISTRACTOR_INDEX="$( value-distractor-index "$@" )" || failure 18674
                                                                                                                         INIT="$( condition-init "$@" )" || failure 7005
@@ -904,18 +903,6 @@
                                                                                                                     ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        cleanup ( ) {
-                                                                                                                            STATUS="$?"
-                                                                                                                            redis-cli PUBLISH beta-signal "$STATUS"
-                                                                                                                            cat /home/${ config.personal.name }/resources/logs/trace.log.yaml
-                                                                                                                            echo JSON
-                                                                                                                            cat /tmp/json
-                                                                                                                            echo OUTPUT
-                                                                                                                            cat /tmp/output
-                                                                                                                            echo ERROR
-                                                                                                                            cat /tmp/error
-                                                                                                                        }
-                                                                                                                        trap cleanup EXIT
                                                                                                                         ALPHA="$( condition-alpha "$@" )" || failure 24196
                                                                                                                         ARGUMENT="$( value-argument "$@" )" || failure 31872
                                                                                                                         DISTRACTOR_INDEX="$( value-distractor-index "$@" )" || failure 11438
@@ -1199,10 +1186,9 @@
                                                                                                                     ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release valid-init valid-release beta-signal )
+                                                                                                                        exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release valid-init valid-release )
                                                                                                                         stage-alpha "$@" <&3
                                                                                                                         ( stage-beta "$@" <&3 )
-                                                                                                                        echo 0 | compare message beta-signal 10 18590 3<&3
 #                                                                                                                       # stage-gamma "$@"
                                                                                                                     '' ;
                                                                                                             } ;
