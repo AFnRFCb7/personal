@@ -1193,6 +1193,10 @@
                                                                                                                     ] ;
                                                                                                                 text =
                                                                                                                     ''
+                                                                                                                        cleanup ( ) {
+                                                                                                                            cat /home/${ config.personal.name }/resources/logs/trace.log.yaml
+                                                                                                                        }
+                                                                                                                        trap cleanup EXIT
                                                                                                                         exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release valid-init valid-release )
                                                                                                                         stage-alpha "$@" <&3
                                                                                                                         ( stage-beta "$@" <&3 )
