@@ -913,6 +913,7 @@
                                                                                                                         INIT_SCRIPT="$( value-init-script "$@" )" || failure 11353
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 26251
                                                                                                                         SEED="$( value-seed "$@" )" || failure 19252
+                                                                                                                        STANDARD_OUTPUT="$( value-standard-output "$@" )" || failure 15030
                                                                                                                         TARGET="$( value-target "$@" )" || failure 18128
                                                                                                                         block 10 17224 3<&3
                                                                                                                         if [[ "$INIT" == true ]]
@@ -929,12 +930,14 @@
                                                                                                                                     --arg INDEX "$FRESH_INDEX" \
                                                                                                                                     --rawfile SCRIPT "$INIT_SCRIPT" \
                                                                                                                                     --argjson SEED "$SEED" \
+                                                                                                                                    --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                                     --null-input \
                                                                                                                                     '{
                                                                                                                                         "arguments" : [ $ARGUMENT ] ,
                                                                                                                                         "index" : $INDEX ,
                                                                                                                                         "script" : $SCRIPT ,
-                                                                                                                                        "seed" : $SEED
+                                                                                                                                        "seed" : $SEED ,
+                                                                                                                                        "standard-output" : $STANDARD_OUTPUT
                                                                                                                                     }' | compare message valid-init 300 11989 3<&3
                                                                                                                                 trace 17630 158 "$ARGUMENT" "$FRESH_INDEX" "$TARGET"
                                                                                                                                 files \
