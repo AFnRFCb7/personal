@@ -946,7 +946,7 @@
                                                                                                                                     }' | compare message valid-init 300 11989 3<&3
                                                                                                                                 trace 17630 158 "$ARGUMENT" "$FRESH_INDEX" "$TARGET" "$ALPHA" "$DISTRACTOR_INDEX"
                                                                                                                                 echo | files \
-                                                                                                                                    --ceiling "$ALPHA" 0 0 \
+                                                                                                                                    --ceiling "$ALPHA" 0 21 \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
                                                                                                                                     --not-equals "$FRESH_INDEX" "$DISTRACTOR_INDEX" \
                                                                                                                                     --file "$FRESH_INDEX/$TARGET" \
