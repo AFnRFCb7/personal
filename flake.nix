@@ -933,10 +933,10 @@
                                                                                                                                 trace 17630 11171 "We are about to create the FRESH"
                                                                                                                                 FRESH=${ resources.checks.targets.true.true { failure = 14283 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
                                                                                                                                 trace 17630 25490 "We just created the FRESH FRESH=$FRESH"
-#                                                                                                                                jq \
-#                                                                                                                                    --null-input \
-#                                                                                                                                    '{
-#                                                                                                                                    }' | compare message valid-init 10 11989 3<&3
+                                                                                                                                jq \
+                                                                                                                                    --null-input \
+                                                                                                                                    '{
+                                                                                                                                    }' | compare message valid-init 300 11989 3<&3
                                                                                                                                 trace 17630 158 "$ARGUMENT" "$FRESH_INDEX" "$TARGET"
                                                                                                                                 files \
                                                                                                                                     --ceiling "$ALPHA" 0 0 \
@@ -1202,7 +1202,7 @@
                                                                                                                         exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release valid-init valid-release beta-signal )
                                                                                                                         stage-alpha "$@" <&3
                                                                                                                         stage-beta "$@" <&3 &
-                                                                                                                        # echo 0 | compare message beta-signal 10 18590 3<&3
+                                                                                                                        echo 0 | compare message beta-signal 10 18590 3<&3
 #                                                                                                                       # stage-gamma "$@"
                                                                                                                     '' ;
                                                                                                             } ;
