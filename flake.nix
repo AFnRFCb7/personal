@@ -929,8 +929,7 @@
                                                                                                                                     --null-input \
                                                                                                                                     '{
                                                                                                                                         "arguments" : [ $ARGUMENT ] ,
-                                                                                                                                        "index" : $INDEX ,
-                                                                                                                                        "script" : $SCRIPT
+                                                                                                                                        "index" : $INDEX
                                                                                                                                     }' | compare message valid-init 300 11989 3<&3
                                                                                                                                 trace 17630 158 "$ARGUMENT" "$FRESH_INDEX" "$TARGET"
                                                                                                                                 files \
