@@ -921,8 +921,10 @@
                                                                                                                                 FRESH=${ resources.checks.targets.true.true { failure = 14283 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
                                                                                                                                 trace 17630 25490 "We just created the FRESH FRESH=$FRESH"
                                                                                                                                 jq \
+                                                                                                                                    --arg ARGUMENT "$ARGUMENT" \
                                                                                                                                     --null-input \
                                                                                                                                     '{
+                                                                                                                                        "arguments" : [ $ARGUMENT ]
                                                                                                                                     }' | compare message valid-init 300 11989 3<&3
                                                                                                                                 trace 17630 158 "$ARGUMENT" "$FRESH_INDEX" "$TARGET"
                                                                                                                                 files \
