@@ -490,14 +490,18 @@
                                                                                                                                     shift 3
                                                                                                                                     ;;
                                                                                                                                 --executable)
+                                                                                                                                    trace 17630 17440
                                                                                                                                     if [[ "$#" -lt 2 ]]
                                                                                                                                     then
+                                                                                                                                        trace 17630 21815
                                                                                                                                         failure 8646391832956534 "$*"
                                                                                                                                     fi
                                                                                                                                     if [[ ! -x "$2" ]]
                                                                                                                                     then
+                                                                                                                                        trace 17630 24490
                                                                                                                                         failure 1578895953757495 "$*"
                                                                                                                                     fi
+                                                                                                                                    trace 17630 5503
                                                                                                                                     shift 2
                                                                                                                                     ;;
                                                                                                                                 --file)
