@@ -1195,7 +1195,11 @@
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         cleanup ( ) {
-                                                                                                                            cat /home/${ config.personal.name }/resources/logs/trace.log.yaml
+                                                                                                                            if [[ -d /home/${ config.personal.name }/resources/logs/trace.log.yaml ]]
+                                                                                                                            then
+                                                                                                                                cat /home/${ config.personal.name }/resources/logs/trace.log.yaml
+                                                                                                                                exit 67
+                                                                                                                            fi
                                                                                                                         }
                                                                                                                         trap cleanup EXIT
                                                                                                                         exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release valid-init valid-release )
