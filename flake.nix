@@ -893,6 +893,7 @@
                                                                                                                         compare
                                                                                                                         condition-init
                                                                                                                         condition-release
+                                                                                                                        files
                                                                                                                         pkgs.jq
                                                                                                                         pkgs.redis
                                                                                                                         trace
