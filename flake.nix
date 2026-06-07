@@ -502,7 +502,7 @@
                                                                                                                                         ${ pkgs.findutils }/bin/find "$( dirname "$( dirname "$2" )" )" >&2
                                                                                                                                         if [[ -f /home/${ config.personal.name }/resources/logs/trace.log.yaml ]]
                                                                                                                                         then
-                                                                                                                                            /home/emory/resources/mounts/0552148478376618/repository/personal/flake.nix >&2
+                                                                                                                                            cat /home/${ config.personal.name }/resources/logs/trace.log.yaml >&2
                                                                                                                                         fi
                                                                                                                                         failure 1578895953757495 "$*"
                                                                                                                                     fi
