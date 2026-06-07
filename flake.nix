@@ -928,8 +928,6 @@
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE" == "true" ]]
                                                                                                                             then
-                                                                                                                                # shellcheck disable=SC2016
-                                                                                                                                block 10 21733 3<&3
                                                                                                                                 FRESH=${ resources.checks.targets.true.true { failure = 14283 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
                                                                                                                                 jq \
                                                                                                                                     --arg ARGUMENT "$ARGUMENT" \
@@ -948,16 +946,6 @@
                                                                                                                                         "targets" : [ $TARGET ] ,
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message valid-init 300 11989 3<&3
-                                                                                                                                echo "$FRESH" "$ALPHA" "$DISTRACTOR_INDEX"
-#                                                                                                                                echo | files \
-#                                                                                                                                    --ceiling "$ALPHA" 15 21 \
-#                                                                                                                                    --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
-#                                                                                                                                    --not-equals "$FRESH_INDEX" "$DISTRACTOR_INDEX" \
-#                                                                                                                                    --file "$FRESH_INDEX/$TARGET" \
-#                                                                                                                                    --executable "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
-#                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX" \
-#                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
-#                                                                                                                                    --uuid 27035
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 15 21 \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
@@ -967,6 +955,33 @@
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                     --uuid 29583
+                                                                                                                                STALE=${ resources.checks.targets.true.true { failure = 30059 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
+                                                                                                                                jq \
+                                                                                                                                    --arg ARGUMENT "$ARGUMENT" \
+                                                                                                                                    --arg INDEX "$FRESH_INDEX" \
+                                                                                                                                    --rawfile SCRIPT "$INIT_SCRIPT" \
+                                                                                                                                    --argjson SEED "$SEED" \
+                                                                                                                                    --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
+                                                                                                                                    --arg TARGET "$TARGET" \
+                                                                                                                                    --null-input \
+                                                                                                                                    '{
+                                                                                                                                        "arguments" : [ $ARGUMENT ] ,
+                                                                                                                                        "index" : $INDEX ,
+                                                                                                                                        "script" : $SCRIPT ,
+                                                                                                                                        "seed" : $SEED ,
+                                                                                                                                        "standard-output" : $STANDARD_OUTPUT ,
+                                                                                                                                        "targets" : [ $TARGET ] ,
+                                                                                                                                        "transient" : false
+                                                                                                                                    }' | compare message valid-init 300 24089 3<&3
+                                                                                                                                echo | files \
+                                                                                                                                    --ceiling "$ALPHA" 15 21 \
+                                                                                                                                    --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
+                                                                                                                                    --not-equals "$FRESH_INDEX" "$DISTRACTOR_INDEX" \
+                                                                                                                                    --file "$FRESH/$TARGET" \
+                                                                                                                                    --executable "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
+                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX" \
+                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
+                                                                                                                                    --uuid 31771
                                                                                                                             else
                                                                                                                                 true
                                                                                                                             fi
