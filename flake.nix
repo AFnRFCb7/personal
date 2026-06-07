@@ -963,6 +963,7 @@
                                                                                                                                     --ceiling "$ALPHA" 15 21 \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
                                                                                                                                     --not-equals "$FRESH_INDEX" "$DISTRACTOR_INDEX" \
+                                                                                                                                    --file "$FRESH_INDEX/$TARGET" \
                                                                                                                                     --uuid 29583
                                                                                                                             else
                                                                                                                                 true
