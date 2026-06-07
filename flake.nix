@@ -963,6 +963,7 @@
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
                                                                                                                                     --not-equals "$FRESH_INDEX" "$DISTRACTOR_INDEX" \
                                                                                                                                     --file "$FRESH/$TARGET" \
+                                                                                                                                    --executable "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
                                                                                                                                     --uuid 29583
                                                                                                                             else
                                                                                                                                 true
