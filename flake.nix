@@ -950,6 +950,7 @@
                                                                                                                                         "targets" : [ $TARGET ] ,
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message valid-init 300 11989 3<&3
+                                                                                                                                echo "$FRESH"
 #                                                                                                                                echo | files \
 #                                                                                                                                    --ceiling "$ALPHA" 15 21 \
 #                                                                                                                                    --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
