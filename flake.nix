@@ -500,10 +500,6 @@
                                                                                                                                     if [[ ! -x "$2" ]]
                                                                                                                                     then
                                                                                                                                         ${ pkgs.findutils }/bin/find "$( dirname "$( dirname "$2" )" )" >&2
-                                                                                                                                        if [[ -f /home/${ config.personal.name }/resources/logs/trace.log.yaml ]]
-                                                                                                                                        then
-                                                                                                                                            cat /home/${ config.personal.name }/resources/logs/trace.log.yaml >&2
-                                                                                                                                        fi
                                                                                                                                         failure 1578895953757495 "$*"
                                                                                                                                     fi
                                                                                                                                     trace 17630 5503
