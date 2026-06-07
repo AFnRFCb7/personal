@@ -977,7 +977,7 @@
                                                                                                                                     --ceiling "$ALPHA" 15 21 \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
                                                                                                                                     --not-equals "$FRESH_INDEX" "$DISTRACTOR_INDEX" \
-                                                                                                                                    --file "$FRESH/$TARGET" \
+                                                                                                                                    --file "$STALE/$TARGET" \
                                                                                                                                     --executable "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
