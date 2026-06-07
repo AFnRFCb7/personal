@@ -503,6 +503,8 @@
                                                                                                                                         if [[ -d /home/${ config.personal.name }/resources/logs/trace.log.yaml ]]
                                                                                                                                         then
                                                                                                                                             cat /home/${ config.personal.name }/resources/logs/trace.log.yaml >&2
+                                                                                                                                        else
+                                                                                                                                            echo NO /home/${ config.personal.name }/resources/logs/trace.log.yaml >&2
                                                                                                                                         fi
                                                                                                                                         failure 1578895953757495 "$*"
                                                                                                                                     fi
