@@ -491,10 +491,8 @@
                                                                                                                                     shift 3
                                                                                                                                     ;;
                                                                                                                                 --executable)
-                                                                                                                                    trace 17630 17440
                                                                                                                                     if [[ "$#" -lt 2 ]]
                                                                                                                                     then
-                                                                                                                                        trace 17630 21815
                                                                                                                                         failure 8646391832956534 "$*"
                                                                                                                                     fi
                                                                                                                                     if [[ ! -x "$2" ]]
@@ -508,7 +506,6 @@
                                                                                                                                         fi
                                                                                                                                         failure 1578895953757495 "$*"
                                                                                                                                     fi
-                                                                                                                                    trace 17630 5503
                                                                                                                                     shift 2
                                                                                                                                     ;;
                                                                                                                                 --file)
@@ -935,9 +932,7 @@
                                                                                                                             then
                                                                                                                                 # shellcheck disable=SC2016
                                                                                                                                 block 10 21733 3<&3
-                                                                                                                                trace 17630 11171 "We are about to create the FRESH"
                                                                                                                                 FRESH=${ resources.checks.targets.true.true { failure = 14283 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
-                                                                                                                                trace 17630 25490 "We just created the FRESH FRESH=$FRESH" SCRIPT "$INIT_SCRIPT"
                                                                                                                                 jq \
                                                                                                                                     --arg ARGUMENT "$ARGUMENT" \
                                                                                                                                     --arg INDEX "$FRESH_INDEX" \
@@ -955,7 +950,6 @@
                                                                                                                                         "targets" : [ $TARGET ] ,
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message valid-init 300 11989 3<&3
-                                                                                                                                trace 17630 158 "$ARGUMENT" "$FRESH_INDEX" "$TARGET" "$ALPHA" "$DISTRACTOR_INDEX"
 #                                                                                                                                echo | files \
 #                                                                                                                                    --ceiling "$ALPHA" 0 21 \
 #                                                                                                                                    --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
