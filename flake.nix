@@ -964,6 +964,8 @@
                                                                                                                                     --not-equals "$FRESH_INDEX" "$DISTRACTOR_INDEX" \
                                                                                                                                     --file "$FRESH/$TARGET" \
                                                                                                                                     --executable "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
+                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX" \
+                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                     --uuid 29583
                                                                                                                             else
                                                                                                                                 true
