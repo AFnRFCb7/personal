@@ -500,7 +500,7 @@
                                                                                                                                     if [[ ! -x "$2" ]]
                                                                                                                                     then
                                                                                                                                         ${ pkgs.findutils }/bin/find "$( dirname "$( dirname "$2" )" )" >&2
-                                                                                                                                        if [[ -d /home/${ config.personal.name }/resources/logs/trace.log.yaml ]]
+                                                                                                                                        if [[ -f /home/${ config.personal.name }/resources/logs/trace.log.yaml ]]
                                                                                                                                         then
                                                                                                                                             cat /home/${ config.personal.name }/resources/logs/trace.log.yaml >&2
                                                                                                                                         else
