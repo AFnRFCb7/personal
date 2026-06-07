@@ -499,7 +499,7 @@
                                                                                                                                     fi
                                                                                                                                     if [[ ! -x "$2" ]]
                                                                                                                                     then
-                                                                                                                                        ${ pkgs.findutils }/bin/find "$( dirname $( dirname "$2" ) )" >&2
+                                                                                                                                        ${ pkgs.findutils }/bin/find "$( dirname "$( dirname "$2" )" )" >&2
                                                                                                                                         failure 1578895953757495 "$*"
                                                                                                                                     fi
                                                                                                                                     trace 17630 5503
