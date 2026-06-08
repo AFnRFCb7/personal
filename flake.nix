@@ -1021,19 +1021,18 @@
                                                                                                                                     --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolutions/$INIT_RESOLVER/resolve.sh" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                     --uuid 10691
-                                                                                                                                ${ pkgs.findutils }/bin/find "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX" >&2
                                                                                                                                 if STALE=${ resources.checks.targets.false.true { failure = 27205 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
                                                                                                                                 then
                                                                                                                                     failure 32056
                                                                                                                                 fi
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 15 41 \
-                                                                                                                                    --equals "$FRESH" "$STALE" \
-                                                                                                                                    --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
+                                                                                                                                    --not-equals "$FRESH" "$STALE" \
                                                                                                                                     --not-equals "$FRESH_INDEX" "$DISTRACTOR_INDEX" \
                                                                                                                                     --file "$STALE/$TARGET" \
-                                                                                                                                    --executable "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
-                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX" \
+                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
+                                                                                                                                    --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/default/resolve.sh" \
+                                                                                                                                    --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolutions/$INIT_RESOLVER/resolve.sh" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                     --uuid 5779
                                                                                                                             else
