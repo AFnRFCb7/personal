@@ -1018,7 +1018,7 @@
                                                                                                                                     --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/default/resolve.sh" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                     --uuid 10691
-                                                                                                                                ${ pkgs.findutils }/bin/find "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/default/resolve.sh" >&2
+                                                                                                                                ${ pkgs.findutils }/bin/find "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX" >&2
                                                                                                                                 if STALE=${ resources.checks.targets.false.true { failure = 27205 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
                                                                                                                                 then
                                                                                                                                     failure 32056
