@@ -1039,11 +1039,22 @@
                                                                                                                                     --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolutions/$INIT_RESOLVER/resolve.sh" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                     --uuid 5779
-                                                                                                                                if "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolutions/$INIT_RESOLVER/resolve.sh" 9554464665854115
-                                                                                                                                then
-                                                                                                                                    failure 8251
-                                                                                                                                fi
-                                                                                                                                block 10 18820
+#                                                                                                                                if "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolutions/$INIT_RESOLVER/resolve.sh" 9554464665854115
+#                                                                                                                                then
+#                                                                                                                                    failure 8251
+#                                                                                                                                fi
+#                                                                                                                                block 10 18820
+#                                                                                                                                echo | files \
+#                                                                                                                                    --ceiling "$ALPHA" 15 41 \
+#                                                                                                                                    --not-equals "$FRESH" "$STALE" \
+#                                                                                                                                    --not-equals "$FRESH_INDEX" "$DISTRACTOR_INDEX" \
+#                                                                                                                                    --file "$STALE/$TARGET" \
+#                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
+#                                                                                                                                    --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/default/resolve.sh" \
+#                                                                                                                                    --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolutions/$INIT_RESOLVER/resolve.sh" \
+#                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
+#                                                                                                                                    --uuid 5779
+#                                                                                                                                "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolutions/$INIT_RESOLVER/resolve.sh" 8363144534251594
                                                                                                                             else
                                                                                                                                 true
                                                                                                                             fi
