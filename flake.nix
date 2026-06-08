@@ -981,7 +981,10 @@
                                                                                                                         else
                                                                                                                             if [[ "$RELEASE" == "true" ]]
                                                                                                                             then
-                                                                                                                                FRESH=${ resources.checks.targets.true.true { failure = 12006 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
+                                                                                                                                if FRESH=${ resources.checks.targets.false.true { failure = 12006 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
+                                                                                                                                then
+                                                                                                                                    failure 5800
+                                                                                                                                fi
                                                                                                                                 jq \
                                                                                                                                     --arg ARGUMENT "$ARGUMENT" \
                                                                                                                                     --arg INDEX "$FRESH_INDEX" \
@@ -998,17 +1001,20 @@
                                                                                                                                         "standard-output" : $STANDARD_OUTPUT ,
                                                                                                                                         "targets" : [ $TARGET ] ,
                                                                                                                                         "transient" : false
-                                                                                                                                    }' | compare message valid-init 300 11816 3<&3
+                                                                                                                                    }' | compare message invalid-init 300 11816 3<&3
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 15 21 \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
                                                                                                                                     --not-equals "$FRESH_INDEX" "$DISTRACTOR_INDEX" \
                                                                                                                                     --file "$FRESH/$TARGET" \
-                                                                                                                                    --executable "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
-                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX" \
+                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
+                                                                                                                                    --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/default/resolve.sh" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                     --uuid 10691
-                                                                                                                                STALE=${ resources.checks.targets.true.true { failure = 27205 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
+                                                                                                                                if STALE=${ resources.checks.targets.false.true { failure = 27205 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
+                                                                                                                                then
+                                                                                                                                    failure 32056
+                                                                                                                                fi
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 15 22 \
                                                                                                                                     --equals "$FRESH" "$STALE" \
