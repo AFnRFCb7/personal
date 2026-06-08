@@ -1055,7 +1055,39 @@
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                     --uuid 5779
                                                                                                                                 INIT_RESOLVE_2="$( "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolutions/$INIT_RESOLVER/resolve.sh" 8363144534251594 )" || failure 24516
-                                                                                                                                echo "$INIT_RESOLVE_1" "$INIT_RESOLVE_2"
+#                                                                                                                                echo "$INIT_RESOLVE_1" "$INIT_RESOLVE_2"
+#                                                                                                                                jq \
+#                                                                                                                                    --arg ARGUMENT "$ARGUMENT" \
+#                                                                                                                                    --arg INDEX "$FRESH_INDEX" \
+#                                                                                                                                    --rawfile SCRIPT "$INIT_SCRIPT" \
+#                                                                                                                                    --argjson SEED "$SEED" \
+#                                                                                                                                    --arg STANDARD_ERROR "$STANDARD_ERROR" \
+#                                                                                                                                    --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
+#                                                                                                                                    --argjson STATUS "$STATUS" \
+#                                                                                                                                    --arg TARGET "$TARGET" \
+#                                                                                                                                    --null-input \
+#                                                                                                                                    '{
+#                                                                                                                                        "arguments" : [ $ARGUMENT ] ,
+#                                                                                                                                        "index" : $INDEX ,
+#                                                                                                                                        "script" : $SCRIPT ,
+#                                                                                                                                        "seed" : $SEED ,
+#                                                                                                                                        "standard-error" : $STANDARD_ERROR ,
+#                                                                                                                                        "standard-output" : $STANDARD_OUTPUT ,
+#                                                                                                                                        "status" : $STATUS ,
+#                                                                                                                                        "targets" : { "expected" : [ $TARGET ] , "observed" : [ $TARGET ] } ,
+#                                                                                                                                        "transient" : false
+#                                                                                                                                    }' | compare message valid-release 300 11816 3<&3
+#                                                                                                                                block 10 18820
+#                                                                                                                                echo | files \
+#                                                                                                                                    --ceiling "$ALPHA" 15 42 \
+#                                                                                                                                    --not-equals "$FRESH" "$STALE" \
+#                                                                                                                                    --not-equals "$FRESH_INDEX" "$DISTRACTOR_INDEX" \
+#                                                                                                                                    --file "$STALE/$TARGET" \
+#                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
+#                                                                                                                                    --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/default/resolve.sh" \
+#                                                                                                                                    --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolutions/$INIT_RESOLVER/resolve.sh" \
+#                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
+#                                                                                                                                    --uuid 5779
                                                                                                                             else
                                                                                                                                 true
                                                                                                                             fi
