@@ -1006,7 +1006,7 @@
                                                                                                                                         "standard-error" : $STANDARD_ERROR ,
                                                                                                                                         "standard-output" : $STANDARD_OUTPUT ,
                                                                                                                                         "status" : $STATUS ,
-                                                                                                                                        "targets" : [ $TARGET ] ,
+                                                                                                                                        "targets" : { "expected" : [ $TARGET ] , "observed" : [ $TARGET ] } ,
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message invalid-init 300 11816 3<&3
                                                                                                                                 echo | files \
