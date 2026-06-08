@@ -982,7 +982,7 @@
 #                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX" \
 #                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
 #                                                                                                                                    --uuid 31771
-#                                                                                                                                echo "$STALE"
+                                                                                                                                echo "$STALE"
                                                                                                                             else
                                                                                                                                 true
                                                                                                                             fi
