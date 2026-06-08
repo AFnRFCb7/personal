@@ -1084,12 +1084,11 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "value-fresh-index" ;
-                                                                                                                runtimeInputs = [ condition-alpha failure pkgs.coreutils value-init value-release] ;
+                                                                                                                runtimeInputs = [ condition-alpha failure pkgs.coreutils value-init-script ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         ALPHA="$( condition-alpha "$@" )" || failure 24132
-                                                                                                                        INIT="$( value-init "$@" )" || failure 10810
-                                                                                                                        RELEASE="$( value-release "$@" )" || failure 11808
+                                                                                                                        INIT="$( value-init-script "$@" )" || failure 10810
                                                                                                                         if [[ "$INIT" == "true" ]]
                                                                                                                         then
                                                                                                                             printf -v FRESH_INDEX "%016d" $(( ALPHA + 15 ))
