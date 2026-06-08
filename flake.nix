@@ -881,6 +881,7 @@
                                                                                                                         value-init-script
                                                                                                                         value-seed
                                                                                                                         value-standard-output
+                                                                                                                        value-status
                                                                                                                         value-target
                                                                                                                     ] ;
                                                                                                                 text =
@@ -895,6 +896,7 @@
                                                                                                                         SEED="$( value-seed "$@" )" || failure 19252
                                                                                                                         STANDARD_ERROR=""
                                                                                                                         STANDARD_OUTPUT="$( value-standard-output "$@" )" || failure 15030
+                                                                                                                        STATUS="$( value-status "$@" )" || failure 13106
                                                                                                                         TARGET="$( value-target "$@" )" || failure 18128
                                                                                                                         block 10 17224 3<&3
                                                                                                                         if [[ "$INIT" == true ]]
@@ -993,6 +995,7 @@
                                                                                                                                     --argjson SEED "$SEED" \
                                                                                                                                     --arg STANDARD_ERROR "$STANDARD_ERROR" \
                                                                                                                                     --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
+                                                                                                                                    --argjson STATUS "$STATUS" \
                                                                                                                                     --arg TARGET "$TARGET" \
                                                                                                                                     --null-input \
                                                                                                                                     '{
@@ -1002,6 +1005,7 @@
                                                                                                                                         "seed" : $SEED ,
                                                                                                                                         "standard-error" : $STANDARD_ERROR ,
                                                                                                                                         "standard-output" : $STANDARD_OUTPUT ,
+                                                                                                                                        "status" : $STATUS ,
                                                                                                                                         "targets" : [ $TARGET ] ,
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message invalid-init 300 11816 3<&3
