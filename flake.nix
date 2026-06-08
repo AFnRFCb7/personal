@@ -1084,11 +1084,11 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "value-fresh-index" ;
-                                                                                                                runtimeInputs = [ condition-alpha failure pkgs.coreutils value-init-script ] ;
+                                                                                                                runtimeInputs = [ condition-alpha condition-init failure pkgs.coreutils ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         ALPHA="$( condition-alpha "$@" )" || failure 24132
-                                                                                                                        INIT="$( value-init-script "$@" )" || failure 10810
+                                                                                                                        INIT="$( condition-init "$@" )" || failure 10810
                                                                                                                         if [[ "$INIT" == "true" ]]
                                                                                                                         then
                                                                                                                             printf -v FRESH_INDEX "%016d" $(( ALPHA + 15 ))
