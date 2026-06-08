@@ -1179,8 +1179,33 @@
                                                                                                                         echo -en "$FRESH_INDEX"
                                                                                                                     '' ;
                                                                                                             } ;
-
-
+                                                                                                    value-init-resolver =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "value-init-resolver" ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        INIT="$2"
+                                                                                                                        RELEASE="$3"
+                                                                                                                        if [[ "$INIT" == "true" ]]
+                                                                                                                        then
+                                                                                                                            if [[ "$RELEASE" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo ${ scripts.true.true.init }
+                                                                                                                            else
+                                                                                                                                echo ${ scripts.true.false.init }
+                                                                                                                            fi
+                                                                                                                        else
+                                                                                                                            if [[ "$RELEASE" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo -en d9aeea696dd06d63
+                                                                                                                            else
+                                                                                                                                echo ${ scripts.false.false.init }
+                                                                                                                            fi
+                                                                                                                        fi
+                                                                                                                    '' ;
+                                                                                                            } ;
                                                                                                     value-init-script =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
