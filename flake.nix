@@ -880,6 +880,7 @@
                                                                                                                         value-argument-resolve-init-good
                                                                                                                         value-distractor-index
                                                                                                                         value-fresh-index
+                                                                                                                        value-init-resolve-script
                                                                                                                         value-init-resolver
                                                                                                                         value-init-script
                                                                                                                         value-seed
@@ -895,6 +896,7 @@
                                                                                                                         DISTRACTOR_INDEX="$( value-distractor-index "$@" )" || failure 11438
                                                                                                                         FRESH_INDEX="$( value-fresh-index "$@" )" || failure 17489
                                                                                                                         INIT="$( condition-init "$@" )" || failure 20502
+                                                                                                                        INIT_RESOLVE_SCRIPT="$( value-init-resolve-script )" || failure 4461
                                                                                                                         INIT_RESOLVER="$( value-init-resolver "$@" )" || failure 7384
                                                                                                                         INIT_SCRIPT="$( value-init-script "$@" )" || failure 11353
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 26251
@@ -1049,7 +1051,7 @@
                                                                                                                                 jq \
                                                                                                                                     --arg ARGUMENT "$ARGUMENT" \
                                                                                                                                     --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                    --rawfile SCRIPT "$INIT_SCRIPT" \
+                                                                                                                                    --rawfile SCRIPT "$INIT_RESOLVE_SCRIPT" \
                                                                                                                                     --argjson SEED "$SEED" \
                                                                                                                                     --arg STANDARD_ERROR "$STANDARD_ERROR" \
                                                                                                                                     --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
@@ -1060,7 +1062,7 @@
                                                                                                                                         "arguments" : [ $ARGUMENT ] ,
                                                                                                                                         "index" : $INDEX ,
                                                                                                                                         "script" : $SCRIPT ,
-                                                                                                                                        "standard-error" : $STANDARD_ERROR ,
+                                                                                                                                        "standard-error" : "" ,
                                                                                                                                         "standard-output" : $STANDARD_OUTPUT ,
                                                                                                                                         "status" : $STATUS
                                                                                                                                     }' | compare message invalid-init 300 24256 3<&3
@@ -1234,6 +1236,33 @@
                                                                                                                             printf -v FRESH_INDEX "%016d" $(( ALPHA + 19 ))
                                                                                                                         fi
                                                                                                                         echo -en "$FRESH_INDEX"
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    value-init-resolve-script =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "value-init-resolve-script" ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        INIT="$2"
+                                                                                                                        RELEASE="$3"
+                                                                                                                        if [[ "$INIT" == "true" ]]
+                                                                                                                        then
+                                                                                                                            if [[ "$RELEASE" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo ${ scripts.true.true.init }
+                                                                                                                            else
+                                                                                                                                echo ${ scripts.true.false.init }
+                                                                                                                            fi
+                                                                                                                        else
+                                                                                                                            if [[ "$RELEASE" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo ${ scripts.false.true.resolve.init }
+                                                                                                                            else
+                                                                                                                                echo ${ scripts.false.false.init }
+                                                                                                                            fi
+                                                                                                                        fi
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     value-init-resolver =
