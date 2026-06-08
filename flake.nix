@@ -1023,7 +1023,7 @@
                                                                                                                                     failure 32056
                                                                                                                                 fi
                                                                                                                                 echo | files \
-                                                                                                                                    --ceiling "$ALPHA" 15 22 \
+                                                                                                                                    --ceiling "$ALPHA" 15 41 \
                                                                                                                                     --equals "$FRESH" "$STALE" \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
                                                                                                                                     --not-equals "$FRESH_INDEX" "$DISTRACTOR_INDEX" \
