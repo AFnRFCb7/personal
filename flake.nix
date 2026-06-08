@@ -956,7 +956,8 @@
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                     --uuid 29583
                                                                                                                                 STALE=${ resources.checks.targets.true.true { failure = 30059 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
-                                                                                                                                jq \
+                                                                                                                                block 10 18697
+                                                                                                                               jq \
                                                                                                                                     --arg ARGUMENT "$ARGUMENT" \
                                                                                                                                     --arg INDEX "$FRESH_INDEX" \
                                                                                                                                     --rawfile SCRIPT "$INIT_SCRIPT" \
@@ -972,7 +973,7 @@
                                                                                                                                         "standard-output" : $STANDARD_OUTPUT ,
                                                                                                                                         "targets" : [ $TARGET ] ,
                                                                                                                                         "transient" : false
-                                                                                                                                    }' # | compare message valid-init 300 24089 3<&3
+                                                                                                                                    }' | compare message valid-init 300 24089 3<&3
                                                                                                                                 if true ; then exit 63 ; fi
 #                                                                                                                                echo | files \
 #                                                                                                                                    --ceiling "$ALPHA" 15 21 \
