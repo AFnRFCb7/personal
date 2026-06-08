@@ -893,6 +893,7 @@
                                                                                                                         INIT_SCRIPT="$( value-init-script "$@" )" || failure 11353
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 26251
                                                                                                                         SEED="$( value-seed "$@" )" || failure 19252
+                                                                                                                        STANDARD_ERROR=""
                                                                                                                         STANDARD_OUTPUT="$( value-standard-output "$@" )" || failure 15030
                                                                                                                         TARGET="$( value-target "$@" )" || failure 18128
                                                                                                                         block 10 17224 3<&3
@@ -990,6 +991,7 @@
                                                                                                                                     --arg INDEX "$FRESH_INDEX" \
                                                                                                                                     --rawfile SCRIPT "$INIT_SCRIPT" \
                                                                                                                                     --argjson SEED "$SEED" \
+                                                                                                                                    --arg STANDARD_ERROR "$STANDARD_ERROR" \
                                                                                                                                     --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                                     --arg TARGET "$TARGET" \
                                                                                                                                     --null-input \
@@ -998,6 +1000,7 @@
                                                                                                                                         "index" : $INDEX ,
                                                                                                                                         "script" : $SCRIPT ,
                                                                                                                                         "seed" : $SEED ,
+                                                                                                                                        "standard-error" : $STANDARD_ERROR ,
                                                                                                                                         "standard-output" : $STANDARD_OUTPUT ,
                                                                                                                                         "targets" : [ $TARGET ] ,
                                                                                                                                         "transient" : false
@@ -1179,7 +1182,7 @@
                                                                                                                         fi
                                                                                                                     '' ;
                                                                                                             } ;
-                                                                                                    value-standard-output =
+                                                                                                  value-standard-output =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "value-standard-output" ;
