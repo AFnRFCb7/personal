@@ -1010,7 +1010,7 @@
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message invalid-init 300 11816 3<&3
                                                                                                                                 echo | files \
-                                                                                                                                    --ceiling "$ALPHA" 15 21 \
+                                                                                                                                    --ceiling "$ALPHA" 15 29 \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
                                                                                                                                     --not-equals "$FRESH_INDEX" "$DISTRACTOR_INDEX" \
                                                                                                                                     --file "$FRESH/$TARGET" \
