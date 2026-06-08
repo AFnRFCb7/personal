@@ -878,6 +878,7 @@
                                                                                                                         value-argument
                                                                                                                         value-distractor-index
                                                                                                                         value-fresh-index
+                                                                                                                        value-init-resolver
                                                                                                                         value-init-script
                                                                                                                         value-seed
                                                                                                                         value-standard-output
@@ -891,6 +892,7 @@
                                                                                                                         DISTRACTOR_INDEX="$( value-distractor-index "$@" )" || failure 11438
                                                                                                                         FRESH_INDEX="$( value-fresh-index "$@" )" || failure 17489
                                                                                                                         INIT="$( condition-init "$@" )" || failure 20502
+                                                                                                                        INIT_RESOLVER="$( value-init-resolver "$@" )" || failure 7384
                                                                                                                         INIT_SCRIPT="$( value-init-script "$@" )" || failure 11353
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 26251
                                                                                                                         SEED="$( value-seed "$@" )" || failure 19252
@@ -1016,6 +1018,7 @@
                                                                                                                                     --file "$FRESH/$TARGET" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
                                                                                                                                     --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/default/resolve.sh" \
+                                                                                                                                    --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolutions/$INIT_RESOLVER/resolve.sh" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                     --uuid 10691
                                                                                                                                 ${ pkgs.findutils }/bin/find "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX" >&2
@@ -1104,6 +1107,33 @@
                                                                                                                             printf -v FRESH_INDEX "%016d" $(( ALPHA + 19 ))
                                                                                                                         fi
                                                                                                                         echo -en "$FRESH_INDEX"
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    value-init-resolver =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "value-init-resolver" ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        INIT="$2"
+                                                                                                                        RELEASE="$3"
+                                                                                                                        if [[ "$INIT" == "true" ]]
+                                                                                                                        then
+                                                                                                                            if [[ "$RELEASE" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo ${ scripts.true.true.init }
+                                                                                                                            else
+                                                                                                                                echo ${ scripts.true.false.init }
+                                                                                                                            fi
+                                                                                                                        else
+                                                                                                                            if [[ "$RELEASE" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo -en d9aeea696dd06d63
+                                                                                                                            else
+                                                                                                                                echo ${ scripts.false.false.init }
+                                                                                                                            fi
+                                                                                                                        fi
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     value-init-script =
