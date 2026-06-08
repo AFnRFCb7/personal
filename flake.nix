@@ -956,23 +956,23 @@
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                     --uuid 29583
                                                                                                                                 STALE=${ resources.checks.targets.true.true { failure = 30059 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
-#                                                                                                                                jq \
-#                                                                                                                                    --arg ARGUMENT "$ARGUMENT" \
-#                                                                                                                                    --arg INDEX "$FRESH_INDEX" \
-#                                                                                                                                    --rawfile SCRIPT "$INIT_SCRIPT" \
-#                                                                                                                                    --argjson SEED "$SEED" \
-#                                                                                                                                    --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
-#                                                                                                                                    --arg TARGET "$TARGET" \
-#                                                                                                                                    --null-input \
-#                                                                                                                                    '{
-#                                                                                                                                        "arguments" : [ $ARGUMENT ] ,
-#                                                                                                                                        "index" : $INDEX ,
-#                                                                                                                                        "script" : $SCRIPT ,
-#                                                                                                                                        "seed" : $SEED ,
-#                                                                                                                                        "standard-output" : $STANDARD_OUTPUT ,
-#                                                                                                                                        "targets" : [ $TARGET ] ,
-#                                                                                                                                        "transient" : false
-#                                                                                                                                    }' | compare message valid-init 300 24089 3<&3
+                                                                                                                                jq \
+                                                                                                                                    --arg ARGUMENT "$ARGUMENT" \
+                                                                                                                                    --arg INDEX "$FRESH_INDEX" \
+                                                                                                                                    --rawfile SCRIPT "$INIT_SCRIPT" \
+                                                                                                                                    --argjson SEED "$SEED" \
+                                                                                                                                    --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
+                                                                                                                                    --arg TARGET "$TARGET" \
+                                                                                                                                    --null-input \
+                                                                                                                                    '{
+                                                                                                                                        "arguments" : [ $ARGUMENT ] ,
+                                                                                                                                        "index" : $INDEX ,
+                                                                                                                                        "script" : $SCRIPT ,
+                                                                                                                                        "seed" : $SEED ,
+                                                                                                                                        "standard-output" : $STANDARD_OUTPUT ,
+                                                                                                                                        "targets" : [ $TARGET ] ,
+                                                                                                                                        "transient" : false
+                                                                                                                                    }' | compare message valid-init 300 24089 3<&3
 #                                                                                                                                echo | files \
 #                                                                                                                                    --ceiling "$ALPHA" 15 21 \
 #                                                                                                                                    --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
