@@ -275,33 +275,6 @@
                                                                                             runtimeInputs = [ wrap ] ;
                                                                                             text =
                                                                                                 let
-                                                                                                    argument-value =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "argument" ;
-                                                                                                                runtimeInputs = [ failure condition-init condition-release ] ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                        INIT_CONDITION="$( condition-init "$@" )" || failure 15442
-                                                                                                                        RELEASE_CONDITION="$( condition-release "$@" )" || failure 24351
-                                                                                                                        if [[ "$INIT_CONDITION" == "true" ]]
-                                                                                                                        then
-                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
-                                                                                                                            then
-                                                                                                                                echo
-                                                                                                                            else
-                                                                                                                                echo
-                                                                                                                            fi
-                                                                                                                        else
-                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
-                                                                                                                            then
-                                                                                                                                echo
-                                                                                                                            else
-                                                                                                                                echo
-                                                                                                                            fi
-                                                                                                                        fi
-                                                                                                                    '' ;
-                                                                                                            } ;
                                                                                                     block =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
@@ -895,7 +868,6 @@
                                                                                                                         block
                                                                                                                         compare
                                                                                                                         condition-alpha
-                                                                                                                        argument-value
                                                                                                                         compare
                                                                                                                         condition-init
                                                                                                                         condition-release
