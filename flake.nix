@@ -973,7 +973,7 @@
                                                                                                                                         "targets" : [ $TARGET ] ,
                                                                                                                                         "transient" : false
                                                                                                                                     }' # | compare message valid-init 300 24089 3<&3
-                                                                                                                                exit 63
+                                                                                                                                if true ; then exit 63 ; fi
 #                                                                                                                                echo | files \
 #                                                                                                                                    --ceiling "$ALPHA" 15 21 \
 #                                                                                                                                    --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
