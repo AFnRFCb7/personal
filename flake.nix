@@ -1063,7 +1063,7 @@
                                                                                                                                         "status" : $STATUS ,
                                                                                                                                         "targets" : { "expected" : [ $TARGET ] , "observed" : [ $TARGET ] } ,
                                                                                                                                         "transient" : false
-                                                                                                                                    }' | compare message invalid-init 300 1148 3<&3
+                                                                                                                                    }' | compare message invalid-init 300 24256 3<&3
                                                                                                                                 block 10 18820
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 15 42 \
