@@ -1093,7 +1093,7 @@
                                                                                                                         then
                                                                                                                             printf -v FRESH_INDEX "%016d" $(( ALPHA + 15 ))
                                                                                                                         else
-                                                                                                                            printf -v FRESH_INDEX "%016d" $(( ALPHA + 19 q))
+                                                                                                                            printf -v FRESH_INDEX "%016d" $(( ALPHA + 19 ))
                                                                                                                         fi
                                                                                                                         echo -en "$FRESH_INDEX"
                                                                                                                     '' ;
