@@ -1043,6 +1043,27 @@
                                                                                                                                 then
                                                                                                                                     failure 8251
                                                                                                                                 fi
+                                                                                                                                jq \
+                                                                                                                                    --arg ARGUMENT "$ARGUMENT" \
+                                                                                                                                    --arg INDEX "$FRESH_INDEX" \
+                                                                                                                                    --rawfile SCRIPT "$INIT_SCRIPT" \
+                                                                                                                                    --argjson SEED "$SEED" \
+                                                                                                                                    --arg STANDARD_ERROR "$STANDARD_ERROR" \
+                                                                                                                                    --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
+                                                                                                                                    --argjson STATUS "$STATUS" \
+                                                                                                                                    --arg TARGET "$TARGET" \
+                                                                                                                                    --null-input \
+                                                                                                                                    '{
+                                                                                                                                        "arguments" : [ $ARGUMENT ] ,
+                                                                                                                                        "index" : $INDEX ,
+                                                                                                                                        "script" : $SCRIPT ,
+                                                                                                                                        "seed" : $SEED ,
+                                                                                                                                        "standard-error" : $STANDARD_ERROR ,
+                                                                                                                                        "standard-output" : $STANDARD_OUTPUT ,
+                                                                                                                                        "status" : $STATUS ,
+                                                                                                                                        "targets" : { "expected" : [ $TARGET ] , "observed" : [ $TARGET ] } ,
+                                                                                                                                        "transient" : false
+                                                                                                                                    }' | compare message invalid-init 300 1148 3<&3
                                                                                                                                 block 10 18820
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 15 42 \
