@@ -876,6 +876,8 @@
                                                                                                                         pkgs.redis
                                                                                                                         trace
                                                                                                                         value-argument
+                                                                                                                        value-argument-resolve-init-bad
+                                                                                                                        value-argument-resolve-init-good
                                                                                                                         value-distractor-index
                                                                                                                         value-fresh-index
                                                                                                                         value-init-resolver
@@ -889,6 +891,7 @@
                                                                                                                     ''
                                                                                                                         ALPHA="$( condition-alpha "$@" )" || failure 24196
                                                                                                                         ARGUMENT="$( value-argument "$@" )" || failure 31872
+                                                                                                                        ARGUMENT_RESOLVE_INIT_BAD="$( value-argument-resolve-init-bad "$@" )" || failure 12668
                                                                                                                         DISTRACTOR_INDEX="$( value-distractor-index "$@" )" || failure 11438
                                                                                                                         FRESH_INDEX="$( value-fresh-index "$@" )" || failure 17489
                                                                                                                         INIT="$( condition-init "$@" )" || failure 20502
@@ -1072,10 +1075,10 @@
                                                                                                                                     --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolutions/$INIT_RESOLVER/resolve.sh" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                     --uuid 5779
-                                                                                                                                INIT_RESOLVE_2="$( "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolutions/$INIT_RESOLVER/resolve.sh" 8363144534251594 )" || failure 24516
+                                                                                                                                INIT_RESOLVE_2="$( "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolutions/$INIT_RESOLVER/resolve.sh" "$ARGUMENT_RESOLVE_INIT_BAD" )" || failure 24516
                                                                                                                                 echo "$INIT_RESOLVE_1" "$INIT_RESOLVE_2"
 #                                                                                                                                jq \
-#                                                                                                                                    --arg ARGUMENT "$ARGUMENT" \
+#                                                                                                                                    --arg ARGUMENT "$ARGUMENTRESOLVE_INIT_BAD" \
 #                                                                                                                                    --arg INDEX "$FRESH_INDEX" \
 #                                                                                                                                    --rawfile SCRIPT "$INIT_SCRIPT" \
 #                                                                                                                                    --argjson SEED "$SEED" \
@@ -1126,6 +1129,60 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "value-argument" ;
+                                                                                                                runtimeInputs = [ condition-init condition-release failure pkgs.coreutils ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        INIT="$( condition-init "$@" )" || failure 20167
+                                                                                                                        RELEASE="$( condition-init "$@" )" || failure 14068
+                                                                                                                        if [[ "$INIT" == "true" ]]
+                                                                                                                        then
+                                                                                                                            if [[ "$RELEASE" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo -en 19031
+                                                                                                                            else
+                                                                                                                                echo -en 19031
+                                                                                                                            fi
+                                                                                                                        else
+                                                                                                                            if [[ "$RELEASE" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo -en 26242
+                                                                                                                            else
+                                                                                                                                echo -en 29785
+                                                                                                                            fi
+                                                                                                                        fi
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    value-argument-resolve-init-bad =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "value-argument-resolve-init-bad" ;
+                                                                                                                runtimeInputs = [ condition-init condition-release failure pkgs.coreutils ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        INIT="$( condition-init "$@" )" || failure 20167
+                                                                                                                        RELEASE="$( condition-init "$@" )" || failure 14068
+                                                                                                                        if [[ "$INIT" == "true" ]]
+                                                                                                                        then
+                                                                                                                            if [[ "$RELEASE" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo -en 19031
+                                                                                                                            else
+                                                                                                                                echo -en 19031
+                                                                                                                            fi
+                                                                                                                        else
+                                                                                                                            if [[ "$RELEASE" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo -en 8363144534251594
+                                                                                                                            else
+                                                                                                                                echo -en 29785
+                                                                                                                            fi
+                                                                                                                        fi
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    value-argument-resolve-init-good =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "value-argument-resolve-init-good" ;
                                                                                                                 runtimeInputs = [ condition-init condition-release failure pkgs.coreutils ] ;
                                                                                                                 text =
                                                                                                                     ''
