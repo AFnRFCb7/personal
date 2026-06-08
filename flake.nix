@@ -1045,7 +1045,7 @@
                                                                                                                                 fi
                                                                                                                                 block 10 18820
                                                                                                                                 echo | files \
-                                                                                                                                    --ceiling "$ALPHA" 15 41 \
+                                                                                                                                    --ceiling "$ALPHA" 15 42 \
                                                                                                                                     --not-equals "$FRESH" "$STALE" \
                                                                                                                                     --not-equals "$FRESH_INDEX" "$DISTRACTOR_INDEX" \
                                                                                                                                     --file "$STALE/$TARGET" \
