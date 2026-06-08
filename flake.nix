@@ -957,7 +957,8 @@
                                                                                                                                     --uuid 29583
                                                                                                                                 STALE=${ resources.checks.targets.true.true { failure = 30059 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
                                                                                                                                 echo | files \
-                                                                                                                                    --ceiling "$ALPHA" 15 21 \
+                                                                                                                                    --ceiling "$ALPHA" 15 22 \
+                                                                                                                                    --equals "$FRESH" "$STALE" \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
                                                                                                                                     --not-equals "$FRESH_INDEX" "$DISTRACTOR_INDEX" \
                                                                                                                                     --file "$STALE/$TARGET" \
