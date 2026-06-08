@@ -923,6 +923,7 @@
                                                                                                                                         "targets" : [ $TARGET ] ,
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message valid-init 300 11989 3<&3
+                                                                                                                                block 10 27581
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 15 21 \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
@@ -962,6 +963,7 @@
                                                                                                                                         "targets" : [ $TARGET ] ,
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message valid-init 300 4757 3<&3
+                                                                                                                                block 10 1534
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 15 21 \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
@@ -1011,6 +1013,7 @@
                                                                                                                                         "targets" : { "expected" : [ $TARGET ] , "observed" : [ $TARGET ] } ,
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message invalid-init 300 11816 3<&3
+                                                                                                                                block 10 23752
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 15 29 \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
@@ -1025,6 +1028,7 @@
                                                                                                                                 then
                                                                                                                                     failure 32056
                                                                                                                                 fi
+                                                                                                                                block 10 30396
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 15 41 \
                                                                                                                                     --not-equals "$FRESH" "$STALE" \
