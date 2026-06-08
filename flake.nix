@@ -1434,7 +1434,7 @@
                                                                                                                                 failure 6126927632687914 "$*"
                                                                                                                             fi''  ;
                                                                                                                 } ;
-                                                                                                        in "${ application }/bin/resolve" ;
+                                                                                                        in ''${ application }/bin/resolve "$@"'' ;
                                                                                         } ;
                                                                                     release =
                                                                                         { failure , pkgs , resources , seed , sequential , trace } :
