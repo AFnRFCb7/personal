@@ -2683,7 +2683,6 @@
                                                                                                                                         if [[ "$TYPE" == "message" ]]
                                                                                                                                         then
                                                                                                                                             INDEX="$( jq --raw-output '."index" // empty' <<< "$PAYLOAD" )" || failure 7423695352521722
-                                                                                                                                            trace 17630 "in releaser about to execute release" "$( cat "/home/${ config.personal.name }/resources/release/$INDEX" )" 14064
                                                                                                                                             nohup "/home/${ config.personal.name }/resources/release/$INDEX" &
                                                                                                                                         else
                                                                                                                                             echo "TYPE=$TYPE" "CHANNEL=$CHANNEL" "PAYLOAD=$PAYLOAD"
