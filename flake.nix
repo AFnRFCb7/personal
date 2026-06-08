@@ -939,7 +939,7 @@
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                     --uuid 31771
                                                                                                                             else
-                                                                                                                                FRESH=${ resources.checks.targets.true.true { failure = 15732 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
+                                                                                                                                FRESH=${ resources.checks.targets.true.false { failure = 15732 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
                                                                                                                                 jq \
                                                                                                                                     --arg ARGUMENT "$ARGUMENT" \
                                                                                                                                     --arg INDEX "$FRESH_INDEX" \
@@ -966,7 +966,7 @@
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                     --uuid 241
-                                                                                                                                STALE=${ resources.checks.targets.true.true { failure = 24227 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
+                                                                                                                                STALE=${ resources.checks.targets.true.false { failure = 24227 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 15 22 \
                                                                                                                                     --equals "$FRESH" "$STALE" \
