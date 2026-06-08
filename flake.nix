@@ -3155,17 +3155,6 @@
                             checks =
                                 private : testuser :
                                     {
-                                        resource =
-                                            let
-                                                factory =
-                                                    _resource
-                                                        {
-                                                            gc-root-directory = "/build/gc-root-directory" ;
-                                                            resources = { } ;
-                                                            resources-directory = "/build/resources" ;
-                                                        } ;
-                                                in
-                                                    factory.check { expected = "/nix/store/7w2yi3ygkg85hdldh4a9bnxflr3a5yrm-setup/bin/setup" ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
                                         resource--false-false =
                                             pkgs.nixosTest
                                                 {
