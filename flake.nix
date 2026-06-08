@@ -1084,11 +1084,18 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "value-fresh-index" ;
-                                                                                                                runtimeInputs = [ condition-alpha failure pkgs.coreutils ] ;
+                                                                                                                runtimeInputs = [ condition-alpha failure pkgs.coreutils value-init value-release] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         ALPHA="$( condition-alpha "$@" )" || failure 24132
-                                                                                                                        printf -v FRESH_INDEX "%016d" $(( ALPHA + 15 ))
+                                                                                                                        INIT="$( value-init "$@" )" || failure 10810
+                                                                                                                        RELEASE="$( value-release "$@" )" || failure 11808
+                                                                                                                        if [[ "$INIT" == "true" ]]
+                                                                                                                        then
+                                                                                                                            printf -v FRESH_INDEX "%016d" $(( ALPHA + 15 ))
+                                                                                                                        else
+                                                                                                                            printf -v FRESH_INDEX "%016d" $(( ALPHA + 19 q))
+                                                                                                                        fi
                                                                                                                         echo -en "$FRESH_INDEX"
                                                                                                                     '' ;
                                                                                                             } ;
