@@ -1611,7 +1611,7 @@
                                                                                                             pkgs.writeShellApplication
                                                                                                                 {
                                                                                                                     name = "resolve" ;
-                                                                                                                    runtimeInputs = [ ] ;
+                                                                                                                    runtimeInputs = [ failure pkgs.coreutils ] ;
                                                                                                                     text =
                                                                                                                         ''
                                                                                                                             echo -en 7669863784911683
