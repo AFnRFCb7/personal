@@ -896,7 +896,7 @@
                                                                                                                         DISTRACTOR_INDEX="$( value-distractor-index "$@" )" || failure 11438
                                                                                                                         FRESH_INDEX="$( value-fresh-index "$@" )" || failure 17489
                                                                                                                         INIT="$( condition-init "$@" )" || failure 20502
-                                                                                                                        INIT_RESOLVE_SCRIPT="$( value-init-resolve-script "$@"q )" || failure 4461
+                                                                                                                        INIT_RESOLVE_SCRIPT="$( value-init-resolve-script "$@" )" || failure 4461
                                                                                                                         INIT_RESOLVER="$( value-init-resolver "$@" )" || failure 7384
                                                                                                                         INIT_SCRIPT="$( value-init-script "$@" )" || failure 11353
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 26251
