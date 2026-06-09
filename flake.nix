@@ -750,7 +750,7 @@
                                                                                                                                         "standard-output" : $STANDARD_OUTPUT ,
                                                                                                                                         "targets" : [ $TARGET ] ,
                                                                                                                                         "transient" : false
-                                                                                                                                    }' | compare message valid-init 10 15631 3<&3
+                                                                                                                                    }' | compare message invalid-release 10 15631 3<&3
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 10 13 \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
