@@ -806,6 +806,7 @@
                                                                                                                                     --arg TARGET "$TARGET" \
                                                                                                                                     '{
                                                                                                                                         "arguments" : [ ] ,
+                                                                                                                                        "control" : 2934 ,
                                                                                                                                         "index" : $INDEX ,
                                                                                                                                         "script" : $SCRIPT ,
                                                                                                                                         "seed" : $SEED ,
