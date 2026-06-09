@@ -1059,6 +1059,7 @@
                                                                                                                                     --arg TARGET "$TARGET" \
                                                                                                                                     --null-input \
                                                                                                                                     '{
+                                                                                                                                        "wtf" : 1670 ,
                                                                                                                                         "arguments" : [ $ARGUMENT ] ,
                                                                                                                                         "index" : $INDEX ,
                                                                                                                                         "script" : $SCRIPT ,
