@@ -1053,7 +1053,6 @@
                                                                                                                                     --arg INDEX "$FRESH_INDEX" \
                                                                                                                                     --rawfile SCRIPT "$INIT_RESOLVE_SCRIPT" \
                                                                                                                                     --argjson SEED "$SEED" \
-                                                                                                                                    --arg STANDARD_ERROR "$STANDARD_ERROR" \
                                                                                                                                     --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                                     --argjson STATUS "$STATUS" \
                                                                                                                                     --arg TARGET "$TARGET" \
