@@ -771,6 +771,7 @@
                                                                                                                                     --arg TARGET "$TARGET" \
                                                                                                                                     '{
                                                                                                                                         "arguments" : [ ] ,
+                                                                                                                                        "control" : 17755 ,
                                                                                                                                         "index" : $INDEX ,
                                                                                                                                         "script" : $SCRIPT ,
                                                                                                                                         "seed" : $SEED ,
