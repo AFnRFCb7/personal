@@ -1015,6 +1015,7 @@
                                                                                                                                     --null-input \
                                                                                                                                     '{
                                                                                                                                         "arguments" : [ $ARGUMENT ] ,
+                                                                                                                                        "control" : 2934 ,
                                                                                                                                         "index" : $INDEX ,
                                                                                                                                         "script" : $SCRIPT ,
                                                                                                                                         "seed" : $SEED ,
