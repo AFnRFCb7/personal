@@ -1040,7 +1040,7 @@
                                                                                                                                 then
                                                                                                                                     failure 32056
                                                                                                                                 fi
-                                                                                                                                block 10 30396
+                                                                                                                                block 300 30396
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 15 41 \
                                                                                                                                     --not-equals "$FRESH" "$STALE" \
