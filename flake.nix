@@ -838,8 +838,8 @@
                                                                                                                                     --argjson STATUS "$STATUS" \
                                                                                                                                     --arg TARGET "$TARGET" \
                                                                                                                                     '{
-                                                                                                                                        "arguments" : [ ] ,q
-                                                                                                                                        "control" : 2934 ,q
+                                                                                                                                        "arguments" : [ ] ,
+                                                                                                                                        "control" : 2934 ,
                                                                                                                                         "index" : $INDEX ,
                                                                                                                                         "script" : $SCRIPT ,
                                                                                                                                         "seed" : $SEED ,
