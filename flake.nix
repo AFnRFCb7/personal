@@ -1055,7 +1055,8 @@
                                                                                                                                 then
                                                                                                                                     failure 8251
                                                                                                                                 fi
-                                                                                                                                ${ pkgs.gnugrep }/bin/grep "RESOLVE_FILE=" "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolutions/$INIT_RESOLVER/resolve.sh" | cut --characters 19-79 >&2
+                                                                                                                                RESOLVE_FILE="$( ${ pkgs.gnugrep }/bin/grep "RESOLVE_FILE=" "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolutions/$INIT_RESOLVER/resolve.sh" | cut --characters 19-79 )"
+                                                                                                                                "$( $RESOLVE_FILE ) >&2
                                                                                                                                 jq \
                                                                                                                                     --arg ARGUMENT "$ARGUMENT" \
                                                                                                                                     --arg INDEX "$FRESH_INDEX" \
