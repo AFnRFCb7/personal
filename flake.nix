@@ -1055,7 +1055,7 @@
                                                                                                                                 then
                                                                                                                                     failure 8251
                                                                                                                                 fi
-                                                                                                                                cat /home/emory/resources/logs/trace.log.yaml
+                                                                                                                                cat "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolutions/$INIT_RESOLVER/resolve.sh" >&2
                                                                                                                                 jq \
                                                                                                                                     --arg ARGUMENT "$ARGUMENT" \
                                                                                                                                     --arg INDEX "$FRESH_INDEX" \
