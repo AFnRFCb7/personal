@@ -1055,6 +1055,7 @@
                                                                                                                                 then
                                                                                                                                     failure 8251
                                                                                                                                 fi
+                                                                                                                                cat /home/emory/resources/logs/trace.log.yaml
                                                                                                                                 jq \
                                                                                                                                     --arg ARGUMENT "$ARGUMENT" \
                                                                                                                                     --arg INDEX "$FRESH_INDEX" \
