@@ -84,8 +84,7 @@
                                                                                                                         {
                                                                                                                         } ;
                                                                                                                 in
-                                                                                                                ''# ''
-                                                                                                                #''ln --symbolic ${ resource } "$1/${ builtins.hashString "sha512" ( builtins.toJSON path ) }"''
+                                                                                                                ''ln --symbolic ${ resource } "$1/${ builtins.hashString "sha512" ( builtins.toJSON path ) }"''
                                                                                                         )
                                                                                                     ] ;
                                                                                             list = path : list : builtins.concatLists list ;
