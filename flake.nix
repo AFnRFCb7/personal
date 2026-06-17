@@ -2894,12 +2894,6 @@
                                                                                 organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                                 repository = lib.mkOption { default = "resource" ; type = lib.types.str ; } ;
                                                                            } ;
-                                                                        resource-reporter =
-                                                                            {
-                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
-                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
-                                                                                repository = lib.mkOption { default = "resource-reporter" ; type = lib.types.str ; } ;
-                                                                            } ;
                                                                         secret =
                                                                             {
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
