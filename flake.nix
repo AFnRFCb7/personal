@@ -47,48 +47,6 @@
                             user =
                                 { config , lib , pkgs , ... } :
                                     let
-                                        # this derivation is a directory of commands
-                                        derivation =
-                                            pkgs.stdenv.mkDerivation
-                                                {
-                                                    installPhase = "execute-install" ;
-                                                    name = "derivation" ;
-                                                    nativeBuildInputs =
-                                                        [
-                                                            (
-                                                                pkgs.writeShellApplication
-                                                                    {
-                                                                        name = "execute-install" ;
-                                                                        runtimeInputs = [ pkgs.coreutils ] ;
-                                                                        text =
-                                                                            let
-                                                                                resources =
-                                                                                    _visitor.implementation
-                                                                                        {
-                                                                                            list = path : list : builtins.concatLists list ;
-                                                                                            set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
-                                                                                            string = path : value : [ ''ln --symbolic ${ value } "$out/${ builtins.hashString "sha512" ( builtins.toJSON path ) }"'' ] ;
-                                                                                        }
-                                                                                        resources__ ;
-                                                                                in
-                                                                                    builtins.concatStringsSep
-                                                                                        "\n"
-                                                                                        (
-                                                                                            builtins.concatLists
-                                                                                                [
-                                                                                                    [
-                                                                                                        '': "${ builtins.concatStringsSep "" [ "$" "{" "out:?must be exported" "}" ] }"''
-                                                                                                        ''mkdir --parents "$out"''
-                                                                                                    ]
-                                                                                                    ( resources )
-                                                                                                ]
-                                                                                        ) ;
-                                                                    }
-                                                            )
-                                                        ] ;
-                                                    src = ./. ;
-                                                } ;
-                                        #
                                         password-less-core =
                                             derivation : target :
                                                 pkgs.writeShellApplication
