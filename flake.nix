@@ -69,7 +69,7 @@
                                                                         name = "installPhase" ;
                                                                         runtimeInputs = [ pkgs.coreutils ] ;
                                                                         text =
-                                                                            _visitor
+                                                                            _visitor.implementation
                                                                                 {
                                                                                     lambda =
                                                                                         path : value :
@@ -77,13 +77,14 @@
                                                                                                 "\n"
                                                                                                 [
                                                                                                     ''mkdir --parents $out/${ builtins.toJSON path }''
-                                                                                                    ''ln --symbolic ${ _resource { } } $out/${ builtins.toJSON path }''
+                                                                                                    ''ln --symbolic ${ _resource { } } $out/${ builtins.toJSON path }/resource''
                                                                                                 ] ;
                                                                                     list = path : list : builtins.concatStringsSep "\n" ( builtins.concatLists list ) ;
                                                                                     set = path : set : builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues set ) ) ;
                                                                                 }
                                                                                 {
-
+                                                                                    foobar = { } : null ;
+                                                                                    production = { } ;
                                                                                 } ;
                                                                     } ;
                                                             in "${ application }/bin/installPhase" ;
