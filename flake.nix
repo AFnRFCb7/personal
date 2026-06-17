@@ -15,29 +15,6 @@
                     } @primary :
                         let
                             _visitor = visitor.lib { } ;
-                            identity =
-                                pkgs.stdenv.mkDerivation
-                                    {
-                                        installPhase = "execute-install $out" ;
-                                        name = "identity" ;
-                                        nativeBuildInputs =
-                                            [
-                                                (
-                                                    pkgs.writeShellApplication
-                                                        {
-                                                            name = "execute-install" ;
-                                                            runtimeInputs = [ pkgs.openssh ] ;
-                                                            text =
-                                                                ''
-                                                                    OUT="$1"
-                                                                    mkdir --parents "$OUT"
-                                                                    ssh-keygen -f "$OUT/identity" -P "" -C "nixos store key"
-                                                                '' ;
-                                                        }
-                                                )
-                                            ] ;
-                                        src = ./. ;
-                                    } ;
                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                             user =
                                 { config , lib , pkgs , ... } :
