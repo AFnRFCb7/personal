@@ -69,6 +69,7 @@
                                 { config , lib , pkgs , ... } :
                                     let
                                         # this derivation is a directory of commands
+                                        # this derivation is a directory of commands
                                         derivation =
                                             pkgs.stdenv.mkDerivation
                                                 {
