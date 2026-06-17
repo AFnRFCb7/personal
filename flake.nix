@@ -80,7 +80,7 @@
                                                                                                     (
                                                                                                         let
                                                                                                             resource =
-                                                                                                                _resource
+                                                                                                                _resource.implementation
                                                                                                                     {
                                                                                                                     } ;
                                                                                                             in
