@@ -2,15 +2,16 @@
 {
     inputs =
         {
+            nixpkgs.url = "github:Nixos/nixpkgs/nixos-24.11" ;
         } ;
     outputs =
-        { self } :
+        { nixpkgs , self } :
             {
                 lib =
                     {
                         failure ,
                         fixture ,
-                        nixpkgs ,
+                        nixpkgs ? nixpkgs ,
                         private ,
                         resource ,
                         resource-logger ,
