@@ -3114,7 +3114,7 @@
                     in
                         {
                             checks =
-                                private : testuser :
+                                private :
                                     {
                                         visitor-happy =
                                             _visitor.check
