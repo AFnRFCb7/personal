@@ -14,27 +14,6 @@
                         visitor
                     } @primary :
                         let
-                            _resource =
-                                { gc-root-directory , resources , resources-directory } :
-                                    resource.lib
-                                        {
-                                            buildFHSUserEnv = pkgs.buildFHSUserEnv ;
-                                            coreutils = pkgs.coreutils ;
-                                            flock = pkgs.flock ;
-                                            gc-root-directory = gc-root-directory ;
-                                            invalid-init-channel = "invalid-init" ;
-                                            invalid-release-channel = "invalid-release" ;
-                                            jq = pkgs.jq ;
-                                            procps = pkgs.procps ;
-                                            redis = pkgs.redis ;
-                                            resources = resources ;
-                                            resources-directory = resources-directory ;
-                                            stale-init-channel = "stale-init" ;
-                                            valid-init-channel = "valid-init" ;
-                                            valid-release-channel = "valid-release" ;
-                                            visitor = _visitor.implementation ;
-                                            writeShellApplication = pkgs.writeShellApplication ;
-                                        } ;
                             _visitor = visitor.lib { } ;
                             identity =
                                 pkgs.stdenv.mkDerivation
