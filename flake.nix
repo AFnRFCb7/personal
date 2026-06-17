@@ -109,6 +109,39 @@
                                                         ] ;
                                                     src = ./. ;
                                                 } ;
+                                        #
+                                        resources =
+                                            _visitor.implementation
+                                                {
+                                                    lambda =
+                                                        path : value : { derivation ? "$DERIVATION" , failure ? 64 , setup ? setup : setup } :
+                                                            let
+                                                                command = ''"${ derivation }/${ builtins.hashString "sha512" ( builtins.toJSON path ) }"'' ;
+                                                                failure_ =
+                                                                    let
+                                                                        application =
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "failure" ;
+                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.jq pkgs.yq-go ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            # shellcheck disable=2140
+                                                                                            jq \
+                                                                                                --null-input \
+                                                                                                --argjson PATH '${ builtins.toJSON path }' \
+                                                                                                --argjson FAILURE '${ builtins.toJSON failure }' \
+                                                                                                '{
+                                                                                                    "failure" : $FAILURE ,
+                                                                                                    "path" : $PATH
+                                                                                                }' | yq eval --prettyPrint "." >&2
+                                                                                            exit 64
+                                                                                        '' ;
+                                                                                } ;
+                                                                            in "${ application }/bin/failure" ;
+                                                                in ''"$( ${ setup command } )" || ${ failure_ }'' ;
+                                                }
+                                                resources___ ;
                                         # I am using the cyclic script name to form a command.  It still has the cyclic dependency problem.
                                         resources_ =
                                             _visitor.implementation
