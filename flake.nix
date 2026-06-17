@@ -10,7 +10,6 @@
                         nixpkgs ,
                         private ,
                         resource ,
-                        resource-logger ,
                         resource-releaser ,
                         system ,
                         visitor
