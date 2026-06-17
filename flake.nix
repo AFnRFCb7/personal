@@ -1,16 +1,13 @@
 # 3241997734573372
 {
-    inputs =
-        {
-            nixpkgs.url = "github:Nixos/nixpkgs/nixos-24.11" ;
-        } ;
+    inputs = { } ;
     outputs =
         { nixpkgs , self } :
             {
                 lib =
                     {
                         fixture ,
-                        nixpkgs ? import nixpkgs ,
+                        nixpkgs ,
                         private ,
                         resource ,
                         system ,
