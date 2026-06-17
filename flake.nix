@@ -76,7 +76,7 @@
                                                                                             lambda =
                                                                                                 path : value :
                                                                                                     [
-                                                                                                        ''PLUG='${ builtins.toJSON path }''
+                                                                                                        "PLUG='${ builtins.toJSON path }'"
                                                                                                         ''mkdir --parents "$1/$PLUG"''
                                                                                                         (
                                                                                                             let
