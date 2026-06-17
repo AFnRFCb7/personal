@@ -1,23 +1,19 @@
 # 9822333256343419
 {
-    inputs =
-        {
-            nixpkgs.url = "github:Nixos/nixpkgs/nixos-24.11" ;
-            visitor.url = "git+file:./visitor" ;
-        } ;
+    inputs = { } ;
     outputs =
-        { nixpkgs , self , visitor } :
+        { self } :
             {
                 lib =
                     {
                         fixture ,
-                        nixpkgs ? nixpkgs ,
+                        nixpkgs ,
                         private ,
                         resource ,
                         resource-logger ,
                         resource-releaser ,
                         system ,
-                        visitor ? visitor ,
+                        visitor
                     } @primary :
                         let
                             _resource =
