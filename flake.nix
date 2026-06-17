@@ -77,7 +77,12 @@
                                                                                                 "\n"
                                                                                                 [
                                                                                                     ''mkdir --parents $out/${ builtins.toJSON path }''
-                                                                                                    ''ln --symbolic ${ _resource { } } $out/${ builtins.toJSON path }/resource''
+                                                                                                    (
+                                                                                                        let
+                                                                                                            resource = _resource { pkgs = pkgs ; } ;
+                                                                                                            in
+                                                                                                            ''ln --symbolic ${ resource } $out/${ builtins.toJSON path }/resource''
+                                                                                                    )
                                                                                                 ] ;
                                                                                     list = path : list : builtins.concatStringsSep "\n" ( builtins.concatLists list ) ;
                                                                                     set = path : set : builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues set ) ) ;
