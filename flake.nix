@@ -83,7 +83,10 @@
                                                                                                                 resource =
                                                                                                                     _resource.implementation.user
                                                                                                                         {
-                                                                                                                            entrypoint = ignore : null ;
+                                                                                                                            init =
+                                                                                                                                {
+                                                                                                                                    entrypoint = ignore : null ;
+                                                                                                                                } ;
                                                                                                                         } ;
                                                                                                                 in
                                                                                                                 ''ln --symbolic ${ resource } "$1/$PLUG"''
