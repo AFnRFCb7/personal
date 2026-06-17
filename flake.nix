@@ -6,7 +6,7 @@
             visitor.url = "git+file:./visitor" ;
         } ;
     outputs =
-        { nixpkgs , self } :
+        { nixpkgs , self , visitor } :
             {
                 lib =
                     {
