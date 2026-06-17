@@ -3541,7 +3541,11 @@
                                                     writeShellApplication = pkgs.writeShellApplication ;
                                                     yq-go = pkgs.yq-go ;
                                                 } ;
-                                            } ;
+                                    } ;
+                            modules =
+                                {
+                                    user = user ;
+                                } ;
                         } ;
             } ;
 }
