@@ -10,7 +10,6 @@
             {
                 lib =
                     {
-                        failure ,
                         fixture ,
                         nixpkgs ? nixpkgs ,
                         private ,
