@@ -98,6 +98,7 @@
                                                                     } ;
                                                             in "${ application }/bin/installPhase $out" ;
                                                     name = "derivation" ;
+                                                    src = ./. ;
                                                 } ;
                                         in
                                             {
