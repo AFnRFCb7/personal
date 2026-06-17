@@ -14,6 +14,7 @@
                         visitor
                     } @primary :
                         let
+                            _resource = resource.lib { } ;
                             _visitor = visitor.lib { } ;
                             implementation =
                                 { config , lib , pkgs , ... } :
