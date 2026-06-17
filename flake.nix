@@ -76,7 +76,7 @@
                                                                                             lambda =
                                                                                                 path : value :
                                                                                                     [
-                                                                                                        ''mkdir --parents "$1/${ builtins.toJSON path }"''
+                                                                                                        PLUG='${ builtins.toJSON path }' mkdir --parents "$1/$PLUG"''
                                                                                                         (
                                                                                                             let
                                                                                                                 resource = _resource.implementation.user ;
