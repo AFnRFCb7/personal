@@ -58,6 +58,37 @@
                                                                 fi
                                                             '' ;
                                                     } ;
+                                        resources =
+                                            pkgs.stdenv.mkDerivation
+                                                {
+                                                    installPhase =
+                                                        let
+                                                            application =
+                                                                pkgs.writeShellApplication
+                                                                    {
+                                                                        name = "installPhase" ;
+                                                                        runtimeInputs = [ pkgs.coreutils ] ;
+                                                                        text =
+                                                                            _visitor
+                                                                                {
+                                                                                    lambda =
+                                                                                        path : value :
+                                                                                            builtins.concatStringsSep
+                                                                                                "\n"
+                                                                                                [
+                                                                                                    ''mkdir --parents $out/${ builtins.toJSON path }''
+                                                                                                    ''ln --symbolic ${ resource_ { } } $out/${ builtins.toJSON path }''
+                                                                                                ] ;
+                                                                                    list = path : list : builtins.concatStringsSep "\n" ( builtins.concatLists list ) ;
+                                                                                    set = path : set : builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues set ) ) ;
+                                                                                }
+                                                                                {
+
+                                                                                } ;
+                                                                    } ;
+                                                            in "${ application }/bin/installPhase" ;
+                                                    name = "derivation" ;
+                                                } ;
                                         in
                                             {
                                                 config =
@@ -290,6 +321,7 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
+                                                                                            ${ _resource.implementation { } }
                                                                                         '' ;
                                                                                 }
                                                                         )
