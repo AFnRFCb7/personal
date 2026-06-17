@@ -14,7 +14,12 @@
                         visitor
                     } @primary :
                         let
-                            _resource = resource.lib { visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; } ;
+                            _resource = resource.lib
+                                {
+                                    buildFHSUserEnv = pkgs.buildFHSUserEnv ;
+                                    visitor = visitor ;
+                                    writeShellApplication = pkgs.writeShellApplication ;
+                                } ;
                             _visitor = visitor.lib { } ;
                             implementation =
                                 { config , lib , pkgs , ... } :
