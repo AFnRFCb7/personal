@@ -76,7 +76,7 @@
                                                                                             builtins.concatStringsSep
                                                                                                 "\n"
                                                                                                 [
-                                                                                                    ''mkdir --parents $out/${ builtins.toJSON path }''
+                                                                                                    ''mkdir --parents $out/${ builtins.hashString "sha512" ( builtins.toJSON path ) }''
 #                                                                                                    (
 #                                                                                                        let
 #                                                                                                            resource =
