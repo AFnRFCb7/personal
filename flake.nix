@@ -2,7 +2,7 @@
 {
     inputs =
         {
-            nixpkgs.url = "github:Nixos/nixpkgs/nixos-24.11" ;
+            nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11" ;
             visitor.url = "git+file:./visitor" ;
         } ;
     outputs =
