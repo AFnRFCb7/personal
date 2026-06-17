@@ -90,7 +90,7 @@
                                                                                                                         {
                                                                                                                             init =
                                                                                                                                 {
-                                                                                                                                    entrypoint = ignore : null ;
+                                                                                                                                    entrypoint = ignore : "" ;
                                                                                                                                 } ;
                                                                                                                         } ;
                                                                                                                 in
