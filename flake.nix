@@ -10,7 +10,6 @@
                         nixpkgs ,
                         private ,
                         resource ,
-                        resource-releaser ,
                         system ,
                         visitor
                     } @primary :
