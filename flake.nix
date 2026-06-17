@@ -79,9 +79,7 @@
                                                                                                         ''mkdir --parents "$1/${ builtins.hashString "sha512" ( builtins.toJSON path ) }"''
                                                                                                         (
                                                                                                             let
-                                                                                                                resource = _resource.implementation.user
-                                                                                                                        {
-                                                                                                                        } ;
+                                                                                                                resource = _resource.implementation.user ;
                                                                                                                 in
                                                                                                                 ''ln --symbolic ${ builtins.trace ( builtins.typeOf _resource.implementation.user ) resource } "$1/${ builtins.hashString "sha512" ( builtins.toJSON path ) }"''
                                                                                                         )
