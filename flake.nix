@@ -19,27 +19,6 @@
                         visitor
                     } @primary :
                         let
-                            _resource =
-                                { gc-root-directory , resources , resources-directory } :
-                                    resource.lib
-                                        {
-                                            buildFHSUserEnv = pkgs.buildFHSUserEnv ;
-                                            coreutils = pkgs.coreutils ;
-                                            flock = pkgs.flock ;
-                                            gc-root-directory = gc-root-directory ;
-                                            invalid-init-channel = "invalid-init" ;
-                                            invalid-release-channel = "invalid-release" ;
-                                            jq = pkgs.jq ;
-                                            procps = pkgs.procps ;
-                                            redis = pkgs.redis ;
-                                            resources = resources ;
-                                            resources-directory = resources-directory ;
-                                            stale-init-channel = "stale-init" ;
-                                            valid-init-channel = "valid-init" ;
-                                            valid-release-channel = "valid-release" ;
-                                            visitor = _visitor.implementation ;
-                                            writeShellApplication = pkgs.writeShellApplication ;
-                                        } ;
                             _visitor = visitor.lib { } ;
                             identity =
                                 pkgs.stdenv.mkDerivation
@@ -167,96 +146,6 @@
                                                                     in ''"$( ${ setup value } )" || ${ failure }'' ;
                                                 }
                                                 resources_ ;
-                                        # I am turning the raw implementation into a setup script path.  It still has the cyclic dependency problem.
-                                        resources__ =
-                                            _visitor.implementation
-                                                {
-                                                    lambda =
-                                                        path : value :
-                                                            let
-                                                                factory =
-                                                                    _resource
-                                                                        {
-                                                                            gc-root-directory = "/home/${ config.personal.name }/.gc-root" ;
-                                                                            resources = resources ;
-                                                                            resources-directory = "/home/${ config.personal.name }/resources" ;
-                                                                        } ;
-                                                                nulls =
-                                                                    let
-                                                                        null =
-                                                                            let
-                                                                                application =
-                                                                                    pkgs.writeShellApplication
-                                                                                        {
-                                                                                            name = "null" ;
-                                                                                            text = "" ;
-                                                                                        } ;
-                                                                                in "${ application }/bin/null" ;
-                                                                        in
-                                                                            {
-                                                                                init = { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } : null ;
-                                                                                release = { failure , pkgs , resources , seed , sequential , trace } : null ;
-                                                                            } ;
-                                                                r = value null ;
-                                                                resolutions =
-                                                                    {
-                                                                        ignore = null ;
-                                                                        issue =
-                                                                             { direction , failure , pkgs , resolve-path , resources , seed , sequential , trace } :
-                                                                                let
-                                                                                    application =
-                                                                                        pkgs.writeShellApplication
-                                                                                            {
-                                                                                                name = "resolve" ;
-                                                                                                runtimeInputs = [ ] ;
-                                                                                                text =
-                                                                                                    ''
-                                                                                                        while [[ "$#" -gt 0 ]]
-                                                                                                        do
-                                                                                                            case "$1" in
-                                                                                                                --title)
-                                                                                                                    if [[ "$#" -lt 2 ]]
-                                                                                                                    then
-                                                                                                                        failure 23816
-                                                                                                                    fi
-                                                                                                                    TITLE="$2"
-                                                                                                                    shift 2
-                                                                                                                    ;;
-                                                                                                                --body)
-                                                                                                                    if [[ "$#" -lt 2 ]]
-                                                                                                                    then
-                                                                                                                        failure 7518
-                                                                                                                    fi
-                                                                                                                    BODY="$2"
-                                                                                                                    shift 2
-                                                                                                                    ;;
-                                                                                                                *)
-                                                                                                                    failure 10751 "$*"
-                                                                                                                    ;;
-                                                                                                            esac
-                                                                                                        done
-                                                                                                        TOKEN=${ resources.production.secrets.plaintext.github.token { failure = 6529 ; } }
-                                                                                                        gh auth login --with-token < "$TOKEN/plaintext"
-                                                                                                        gh issue create --title "$TITLE" --body "$BODY"
-                                                                                                        gh auth logout
-                                                                                                    '' ;
-                                                                                            } ;
-                                                                                    in "${ application }/bin/resolve" ;
-                                                                    } ;
-                                                                in
-                                                                    factory.implementation
-                                                                        {
-                                                                            depth = r.depth or 0 ;
-                                                                            init = r.init or nulls.init ;
-                                                                            init-resolutions = r.init-resolutions or resolutions ;
-                                                                            release = r.release or nulls.release ;
-                                                                            release-resolutions = r.release-resolutions or resolutions ;
-                                                                            seed = r.path or path ;
-                                                                            targets = r.targets or [ ] ;
-                                                                            transient = r.transient or false ;
-                                                                        } ;
-                                                }
-                                                resources___ ;
                                         # the raw implementation
                                         resources___ =
                                             {
