@@ -321,7 +321,7 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            ${ _resource.implementation { } }
+                                                                                            echo ${ resources }
                                                                                         '' ;
                                                                                 }
                                                                         )
