@@ -77,15 +77,15 @@
                                                                                                 path : value :
                                                                                                     [
                                                                                                         ''mkdir --parents "$1/${ builtins.hashString "sha512" ( builtins.toJSON path ) }"''
-        #                                                                                                    (
-        #                                                                                                        let
-        #                                                                                                            resource =
-        #                                                                                                                _resource.implementation.user
-        #                                                                                                                    {
-        #                                                                                                                    } ;
-        #                                                                                                            in
-        #                                                                                                            ''ln --symbolic ${ resource } $1/${ builtins.toJSON path }/resource''
-        #                                                                                                    )
+                                                                                                        (
+                                                                                                            let
+                                                                                                                resource =
+                                                                                                                    _resource.implementation.user
+                                                                                                                        {
+                                                                                                                        } ;
+                                                                                                                in
+                                                                                                                ''ln --symbolic ${ resource } "$1/${ builtins.hashString "sha512" ( builtins.toJSON path ) }/resource"''
+                                                                                                        )
                                                                                                     ] ;
                                                                                             list = path : list : builtins.concatLists list ;
                                                                                             set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
