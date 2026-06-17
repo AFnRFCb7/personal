@@ -76,7 +76,7 @@
                                                                                             lambda =
                                                                                                 path : value :
                                                                                                     [
-                                                                                                        ''mkdir --parents "$out/${ builtins.hashString "sha512" ( builtins.toJSON path ) }"''
+                                                                                                        ''mkdir --parents "$1/${ builtins.hashString "sha512" ( builtins.toJSON path ) }"''
         #                                                                                                    (
         #                                                                                                        let
         #                                                                                                            resource =
@@ -84,7 +84,7 @@
         #                                                                                                                    {
         #                                                                                                                    } ;
         #                                                                                                            in
-        #                                                                                                            ''ln --symbolic ${ resource } $out/${ builtins.toJSON path }/resource''
+        #                                                                                                            ''ln --symbolic ${ resource } $1/${ builtins.toJSON path }/resource''
         #                                                                                                    )
                                                                                                     ] ;
                                                                                             list = path : list : builtins.concatLists list ;
@@ -96,7 +96,7 @@
                                                                                         } ;
                                                                                 in builtins.concatStringsSep "\n" list ;
                                                                     } ;
-                                                            in "${ application }/bin/installPhase" ;
+                                                            in "${ application }/bin/installPhase $out" ;
                                                     name = "derivation" ;
                                                 } ;
                                         in
