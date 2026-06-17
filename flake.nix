@@ -82,7 +82,7 @@
                                                                                                             let
                                                                                                                 resource = _resource.implementation.user { } ;
                                                                                                                 in
-                                                                                                                ''ln --symbolic "$1/$PLUG"''
+                                                                                                                ''ln --symbolic ${ resource } "$1/$PLUG"''
                                                                                                         )
                                                                                                     ] ;
                                                                                             list = path : list : builtins.concatLists list ;
