@@ -3116,187 +3116,187 @@
                             checks =
                                 private : testuser :
                                     {
-                                            visitor-happy =
-                                                _visitor.check
-                                                    {
-                                                        coreutils = pkgs.coreutils ;
-                                                        diffutil = pkgs.diffutil ;
-                                                        expected =
-                                                            {
-                                                                bool =
+                                        visitor-happy =
+                                            _visitor.check
+                                                {
+                                                    coreutils = pkgs.coreutils ;
+                                                    diffutil = pkgs.diffutil ;
+                                                    expected =
+                                                        {
+                                                            bool =
+                                                                [
+                                                                    {
+                                                                        path = [ "bool" ] ;
+                                                                        type = "bool" ;
+                                                                        value = true ;
+                                                                    }
+                                                                ] ;
+                                                            float =
+                                                                [
+                                                                    {
+                                                                        path = [ "float" ] ;
+                                                                        type = "float" ;
+                                                                        value = 1.0 ;
+                                                                    }
+                                                                ] ;
+                                                            int =
+                                                                [
+                                                                    {
+                                                                        path = [ "int" ] ;
+                                                                        type = "int" ;
+                                                                        value = 1 ;
+                                                                    }
+                                                                ] ;
+                                                            lambda =
+                                                                [
+                                                                    {
+                                                                        path = [ "lambda" ] ;
+                                                                        type = "lambda" ;
+                                                                        value = null ;
+                                                                    }
+                                                                ] ;
+                                                            list =
+                                                                [
                                                                     [
                                                                         {
-                                                                            path = [ "bool" ] ;
-                                                                            type = "bool" ;
-                                                                            value = true ;
-                                                                        }
-                                                                    ] ;
-                                                                float =
-                                                                    [
-                                                                        {
-                                                                            path = [ "float" ] ;
-                                                                            type = "float" ;
-                                                                            value = 1.0 ;
-                                                                        }
-                                                                    ] ;
-                                                                int =
-                                                                    [
-                                                                        {
-                                                                            path = [ "int" ] ;
+                                                                            path = [ "list" 0 ] ;
                                                                             type = "int" ;
                                                                             value = 1 ;
                                                                         }
-                                                                    ] ;
-                                                                lambda =
-                                                                    [
-                                                                        {
-                                                                            path = [ "lambda" ] ;
-                                                                            type = "lambda" ;
-                                                                            value = null ;
-                                                                        }
-                                                                    ] ;
-                                                                list =
-                                                                    [
+                                                                    ]
+                                                                ] ;
+                                                            null =
+                                                                [
+                                                                    {
+                                                                        path = [ "null" ] ;
+                                                                        type = "null" ;
+                                                                        value = null ;
+                                                                    }
+                                                                ] ;
+                                                            path =
+                                                                [
+                                                                    {
+                                                                        path = [ "path" ] ;
+                                                                        type = "path" ;
+                                                                        value = ./. ;
+                                                                    }
+                                                                ] ;
+                                                            set =
+                                                                {
+                                                                    one =
                                                                         [
                                                                             {
-                                                                                path = [ "list" 0 ] ;
+                                                                                path = [ "set" "one" ] ;
                                                                                 type = "int" ;
                                                                                 value = 1 ;
                                                                             }
-                                                                        ]
-                                                                    ] ;
-                                                                null =
-                                                                    [
+                                                                        ] ;
+                                                                    recur =
                                                                         {
-                                                                            path = [ "null" ] ;
-                                                                            type = "null" ;
-                                                                            value = null ;
-                                                                        }
-                                                                    ] ;
-                                                                path =
-                                                                    [
-                                                                        {
-                                                                            path = [ "path" ] ;
-                                                                            type = "path" ;
-                                                                            value = ./. ;
-                                                                        }
-                                                                    ] ;
-                                                                set =
+                                                                            int =
+                                                                                [
+                                                                                    {
+                                                                                        path = [ "set" "recur" "int" ] ;
+                                                                                        type = "int" ;
+                                                                                        value = 1 ;
+                                                                                    }
+                                                                                ] ;
+                                                                            lambda =
+                                                                                [
+                                                                                    {
+                                                                                        path = [ "set" "recur" "lambda" ] ;
+                                                                                        type = "lambda" ;
+                                                                                        value = null ;
+                                                                                    }
+                                                                                ] ;
+                                                                        } ;
+                                                                } ;
+                                                            string =
+                                                                [
                                                                     {
-                                                                        one =
-                                                                            [
-                                                                                {
-                                                                                    path = [ "set" "one" ] ;
-                                                                                    type = "int" ;
-                                                                                    value = 1 ;
-                                                                                }
-                                                                            ] ;
-                                                                        recur =
-                                                                            {
-                                                                                int =
-                                                                                    [
-                                                                                        {
-                                                                                            path = [ "set" "recur" "int" ] ;
-                                                                                            type = "int" ;
-                                                                                            value = 1 ;
-                                                                                        }
-                                                                                    ] ;
-                                                                                lambda =
-                                                                                    [
-                                                                                        {
-                                                                                            path = [ "set" "recur" "lambda" ] ;
-                                                                                            type = "lambda" ;
-                                                                                            value = null ;
-                                                                                        }
-                                                                                    ] ;
-                                                                            } ;
-                                                                    } ;
-                                                                string =
-                                                                    [
-                                                                        {
-                                                                            path = [ "string" ] ;
-                                                                            type = "string" ;
-                                                                            value = "1" ;
-                                                                        }
-                                                                    ] ;
-                                                            } ;
-                                                        mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                        success = true ;
-                                                        value =
-                                                            {
-                                                                bool = true ;
-                                                                float = 1.0 ;
-                                                                int = 1 ;
-                                                                lambda = i : i ;
-                                                                list = [ 1 ] ;
-                                                                null = null ;
-                                                                path = ./. ;
-                                                                set = { one = 1 ; recur = { int = 1 ; lambda = i : i ; } ; } ;
-                                                                string = "1" ;
-                                                            } ;
-                                                        visitors =
-                                                            let
-                                                                string = path : value : let type = builtins.typeOf value ; in [ { path = path ; type = type ; value = if type == "lambda" then null else value ; } ] ;
-                                                                in
-                                                                    {
-                                                                        bool = string ;
-                                                                        float = string ;
-                                                                        int = string ;
-                                                                        lambda = string ;
-                                                                        null = string ;
-                                                                        path = string ;
-                                                                        string = string ;
-                                                                    } ;
-                                                        writeShellApplication = pkgs.writeShellApplication ;
-                                                        yq-go = pkgs.yq-go ;
-                                                    } ;
-                                            visitor-set =
-                                                _visitor.check
-                                                    {
-                                                        coreutils = pkgs.coreutils ;
-                                                        diffutil = pkgs.diffutil ;
-                                                        expected = [ "bool,float,int,lambda,list,null,path,set,string" ] ;
-                                                        mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                        success = true ;
-                                                        value =
-                                                            {
-                                                                bool = true ;
-                                                                float = 1.0 ;
-                                                                int = 1 ;
-                                                                lambda = i : i ;
-                                                                list = [ 1 ] ;
-                                                                null = null ;
-                                                                path = ./. ;
-                                                                set = { one = 1 ; recur = { int = 1 ; lambda = i : i ; } ; } ;
-                                                                string = "1" ;
-                                                            } ;
-                                                        visitors =
-                                                            let
-                                                                string = path : value : let type = builtins.typeOf value ; in [ { path = path ; type = type ; value = if type == "lambda" then null else value ; } ] ;
-                                                                in
-                                                                    {
-                                                                        bool = string ;
-                                                                        float = string ;
-                                                                        int = string ;
-                                                                        lambda = string ;
-                                                                        null = string ;
-                                                                        path = string ;
-                                                                        set = path : set : [ ( builtins.concatStringsSep "," ( builtins.attrNames set ) ) ] ;
-                                                                        string = string ;
-                                                                    } ;
-                                                        writeShellApplication = pkgs.writeShellApplication ;
-                                                        yq-go = pkgs.yq-go ;
-                                                    } ;
-                                            visitor-sad =
-                                                _visitor.check
-                                                    {
-                                                        coreutils = pkgs.coreutils ;
-                                                        diffutil = pkgs.diffutil ;
-                                                        mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                        writeShellApplication = pkgs.writeShellApplication ;
-                                                        yq-go = pkgs.yq-go ;
-                                                    } ;
+                                                                        path = [ "string" ] ;
+                                                                        type = "string" ;
+                                                                        value = "1" ;
+                                                                    }
+                                                                ] ;
+                                                        } ;
+                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                    success = true ;
+                                                    value =
+                                                        {
+                                                            bool = true ;
+                                                            float = 1.0 ;
+                                                            int = 1 ;
+                                                            lambda = i : i ;
+                                                            list = [ 1 ] ;
+                                                            null = null ;
+                                                            path = ./. ;
+                                                            set = { one = 1 ; recur = { int = 1 ; lambda = i : i ; } ; } ;
+                                                            string = "1" ;
+                                                        } ;
+                                                    visitors =
+                                                        let
+                                                            string = path : value : let type = builtins.typeOf value ; in [ { path = path ; type = type ; value = if type == "lambda" then null else value ; } ] ;
+                                                            in
+                                                                {
+                                                                    bool = string ;
+                                                                    float = string ;
+                                                                    int = string ;
+                                                                    lambda = string ;
+                                                                    null = string ;
+                                                                    path = string ;
+                                                                    string = string ;
+                                                                } ;
+                                                    writeShellApplication = pkgs.writeShellApplication ;
+                                                    yq-go = pkgs.yq-go ;
                                                 } ;
+                                        visitor-set =
+                                            _visitor.check
+                                                {
+                                                    coreutils = pkgs.coreutils ;
+                                                    diffutil = pkgs.diffutil ;
+                                                    expected = [ "bool,float,int,lambda,list,null,path,set,string" ] ;
+                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                    success = true ;
+                                                    value =
+                                                        {
+                                                            bool = true ;
+                                                            float = 1.0 ;
+                                                            int = 1 ;
+                                                            lambda = i : i ;
+                                                            list = [ 1 ] ;
+                                                            null = null ;
+                                                            path = ./. ;
+                                                            set = { one = 1 ; recur = { int = 1 ; lambda = i : i ; } ; } ;
+                                                            string = "1" ;
+                                                        } ;
+                                                    visitors =
+                                                        let
+                                                            string = path : value : let type = builtins.typeOf value ; in [ { path = path ; type = type ; value = if type == "lambda" then null else value ; } ] ;
+                                                            in
+                                                                {
+                                                                    bool = string ;
+                                                                    float = string ;
+                                                                    int = string ;
+                                                                    lambda = string ;
+                                                                    null = string ;
+                                                                    path = string ;
+                                                                    set = path : set : [ ( builtins.concatStringsSep "," ( builtins.attrNames set ) ) ] ;
+                                                                    string = string ;
+                                                                } ;
+                                                    writeShellApplication = pkgs.writeShellApplication ;
+                                                    yq-go = pkgs.yq-go ;
+                                                } ;
+                                        visitor-sad =
+                                            _visitor.check
+                                                {
+                                                    coreutils = pkgs.coreutils ;
+                                                    diffutil = pkgs.diffutil ;
+                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                    writeShellApplication = pkgs.writeShellApplication ;
+                                                    yq-go = pkgs.yq-go ;
+                                                } ;
+                                            } ;
                                     modules =
                                         {
                                             user = user ;
