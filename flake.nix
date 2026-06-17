@@ -2309,7 +2309,6 @@
                                                             {
                                                                 sessionVariables =
                                                                     {
-                                                                        DERIVATION = derivation ;
                                                                     } ;
                                                             } ;
                                                         hardware.pulseaudio =
