@@ -14,7 +14,7 @@
                         visitor
                     } @primary :
                         let
-                            _resource = resource.lib { } ;
+                            _resource = resource.lib { pkgs = pkgs ; } ;
                             _visitor = visitor.lib { } ;
                             implementation =
                                 { config , lib , pkgs , ... } :
@@ -79,7 +79,10 @@
                                                                                                     ''mkdir --parents $out/${ builtins.toJSON path }''
                                                                                                     (
                                                                                                         let
-                                                                                                            resource = _resource { pkgs = pkgs ; } ;
+                                                                                                            resource =
+                                                                                                                _resource
+                                                                                                                    {
+                                                                                                                    } ;
                                                                                                             in
                                                                                                             ''ln --symbolic ${ resource } $out/${ builtins.toJSON path }/resource''
                                                                                                     )
