@@ -22,7 +22,6 @@
                             _resource =
                                 resource.lib
                                     {
-                                        gc-root = "/home/${ config.personal.name }/.gc-root" ;
                                         nixpkgs = nixpkgs ;
                                         system = system ;
                                         visitor = _visitor ;
