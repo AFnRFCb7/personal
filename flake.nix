@@ -80,7 +80,11 @@
                                                                                                         ''mkdir --parents "$1/$PLUG"''
                                                                                                         (
                                                                                                             let
-                                                                                                                resource = _resource.implementation.user { } ;
+                                                                                                                resource =
+                                                                                                                    _resource.implementation.user
+                                                                                                                        {
+                                                                                                                            entrypoint = ignore : null ;
+                                                                                                                        } ;
                                                                                                                 in
                                                                                                                 ''ln --symbolic ${ resource } "$1/$PLUG"''
                                                                                                         )
