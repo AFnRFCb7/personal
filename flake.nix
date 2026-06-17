@@ -80,7 +80,7 @@
                                                                                                     (
                                                                                                         let
                                                                                                             resource =
-                                                                                                                _resource.implementation
+                                                                                                                _resource.implementation.user
                                                                                                                     {
                                                                                                                     } ;
                                                                                                             in
