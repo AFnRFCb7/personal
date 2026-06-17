@@ -2995,12 +2995,132 @@
                                                                     } ;
                                                                 packages =
                                                                     [
+                                                                        (
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "resource" ;
+                                                                                    runtimeInputs = [ ] ;
+                                                                                    text =
+                                                                                        let
+                                                                                            conditions =
+                                                                                                builtins.concatLists
+                                                                                                    [
+                                                                                                        [
+                                                                                                            ''
+                                                                                                                if [[ "$#" -ne 2 ]]
+                                                                                                                then
+                                                                                                                    exit 99
+                                                                                                            ''
+                                                                                                        ]
+                                                                                                        resource-conditions
+                                                                                                        [
+                                                                                                            ''
+                                                                                                                else
+                                                                                                                    exit 98
+                                                                                                                fi
+                                                                                                            ''
+                                                                                                        ]
+                                                                                                    ] ;
+                                                                                            resource-conditions =
+                                                                                                _visitor.implementation
+                                                                                                    {
+                                                                                                        lambda =
+                                                                                                            path : value :
+                                                                                                                [
+                                                                                                                    ''
+                                                                                                                        elif [[ "$2" == '${ builtins.toJSON path }' ]]
+                                                                                                                        then
+                                                                                                                            if [[ -n "$STANDARD_INPUT" ]]
+                                                                                                                            then
+                                                                                                                                #shellcheck disable=SC2068
+                                                                                                                                RESOURCE=${ value { setup = setup : ''${ setup } ${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]:-" "}" ] } <<< "$STANDARD_INPUT"'' ; } }
+                                                                                                                            elif [[ -n "$STANDARD_INPUT_FILE" ]]
+                                                                                                                            then
+                                                                                                                                #shellcheck disable=SC2068
+                                                                                                                                RESOURCE=${ value { setup = setup : ''${ setup } ${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]:-" "}" ] } < "$STANDARD_INPUT_FILE"'' ; } }
+                                                                                                                            elif [[ -t 0 ]]
+                                                                                                                            then
+                                                                                                                                #shellcheck disable=SC2068
+                                                                                                                                RESOURCE=${ value { setup = setup : ''${ setup } ${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]:-" "}" ] }'' ; } }
+                                                                                                                            else
+                                                                                                                                #shellcheck disable=SC2068
+                                                                                                                                RESOURCE=${ value { setup = setup : ''${ setup } ${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]:-" "}" ] } <&0'' ; } }
+                                                                                                                            fi
+                                                                                                                    ''
+                                                                                                                ] ;
+                                                                                                        list = path : list : builtins.concatLists list ;
+                                                                                                        set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
+                                                                                                    }
+                                                                                                    resources ;
+                                                                                            in
+                                                                                                ''
+                                                                                                    export DERIVATION=${ derivation }
+                                                                                                    ARGUMENTS=()
+                                                                                                    STANDARD_INPUT=
+                                                                                                    STANDARD_INPUT_FILE=
+                                                                                                    while [[ "$#" -gt 0 ]]
+                                                                                                    do
+                                                                                                        case "$1" in
+                                                                                                            --argument)
+                                                                                                                ARGUMENTS+=( "$2" )
+                                                                                                                shift 2
+                                                                                                                ;;
+                                                                                                            --resource)
+                                                                                                                # shellcheck disable=SC2140,SC2016
+                                                                                                                ${ builtins.concatStringsSep "\n" conditions }
+                                                                                                                echo "$RESOURCE"
+                                                                                                                shift 2
+                                                                                                                ;;
+                                                                                                            --standard-input)
+                                                                                                                STANDARD_INPUT="$2"
+                                                                                                                shift 2
+                                                                                                                ;;
+                                                                                                            --standard-input-file)
+                                                                                                                STANDARD_INPUT_FILE="$2"
+                                                                                                                if [[ ! -f "$STANDARD_INPUT_FILE" ]]
+                                                                                                                then
+                                                                                                                    failure 9545742882553268 "$STANDARD_INPUT_FILE"
+                                                                                                                fi
+                                                                                                                shift 2
+                                                                                                                ;;
+                                                                                                            *)
+                                                                                                                exit 64
+                                                                                                        esac
+                                                                                                    done
+                                                                                                '' ;
+                                                                                }
+                                                                        )
+                                                                        (
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "archive-resources" ;
+                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.gnutar pkgs.nix pkgs.zstd ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            ARCHIVE="$( mktemp --suffix ".tar.xz" )" || exit 63
+                                                                                            tar --create --file "$ARCHIVE" --remove-files /home/${ config.personal.name }/.gc-roots /home/${ config.personal.name }/resources
+                                                                                            nix-collect-garbage
+                                                                                        '' ;
+                                                                                }
+                                                                        )
                                                                         pkgs.age
                                                                         pkgs.gh
                                                                         pkgs.git
                                                                         pkgs.redis
                                                                         pkgs.yq-go
                                                                         pkgs.jq
+                                                                        (
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "foobar" ;
+                                                                                    runtimeInputs = [ ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            FOOBAR=${ resources.foobar.pad { } }
+                                                                                            echo "$FOOBAR"
+                                                                                        '' ;
+                                                                                }
+                                                                        )
                                                                     ] ;
                                                                 password = config.personal.password ;
                                                             } ;
