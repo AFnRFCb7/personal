@@ -2,7 +2,7 @@
 {
     inputs = { } ;
     outputs =
-        { nixpkgs , self } :
+        { self } :
             {
                 lib =
                     {
