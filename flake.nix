@@ -69,31 +69,32 @@
                                                                         name = "installPhase" ;
                                                                         runtimeInputs = [ pkgs.coreutils ] ;
                                                                         text =
-                                                                            _visitor.implementation
-                                                                                {
-                                                                                    lambda =
-                                                                                        path : value :
-                                                                                            builtins.concatStringsSep
-                                                                                                "\n"
-                                                                                                [
-                                                                                                    ''mkdir --parents $out/${ builtins.hashString "sha512" ( builtins.toJSON path ) }''
-#                                                                                                    (
-#                                                                                                        let
-#                                                                                                            resource =
-#                                                                                                                _resource.implementation.user
-#                                                                                                                    {
-#                                                                                                                    } ;
-#                                                                                                            in
-#                                                                                                            ''ln --symbolic ${ resource } $out/${ builtins.toJSON path }/resource''
-#                                                                                                    )
-                                                                                                ] ;
-                                                                                    list = path : list : builtins.concatStringsSep "\n" ( builtins.concatLists list ) ;
-                                                                                    set = path : set : builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues set ) ) ;
-                                                                                }
-                                                                                {
-                                                                                    foobar = { } : null ;
-                                                                                    production = { } ;
-                                                                                } ;
+                                                                            let
+                                                                                list =
+                                                                                    _visitor.implementation
+                                                                                        {
+                                                                                            lambda =
+                                                                                                path : value :
+                                                                                                    [
+                                                                                                        ''mkdir --parents $out/${ builtins.hashString "sha512" ( builtins.toJSON path ) }''
+        #                                                                                                    (
+        #                                                                                                        let
+        #                                                                                                            resource =
+        #                                                                                                                _resource.implementation.user
+        #                                                                                                                    {
+        #                                                                                                                    } ;
+        #                                                                                                            in
+        #                                                                                                            ''ln --symbolic ${ resource } $out/${ builtins.toJSON path }/resource''
+        #                                                                                                    )
+                                                                                                    ] ;
+                                                                                            list = path : list : builtins.concatLists list ;
+                                                                                            set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
+                                                                                        }
+                                                                                        {
+                                                                                            foobar = ignore : null ;
+                                                                                            production = { } ;
+                                                                                        } ;
+                                                                                in builtins.concatStringsSep "\n" list ;
                                                                     } ;
                                                             in "${ application }/bin/installPhase" ;
                                                     name = "derivation" ;
