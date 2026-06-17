@@ -19,7 +19,14 @@
                         visitor
                     } @primary :
                         let
-                            _resource = resource.lib { nixpkgs = nixpkgs ; system = system ; visitor = _visitor ; } ;
+                            _resource =
+                                resource.lib
+                                    {
+                                        gc-root = "/home/${ config.personal.name }/.gc-root" ;
+                                        nixpkgs = nixpkgs ;
+                                        system = system ;
+                                        visitor = _visitor ;
+                                    } ;
                             _visitor = visitor.lib { } ;
                             identity =
                                 pkgs.stdenv.mkDerivation
