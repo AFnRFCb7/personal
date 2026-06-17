@@ -2757,18 +2757,6 @@
                                                                         pkgs.redis
                                                                         pkgs.yq-go
                                                                         pkgs.jq
-                                                                        (
-                                                                            pkgs.writeShellApplication
-                                                                                {
-                                                                                    name = "foobar" ;
-                                                                                    runtimeInputs = [ ] ;
-                                                                                    text =
-                                                                                        ''
-                                                                                            FOOBAR=${ resources.foobar.pad { } }
-                                                                                            echo "$FOOBAR"
-                                                                                        '' ;
-                                                                                }
-                                                                        )
                                                                     ] ;
                                                                 password = config.personal.password ;
                                                             } ;
