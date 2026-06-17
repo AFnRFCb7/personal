@@ -3,6 +3,7 @@
     inputs =
         {
             nixpkgs.url = "github:Nixos/nixpkgs/nixos-24.11" ;
+            visitor.url = "git+file:./visitor" ;
         } ;
     outputs =
         { nixpkgs , self } :
@@ -17,7 +18,7 @@
                         resource-logger ,
                         resource-releaser ,
                         system ,
-                        visitor
+                        visitor ? visitor ,
                     } @primary :
                         let
                             _resource =
