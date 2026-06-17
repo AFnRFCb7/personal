@@ -283,6 +283,16 @@
                                                                     } ;
                                                                 packages =
                                                                     [
+                                                                        (
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "foobar" ;
+                                                                                    runtimeInputs = [ ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                        '' ;
+                                                                                }
+                                                                        )
                                                                         pkgs.age
                                                                         pkgs.gh
                                                                         pkgs.git
