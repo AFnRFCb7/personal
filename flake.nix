@@ -18,6 +18,7 @@
                                 {
                                     buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                     coreutils = pkgs.coreutils ;
+                                    flock = pkgs.flock ;
                                     jq = pkgs.jq ;
                                     visitor = visitor ;
                                     writeShellApplication = pkgs.writeShellApplication ;
