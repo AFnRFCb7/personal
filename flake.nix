@@ -19,7 +19,6 @@
                                     buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                     coreutils = pkgs.coreutils ;
                                     jq = pkgs.jq ;
-                                    resources-directory = "/home/" ;
                                     visitor = visitor ;
                                     writeShellApplication = pkgs.writeShellApplication ;
                                 } ;
@@ -27,6 +26,7 @@
                             implementation =
                                 { config , lib , pkgs , ... } :
                                     let
+                                        __resource = _resource.implementation { resources-directory = "/home/${ config.personal.name }/resources" ; } ;
                                         identity =
                                             pkgs.stdenv.mkDerivation
                                                 {
@@ -89,7 +89,7 @@
                                                                                                         (
                                                                                                             let
                                                                                                                 resource =
-                                                                                                                    _resource.implementation.user
+                                                                                                                    __resource.user
                                                                                                                         {
                                                                                                                             init =
                                                                                                                                 {
