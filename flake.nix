@@ -17,6 +17,8 @@
                             _resource = resource.lib
                                 {
                                     buildFHSUserEnv = pkgs.buildFHSUserEnv ;
+                                    coreutils = pkgs.coreutils ;
+                                    jq = pkgs.jq ;
                                     resources-directory = "/home/" ;
                                     visitor = visitor ;
                                     writeShellApplication = pkgs.writeShellApplication ;
