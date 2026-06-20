@@ -579,6 +579,7 @@
                                                     actions = [ ] ;
                                                     pkgs = pkgs ;
                                                     private = private ;
+                                                    resources-directory = "/home/emory/resources" ;
                                                 } ;
                                         visitor-happy =
                                             _visitor.check
