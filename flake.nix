@@ -574,10 +574,12 @@
                                     {
                                         xxx =
                                             _resource.check
-                                                "emory"
-                                                [ ]
-                                                pkgs
-                                                private ;
+                                                {
+                                                    user = "emory" ;
+                                                    action = [ ] ;
+                                                    pkgs = pkgs ;
+                                                    private ;
+                                                } ;
                                         visitor-happy =
                                             _visitor.check
                                                 {
