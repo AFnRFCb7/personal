@@ -577,7 +577,7 @@
                                                 "emory"
                                                 [ ]
                                                 pkgs
-                                                [ implementation private ] ;
+                                                implementation ;
                                         visitor-happy =
                                             _visitor.check
                                                 {
