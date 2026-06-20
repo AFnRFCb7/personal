@@ -576,7 +576,8 @@
                                             _resource.check
                                                 "emory"
                                                 [ ]
-                                                pkgs ;
+                                                pkgs
+                                                private ;
                                         visitor-happy =
                                             _visitor.check
                                                 {
