@@ -575,7 +575,8 @@
                                         xxx =
                                             _resource.check
                                                 "emory"
-                                                [ ] ;
+                                                [ ]
+                                                pkgs.nixosTest ;
                                         visitor-happy =
                                             _visitor.check
                                                 {
