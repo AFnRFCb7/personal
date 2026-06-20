@@ -572,6 +572,10 @@
                             checks =
                                 private :
                                     {
+                                        xxx =
+                                            _resource.check
+                                                "emory"
+                                                [ ] ;
                                         visitor-happy =
                                             _visitor.check
                                                 {
