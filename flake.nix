@@ -578,7 +578,7 @@
                                                     user = "emory" ;
                                                     action = [ ] ;
                                                     pkgs = pkgs ;
-                                                    private ;
+                                                    private = private ;
                                                 } ;
                                         visitor-happy =
                                             _visitor.check
