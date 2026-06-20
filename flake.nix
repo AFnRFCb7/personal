@@ -576,7 +576,7 @@
                                             _resource.check
                                                 {
                                                     user = "emory" ;
-                                                    action = [ ] ;
+                                                    actions = [ ] ;
                                                     pkgs = pkgs ;
                                                     private = private ;
                                                 } ;
