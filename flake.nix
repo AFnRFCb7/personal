@@ -576,6 +576,7 @@
                                             _resource.check
                                                 {
                                                     actions = [ ] ;
+                                                    gc-roots-directory = "/home/emory/.gc-root" ;
                                                     pkgs = pkgs ;
                                                     private = private ;
                                                     resources-directory = "/home/emory/resources" ;
