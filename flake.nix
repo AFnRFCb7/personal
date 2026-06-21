@@ -575,11 +575,11 @@
                                         xxx =
                                             _resource.check
                                                 {
-                                                    user = "emory" ;
                                                     actions = [ ] ;
                                                     pkgs = pkgs ;
                                                     private = private ;
                                                     resources-directory = "/home/emory/resources" ;
+                                                    user = "emory" ;
                                                 } ;
                                         visitor-happy =
                                             _visitor.check
