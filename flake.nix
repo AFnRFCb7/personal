@@ -580,10 +580,10 @@
                                                             { text = "verify-executable 2718876537742495 /usr/bin/env" ; }
                                                             { text = ''verify-executable 4319899683964123 "$CHECKER"'' ; }
                                                         ] ;
-                                                    gc-roots-directory = "/home/emory/.gc-roots" ;
+                                                    gc-roots-directory = "/home/checker/.gc-roots" ;
                                                     pkgs = pkgs ;
                                                     private = private ;
-                                                    resources-directory = "/home/emory/resources" ;
+                                                    resources-directory = "/home/checker/resources" ;
                                                     user = "checker" ;
                                                 } ;
                                         visitor-happy =
