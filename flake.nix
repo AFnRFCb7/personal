@@ -579,6 +579,7 @@
                                                         [
                                                             { text = "verify-executable 2718876537742495 /usr/bin/env" ; }
                                                             { text = "verify-executable 8298777838414966 /usr/bin/env2" ; }
+                                                            { text = ''verify-executable 4319899683964123 "$CHECKER"'' ; }
                                                         ] ;
                                                     gc-roots-directory = "/home/emory/.gc-roots" ;
                                                     pkgs = pkgs ;
