@@ -575,7 +575,10 @@
                                         xxx =
                                             _resource.check
                                                 {
-                                                    actions = [ ] ;
+                                                    actions =
+                                                        [
+                                                            { text = "verify-executable 2718876537742495" "/usr/bin/env"; }
+                                                        ] ;
                                                     gc-roots-directory = "/home/emory/.gc-roots" ;
                                                     pkgs = pkgs ;
                                                     private = private ;
