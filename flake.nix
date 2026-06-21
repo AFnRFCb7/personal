@@ -584,7 +584,7 @@
                                                     pkgs = pkgs ;
                                                     private = private ;
                                                     resources-directory = "/home/emory/resources" ;
-                                                    user = "emory" ;
+                                                    user = "checker" ;
                                                 } ;
                                         visitor-happy =
                                             _visitor.check
