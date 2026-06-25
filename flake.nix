@@ -105,6 +105,37 @@
                                                                                             set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
                                                                                         }
                                                                                         {
+                                                                                            checks =
+                                                                                                {
+                                                                                                    true =
+                                                                                                        {
+                                                                                                            true =
+                                                                                                                ignore :
+                                                                                                                    {
+                                                                                                                        init =
+                                                                                                                            {
+                                                                                                                                entrypoint =
+                                                                                                                                    { } :
+                                                                                                                                        let
+                                                                                                                                            application =
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "init" ;
+                                                                                                                                                        runtimeInputs = [ ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                                in "${ application }/bin/init ;
+                                                                                                                            } ;
+                                                                                                                        release =
+                                                                                                                            {
+
+                                                                                                                            } ;
+                                                                                                                        transient = false ;
+                                                                                                                    } ;
+                                                                                                        } ;
+                                                                                                } ;
                                                                                             foobar = ignore : null ;
                                                                                             production = { } ;
                                                                                         } ;
