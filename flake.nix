@@ -146,7 +146,11 @@
                                                                                                                                                             ''
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
-                                                                                                                                            in "${ application }/bin/action" ;#
+                                                                                                                                            in "${ application }/bin/action" ;
+                                                                                                                                recovery =
+                                                                                                                                    {
+
+                                                                                                                                    } ;
                                                                                                                             } ;
                                                                                                                         transient = false ;
                                                                                                                     } ;
