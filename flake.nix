@@ -162,7 +162,7 @@
                                                                                 in builtins.concatStringsSep "\n" list ;
                                                                     } ;
                                                             in "${ application }/bin/installPhase $out" ;
-                                                    name = "derivation" ;
+                                                    name = "resources" ;
                                                     src = ./. ;
                                                 } ;
                                         in
