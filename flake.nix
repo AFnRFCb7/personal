@@ -114,23 +114,39 @@
                                                                                                                     {
                                                                                                                         init =
                                                                                                                             {
-                                                                                                                                entrypoint =
+                                                                                                                                action =
                                                                                                                                     { } :
                                                                                                                                         let
                                                                                                                                             application =
                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                     {
-                                                                                                                                                        name = "init" ;
+                                                                                                                                                        name = "action" ;
                                                                                                                                                         runtimeInputs = [ ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
-                                                                                                                                                in "${ application }/bin/init ;
+                                                                                                                                                in "${ application }/bin/init" ;
+                                                                                                                                recovery =
+                                                                                                                                    {
+
+                                                                                                                                    } ;
                                                                                                                             } ;
                                                                                                                         release =
                                                                                                                             {
-
+                                                                                                                                action =
+                                                                                                                                    { } :
+                                                                                                                                        let
+                                                                                                                                            application =
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "action" ;
+                                                                                                                                                        runtimeInputs = [ ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                            in "${ application }/bin/action" ;
                                                                                                                             } ;
                                                                                                                         transient = false ;
                                                                                                                     } ;
