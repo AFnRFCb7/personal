@@ -16,6 +16,7 @@
                         let
                             _resource = resource.lib
                                 {
+                                    bash = pkgs.bash ;
                                     buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                     coreutils = pkgs.coreutils ;
                                     flock = pkgs.flock ;
