@@ -629,8 +629,8 @@
                                                 {
                                                     actions =
                                                         [
-                                                            { text = ''verify-executable 4319899683964123 "$CHECKER"'' ; }
-                                                            { expected-standard-output = "/home/checker/resources/mounts/0000000000000000" ; text = ''"$CHECKER"'' ; }
+                                                            { process = "setup" ; text = ''verify-executable 4319899683964123 "$CHECKER"'' ; }
+                                                            { expected-standard-output = "/home/checker/resources/mounts/0000000000000000" ; process = "setup" ; text = ''"$CHECKER"'' ; }
                                                         ] ;
                                                     gc-roots-directory = "/home/checker/.gc-roots" ;
                                                     pkgs = pkgs ;
