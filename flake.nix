@@ -629,7 +629,7 @@
                                                 {
                                                     actions =
                                                         [
-                                                            { text = ''verify-executable 4319899683964123 "$CHECKER"'' ; }
+                                                            { process = "pre" ; text = ''verify-executable 4319899683964123 "$CHECKER"'' ; }
                                                             { expected-standard-output = "/home/checker/resources/mounts/0000000000000000" ; text = ''"$CHECKER"'' ; }
                                                         ] ;
                                                     gc-roots-directory = "/home/checker/.gc-roots" ;
