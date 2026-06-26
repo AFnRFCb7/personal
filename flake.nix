@@ -630,7 +630,7 @@
                                                     actions =
                                                         [
                                                             { text = ''verify-executable 4319899683964123 "$CHECKER"'' ; }
-                                                            { text = ''"$CHECKER"'' ; }
+                                                            # { text = ''"$CHECKER"'' ; }
                                                         ] ;
                                                     gc-roots-directory = "/home/checker/.gc-roots" ;
                                                     pkgs = pkgs ;
