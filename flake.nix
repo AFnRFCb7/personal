@@ -645,13 +645,13 @@
                                                 {
                                                     actions =
                                                         [
-                                                            { process = "pre" ; text = ''verify-executable 8147695952811294 "$CLEANER"'' ; }
+                                                            { process = "pre" ; text = ''check-verify-executable 8147695952811294 "$CLEANER"'' ; }
                                                             { process = "pre" ; text = ''"$CLEANER"'' ; }
-                                                            { process = "pre" ; text = ''verify-executable 4319899683964123 "$CHECKER"'' ; }
+                                                            { process = "pre" ; text = ''check-verify-executable 4319899683964123 "$CHECKER"'' ; }
                                                             { process = "pre" ; text = "check-is-blocked 1 1419998928567182" ; }
                                                             { expected-standard-output = "/home/checker/resources/mounts/0000000000000000" ; process = "pre" ; text = ''"$CHECKER"'' ; }
                                                             { process = "pre" ; text = "check-is-blocked 1 5832875677675439" ; }
-                                                            { process = "post" ; text = ''verify-executable 4338891622787276 "$CLEANER"'' ; }
+                                                            { process = "post" ; text = ''check-verify-executable 4338891622787276 "$CLEANER"'' ; }
                                                             { process = "post" ; text = ''"$CLEANER"'' ; }
                                                         ] ;
                                                     gc-roots-directory = "/home/checker/.gc-roots" ;
