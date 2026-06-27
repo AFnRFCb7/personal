@@ -157,7 +157,7 @@
                                                             {
                                                                 sessionVariables =
                                                                     {
-#                                                                        RESOURCES = "${ builtins.toString resources }" ;
+                                                                        RESOURCES = "${ builtins.toString resources }" ;
                                                                     } ;
                                                             } ;
                                                         hardware.pulseaudio =
