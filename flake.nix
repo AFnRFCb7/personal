@@ -646,7 +646,7 @@
                                                     actions =
                                                         [
                                                             { process = "pre" ; text = ''verify-executable 8147695952811294 "$CLEANER"'' ; }
-                                                            { process = "pre" ; text = ''"$CLEANER"'' ; }
+                                                            # { process = "pre" ; text = ''"$CLEANER"'' ; }
                                                             { process = "pre" ; text = ''verify-executable 4319899683964123 "$CHECKER"'' ; }
                                                             { expected-standard-output = "/home/checker/resources/mounts/0000000000000000" ; process = "pre" ; text = ''"$CHECKER"'' ; }
                                                             { process = "post" ; text = ''verify-executable 4338891622787276 "$CLEANER"'' ; }
