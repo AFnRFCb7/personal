@@ -21,8 +21,10 @@
                                     coreutils = pkgs.coreutils ;
                                     findutils = pkgs.findutils ;
                                     flock = pkgs.flock ;
+                                    gnutar = pkgs.gnutar ;
                                     jq = pkgs.jq ;
                                     visitor = visitor ;
+                                    xz = pkgs.xz ;
                                     writeShellApplication = pkgs.writeShellApplication ;
                                 } ;
                             _visitor = visitor.lib { } ;
