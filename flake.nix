@@ -101,6 +101,9 @@
                                                                                 resources =
                                                                                     visitor
                                                                                         {
+                                                                                            lambda = path : value : [ ] ;
+                                                                                            list = path : list : builtins.concatLists list ;
+                                                                                            set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
                                                                                         }
                                                                                         {
                                                                                             checks =
