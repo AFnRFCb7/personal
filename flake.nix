@@ -116,6 +116,8 @@
                                                                                                                     } ;
                                                                                                                 in base // defaults ;
                                                                                                         in __resource.resource resource ;
+                                                                                                list = path : list : builtins.concatLists list ;
+                                                                                                set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
                                                                                         }
                                                                                         {
                                                                                             checks =
