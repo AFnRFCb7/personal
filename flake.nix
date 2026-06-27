@@ -105,7 +105,7 @@
                                                                                                 path : value :
                                                                                                     [
                                                                                                         ''
-                                                                                                            mkdir --parents "$1/resources/${ builtins.toJSON path }"
+                                                                                                            mkdir --parents "$1"/resources/'${ builtins.toJSON path }'
                                                                                                         ''
 #                                                                                                        (
 #                                                                                                            let
