@@ -101,32 +101,6 @@
                                                                                 resources =
                                                                                     visitor
                                                                                         {
-                                                                                            lambda =
-                                                                                                path : value :
-                                                                                                    let
-                                                                                                        resource =
-                                                                                                            let
-                                                                                                                base = value null ;
-                                                                                                                defaults =
-                                                                                                                    {
-                                                                                                                        init = null ;
-                                                                                                                        release = null ;
-                                                                                                                        seed = path ;
-                                                                                                                        temporary = false ;
-                                                                                                                    } ;
-                                                                                                                in base // defaults ;
-                                                                                                        ___resource = __resource.resource resource ;
-                                                                                                        in
-                                                                                                            [
-                                                                                                                ''
-                                                                                                                    mkdir --parents "$1/resources/${ builtins.toJSON path }"
-                                                                                                                ''
-                                                                                                                ''
-                                                                                                                    ln --symbolic ${ ___resource } "$1/resources/${ builtins.toJSON path }"
-                                                                                                                ''
-                                                                                                            ] ;
-                                                                                                list = path : list : builtins.concatLists list ;
-                                                                                                set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
                                                                                         }
                                                                                         {
                                                                                             checks =
@@ -141,13 +115,12 @@
                                                                                                                                 text =
                                                                                                                                     { resource-path } :
                                                                                                                                         ''
-                                                                                                                                            echo '${ builtins.toJSON resource-path }'
-                                                                                                                                            echo 8665783525381753
+                                                                                                                                            echo '${ resource-path }'
                                                                                                                                         '' ;
                                                                                                                             } ;
                                                                                                                     } ;
                                                                                                         } ;
-                                                                                                } ;
+                                                                                                }
                                                                                         } ;
                                                                                 in builtins.concatStringsSep "\n" ( builtins.concatLists [ clean resources ] ) ;
                                                                     }
