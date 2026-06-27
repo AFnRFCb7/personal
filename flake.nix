@@ -16,22 +16,23 @@
                         let
                             _resource = resource.lib
                                 {
-                                    bash = pkgs.bash ;
                                     buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                     coreutils = pkgs.coreutils ;
-                                    findutils = pkgs.findutils ;
                                     flock = pkgs.flock ;
-                                    gnutar = pkgs.gnutar ;
                                     jq = pkgs.jq ;
                                     visitor = visitor ;
-                                    xz = pkgs.xz ;
                                     writeShellApplication = pkgs.writeShellApplication ;
                                 } ;
                             _visitor = visitor.lib { } ;
                             implementation =
                                 { config , lib , pkgs , ... } :
                                     let
-                                        __resource = _resource.implementation { gc-roots-directory = "/home/${ config.personal.name }/.gc-roots" ; resources-directory = "/home/${ config.personal.name }/resources" ; } ;
+                                        __resource =
+                                            _resource.implementation
+                                                {
+                                                    gc-roots-directory = "/home/${ config.personal.name }/.gc-roots" ;
+                                                    resources-directory = "/home/${ config.personal.name }/resources" ;
+                                                } ;
                                         identity =
                                             pkgs.stdenv.mkDerivation
                                                 {
@@ -83,18 +84,6 @@
                                                                         runtimeInputs = [ pkgs.coreutils ] ;
                                                                         text =
                                                                             let
-                                                                                hooks =
-                                                                                    {
-                                                                                        clean =
-                                                                                            [
-                                                                                                ''
-                                                                                                    mkdir --parents "$1/hooks"
-                                                                                                ''
-                                                                                                ''
-                                                                                                    ln --symbolic ${ __resource.hooks.clean } "$1/hooks/clean.sh"
-                                                                                                ''
-                                                                                            ] ;
-                                                                                    } ;
                                                                                 list =
                                                                                     _visitor.implementation
                                                                                         {
@@ -102,7 +91,7 @@
                                                                                                 path : value :
                                                                                                     [
                                                                                                         "PLUG='${ builtins.toJSON path }'"
-                                                                                                        ''mkdir --parents "$1/user/$PLUG"''
+                                                                                                        ''mkdir --parents "$1/resource/$PLUG"''
                                                                                                         (
                                                                                                             let
                                                                                                                 resource =
@@ -114,7 +103,7 @@
                                                                                                                                 } ;
                                                                                                                         } ;
                                                                                                                 in
-                                                                                                                ''ln --symbolic ${ resource } "$1/user/$PLUG"''
+                                                                                                                ''ln --symbolic ${ resource } "$1/resource/$PLUG"''
                                                                                                         )
                                                                                                     ] ;
                                                                                             list = path : list : builtins.concatLists list ;
