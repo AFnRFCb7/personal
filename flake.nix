@@ -109,7 +109,7 @@
                                                                                                         ''
                                                                                                         (
                                                                                                             ''
-                                                                                                                ln --symbolic ${ __resource.resource ( { init = null ; release = null ; seed = path ; temporary = false ; } // ( value null ) ) } "$1"/resources/'${ builtins.toJSON path }'
+                                                                                                                ln --symbolic ${ __resource.resource ( { init = 1 ; release = 2 ; seed = path ; temporary = false ; } // ( value null ) ) } "$1"/resources/'${ builtins.toJSON path }'
                                                                                                             ''
                                                                                                         )
                                                                                                     ] ;
