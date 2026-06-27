@@ -31,7 +31,7 @@
                             implementation =
                                 { config , lib , pkgs , ... } :
                                     let
-                                        __resource = _resource.implementation { resources-directory = "/home/${ config.personal.name }/resources" ; } ;
+                                        __resource = _resource.implementation { gc-roots-directory = "/home/${ config.personal.name }/.gc-roots" ; resources-directory = "/home/${ config.personal.name }/resources" ; } ;
                                         identity =
                                             pkgs.stdenv.mkDerivation
                                                 {
