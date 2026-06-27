@@ -99,9 +99,13 @@
                                                                                         ''
                                                                                     ] ;
                                                                                 resources =
-                                                                                    visitor
+                                                                                    _visitor
                                                                                         {
-                                                                                            lambda = path : value : [ ] ;
+                                                                                            lambda =
+                                                                                                path : value :
+                                                                                                    [
+
+                                                                                                    ] ;
                                                                                             list = path : list : builtins.concatLists list ;
                                                                                             set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
                                                                                         }
