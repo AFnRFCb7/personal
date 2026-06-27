@@ -125,13 +125,14 @@
                                                                                                                 ignore :
                                                                                                                     {
                                                                                                                         init =
-                                                                                                                            {
-                                                                                                                                text =
-                                                                                                                                    { resource-path } :
-                                                                                                                                        ''
-                                                                                                                                            echo '${ resource-path }'
-                                                                                                                                        '' ;
-                                                                                                                            } ;
+                                                                                                                            ignore :
+                                                                                                                                {
+                                                                                                                                    text =
+                                                                                                                                        { resource-path } :
+                                                                                                                                            ''
+                                                                                                                                                echo '${ resource-path }'
+                                                                                                                                            '' ;
+                                                                                                                                } ;
                                                                                                                     } ;
                                                                                                         } ;
                                                                                                 } ;
