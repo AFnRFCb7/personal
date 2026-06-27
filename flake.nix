@@ -138,7 +138,7 @@
                                                                                                         } ;
                                                                                                 } ;
                                                                                         } ;
-                                                                                in builtins.concatStringsSep "/n" ( builtins.concatLists [ clean resources ] ) ;
+                                                                                in builtins.concatStringsSep "/n" ( builtins.concatLists [ clean ] ) ;
                                                                     }
                                                             )
                                                         ] ;
