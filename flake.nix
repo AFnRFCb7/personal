@@ -19,6 +19,7 @@
                                     bash = pkgs.bash ;
                                     buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                     coreutils = pkgs.coreutils ;
+                                    findutils = pkgs.findutils ;
                                     flock = pkgs.flock ;
                                     jq = pkgs.jq ;
                                     visitor = visitor ;
