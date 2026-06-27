@@ -109,7 +109,7 @@
                                                                                                         ''
                                                                                                         (
                                                                                                             let
-                                                                                                                ___resource = __resource ( { init = null ; release = null ; seed = path ; temporary = false ; } // ( value null ) ) ;
+                                                                                                                ___resource = __resource.resource ( { init = null ; release = null ; seed = path ; temporary = false ; } // ( value null ) ) ;
                                                                                                                 in
                                                                                                                     ''
                                                                                                                         ln --symbolic ${ ___resource } "$1/resources/${ builtins.toJSON path }"
