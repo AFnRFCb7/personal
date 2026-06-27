@@ -91,7 +91,7 @@
                                                                                                     mkdir --parents "$1/hooks"
                                                                                                 ''
                                                                                                 ''
-                                                                                                    ln --symbolic ${ __resource.hooks.cleaner } "$1/hooks/clean.sh"
+                                                                                                    ln --symbolic ${ __resource.hooks.clean } "$1/hooks/clean.sh"
                                                                                                 ''
                                                                                             ] ;
                                                                                     } ;
