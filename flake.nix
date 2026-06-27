@@ -76,7 +76,7 @@
                                         resources =
                                             pkgs.stdenv.mkDerivation
                                                 {
-                                                    installPhase = "resources" ;
+                                                    installPhase = ''resources "$out"'' ;
                                                     name = "resources" ;
                                                     nativeBuildInputs =
                                                         [
