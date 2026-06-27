@@ -120,7 +120,7 @@
                                                                                                                             } ;
                                                                                                                     } ;
                                                                                                         } ;
-                                                                                                }
+                                                                                                } ;
                                                                                         } ;
                                                                                 in builtins.concatStringsSep "\n" ( builtins.concatLists [ clean resources ] ) ;
                                                                     }
