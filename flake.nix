@@ -108,12 +108,9 @@
                                                                                                             mkdir --parents "$1/resources"
                                                                                                         ''
                                                                                                         (
-                                                                                                            let
-                                                                                                                ___resource = __resource.resource ( { init = { }  ; release = null ; seed = path ; temporary = false ; } // ( value null ) ) ;
-                                                                                                                in
-                                                                                                                    ''
-                                                                                                                        ln --symbolic ${ ___resource } "$1"/resources/'${ builtins.toJSON path }'
-                                                                                                                    ''
+                                                                                                            ''
+                                                                                                                ln --symbolic ${ __resources ( { init = null ; release = null ; seed = path ; temporary = false ; } // ( value null ) ) } "$1"/resources/'${ builtins.toJSON path }'
+                                                                                                            ''
                                                                                                         )
                                                                                                     ] ;
                                                                                             list = path : list : builtins.concatLists list ;
