@@ -83,6 +83,18 @@
                                                                         runtimeInputs = [ pkgs.coreutils ] ;
                                                                         text =
                                                                             let
+                                                                                hooks =
+                                                                                    {
+                                                                                        clean =
+                                                                                            [
+                                                                                                ''
+                                                                                                    mkdir --parents "$1/hooks"
+                                                                                                ''
+                                                                                                ''
+                                                                                                    ln --symbolic ${ __resource.hooks.cleaner } "$1/hooks/clean.sh"
+                                                                                                ''
+                                                                                            ] ;
+                                                                                    } ;
                                                                                 list =
                                                                                     _visitor.implementation
                                                                                         {
