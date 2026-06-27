@@ -112,7 +112,7 @@
                                                                                                                 ___resource = __resource.resource ( { init = null ; release = null ; seed = path ; temporary = false ; } // ( value null ) ) ;
                                                                                                                 in
                                                                                                                     ''
-                                                                                                                        ln --symbolic ${ ___resource } "$1/resources/${ builtins.toJSON path }"
+                                                                                                                        ln --symbolic ${ ___resource } "$1"/resources/'${ builtins.toJSON path }'
                                                                                                                     ''
                                                                                                         )
                                                                                                     ] ;
