@@ -84,7 +84,13 @@
                                                                         runtimeInputs = [ pkgs.coreutils ] ;
                                                                         text =
                                                                             let
-                                                                                list =
+                                                                                clean =
+                                                                                    [
+                                                                                        ''
+                                                                                            ln --symbolic ${ __resource.clean } "$1/clean.sh"
+                                                                                        ''
+                                                                                    ] ;
+                                                                                resources =
                                                                                     _visitor.implementation
                                                                                         {
                                                                                             lambda =
@@ -158,7 +164,7 @@
                                                                                             foobar = ignore : null ;
                                                                                             production = { } ;
                                                                                         } ;
-                                                                                in builtins.concatStringsSep "\n" ( builtins.concatLists [ list ] ) ;
+                                                                                in builtins.concatStringsSep "\n" ( builtins.concatLists [ clean resource ] ) ;
                                                                     } ;
                                                             in "${ application }/bin/installPhase $out" ;
                                                     name = "resources" ;
