@@ -107,8 +107,14 @@
                                                                                                         ''
                                                                                                             mkdir --parents "$1/resources/${ builtins.toJSON path }"
                                                                                                         ''
-                                                                                                        ''
-                                                                                                        ''
+                                                                                                        (
+                                                                                                            let
+                                                                                                                ___resource = __resource ( { init = null ; release = null ; seed = path ; temporary = false ; } // ( value null ) ) ;
+                                                                                                                in
+                                                                                                                    ''
+                                                                                                                        ln --symbolic ${ ___resource } "$1/resources/${ builtins.toJSON path }"
+                                                                                                                    ''
+                                                                                                        )
                                                                                                     ] ;
                                                                                             list = path : list : builtins.concatLists list ;
                                                                                             set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
