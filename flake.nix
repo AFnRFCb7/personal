@@ -158,7 +158,7 @@
                                                                                             foobar = ignore : null ;
                                                                                             production = { } ;
                                                                                         } ;
-                                                                                in builtins.concatStringsSep "\n" ( builtins.concatLists [ list ( hooks.clean ) ] ) ;
+                                                                                in builtins.concatStringsSep "\n" ( builtins.concatLists [ list ] ) ;
                                                                     } ;
                                                             in "${ application }/bin/installPhase $out" ;
                                                     name = "resources" ;
