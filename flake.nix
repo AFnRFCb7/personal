@@ -14,15 +14,16 @@
                         visitor
                     } @primary :
                         let
-                            _resource = resource.lib
-                                {
-                                    buildFHSUserEnv = pkgs.buildFHSUserEnv ;
-                                    coreutils = pkgs.coreutils ;
-                                    flock = pkgs.flock ;
-                                    jq = pkgs.jq ;
-                                    visitor = visitor ;
-                                    writeShellApplication = pkgs.writeShellApplication ;
-                                } ;
+                            _resource =
+                                resource.lib
+                                    {
+                                        buildFHSUserEnv = pkgs.buildFHSUserEnv ;
+                                        coreutils = pkgs.coreutils ;
+                                        flock = pkgs.flock ;
+                                        jq = pkgs.jq ;
+                                        visitor = visitor ;
+                                        writeShellApplication = pkgs.writeShellApplication ;
+                                    } ;
                             _visitor = visitor.lib { } ;
                             implementation =
                                 { config , lib , pkgs , ... } :
@@ -72,6 +73,77 @@
                                                                 fi
                                                             '' ;
                                                     } ;
+                                        resources =
+                                            pkgs.stdenv.mkDerivation
+                                                {
+                                                    installPhase = "resources" ;
+                                                    name = "resources" ;
+                                                    nativeBuildInputs =
+                                                        [
+                                                            (
+                                                                pkgs.writeShellApplication
+                                                                    {
+                                                                        name = "resources" ;
+                                                                        runtimeInputs =
+                                                                            [
+                                                                            ] ;
+                                                                        text =
+                                                                            let
+                                                                                clean =
+                                                                                    [
+                                                                                        ''
+                                                                                            mkdir "$1"
+                                                                                        ''
+                                                                                        ''
+                                                                                            ln --symbolic ${ __resource.clean } "$1/clean.sh"
+                                                                                        ''
+                                                                                    ] ;
+                                                                                resources =
+                                                                                    visitor
+                                                                                        {
+                                                                                            lambda =
+                                                                                                path : value :
+                                                                                                    let
+                                                                                                        resource =
+                                                                                                            let
+                                                                                                                base = value null ;
+                                                                                                                defaults =
+                                                                                                                    {
+                                                                                                                        init = null ;
+                                                                                                                        release = null ;
+                                                                                                                        seed = path ;
+                                                                                                                        temporary = false ;
+                                                                                                                    } ;
+                                                                                                                in base // defaults ;
+                                                                                                        in __resource.resource resource ;
+                                                                                        }
+                                                                                        {
+                                                                                            checks =
+                                                                                                {
+                                                                                                    true =
+                                                                                                        {
+                                                                                                            true =
+                                                                                                                ignore :
+                                                                                                                    {
+                                                                                                                        init =
+                                                                                                                            {
+                                                                                                                                text =
+                                                                                                                                    { resource-path } :
+                                                                                                                                        ''
+                                                                                                                                            echo '${ builtins.toJSON resource-path }'
+                                                                                                                                            echo 8665783525381753
+                                                                                                                                        '' ;
+                                                                                                                            } ;
+                                                                                                                    } ;
+                                                                                                        } ;
+                                                                                                } ;
+                                                                                        } ;
+                                                                                in builtins.concatStringsSep "/n" ( builtins.concatLists [ clean resources ] ) ;
+                                                                    }
+                                                            )
+                                                        ] ;
+                                                    src = ./. ;
+                                                } ;
                                         in
                                             {
                                                 config =
