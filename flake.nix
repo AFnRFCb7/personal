@@ -129,25 +129,19 @@
                                                                                                                 ignore :
                                                                                                                     {
                                                                                                                         init =
-                                                                                                                            {
-                                                                                                                                action =
-                                                                                                                                    { } :
-                                                                                                                                        let
-                                                                                                                                            application =
-                                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                                    {
-                                                                                                                                                        name = "action" ;
-                                                                                                                                                        runtimeInputs = [ ] ;
-                                                                                                                                                        text =
-                                                                                                                                                            ''
-                                                                                                                                                            '' ;
-                                                                                                                                                    } ;
-                                                                                                                                                in "${ application }/bin/init" ;
-                                                                                                                                recovery =
-                                                                                                                                    {
-
-                                                                                                                                    } ;
-                                                                                                                            } ;
+                                                                                                                            ignore :
+                                                                                                                                {
+                                                                                                                                    action =
+                                                                                                                                        ignore :
+                                                                                                                                            {
+                                                                                                                                                text =
+                                                                                                                                                    { resource-path } :
+                                                                                                                                                        ''
+                                                                                                                                                            echo '${ builtins.toJSON resource-path }'
+                                                                                                                                                            echo 7684688996624945
+                                                                                                                                                        '' ;
+                                                                                                                                            } ;
+                                                                                                                                } ;
                                                                                                                         release =
                                                                                                                             {
                                                                                                                                 action =
