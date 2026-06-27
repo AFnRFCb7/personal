@@ -99,12 +99,16 @@
                                                                                         ''
                                                                                     ] ;
                                                                                 resources =
-                                                                                    _visitor
+                                                                                    _visitor.implementation
                                                                                         {
                                                                                             lambda =
                                                                                                 path : value :
                                                                                                     [
-
+                                                                                                        ''
+                                                                                                            mkdir --parents "$1/resources/${ builtins.toJSON path }"
+                                                                                                        ''
+                                                                                                        ''
+                                                                                                        ''
                                                                                                     ] ;
                                                                                             list = path : list : builtins.concatLists list ;
                                                                                             set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
