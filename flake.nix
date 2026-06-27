@@ -92,7 +92,7 @@
                                                                                 clean =
                                                                                     [
                                                                                         ''
-                                                                                            mkdir "$1"
+                                                                                            mkdir --parents "$1"
                                                                                         ''
                                                                                         ''
                                                                                             ln --symbolic ${ __resource.clean } "$1/clean.sh"
