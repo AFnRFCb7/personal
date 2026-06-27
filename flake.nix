@@ -21,7 +21,7 @@
                                         coreutils = pkgs.coreutils ;
                                         flock = pkgs.flock ;
                                         jq = pkgs.jq ;
-                                        visitor = visitor ;
+                                        visitor = visitor.implementation ;
                                         writeShellApplication = pkgs.writeShellApplication ;
                                     } ;
                             _visitor = visitor.lib { } ;
