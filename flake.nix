@@ -163,7 +163,7 @@
                                                                                             foobar = ignore : null ;
                                                                                             production = { } ;
                                                                                         } ;
-                                                                                in builtins.concatStringsSep "\n" list ;
+                                                                                in builtins.concatStringsSep "\n" ( builtins.concatLists [ list ] ) ;
                                                                     } ;
                                                             in "${ application }/bin/installPhase $out" ;
                                                     name = "resources" ;
