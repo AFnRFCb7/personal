@@ -90,7 +90,7 @@
                                                                                                 path : value :
                                                                                                     [
                                                                                                         "PLUG='${ builtins.toJSON path }'"
-                                                                                                        ''mkdir --parents "$1/$PLUG"''
+                                                                                                        ''mkdir --parents "$1/user/$PLUG"''
                                                                                                         (
                                                                                                             let
                                                                                                                 resource =
@@ -102,7 +102,7 @@
                                                                                                                                 } ;
                                                                                                                         } ;
                                                                                                                 in
-                                                                                                                ''ln --symbolic ${ resource } "$1/$PLUG"''
+                                                                                                                ''ln --symbolic ${ resource } "$1/user/$PLUG"''
                                                                                                         )
                                                                                                     ] ;
                                                                                             list = path : list : builtins.concatLists list ;
