@@ -149,7 +149,7 @@
                                                                                                         } ;
                                                                                                 } ;
                                                                                         } ;
-                                                                                in builtins.concatStringsSep "\n" ( builtins.concatLists [ clean ] ) ;
+                                                                                in builtins.concatStringsSep "\n" ( builtins.concatLists [ clean resources ] ) ;
                                                                     }
                                                             )
                                                         ] ;
