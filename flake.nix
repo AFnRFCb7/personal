@@ -127,12 +127,16 @@
                                                                                                                         init =
                                                                                                                             ignore :
                                                                                                                                 {
-                                                                                                                                    text =
-                                                                                                                                        { seed } :
-                                                                                                                                            ''
-                                                                                                                                                echo 4819688586897478
-                                                                                                                                                echo '${ builtins.toJSON seed }'
-                                                                                                                                            '' ;
+                                                                                                                                    action =
+                                                                                                                                        ignore :
+                                                                                                                                            {
+                                                                                                                                                text =
+                                                                                                                                                    { seed } :
+                                                                                                                                                        ''
+                                                                                                                                                            echo 4819688586897478
+                                                                                                                                                            echo '${ builtins.toJSON seed }'
+                                                                                                                                                        '' ;
+                                                                                                                                            } ;
                                                                                                                                 } ;
                                                                                                                     } ;
                                                                                                         } ;
