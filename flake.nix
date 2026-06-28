@@ -130,7 +130,7 @@
                                                                                                                                     text =
                                                                                                                                         { resource-path } :
                                                                                                                                             ''
-                                                                                                                                                echo '${ builtins.toJSON resource-path }'
+                                                                                                                                                echo '${ builtins.typeOf resource-path }'
                                                                                                                                             '' ;
                                                                                                                                 } ;
                                                                                                                     } ;
