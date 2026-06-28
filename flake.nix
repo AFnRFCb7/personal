@@ -128,10 +128,10 @@
                                                                                                                             ignore :
                                                                                                                                 {
                                                                                                                                     text =
-                                                                                                                                        { resource-path } :
+                                                                                                                                        { seed } :
                                                                                                                                             ''
                                                                                                                                                 echo 4819688586897478
-                                                                                                                                                echo '${ builtins.toJSON resource-path }'
+                                                                                                                                                echo '${ builtins.toJSON seed }'
                                                                                                                                             '' ;
                                                                                                                                 } ;
                                                                                                                     } ;
