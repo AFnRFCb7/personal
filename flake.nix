@@ -130,7 +130,7 @@
                                                                                                                                     text =
                                                                                                                                         { resource-path } :
                                                                                                                                             ''
-                                                                                                                                                echo '${ builtins.typeOf resource-path }'
+                                                                                                                                                echo 4819688586897478
                                                                                                                                             '' ;
                                                                                                                                 } ;
                                                                                                                     } ;
