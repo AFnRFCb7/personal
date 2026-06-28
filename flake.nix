@@ -131,6 +131,7 @@
                                                                                                                                         { resource-path } :
                                                                                                                                             ''
                                                                                                                                                 echo 4819688586897478
+                                                                                                                                                echo '${ builtins.toJSON resource-path }'
                                                                                                                                             '' ;
                                                                                                                                 } ;
                                                                                                                     } ;
