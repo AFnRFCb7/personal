@@ -617,7 +617,7 @@
                                                         [
                                                             { process = "pre" ; text = ''check-verify-executable 8147695952811294 "$RESOURCES/clean.sh"'' ; }
                                                             { process = "pre" ; text = ''"$RESOURCES/clean.sh"'' ; }
-                                                            { process = "pre" ; text = ''check-verify-executable 4319899683964123 "$RESOURCES"/'["checks","true","true"]''' ; }
+                                                            { process = "pre" ; text = ''check-verify-executable 4319899683964123 "$RESOURCES"/'["checks","true","true"]' '' ; }
                                                             # { process = "pre" ; text = "check-is-blocked 1 1419998928567182" ; }
                                                             # { expected-standard-output = "/home/checker/resources/mounts/0000000000000000" ; process = "pre" ; text = ''"$CHECKER"'' ; }
                                                             # { process = "pre" ; text = "check-is-blocked 1 5832875677675439" ; }
