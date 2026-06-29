@@ -621,7 +621,7 @@
                                                             { process = "pre" ; text = ''check-verify-executable "$RESOURCES"/resources/'["checks","true","true"]' 4319899683964123'' ; }
                                                             { expected-standard-output = "/home/checker/resources/mounts/0000000000000000" ; process = "pre" ; text = ''"$RESOURCES"/resources/'["checks","true","true"]' 6375466588671266'' ; }
                                                             { process = "pre" ; text = "check-is-blocked 1 5832875677675439" ; }
-                                                            # { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 7416264163739854'' ; }
+                                                            { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 7416264163739854'' ; }
                                                             # { process = "pre" ; text = ''"$RESOURCES/clean.sh"'' ; }
                                                         ] ;
                                                     gc-roots-directory = "/home/checker/.gc-roots" ;
