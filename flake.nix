@@ -130,6 +130,7 @@
                                                                                                                                     action =
                                                                                                                                         ignore :
                                                                                                                                             {
+                                                                                                                                                runtimeInputs = pkgs : [ pkgs.coreutils ] ;
                                                                                                                                                 text =
                                                                                                                                                     { seed } :
                                                                                                                                                         ''
