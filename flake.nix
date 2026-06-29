@@ -131,7 +131,7 @@
                                                                                                                                     action =
                                                                                                                                         ignore :
                                                                                                                                             {
-                                                                                                                                                runtimeInputs = pkgs : [ pkgs.coreutils ] ;
+                                                                                                                                                targetPkgs = pkgs : [ pkgs.coreutils ] ;
                                                                                                                                                 text =
                                                                                                                                                     { seed } :
                                                                                                                                                         ''
