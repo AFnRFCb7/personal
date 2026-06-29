@@ -138,6 +138,20 @@
                                                                                                                                                         '' ;
                                                                                                                                             } ;
                                                                                                                                 } ;
+                                                                                                                        release =
+                                                                                                                            ignore :
+                                                                                                                                {
+                                                                                                                                    action =
+                                                                                                                                        ignore :
+                                                                                                                                            {
+                                                                                                                                                text =
+                                                                                                                                                    { seed } :
+                                                                                                                                                        ''
+                                                                                                                                                            echo 7739686798417818
+                                                                                                                                                            echo '${ builtins.toJSON seed }'
+                                                                                                                                                        '' ;
+                                                                                                                                            } ;
+                                                                                                                                } ;
                                                                                                                     } ;
                                                                                                         } ;
                                                                                                 } ;
