@@ -110,7 +110,7 @@
                                                                                                         ''
                                                                                                         (
                                                                                                             ''
-                                                                                                                ln --symbolic ${ __resource.resource ( { init = 1 ; release = 2.0 ; seed = path ; temporary = false ; } // ( value null ) ) } "$1"/resources/'${ builtins.toJSON path }'
+                                                                                                                ln --symbolic ${ __resource.resource ( { seed = path ; } // ( value null ) ) } "$1"/resources/'${ builtins.toJSON path }'
                                                                                                             ''
                                                                                                         )
                                                                                                     ] ;
@@ -154,6 +154,7 @@
                                                                                                                                                         '' ;
                                                                                                                                             } ;
                                                                                                                                 } ;
+                                                                                                                        temporary = false ;
                                                                                                                     } ;
                                                                                                         } ;
                                                                                                 } ;
