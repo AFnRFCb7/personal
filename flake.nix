@@ -139,7 +139,10 @@
                                                                                                                                                         ''
                                                                                                                                                             echo 4819688586897478
                                                                                                                                                             echo '${ builtins.toJSON seed }'
+                                                                                                                                                            echo FIND
                                                                                                                                                             find / -mindepth 1 -maxdepth 1
+                                                                                                                                                            echo PWD
+                                                                                                                                                            pwd
                                                                                                                                                         '' ;
                                                                                                                                             } ;
                                                                                                                                 } ;
