@@ -139,7 +139,7 @@
                                                                                                                                                         ''
                                                                                                                                                             echo 4819688586897478
                                                                                                                                                             echo '${ builtins.toJSON seed }'
-                                                                                                                                                            find -mindepth 1 -maxdepth 1 /
+                                                                                                                                                            find / -mindepth 1 -maxdepth 1
                                                                                                                                                         '' ;
                                                                                                                                             } ;
                                                                                                                                 } ;
