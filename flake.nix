@@ -143,6 +143,8 @@
                                                                                                                                                             find / -mindepth 1 -maxdepth 1
                                                                                                                                                             echo PWD
                                                                                                                                                             pwd
+                                                                                                                                                            echo FIND
+                                                                                                                                                            find ~/resources
                                                                                                                                                         '' ;
                                                                                                                                             } ;
                                                                                                                                 } ;
