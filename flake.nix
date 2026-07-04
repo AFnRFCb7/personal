@@ -19,6 +19,7 @@
                                     {
                                         buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                         coreutils = pkgs.coreutils ;
+                                        findutils = pkgs.findutils ;
                                         flock = pkgs.flock ;
                                         mkDerivation = pkgs.stdenv.mkDerivation ;
                                         jq = pkgs.jq ;
