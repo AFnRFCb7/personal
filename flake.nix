@@ -133,13 +133,13 @@
                                                                                                                                     action =
                                                                                                                                         ignore :
                                                                                                                                             {
-                                                                                                                                                targetPkgs = pkgs : [ pkgs.findutils pkgs.coreutils ] ;
+                                                                                                                                                targetPkgs = pkgs : [ pkgs.coreutils pkgs.findutils  ] ;
                                                                                                                                                 text =
                                                                                                                                                     { seed } :
                                                                                                                                                         ''
                                                                                                                                                             echo 4819688586897478
                                                                                                                                                             echo '${ builtins.toJSON seed }'
-                                                                                                                                                            find -maxdepth 1 /
+                                                                                                                                                            find -mindepth 1 -maxdepth 1 /
                                                                                                                                                         '' ;
                                                                                                                                             } ;
                                                                                                                                 } ;
