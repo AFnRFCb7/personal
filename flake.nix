@@ -622,7 +622,7 @@
                                                 {
                                                     actions =
                                                         [
-#                                                            { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 8147695952811294'' ; }
+                                                            { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 8147695952811294'' ; }
 #                                                            { process = "pre" ; text = ''"$RESOURCES/clean.sh"'' ; }
 #                                                            { process = "pre" ; text = "check-is-blocked 1 1419998928567182" ; }
 #                                                            { process = "pre" ; text = ''check-verify-executable "$RESOURCES"/resources/'["checks","true","true"]' 4319899683964123'' ; }
