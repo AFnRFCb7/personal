@@ -20,9 +20,13 @@
                                         buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                         coreutils = pkgs.coreutils ;
                                         findutils = pkgs.findutils ;
+                                        invalid-init-channel = "invalid-init" ;
+                                        invalid-release-channel = "invalid-release" ;
                                         flock = pkgs.flock ;
                                         mkDerivation = pkgs.stdenv.mkDerivation ;
                                         jq = pkgs.jq ;
+                                        valid-init-channel = "valid-init" ;
+                                        valid-release-channel = "valid-release" ;
                                         visitor = _visitor.implementation ;
                                         writeShellApplication = pkgs.writeShellApplication ;
                                     } ;
