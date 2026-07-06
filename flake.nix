@@ -152,11 +152,9 @@
                                                                                                                                         ignore :
                                                                                                                                             {
                                                                                                                                                 text =
-                                                                                                                                                    { seed } :
-                                                                                                                                                        ''
-                                                                                                                                                            echo 2679141487527185
-                                                                                                                                                            echo '${ builtins.toJSON seed }'
-                                                                                                                                                        '' ;
+                                                                                                                                                    ''
+                                                                                                                                                        echo 2679141487527185
+                                                                                                                                                    '' ;
                                                                                                                                             } ;
                                                                                                                                 } ;
                                                                                                                         targets = [ "1968976268514822" ] ;
