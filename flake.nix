@@ -135,12 +135,10 @@
                                                                                                                                             {
                                                                                                                                                 targetPkgs = pkgs : [ pkgs.coreutils ] ;
                                                                                                                                                 text =
-                                                                                                                                                    { seed } :
-                                                                                                                                                        ''
-                                                                                                                                                            echo 4819688586897478
-                                                                                                                                                            echo '${ builtins.toJSON seed }'
-                                                                                                                                                            touch 1968976268514822
-                                                                                                                                                        '' ;
+                                                                                                                                                    ''
+                                                                                                                                                        echo 4819688586897478
+                                                                                                                                                        touch 1968976268514822
+                                                                                                                                                    '' ;
                                                                                                                                             } ;
                                                                                                                                 } ;
                                                                                                                         release =
