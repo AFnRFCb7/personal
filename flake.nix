@@ -151,6 +151,7 @@
                                                                                                                                     action =
                                                                                                                                         ignore :
                                                                                                                                             {
+                                                                                                                                                targetPkgs = pkgs : [ pkgs.coreutils ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         echo 2679141487527185
