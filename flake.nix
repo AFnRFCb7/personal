@@ -390,7 +390,7 @@
                                                                                 after = [ "network.target" ];
                                                                                 serviceConfig =
                                                                                     {
-                                                                                        ExecStart = __resources.release ;
+                                                                                        ExecStart = __resource.release ;
                                                                                         Restart = "always";
                                                                                         User = config.personal.name ;
                                                                                     } ;
