@@ -386,7 +386,14 @@
                                                                     {
                                                                         release =
                                                                             {
-
+                                                                                wantedBy = [ "multi-user.target" ];
+                                                                                after = [ "network.target" ];
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart = __resources.release ;
+                                                                                        Restart = "always";
+                                                                                        User = config.personal.name ;
+                                                                                    } ;
                                                                             } ;
                                                                     } ;
                                                                 timers =
