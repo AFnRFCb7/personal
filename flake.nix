@@ -643,6 +643,7 @@
                                                 {
                                                     actions =
                                                         [
+                                                            { process = "pre" ; text = "check-file-integrity 2838357616866574 7543136495631915" ; }
                                                             { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 8147695952811294'' ; }
                                                             { process = "pre" ; text = ''"$RESOURCES/clean.sh"'' ; }
                                                             { process = "pre" ; text = "check-is-blocked 1 1419998928567182" ; }
