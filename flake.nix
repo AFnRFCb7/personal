@@ -104,6 +104,15 @@
                                                                                             ln --symbolic ${ __resource.clean } "$1/clean.sh"
                                                                                         ''
                                                                                     ] ;
+                                                                                release =
+                                                                                    [
+                                                                                        ''
+                                                                                            mkdir --parents "$1"
+                                                                                        ''
+                                                                                        ''
+                                                                                            ln --symbolic ${ __resource.release } "$1/release.sh"
+                                                                                        ''
+                                                                                    ] ;
                                                                                 resources =
                                                                                     _visitor.implementation
                                                                                         {
@@ -164,7 +173,7 @@
                                                                                                         } ;
                                                                                                 } ;
                                                                                         } ;
-                                                                                in builtins.concatStringsSep "\n" ( builtins.concatLists [ clean resources ] ) ;
+                                                                                in builtins.concatStringsSep "\n" ( builtins.concatLists [ clean release resources ] ) ;
                                                                     }
                                                             )
                                                         ] ;
