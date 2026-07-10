@@ -643,7 +643,7 @@
                                                 {
                                                     actions =
                                                         [
-#                                                            { process = "pre" ; text = "check-file-integrity 2838357616866574 cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e" ; }
+                                                            { process = "pre" ; text = "check-file-integrity 2838357616866574 cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e" ; }
 #                                                            { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 8147695952811294'' ; }
 #                                                            { process = "pre" ; text = ''"$RESOURCES/clean.sh"'' ; }
 #                                                            { process = "pre" ; text = "check-is-blocked 1 1419998928567182" ; }
