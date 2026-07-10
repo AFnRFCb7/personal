@@ -643,6 +643,7 @@
                                                 {
                                                     actions =
                                                         let
+                                                            double-quote = ''"'' ;
                                                             single-quote = "'" ;
                                                             in
                                                                 [
