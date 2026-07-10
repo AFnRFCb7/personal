@@ -648,7 +648,7 @@
                                                             { process = "pre" ; text = ''"$RESOURCES/clean.sh"'' ; }
                                                             { process = "pre" ; text = "check-is-blocked 1 1419998928567182" ; }
                                                             { process = "pre" ; text = ''check-verify-executable "$RESOURCES"/resources/'["checks","true","true"]' 4319899683964123'' ; }
-                                                            { process = "pre" ; text = '' '$RESOURCES"/resources/'["checks","true","true"]' '' ; }
+#                                                            { process = "pre" ; text = '' '$RESOURCES"/resources/'["checks","true","true"]' '' ; }
                                                             { process = "pre" ; text = "check-is-blocked 1 5832875677675439" ; }
                                                             { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 5998291939563833'' ; }
                                                             { process = "post" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 7416264163739854'' ; }
