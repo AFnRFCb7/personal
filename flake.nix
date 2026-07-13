@@ -653,7 +653,11 @@
                                                                     { process = "pre" ; text = "check-is-blocked 1 1419998928567182" ; }
                                                                     { process = "pre" ; text = ''check-verify-executable ${ double-quote }$RESOURCES${ double-quote }/resources/${ single-quote }["checks","true","true"]${ single-quote } 4319899683964123'' ; }
                                                                     { accepts-redirect = false ; expected-standard-output = "/home/checker/resources/mounts/0000000000000000" ; process = "pre" ; text = ''${ double-quote }$RESOURCES${ double-quote }/resources/${ single-quote }["checks","true","true"]${ single-quote }'' ; }
-                                                                    { process = "pre" ; text = ''echo "$PATH"'' ; }
+                                                                    {
+                                                                        accepts-redirect = false ;
+                                                                        expected-standard-output = ''/nix/store/0q85yfxd70aq8iv4n43hqcmh2dbyb80z-jq-1.7.1-bin/bin:/nix/store/im5d9idf8f1lwvhfc8nk09al2z071hcm-check-redis-valid-init/bin:/nix/store/6ih4hww08fds3w7afn9vqqkia0f6a3xl-check-file-integrity/bin:/nix/store/4r6yqmp1d4avg27vd0636w7cs4n2kyqh-check-is-blocked/bin:/nix/store/ff9g49clqaxfi1bq50kw52kgclsnx1x7-chec'' ;
+                                                                        process = "pre" ;
+                                                                        text = ''which check-redis-valid-init"'' ; }
                                                                     { process = "pre" ; text = '' check-redis-valid-init '' ; timeout = 1 ; }
                                                                     { process = "pre" ; text = "check-is-blocked 1 5832875677675439" ; }
                                                                     { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 5998291939563833'' ; }
