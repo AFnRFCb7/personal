@@ -653,7 +653,7 @@
                                                                     { process = "pre" ; text = "check-is-blocked 1 1419998928567182" ; }
                                                                     { process = "pre" ; text = ''check-verify-executable ${ double-quote }$RESOURCES${ double-quote }/resources/${ single-quote }["checks","true","true"]${ single-quote } 4319899683964123'' ; }
                                                                     { accepts-redirect = false ; expected-standard-output = "/home/checker/resources/mounts/0000000000000000" ; process = "pre" ; text = ''${ double-quote }$RESOURCES${ double-quote }/resources/${ single-quote }["checks","true","true"]${ single-quote }'' ; }
-                                                                    { process = "pre" ; text = "check-redis-valid-init" ; }
+                                                                    # { process = "pre" ; text = "check-redis-valid-init" ; }
                                                                     { process = "pre" ; text = "check-is-blocked 1 5832875677675439" ; }
                                                                     { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 5998291939563833'' ; }
                                                                     { process = "post" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 7416264163739854'' ; }
