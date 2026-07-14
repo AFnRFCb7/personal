@@ -660,7 +660,7 @@
                                                                         text = ''which check-redis-valid-init'' ; }
                                                                     {
                                                                         accepts-redirect = false ;
-                                                                        expected-standard-output = ''/nix/store/im5d9idf8f1lwvhfc8nk09al2z071hcm-check-redis-valid-init/bin/check-redis-valid-init'' ;
+                                                                        expected-standard-output = ''-r-xr-xr-x'' ;
                                                                         process = "pre" ;
                                                                         text = ''stat --format %A /nix/store/im5d9idf8f1lwvhfc8nk09al2z071hcm-check-redis-valid-init/bin/check-redis-valid-init'' ; }
                                                                     { process = "pre" ; text = '' check-redis-valid-init '' ; timeout = 1 ; }
