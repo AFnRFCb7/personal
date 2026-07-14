@@ -663,7 +663,7 @@
                                                                         accepts-redirect = false ;
                                                                         expected-standard-output = "-r-xr-xr-x" ;
                                                                         process = "pre" ;
-                                                                        text = ''cat /nix/store/im5d9idf8f1lwvhfc8nk09al2z071hcm-check-redis-valid-init/bin/check-redis-valid-init'' ;
+                                                                        text = ''fold -w 40 /nix/store/im5d9idf8f1lwvhfc8nk09al2z071hcm-check-redis-valid-init/bin/check-redis-valid-init'' ;
                                                                     }
                                                                     { accepts-redirect = true ; process = "pre" ; text = ''/nix/store/im5d9idf8f1lwvhfc8nk09al2z071hcm-check-redis-valid-init/bin/check-redis-valid-init'' ; timeout = 1 ; }
                                                                     { process = "pre" ; text = "check-is-blocked 1 5832875677675439" ; }
