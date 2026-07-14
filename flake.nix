@@ -661,7 +661,7 @@
                                                                     }
                                                                     {
                                                                         accepts-redirect = false ;
-                                                                        expected-standard-output = "" ;
+                                                                        expected-standard-output = "-r-xr-xr-x" ;
                                                                         process = "pre" ;
                                                                         text = ''stat --format %A /nix/store/im5d9idf8f1lwvhfc8nk09al2z071hcm-check-redis-valid-init/bin/check-redis-valid-init'' ;
                                                                     }
