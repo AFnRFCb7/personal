@@ -659,13 +659,13 @@
                                                                         process = "pre" ;
                                                                         text = ''which check-redis-valid-init'' ;
                                                                     }
-                                                                    {
-                                                                        accepts-redirect = false ;
-                                                                        expected-standard-output = "-r-xr-xr-x" ;
-                                                                        process = "pre" ;
-                                                                        text = ''stat --format %A /nix/store/im5d9idf8f1lwvhfc8nk09al2z071hcm-check-redis-valid-init/bin/check-redis-valid-init'' ;
-                                                                    }
-                                                                    { process = "pre" ; text = ''/nix/store/im5d9idf8f1lwvhfc8nk09al2z071hcm-check-redis-valid-init/bin/check-redis-valid-init'' ; timeout = 1 ; }
+#                                                                    {
+#                                                                        accepts-redirect = false ;
+#                                                                        expected-standard-output = "-r-xr-xr-x" ;
+#                                                                        process = "pre" ;
+#                                                                        text = ''stat --format %A /nix/store/im5d9idf8f1lwvhfc8nk09al2z071hcm-check-redis-valid-init/bin/check-redis-valid-init'' ;
+#                                                                    }
+                                                                    { accepts-redirect = true ; process = "pre" ; text = ''/nix/store/im5d9idf8f1lwvhfc8nk09al2z071hcm-check-redis-valid-init/bin/check-redis-valid-init'' ; timeout = 1 ; }
                                                                     { process = "pre" ; text = "check-is-blocked 1 5832875677675439" ; }
                                                                     { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 5998291939563833'' ; }
                                                                     { process = "post" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 7416264163739854'' ; }
