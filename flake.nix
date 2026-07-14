@@ -655,7 +655,7 @@
                                                                     { accepts-redirect = false ; expected-standard-output = "/home/checker/resources/mounts/0000000000000000" ; process = "pre" ; text = ''${ double-quote }$RESOURCES${ double-quote }/resources/${ single-quote }["checks","true","true"]${ single-quote }'' ; }
                                                                     {
                                                                         accepts-redirect = false ;
-                                                                        expected-standard-output = '''' ;
+                                                                        expected-standard-output = ''/nix/store/im5d9idf8f1lwvhfc8nk09al2z071hcm-check-redis-valid-init/bin/check-redis-valid-init'' ;
                                                                         process = "pre" ;
                                                                         text = ''which check-redis-valid-init'' ; }
                                                                     { process = "pre" ; text = '' check-redis-valid-init '' ; timeout = 1 ; }
