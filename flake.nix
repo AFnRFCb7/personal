@@ -659,7 +659,7 @@
                                                                         text =
                                                                             ''
                                                                                 # shellcheck disable=SC2288
-                                                                                ${ double-quote }$RESOURCES${ double-quote }/resources/${ single-quote }["checks","true","true"]${ single-quote }
+                                                                                ${ double-quote }$RESOURCES${ double-quote }/resources/${ single-quote }["checks","true","true"]${ single-quote } 9416174984176284
                                                                             '' ;
                                                                     }
 #                                                                    {
@@ -682,7 +682,8 @@
                                                                                 jq \
                                                                                     --null-input \
                                                                                     '{
-                                                                                        "arguments" : [ ]
+                                                                                        "arguments" : [ "9416174984176284" ] ,
+                                                                                        "index" : "0000000000000000"
                                                                                     }' | check-redis-valid-init
                                                                             '' ;
                                                                         timeout = 1 ;
