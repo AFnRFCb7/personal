@@ -652,7 +652,16 @@
                                                                     { process = "pre" ; text = ''"$RESOURCES/clean.sh"'' ; }
                                                                     { process = "pre" ; text = "check-is-blocked 1 1419998928567182" ; }
                                                                     { process = "pre" ; text = ''check-verify-executable ${ double-quote }$RESOURCES${ double-quote }/resources/${ single-quote }["checks","true","true"]${ single-quote } 4319899683964123'' ; }
-                                                                    { accepts-redirect = false ; expected-standard-output = "/home/checker/resources/mounts/0000000000000000" ; process = "pre" ; text = ''${ double-quote }$RESOURCES${ double-quote }/resources/${ single-quote }["checks","true","true"]${ single-quote }'' ; }
+                                                                    {
+                                                                        accepts-redirect = false ;
+                                                                        expected-standard-output = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                        process = "pre" ;
+                                                                        text =
+                                                                            ''
+                                                                                SCRIPT=${ double-quote }$RESOURCES${ double-quote }/resources/${ single-quote }["checks","true","true"]${ single-quote }
+                                                                                "$SCRIPT"
+                                                                            '' ;
+                                                                    }
 #                                                                    {
 #                                                                        accepts-redirect = false ;
 #                                                                        expected-standard-output = ''/nix/store/im5d9idf8f1lwvhfc8nk09al2z071hcm-check-redis-valid-init/bin/check-redis-valid-init'' ;
