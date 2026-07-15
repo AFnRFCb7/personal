@@ -656,7 +656,10 @@
                                                                         accepts-redirect = false ;
                                                                         expected-standard-output = "/home/checker/resources/mounts/0000000000000000" ;
                                                                         process = "pre" ;
-                                                                        text = ''${ double-quote }$RESOURCES${ double-quote }/resources/${ single-quote }["checks","true","true"]${ single-quote }'' ;
+                                                                        text =
+                                                                            ''
+                                                                                ${ double-quote }$RESOURCES${ double-quote }/resources/${ single-quote }["checks","true","true"]${ single-quote }
+                                                                            '' ;
                                                                     }
 #                                                                    {
 #                                                                        accepts-redirect = false ;
