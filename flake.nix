@@ -682,8 +682,6 @@
                                                                                 jq \
                                                                                     --null-input \
                                                                                     '{
-                                                                                        "arguments" : [ "9416174984176284" ] ,
-                                                                                        "index" : "0000000000000000"
                                                                                     }' | check-redis-valid-init
                                                                             '' ;
                                                                         timeout = 1 ;
