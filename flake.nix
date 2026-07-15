@@ -684,7 +684,7 @@
                                                                                     '{
                                                                                         "arguments" : [ "9416174984176284" ] ,
                                                                                         "index" : "0000000000000000" ,
-                                                                                        "inputs: [ ]
+                                                                                        "inputs" : [ ]
                                                                                     }' | check-redis-valid-init
                                                                             '' ;
                                                                         timeout = 1 ;
