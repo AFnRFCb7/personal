@@ -658,6 +658,7 @@
                                                                         process = "pre" ;
                                                                         text =
                                                                             ''
+                                                                                # shellcheck disable=SC2288
                                                                                 ${ double-quote }$RESOURCES${ double-quote }/resources/${ single-quote }["checks","true","true"]${ single-quote }
                                                                             '' ;
                                                                     }
