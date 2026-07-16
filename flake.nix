@@ -688,17 +688,8 @@
                                                                                         "originator-pid" : "1497" ,
                                                                                         "seed" :
                                                                                             [
-                                                                                                {
-                                                                                                    "path" : [ 0 ] ,
-                                                                                                    "type" : "string" ,
-                                                                                                    "value" : "checks"
-                                                                                                } ,
-                                                                                                {
-                                                                                                    "path" : [ 1 ] ,
-                                                                                                    "type" : "string"
-                                                                                                    "value" : "true"
-                                                                                                }
-                                                                                            ]
+                                                                                            ] ,
+                                                                                        "standard-output" : "4819688586897478"
                                                                                     }' | check-redis-valid-init
                                                                             '' ;
                                                                         timeout = 1 ;
