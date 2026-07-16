@@ -689,9 +689,9 @@
                                                                                         "seed" :
                                                                                             {
                                                                                                 {
-                                                                                                    path : [ 0 ] ,
-                                                                                                    type : "string" ,
-                                                                                                    value : "checks"
+                                                                                                    "path" : [ 0 ] ,
+                                                                                                    "type" : "string" ,
+                                                                                                    "value" : "checks"
                                                                                                 }
                                                                                             } ,
                                                                                     }' | check-redis-valid-init
