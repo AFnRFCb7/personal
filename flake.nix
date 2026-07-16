@@ -692,8 +692,13 @@
                                                                                                     "path" : [ 0 ] ,
                                                                                                     "type" : "string" ,
                                                                                                     "value" : "checks"
+                                                                                                } ,
+                                                                                                {
+                                                                                                    "path" : [ 1 ] ,
+                                                                                                    "type" : "string"
+                                                                                                    "value" : "true"
                                                                                                 }
-                                                                                            } ,
+                                                                                            }
                                                                                     }' | check-redis-valid-init
                                                                             '' ;
                                                                         timeout = 1 ;
