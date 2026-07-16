@@ -151,6 +151,20 @@
                                                                                                                                                     ''
                                                                                                                                                         echo 4819688586897478
                                                                                                                                                         touch 1968976268514822
+                                                                                                                                                        echo PROCESS_PID
+                                                                                                                                                        pid=$PROCESS_PID
+                                                                                                                                                        while [[ "$pid" != "1" && -n "$pid" ]]
+                                                                                                                                                        do
+                                                                                                                                                            ps -p "$pid" -o pid=,ppid=,comm=
+                                                                                                                                                            pid=$(ps -p "$pid" -o ppid= | tr -d ' ')
+                                                                                                                                                        done
+                                                                                                                                                        echo DOLLAR
+                                                                                                                                                        pid=$$
+                                                                                                                                                        while [[ "$pid" != "1" && -n "$pid" ]]
+                                                                                                                                                        do
+                                                                                                                                                            ps -p "$pid" -o pid=,ppid=,comm=
+                                                                                                                                                            pid=$(ps -p "$pid" -o ppid= | tr -d ' ')
+                                                                                                                                                        done
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                 } ;
