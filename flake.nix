@@ -705,7 +705,7 @@
                                                                                                     "value" : "true"
                                                                                                 }
                                                                                             ] ,
-                                                                                        "standard-output" : "\n4819688586897478" ,
+                                                                                        "standard-output" : "4819688586897478\n" ,
                                                                                         "targets" : [ "1968976268514822" ] ,
                                                                                         "text" : "echo 4819688586897478\ntouch 1968976268514822" ,
                                                                                         "temporary" : false
