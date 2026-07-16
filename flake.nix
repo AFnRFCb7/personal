@@ -681,11 +681,12 @@
                                                                             ''
                                                                                 jq \
                                                                                     --null-input \
+                                                                                    --arg ORIGINATOR_PID "$?" \
                                                                                     '{
                                                                                         "arguments" : [ "9416174984176284" ] ,
                                                                                         "index" : "0000000000000000" ,
                                                                                         "inputs" : [ ] ,
-                                                                                        "originator-pid" : "1497" ,
+                                                                                        "originator-pid" : $ORIGINATOR_PID ,
                                                                                         "seed" :
                                                                                             [
                                                                                                 {
