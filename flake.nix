@@ -151,9 +151,9 @@
                                                                                                                                                     ''
                                                                                                                                                         echo 4819688586897478
                                                                                                                                                         touch 1968976268514822
-                                                                                                                                                        echo pstree -p "$$"
-                                                                                                                                                        pstree -p "$$"
-                                                                                                                                                        echo pstree -p "$PROCESS_PID"
+                                                                                                                                                        echo pstree -sp "$$"
+                                                                                                                                                        pstree -sp "$$"
+                                                                                                                                                        echo pstree -sp "$PROCESS_PID"
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                 } ;
