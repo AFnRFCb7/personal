@@ -692,10 +692,15 @@
                                                                                                     "path" : [ 0 ] ,
                                                                                                     "type" : "string" ,
                                                                                                     "value" : "checks"
+                                                                                                } ,
+                                                                                                {
+                                                                                                    "path" : [ 1 ] ,
+                                                                                                    "type" : "string" ,
+                                                                                                    "value" : "true"
                                                                                                 }
                                                                                             ] ,
                                                                                         "standard-output" : "4819688586897478" ,
-                                                                                        "targets" : null ,
+                                                                                        "targets" : [ "1968976268514822" ] ,
                                                                                         "text" : null ,
                                                                                         "temporary" : false
                                                                                     }' | check-redis-valid-init
