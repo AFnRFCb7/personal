@@ -151,9 +151,10 @@
                                                                                                                                                     ''
                                                                                                                                                         echo 4819688586897478
                                                                                                                                                         touch 1968976268514822
-                                                                                                                                                        echo pstree -sp "$$"
+                                                                                                                                                        echo OBSERVED pstree -sp "$$"
                                                                                                                                                         pstree -sp "$$"
-                                                                                                                                                        echo pstree -sp "$PROCESS_PID"
+                                                                                                                                                        echo EXPECTED pstree -sp "$PROCESS_PID"
+                                                                                                                                                        pstree -sp "$PROCESS_PID"
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                 } ;
