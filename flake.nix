@@ -685,8 +685,15 @@
                                                                                         "arguments" : [ "9416174984176284" ] ,
                                                                                         "index" : "0000000000000000" ,
                                                                                         "inputs" : [ ] ,
-                                                                                        "originator-pid" : "6397932444377334" ,
-                                                                                        "seed" : null
+                                                                                        "originator-pid" : "1497" ,
+                                                                                        "seed" :
+                                                                                            {
+                                                                                                {
+                                                                                                    path : [ 0 ] ,
+                                                                                                    type : "string" ,
+                                                                                                    value : "checks"
+                                                                                                }
+                                                                                            } ,
                                                                                     }' | check-redis-valid-init
                                                                             '' ;
                                                                         timeout = 1 ;
