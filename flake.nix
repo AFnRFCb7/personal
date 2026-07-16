@@ -698,10 +698,15 @@
                                                                                                     "type" : "string" ,
                                                                                                     "value" : "true"
                                                                                                 }
+                                                                                                {
+                                                                                                    "path" : [ 2 ] ,
+                                                                                                    "type" : "string" ,
+                                                                                                    "value" : "true"
+                                                                                                }
                                                                                             ] ,
                                                                                         "standard-output" : "4819688586897478" ,
                                                                                         "targets" : [ "1968976268514822" ] ,
-                                                                                        "text" : null ,
+                                                                                        "text" : "echo 4819688586897478\ntouch 1968976268514822" ,
                                                                                         "temporary" : false
                                                                                     }' | check-redis-valid-init
                                                                             '' ;
