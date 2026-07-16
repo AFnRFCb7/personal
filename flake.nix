@@ -155,6 +155,8 @@
                                                                                                                                                         pstree -sp "$$"
                                                                                                                                                         echo EXPECTED pstree -sp "$PROCESS_PID"
                                                                                                                                                         pstree -sp "$PROCESS_PID"
+                                                                                                                                                        echo EXPECTED pstree -sp "$COMMAND_PID"
+                                                                                                                                                        pstree -sp "$COMMAND_PID"
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                 } ;
