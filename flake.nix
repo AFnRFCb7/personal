@@ -146,11 +146,12 @@
                                                                                                                                     action =
                                                                                                                                         ignore :
                                                                                                                                             {
-                                                                                                                                                targetPkgs = pkgs : [ pkgs.coreutils ] ;
+                                                                                                                                                targetPkgs = pkgs : [ pkgs.coreutils pkgs.psmisc ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         echo 4819688586897478
                                                                                                                                                         touch 1968976268514822
+                                                                                                                                                        pstree -p "$$"
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                 } ;
