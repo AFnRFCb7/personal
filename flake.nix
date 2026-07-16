@@ -681,7 +681,7 @@
                                                                             ''
                                                                                 jq \
                                                                                     --null-input \
-                                                                                    --arg ORIGINATOR_PID "$?" \
+                                                                                    --arg ORIGINATOR_PID "$PROCESS_PID" \
                                                                                     '{
                                                                                         "arguments" : [ "9416174984176284" ] ,
                                                                                         "index" : "0000000000000000" ,
