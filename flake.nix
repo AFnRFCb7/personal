@@ -714,6 +714,8 @@
                                                                     }
                                                                     { process = "pre" ; text = "check-is-blocked 1 5832875677675439" ; }
                                                                     { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 5998291939563833'' ; }
+                                                                    { process = "post" ; text = "check-is-blocked 1 7626887114962184" ; }
+                                                                    { process = "post" ; text = "echo WTF 2179326392323391" ; }
                                                                     { process = "post" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 6268856992447286'' ; }
                                                                     { process = "post" ; text = ''"$RESOURCES/clean.sh"'' ; }
                                                                 ] ;
