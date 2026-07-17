@@ -719,7 +719,7 @@
                                                                         text =
                                                                             ''
                                                                                 echo WTF 4354972835723345
-                                                                                ${ pkgs.findutils }/bin/find ~/resources
+                                                                                find ~/resources
                                                                             '' ;
                                                                     }
                                                                     { process = "post" ; text = ''"$RESOURCES/clean.sh"'' ; }
