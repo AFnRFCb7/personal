@@ -23,6 +23,7 @@
                                         invalid-init-channel = "invalid-init" ;
                                         invalid-release-channel = "invalid-release" ;
                                         flock = pkgs.flock ;
+                                        gnused = pkgs.gnused ;
                                         mkDerivation = pkgs.stdenv.mkDerivation ;
                                         jq = pkgs.jq ;
                                         valid-init-channel = "valid-init" ;
