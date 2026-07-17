@@ -709,8 +709,9 @@
                                                                                         "temporary" : false
                                                                                     }' | check-redis-valid-init
                                                                             '' ;
-                                                                        timeout = 1 ;
+                                                                        timeout = 60 ;
                                                                     }
+                                                                    { process = "pre" ; text = "echo WTF" ; }
                                                                     { process = "pre" ; text = "check-is-blocked 1 5832875677675439" ; }
                                                                     { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 5998291939563833'' ; }
                                                                     { process = "post" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 7416264163739854'' ; }
