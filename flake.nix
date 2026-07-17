@@ -714,7 +714,14 @@
                                                                     { process = "pre" ; text = "check-is-blocked 1 5832875677675439" ; }
                                                                     { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 5998291939563833'' ; }
                                                                     { process = "post" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 7416264163739854'' ; }
-                                                                    { process = "post" ; text = "echo WTF 4354972835723345" ; }
+                                                                    {
+                                                                        process = "post" ;
+                                                                        text =
+                                                                            ''
+                                                                                echo WTF 4354972835723345
+                                                                                ${ pkgs.findutils }/bin/find ~/resources
+                                                                            '' ;
+                                                                    }
                                                                     { process = "post" ; text = ''"$RESOURCES/clean.sh"'' ; }
                                                                 ] ;
                                                     gc-roots-directory = "/home/checker/.gc-roots" ;
