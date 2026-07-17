@@ -719,21 +719,6 @@
                                                                         text =
                                                                             ''
                                                                                 echo WTF 4354972835723345
-                                                                                find ~/resources
-                                                                                journalctl -u release.service
-                                                                            '' ;
-                                                                    }
-                                                                    {
-                                                                        process = "post" ;
-                                                                        text =
-                                                                            ''
-                                                                                find ~/resources
-                                                                            '' ;
-                                                                    }
-                                                                    {
-                                                                        process = "post" ;
-                                                                        text =
-                                                                            ''
                                                                                 journalctl -u release.service
                                                                             '' ;
                                                                     }
