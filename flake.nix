@@ -715,7 +715,6 @@
                                                                     { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 5998291939563833'' ; }
                                                                     { process = "post" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 7416264163739854'' ; }
                                                                     { process = "post" ; text = ''"$RESOURCES/clean.sh"'' ; }
-                                                                    { process = "pre" ; text = "echo WTF 3981788863137541" ; }
                                                                 ] ;
                                                     gc-roots-directory = "/home/checker/.gc-roots" ;
                                                     pkgs = pkgs ;
