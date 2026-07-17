@@ -712,8 +712,8 @@
                                                                         timeout = 60 ;
                                                                     }
                                                                     { process = "pre" ; text = "check-is-blocked 1 5832875677675439" ; }
-                                                                    { process = "pre" ; text = "echo WTF 1391479634489597" ; }
                                                                     { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 5998291939563833'' ; }
+                                                                    { process = "pre" ; text = "echo WTF 6433534841718179" ; }
                                                                     { process = "post" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 7416264163739854'' ; }
                                                                     { process = "post" ; text = ''"$RESOURCES/clean.sh"'' ; }
                                                                 ] ;
