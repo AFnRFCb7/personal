@@ -707,7 +707,7 @@
                                                                         process = "post" ;
                                                                         text =
                                                                         ''
-                                                                            find ~/resources/pids
+                                                                            journalctl -u release.service
                                                                         '' ;
                                                                     }
                                                                     { process = "post" ; text = "check-is-blocked 10 7626887114962184" ; }
