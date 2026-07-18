@@ -698,18 +698,18 @@
                                                                                         "temporary" : false
                                                                                     }' | check-redis-valid-init
                                                                             '' ;
-                                                                        timeout = 60 ;
+                                                                        timeout = 1 ;
                                                                     }
                                                                     {
                                                                         process = "pre" ;
                                                                         text =
                                                                             ''
-                                                                                jq \
+                                                                                CHANNEL="valid-release" jq \
                                                                                     --null-input \
                                                                                     '{
                                                                                     }' | check-redis-valid-init
                                                                             '' ;
-                                                                        timeout = 60 ;
+                                                                        timeout = 1 ;
                                                                     }
                                                                     { process = "pre" ; text = "check-is-blocked 60 5832875677675439" ; }
                                                                     { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 5998291939563833'' ; }
