@@ -706,9 +706,10 @@
                                                                     {
                                                                         process = "post" ;
                                                                         text =
-                                                                        ''
-                                                                            journalctl -u release.service
-                                                                        '' ;
+                                                                            ''
+                                                                                sleep 10s
+                                                                                journalctl -u release.service
+                                                                            '' ;
                                                                     }
                                                                     { process = "post" ; text = "check-is-blocked 10 7626887114962184" ; }
                                                                     { process = "post" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 6268856992447286'' ; }
