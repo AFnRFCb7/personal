@@ -663,18 +663,6 @@
                                                                                 ${ double-quote }$RESOURCES${ double-quote }/resources/${ single-quote }["checks","true","true"]${ single-quote } 9416174984176284
                                                                             '' ;
                                                                     }
-#                                                                    {
-#                                                                        accepts-redirect = false ;
-#                                                                        expected-standard-output = ''/nix/store/im5d9idf8f1lwvhfc8nk09al2z071hcm-check-redis-valid-init/bin/check-redis-valid-init'' ;
-#                                                                        process = "pre" ;
-#                                                                        text = ''which check-redis-valid-init'' ;
-#                                                                    }
-#                                                                    {
-#                                                                        accepts-redirect = false ;
-#                                                                        expected-standard-output = "-r-xr-xr-x" ;
-#                                                                        process = "pre" ;
-#                                                                        text = ''cat /nix/store/im5d9idf8f1lwvhfc8nk09al2z071hcm-check-redis-valid-init/bin/check-redis-valid-init'' ;
-#                                                                    }
                                                                     {
                                                                         accepts-redirect = false ;
                                                                         process = "pre" ;
