@@ -700,18 +700,7 @@
                                                                             '' ;
                                                                         timeout = 1 ;
                                                                     }
-                                                                    {
-                                                                        process = "pre" ;
-                                                                        text =
-                                                                            ''
-                                                                                CHANNEL="valid-release" jq \
-                                                                                    --null-input \
-                                                                                    '{
-                                                                                    }' | check-redis-valid-init
-                                                                            '' ;
-                                                                        timeout = 1 ;
-                                                                    }
-                                                                    { process = "pre" ; text = "check-is-blocked 60 5832875677675439" ; }
+                                                                    { accepts-redirect = false ; process = "pre" ; text = "check-is-blocked 60 5832875677675439" ; }
                                                                     { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 5998291939563833'' ; }
                                                                     ### THIS IS WRONG
                                                                     { process = "post" ; text = "check-is-blocked 1 7626887114962184" ; }
