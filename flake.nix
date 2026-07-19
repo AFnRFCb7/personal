@@ -703,7 +703,14 @@
                                                                     { process = "pre" ; text = "check-is-blocked 10 5832875677675439" ; }
                                                                     { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 5998291939563833'' ; }
                                                                     ### THIS IS WRONG
-                                                                    { process = "post" ; text = "check-is-blocked 10 7626887114962184" ; }
+                                                                    {
+                                                                        process = "post" ;
+                                                                        text =
+                                                                            ''
+                                                                                find ~/resources | sort
+                                                                            '' ;
+                                                                    }
+                                                                    { process = "post" ; text = "check-is-blocked 60 7626887114962184" ; }
                                                                     { process = "post" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 6268856992447286'' ; }
                                                                     { process = "post" ; text = ''"$RESOURCES/clean.sh"'' ; }
                                                                 ] ;
