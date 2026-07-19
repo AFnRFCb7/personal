@@ -709,7 +709,7 @@
                                                                             ''
                                                                                 echo CURRENT $$
                                                                                 find ~/resources/pids | sort
-                                                                                journald -u release.service
+                                                                                journalctl -u release.service
                                                                             '' ;
                                                                     }
                                                                     { process = "post" ; text = "check-is-blocked 60 7626887114962184" ; }
