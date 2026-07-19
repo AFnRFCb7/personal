@@ -709,6 +709,7 @@
                                                                             ''
                                                                                 echo CURRENT $$
                                                                                 find ~/resources/pids | sort
+                                                                                systemctl status release.service
                                                                                 journalctl -u release.service
                                                                             '' ;
                                                                     }
