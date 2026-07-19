@@ -707,7 +707,7 @@
                                                                         process = "post" ;
                                                                         text =
                                                                             ''
-                                                                                find ~/resources | sort
+                                                                                find ~/resources/pids | sort
                                                                             '' ;
                                                                     }
                                                                     { process = "post" ; text = "check-is-blocked 60 7626887114962184" ; }
