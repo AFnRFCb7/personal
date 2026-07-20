@@ -712,7 +712,7 @@
                                                                                 systemctl status release.service
                                                                                 journalctl -u release.service
                                                                                 echo 'echo 1723258852938545 1369941427493491 6381958385993974 >&2' >> /tmp/DEBUG
-                                                                                cat /tmp/DEBUG
+                                                                                grep 1444874378897782 /tmp/DEBUG
                                                                             '' ;
                                                                     }
                                                                     { process = "post" ; text = "check-is-blocked 60 7626887114962184" ; }
