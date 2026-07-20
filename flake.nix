@@ -709,6 +709,7 @@
                                                                             ''
                                                                                 sleep 10s
                                                                                 echo 1723258852938545 5614819986253568 >> /tmp/DEBUG
+                                                                                journalctl -u release.service
                                                                                 cat /tmp/DEBUG
                                                                             '' ;
                                                                     }
