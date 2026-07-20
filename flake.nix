@@ -708,14 +708,13 @@
                                                                         text =
                                                                             ''
                                                                                 sleep 10s
-                                                                                echo 1723258852938545 5614819986253568 >> /tmp/DEBUG
-                                                                                echo 1723258852938545 4229699287389548 >> /tmp/DEBUG
-                                                                                cat /etc/systemd/system/release.service >> /tmp/DEBUG
-                                                                                systemctl status release.service
-                                                                                echo 1723258852938545 6171876255156853 >> /tmp/DEBUG
-                                                                                journalctl -u release.service
-                                                                                echo 1723258852938545 2673221811473927 >> /tmp/DEBUG
-                                                                                cat /tmp/DEBUG
+                                                                                cat >> /tmp/DEBUG <<EOF
+                                                                                5614819986253568
+                                                                                "$( cat /etc/systemd/system/release.service )"
+                                                                                2562163355744675
+                                                                                "$( journalctl -u release.service )"
+                                                                                2673221811473927
+                                                                                EOF
                                                                             '' ;
                                                                     }
                                                                     { process = "post" ; text = "check-is-blocked 60 7626887114962184" ; }
