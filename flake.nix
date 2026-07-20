@@ -710,8 +710,6 @@
                                                                                 sleep 10s
                                                                                 cat <<EOF
                                                                                 5614819986253568
-                                                                                "$( cat /etc/systemd/system/release.service )"
-                                                                                2562163355744675
                                                                                 "$( journalctl -u release.service )"
                                                                                 2673221811473927
                                                                                 EOF
