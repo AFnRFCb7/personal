@@ -708,6 +708,7 @@
                                                                         text =
                                                                             ''
                                                                                 cat /tmp/DEBUG
+                                                                                sleep 10s
                                                                             '' ;
                                                                     }
                                                                     { process = "post" ; text = "check-is-blocked 60 7626887114962184" ; }
