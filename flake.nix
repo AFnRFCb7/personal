@@ -707,11 +707,6 @@
                                                                         process = "post" ;
                                                                         text =
                                                                             ''
-                                                                                echo CURRENT $$
-                                                                                find ~/resources/pids | sort
-                                                                                systemctl status release.service
-                                                                                journalctl -u release.service
-                                                                                echo 'echo 1723258852938545 1369941427493491 6381958385993974 >&2' >> /tmp/DEBUG
                                                                                 cat /tmp/DEBUG
                                                                             '' ;
                                                                     }
