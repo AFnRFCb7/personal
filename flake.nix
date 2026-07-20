@@ -709,6 +709,7 @@
                                                                             ''
                                                                                 sleep 10s
                                                                                 cat <<EOF
+                                                                                $( cat /tmp/DEBUG )
                                                                                 5614819986253568
                                                                                 "$( journalctl -u release.service )"
                                                                                 2673221811473927
