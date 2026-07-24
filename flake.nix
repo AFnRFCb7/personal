@@ -716,7 +716,7 @@
 #                                                                                EOF
 #                                                                            '' ;
 #                                                                    }
-                                                                    { process = "post" ; text = ''echo "$0" && check-is-blocked 1 7626887114962184'' ; }
+                                                                    { process = "post" ; text = ''echo "$COMMANDS" && check-is-blocked 1 7626887114962184'' ; }
                                                                     { process = "post" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 6268856992447286'' ; }
                                                                     { process = "post" ; text = ''"$RESOURCES/clean.sh"'' ; }
                                                                 ] ;
