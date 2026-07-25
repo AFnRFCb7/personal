@@ -707,7 +707,7 @@
                                                                         process = "post" ;
                                                                         text =
                                                                             ''
-                                                                                sleep 30s
+                                                                                sleep 10s
                                                                                 cat <<EOF
                                                                                 $( cat /tmp/DEBUG )
                                                                                 5614819986253568
