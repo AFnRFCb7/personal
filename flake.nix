@@ -708,6 +708,7 @@
                                                                         process = "post" ;
                                                                         text =
                                                                             ''
+                                                                                sleep 20s
                                                                                 cat /tmp/DEBUG
                                                                             '' ;
                                                                     }
