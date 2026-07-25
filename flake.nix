@@ -651,7 +651,7 @@
                                                                     { process = "pre" ; text = "check-file-integrity 2838357616866574 cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e" ; }
                                                                     { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 8147695952811294'' ; }
                                                                     { process = "pre" ; text = ''"$RESOURCES/clean.sh"'' ; }
-                                                                    { process = "pre" ; text = "check-is-blocked 1 1419998928567182" ; }
+                                                                    { process = "pre" ; text = "check-redis-is-blocked 1 1419998928567182" ; }
                                                                     { process = "pre" ; text = ''check-verify-executable ${ double-quote }$RESOURCES${ double-quote }/resources/${ single-quote }["checks","true","true"]${ single-quote } 4319899683964123'' ; }
                                                                     {
                                                                         accepts-redirect = false ;
@@ -700,7 +700,7 @@
                                                                             '' ;
                                                                         timeout = 60 ;
                                                                     }
-                                                                    { process = "pre" ; text = "check-is-blocked 10 5832875677675439" ; }
+                                                                    { process = "pre" ; text = "check-redis-is-blocked 10 5832875677675439" ; }
                                                                     { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 5998291939563833'' ; }
                                                                     ### THIS IS WRONG
 #                                                                    {
@@ -725,7 +725,7 @@
                                                                             '' ;
                                                                         timeout = 60 ;
                                                                     }
-                                                                    { process = "post" ; text = ''check-is-blocked 1 7626887114962184'' ; }
+                                                                    { process = "post" ; text = ''check-redis-is-blocked 1 7626887114962184'' ; }
                                                                     { process = "post" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 6268856992447286'' ; }
                                                                     { process = "post" ; text = ''"$RESOURCES/clean.sh"'' ; }
                                                                 ] ;
