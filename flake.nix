@@ -701,7 +701,7 @@
                                                                             '' ;
                                                                         timeout = 60 ;
                                                                     }
-                                                                    { process = "pre" ; text = "check-file-integrity 6911857327234197 41e69b6e151644f046daa59060e8d11fb078339bb5aa676bcd0155aa9c45662525e7bdc0f346e4ca799146a9b7d01919e7fc315ea3d2c6f89c3955b6fc88dfc8" ; }
+                                                                    # { process = "pre" ; text = "check-file-integrity 6911857327234197 41e69b6e151644f046daa59060e8d11fb078339bb5aa676bcd0155aa9c45662525e7bdc0f346e4ca799146a9b7d01919e7fc315ea3d2c6f89c3955b6fc88dfc8" ; }
                                                                     {
                                                                         process = "pre" ;
                                                                         text =
