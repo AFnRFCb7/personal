@@ -703,6 +703,43 @@
                                                                     { process = "pre" ; text = "check-is-blocked 40 5832875677675439" ; }
                                                                     { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 5998291939563833'' ; }
 #                                                                    ### THIS IS WRONG
+                                                                    {
+                                                                        accepts-redirect = false ;
+                                                                        process = "post" ;
+                                                                        text =
+                                                                            ''
+                                                                                jq \
+                                                                                    --null-input \
+                                                                                    '{
+                                                                                        "arguments" : [ "9416174984176284" ] ,
+                                                                                        "index" : "0000000000000000" ,
+                                                                                        "inputs" : { } ,
+                                                                                        "seed" :
+                                                                                            [
+                                                                                                {
+                                                                                                    "path" : [ 0 ] ,
+                                                                                                    "type" : "string" ,
+                                                                                                    "value" : "checks"
+                                                                                                } ,
+                                                                                                {
+                                                                                                    "path" : [ 1 ] ,
+                                                                                                    "type" : "string" ,
+                                                                                                    "value" : "true"
+                                                                                                } ,
+                                                                                                {
+                                                                                                    "path" : [ 2 ] ,
+                                                                                                    "type" : "string" ,
+                                                                                                    "value" : "true"
+                                                                                                }
+                                                                                            ] ,
+                                                                                        "standard-output" : "4819688586897478\n" ,
+                                                                                        "targets" : [ "1968976268514822" ] ,
+                                                                                        "text" : "echo 4819688586897478\ntouch 1968976268514822\n" ,
+                                                                                        "temporary" : false
+                                                                                    }' | check-redis-valid-init
+                                                                            '' ;
+                                                                        timeout = 60 ;
+                                                                    }
 #                                                                    {
 #                                                                        process = "post" ;
 #                                                                        text =
