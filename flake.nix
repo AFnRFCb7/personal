@@ -26,6 +26,7 @@
                                         gnused = pkgs.gnused ;
                                         mkDerivation = pkgs.stdenv.mkDerivation ;
                                         jq = pkgs.jq ;
+                                        redis = pkgs.redis ;
                                         valid-init-channel = "valid-init" ;
                                         valid-release-channel = "valid-release" ;
                                         visitor = _visitor.implementation ;
