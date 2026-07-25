@@ -706,7 +706,7 @@
                                                                         process = "pre" ;
                                                                         text =
                                                                             ''
-                                                                                echo PROCESS_PID=$PROCESS_PID
+                                                                                echo "PROCESS_PID=$PROCESS_PID"
                                                                                 cat /tmp/DEBUG
                                                                             '' ;
                                                                     }
