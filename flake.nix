@@ -712,7 +712,7 @@
 #                                                                            '' ;
 #                                                                    }
                                                                     {
-                                                                        accepts-redirect = false ;
+                                                                        accepts-redirect = true ;
                                                                         process = "post" ;
                                                                         text =
                                                                             ''
