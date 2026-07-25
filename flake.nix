@@ -708,7 +708,7 @@
                                                                         text =
                                                                             ''
                                                                                 sleep 10s
-                                                                                find ${ resources-directory }
+                                                                                find /home/checker/resources
                                                                             '' ;
                                                                     }
                                                                     {
