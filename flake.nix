@@ -704,7 +704,11 @@
                                                                     { process = "pre" ; text = "check-file-integrity 6911857327234197 41e69b6e151644f046daa59060e8d11fb078339bb5aa676bcd0155aa9c45662525e7bdc0f346e4ca799146a9b7d01919e7fc315ea3d2c6f89c3955b6fc88dfc8" ; }
                                                                     {
                                                                         process = "pre" ;
-                                                                        text = "cat /tmp/DEBUG" ;
+                                                                        text =
+                                                                            ''
+                                                                                echo PROCESS_PID=$PROCESS_PID
+                                                                                cat /tmp/DEBUG
+                                                                            '' ;
                                                                     }
                                                                     { process = "pre" ; text = "check-redis-is-blocked 10 5832875677675439" ; }
                                                                     { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 5998291939563833'' ; }
