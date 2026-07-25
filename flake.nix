@@ -639,7 +639,7 @@
                             checks =
                                 private :
                                     {
-                                        xxx =
+                                        ${ "resource: happy path" } =
                                             _resource.check
                                                 {
                                                     actions =
