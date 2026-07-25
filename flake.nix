@@ -704,15 +704,15 @@
                                                                     { process = "pre" ; text = "check-redis-is-blocked 10 5832875677675439" ; }
                                                                     { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 5998291939563833'' ; }
                                                                     ### THIS IS WRONG
-                                                                    {
-                                                                        process = "post" ;
-                                                                        text =
-                                                                            ''
-                                                                                sleep 20s
-                                                                                echo 1723258852938545 4266798863511912 >> /tmp/DEBUG
-                                                                                cat /tmp/DEBUG
-                                                                            '' ;
-                                                                    }
+#                                                                    {
+#                                                                        process = "post" ;
+#                                                                        text =
+#                                                                            ''
+#                                                                                sleep 20s
+#                                                                                echo 1723258852938545 4266798863511912 >> /tmp/DEBUG
+#                                                                                cat /tmp/DEBUG
+#                                                                            '' ;
+#                                                                    }
                                                                     {
                                                                         accepts-redirect = true ;
                                                                         process = "post" ;
