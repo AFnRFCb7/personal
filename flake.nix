@@ -709,6 +709,7 @@
                                                                         text =
                                                                             ''
                                                                                 sleep 20s
+                                                                                echo 1723258852938545 4266798863511912 >> /tmp/DEBUG
                                                                                 cat /tmp/DEBUG
                                                                             '' ;
                                                                     }
