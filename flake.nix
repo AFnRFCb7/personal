@@ -696,7 +696,7 @@
                                                                                         "targets" : [ "1968976268514822" ] ,
                                                                                         "text" : "echo 4819688586897478\ntouch 1968976268514822\n" ,
                                                                                         "temporary" : false
-                                                                                    }' | check-redis-valid-init --uuid 3769292376198727
+                                                                                    }' | check-redis-json --uuid 3769292376198727
                                                                             '' ;
                                                                         timeout = 60 ;
                                                                     }
@@ -721,7 +721,7 @@
                                                                                     '{
                                                                                         "standard-output" : "2679141487527185" ,
                                                                                         "status" : 0
-                                                                                    }' | check-redis-valid-init --uuid 5534399271474761
+                                                                                    }' | check-redis-json --uuid 5534399271474761
                                                                             '' ;
                                                                         timeout = 60 ;
                                                                     }
