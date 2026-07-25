@@ -703,16 +703,16 @@
                                                                     { process = "pre" ; text = "check-is-blocked 40 5832875677675439" ; }
                                                                     { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 5998291939563833'' ; }
                                                                     ### THIS IS WRONG
+#                                                                    {
+#                                                                        process = "post" ;
+#                                                                        text =
+#                                                                            ''
+#                                                                                sleep 10s
+#                                                                                find /home/checker/resources
+#                                                                            '' ;
+#                                                                    }
                                                                     {
-                                                                        process = "post" ;
-                                                                        text =
-                                                                            ''
-                                                                                sleep 10s
-                                                                                find /home/checker/resources
-                                                                            '' ;
-                                                                    }
-                                                                    {
-                                                                        accepts-redirect = false ;
+                                                                        accepts-redirect = true ;
                                                                         process = "post" ;
                                                                         text =
                                                                             ''
