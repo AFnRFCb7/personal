@@ -703,18 +703,18 @@
                                                                     { process = "pre" ; text = "check-is-blocked 10 5832875677675439" ; }
                                                                     { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 5998291939563833'' ; }
                                                                     ### THIS IS WRONG
-#                                                                    {
-#                                                                        process = "post" ;
-#                                                                        text =
-#                                                                            ''
-#                                                                                sleep 60s
-#                                                                                cat <<EOF
-#                                                                                $( cat /tmp/DEBUG )
-#                                                                                5614819986253568
-#                                                                                "$( journalctl -u release.service )"
-#                                                                                2673221811473927
-#                                                                                EOF
-#                                                                            '' ;
+                                                                    {
+                                                                        process = "post" ;
+                                                                        text =
+                                                                            ''
+                                                                                sleep 60s
+                                                                                cat <<EOF
+                                                                                $( cat /tmp/DEBUG )
+                                                                                5614819986253568
+                                                                                "$( journalctl -u release.service )"
+                                                                                2673221811473927
+                                                                                EOF
+                                                                            '' ;
 #                                                                    }
                                                                     { process = "post" ; text = ''check-is-blocked 1 7626887114962184'' ; }
                                                                     { process = "post" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 6268856992447286'' ; }
