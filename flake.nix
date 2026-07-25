@@ -704,13 +704,13 @@
                                                                     { process = "pre" ; text = "check-redis-is-blocked 10 5832875677675439" ; }
                                                                     { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 5998291939563833'' ; }
                                                                     ### THIS IS WRONG
-#                                                                    {
-#                                                                        process = "post" ;
-#                                                                        text =
-#                                                                            ''
-#                                                                                cat /tmp/DEBUG
-#                                                                            '' ;
-#                                                                    }
+                                                                    {
+                                                                        process = "post" ;
+                                                                        text =
+                                                                            ''
+                                                                                cat /tmp/DEBUG
+                                                                            '' ;
+                                                                    }
                                                                     {
                                                                         accepts-redirect = true ;
                                                                         process = "post" ;
