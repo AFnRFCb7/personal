@@ -719,6 +719,8 @@
                                                                                 jq \
                                                                                     --null-input \
                                                                                     '{
+                                                                                        "standard-output" : "2679141487527185" ,
+                                                                                        "status: 0
                                                                                     }' | check-redis-valid-init
                                                                             '' ;
                                                                         timeout = 60 ;
