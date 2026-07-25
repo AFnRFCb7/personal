@@ -701,6 +701,7 @@
                                                                             '' ;
                                                                         timeout = 60 ;
                                                                     }
+                                                                    { process = "pre" ; text = "check-file-integrity 6911857327234197 cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e" ; }
                                                                     { process = "pre" ; text = "check-redis-is-blocked 10 5832875677675439" ; }
                                                                     { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 5998291939563833'' ; }
                                                                     ### THIS IS WRONG
