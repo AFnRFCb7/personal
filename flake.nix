@@ -742,6 +742,7 @@
                                                                     { process = "post" ; text = ''"$RESOURCES/clean.sh"'' ; }
                                                                 ] ;
                                                     gc-roots-directory = "/home/checker/.gc-roots" ;
+                                                    nixosTest = pkgs.nixosTest ;
                                                     pkgs = pkgs ;
                                                     private = private ;
                                                     resources-directory = "/home/checker/resources" ;
