@@ -649,53 +649,53 @@
                                                             single-quote = "'" ;
                                                             in
                                                                 [
-#                                                                    { process = "pre" ; text = ''check--executable "$RESOURCES/clean.sh"'' ; }
-#                                                                    { process = "pre" ; text = ''"$RESOURCES/clean.sh"'' ; }
-#                                                                    { process = "pre" ; text = ''check-verify-executable ${ double-quote }$RESOURCES${ double-quote }/resources/${ single-quote }["checks","true","true"]${ single-quote }'' ; }
-#                                                                    {
-#                                                                        expected-standard-output = "/home/checker/resources/mounts/0000000000000000" ;
-#                                                                        process = "pre" ;
-#                                                                        text =
-#                                                                            ''
-#                                                                                # shellcheck disable=SC2288
-#                                                                                ${ double-quote }$RESOURCES${ double-quote }/resources/${ single-quote }["checks","true","true"]${ single-quote } <&189
-#                                                                            '' ;
-#                                                                    }
-#                                                                    {
-#                                                                        process = "pre" ;
-#                                                                        text =
-#                                                                            ''
-#                                                                                jq \
-#                                                                                    --null-input \
-#                                                                                    '{
-#                                                                                        "arguments" : [ "9416174984176284" ] ,
-#                                                                                        "index" : "0000000000000000" ,
-#                                                                                        "inputs" : { } ,
-#                                                                                        "seed" :
-#                                                                                            [
-#                                                                                                {
-#                                                                                                    "path" : [ 0 ] ,
-#                                                                                                    "type" : "string" ,
-#                                                                                                    "value" : "checks"
-#                                                                                                } ,
-#                                                                                                {
-#                                                                                                    "path" : [ 1 ] ,
-#                                                                                                    "type" : "string" ,
-#                                                                                                    "value" : "true"
-#                                                                                                } ,
-#                                                                                                {
-#                                                                                                    "path" : [ 2 ] ,
-#                                                                                                    "type" : "string" ,
-#                                                                                                    "value" : "true"
-#                                                                                                }
-#                                                                                            ] ,
-#                                                                                        "standard-output" : "4819688586897478\n" ,
-#                                                                                        "targets" : [ "1968976268514822" ] ,
-#                                                                                        "text" : "echo 4819688586897478\ntouch 1968976268514822\n" ,
-#                                                                                        "temporary" : false
-#                                                                                    }' > "$SCRATCH/cleaned.json"
-#                                                                            '' ;
-#                                                                    }
+                                                                    { process = "pre" ; text = ''check--executable "$RESOURCES/clean.sh"'' ; }
+                                                                    { process = "pre" ; text = ''"$RESOURCES/clean.sh"'' ; }
+                                                                    { process = "pre" ; text = ''check-verify-executable ${ double-quote }$RESOURCES${ double-quote }/resources/${ single-quote }["checks","true","true"]${ single-quote }'' ; }
+                                                                    {
+                                                                        expected-standard-output = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                        process = "pre" ;
+                                                                        text =
+                                                                            ''
+                                                                                # shellcheck disable=SC2288
+                                                                                ${ double-quote }$RESOURCES${ double-quote }/resources/${ single-quote }["checks","true","true"]${ single-quote } <&189
+                                                                            '' ;
+                                                                    }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        text =
+                                                                            ''
+                                                                                jq \
+                                                                                    --null-input \
+                                                                                    '{
+                                                                                        "arguments" : [ "9416174984176284" ] ,
+                                                                                        "index" : "0000000000000000" ,
+                                                                                        "inputs" : { } ,
+                                                                                        "seed" :
+                                                                                            [
+                                                                                                {
+                                                                                                    "path" : [ 0 ] ,
+                                                                                                    "type" : "string" ,
+                                                                                                    "value" : "checks"
+                                                                                                } ,
+                                                                                                {
+                                                                                                    "path" : [ 1 ] ,
+                                                                                                    "type" : "string" ,
+                                                                                                    "value" : "true"
+                                                                                                } ,
+                                                                                                {
+                                                                                                    "path" : [ 2 ] ,
+                                                                                                    "type" : "string" ,
+                                                                                                    "value" : "true"
+                                                                                                }
+                                                                                            ] ,
+                                                                                        "standard-output" : "4819688586897478\n" ,
+                                                                                        "targets" : [ "1968976268514822" ] ,
+                                                                                        "text" : "echo 4819688586897478\ntouch 1968976268514822\n" ,
+                                                                                        "temporary" : false
+                                                                                    }' > "$SCRATCH/cleaned.json"
+                                                                            '' ;
+                                                                    }
 #                                                                    { process = "pre" ; text = ''check-redis-message message valid-init "$SCRATCH/cleaned.json"'' ; }
 #                                                                    { process = "pre" ; text = "check-redis-blocked" ; }
 #                                                                    { process = "pre" ; text = ''check-executable "$RESOURCES/clean.sh"'' ; }
