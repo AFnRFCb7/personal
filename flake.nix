@@ -649,23 +649,19 @@
                                                             single-quote = "'" ;
                                                             in
                                                                 [
-                                                                    { process = "pre" ; text = "check-file-integrity 2838357616866574 cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e" ; }
-                                                                    { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 8147695952811294'' ; }
+                                                                    { process = "pre" ; text = ''check--executable "$RESOURCES/clean.sh"'' ; }
                                                                     { process = "pre" ; text = ''"$RESOURCES/clean.sh"'' ; }
-                                                                    { process = "pre" ; text = "check-redis-is-blocked 1 1419998928567182" ; }
-                                                                    { process = "pre" ; text = ''check-verify-executable ${ double-quote }$RESOURCES${ double-quote }/resources/${ single-quote }["checks","true","true"]${ single-quote } 4319899683964123'' ; }
+                                                                    { process = "pre" ; text = ''check-verify-executable ${ double-quote }$RESOURCES${ double-quote }/resources/${ single-quote }["checks","true","true"]${ single-quote }'' ; }
                                                                     {
-                                                                        accepts-redirect = false ;
                                                                         expected-standard-output = "/home/checker/resources/mounts/0000000000000000" ;
                                                                         process = "pre" ;
                                                                         text =
                                                                             ''
                                                                                 # shellcheck disable=SC2288
-                                                                                ${ double-quote }$RESOURCES${ double-quote }/resources/${ single-quote }["checks","true","true"]${ single-quote } 9416174984176284
+                                                                                ${ double-quote }$RESOURCES${ double-quote }/resources/${ single-quote }["checks","true","true"]${ single-quote } <&189
                                                                             '' ;
                                                                     }
                                                                     {
-                                                                        accepts-redirect = false ;
                                                                         process = "pre" ;
                                                                         text =
                                                                             ''
@@ -697,34 +693,14 @@
                                                                                         "targets" : [ "1968976268514822" ] ,
                                                                                         "text" : "echo 4819688586897478\ntouch 1968976268514822\n" ,
                                                                                         "temporary" : false
-                                                                                    }' | check-redis-json --uuid 3769292376198727
+                                                                                    }' > "$SCRATCH/cleaned.json"
                                                                             '' ;
-                                                                        timeout = 60 ;
                                                                     }
-                                                                    # { process = "pre" ; text = "check-file-integrity 6911857327234197 41e69b6e151644f046daa59060e8d11fb078339bb5aa676bcd0155aa9c45662525e7bdc0f346e4ca799146a9b7d01919e7fc315ea3d2c6f89c3955b6fc88dfc8" ; }
-#                                                                    {
-#                                                                        process = "pre" ;
-#                                                                        text =
-#                                                                            ''
-#                                                                                echo "PROCESS_PID_0=$PROCESS_PID_0"
-#                                                                                echo "PROCESS_PID_1=$PROCESS_PID_1"
-#                                                                                cat /tmp/DEBUG
-#                                                                            '' ;
-#                                                                    }
-                                                                    { process = "pre" ; text = "check-redis-is-blocked 10 5832875677675439" ; }
-                                                                    { process = "pre" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 5998291939563833'' ; }
+                                                                    { process = "pre" ; text = ''check-redis-message message valid-init "$SCRATCH/cleaned.json"'' ; }
+                                                                    { process = "pre" ; text = "check-redis-blocked" ; }
+                                                                    { process = "pre" ; text = ''check-executable "$RESOURCES/clean.sh"'' ; }
                                                                     ### THIS IS WRONG
                                                                     {
-                                                                        process = "post" ;
-                                                                        text =
-                                                                            ''
-                                                                                sleep 20s
-                                                                                echo 1723258852938545 4266798863511912 >> /tmp/DEBUG
-                                                                                cat /tmp/DEBUG
-                                                                            '' ;
-                                                                    }
-                                                                    {
-                                                                        accepts-redirect = true ;
                                                                         process = "post" ;
                                                                         text =
                                                                             ''
@@ -733,12 +709,11 @@
                                                                                     '{
                                                                                         "standard-output" : "2679141487527185" ,
                                                                                         "status" : 0
-                                                                                    }' | check-redis-json --uuid 5534399271474761
+                                                                                    }' > "$SCRATCH/post.json"
                                                                             '' ;
-                                                                        timeout = 60 ;
                                                                     }
-                                                                    { process = "post" ; text = ''check-redis-is-blocked 1 7626887114962184'' ; }
-                                                                    { process = "post" ; text = ''check-verify-executable "$RESOURCES/clean.sh" 6268856992447286'' ; }
+                                                                    { process = "post" ; text = ''check-redis-message message valid-release "$SCRATCH/post.json"'' ; }
+                                                                    { process = "post" ; text = ''check-executable "$RESOURCES/clean.sh"'' ; }
                                                                     { process = "post" ; text = ''"$RESOURCES/clean.sh"'' ; }
                                                                 ] ;
                                                     gc-roots-directory = "/home/checker/.gc-roots" ;
