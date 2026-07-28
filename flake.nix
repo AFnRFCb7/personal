@@ -711,23 +711,22 @@
                                                                     }
                                                                     { process = "pre" ; text = ''check-redis-message message valid-init "$SCRATCH/cleaned.json"'' ; }
                                                                     { process = "pre" ; text = "check-redis-blocked" ; }
-#                                                                    { process = "pre" ; text = ''check-executable "$RESOURCES/clean.sh"'' ; }
 #                                                                    ### THIS IS WRONG
-#                                                                    {
-#                                                                        process = "post" ;
-#                                                                        text =
-#                                                                            ''
-#                                                                                jq \
-#                                                                                    --null-input \
-#                                                                                    '{
-#                                                                                        "standard-output" : "2679141487527185" ,
-#                                                                                        "status" : 0
-#                                                                                    }' > "$SCRATCH/post.json"
-#                                                                            '' ;
-#                                                                    }
-#                                                                    { process = "post" ; text = ''check-redis-message message valid-release "$SCRATCH/post.json"'' ; }
-#                                                                    { process = "post" ; text = ''check-executable "$RESOURCES/clean.sh"'' ; }
-#                                                                    { process = "post" ; text = ''"$RESOURCES/clean.sh"'' ; }
+                                                                    {
+                                                                        process = "post" ;
+                                                                        text =
+                                                                            ''
+                                                                                jq \
+                                                                                    --null-input \
+                                                                                    '{
+                                                                                        "standard-output" : "2679141487527185" ,
+                                                                                        "status" : 0
+                                                                                    }' > "$SCRATCH/post.json"
+                                                                            '' ;
+                                                                    }
+                                                                    { process = "post" ; text = ''check-redis-message message valid-release "$SCRATCH/post.json"'' ; }
+                                                                    { process = "post" ; text = ''check-executable "$RESOURCES/clean.sh"'' ; }
+                                                                    { process = "post" ; text = ''"$RESOURCES/clean.sh"'' ; }
                                                                 ] ;
                                                     gc-roots-directory = "/home/checker/.gc-roots" ;
                                                     nixosTest = pkgs.nixosTest ;
