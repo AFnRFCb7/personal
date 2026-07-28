@@ -655,8 +655,8 @@
                                                             single-quote = "'" ;
                                                             in
                                                                 [
-                                                                    { process = "pre" ; text = ''check-executable ${ __resource.clean }'' ; }
-                                                                    { process = "pre" ; text = __resource.clean ; }
+                                                                    { process = "pre" ; text = ''check-executable "$RESOURCES/clean"'' ; }
+#                                                                    { process = "pre" ; text = __resource.clean ; }
 #                                                                    { process = "pre" ; text = ''check-executable ${ __resource.resource.checks.true.true }'' ; }
 #                                                                    {
 #                                                                        expected-standard-output = "/home/checker/resources/mounts/0000000000000000" ;
