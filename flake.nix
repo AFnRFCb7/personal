@@ -665,15 +665,13 @@
                                                                             '' ;
                                                                     }
                                                                     {
-                                                                        expected-standard-output =
-                                                                            ''
-                                                                                /home/checker/resources/mounts/0000000000000000
-                                                                            '' ;
+                                                                        expected-standard-output = "/home/checker/resources/mounts/0000000000000000" ;
                                                                         process = "pre" ;
                                                                         text =
                                                                             ''
-                                                                                # shellcheck disable=SC2288
-                                                                                "$RESOURCES"/resources/'["checks","true","true"]' <&189
+                                                                                # shellcheck disable=SC2288qq+
+
+                                                                                "$RESOURCES"/resources/'["checks","true","true"]'
                                                                             '' ;
                                                                     }
 #                                                                    {
