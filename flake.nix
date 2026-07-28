@@ -657,7 +657,13 @@
                                                                 [
                                                                     { process = "pre" ; text = ''check-executable "$RESOURCES/clean.sh"'' ; }
                                                                     { process = "pre" ; text = ''"$RESOURCES/clean.sh"'' ; }
-#                                                                    { process = "pre" ; text = ''check-executable ${ __resource.resource.checks.true.true }'' ; }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        text =
+                                                                            ''
+                                                                                check-executable "$RESOURCES"/resources/'["checks","true","true"]'
+                                                                            '' ;
+                                                                    }
 #                                                                    {
 #                                                                        expected-standard-output = "/home/checker/resources/mounts/0000000000000000" ;
 #                                                                        process = "pre" ;
