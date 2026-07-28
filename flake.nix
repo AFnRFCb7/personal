@@ -671,7 +671,7 @@
                                                                             ''
                                                                                 # shellcheck disable=SC2288
 
-                                                                                cat "$RESOURCES"/resources/'["checks","true","true"]'
+                                                                                "$RESOURCES"/resources/'["checks","true","true"]'
                                                                             '' ;
                                                                     }
 #                                                                    {
