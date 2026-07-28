@@ -710,7 +710,7 @@
                                                                             '' ;
                                                                     }
                                                                     { process = "pre" ; text = ''check-redis-message message valid-init "$SCRATCH/cleaned.json"'' ; }
-                                                                    { process = "pre" ; text = "check-redis-blocked" ; }
+                                                                    { process = "pre" ; text = "check-redis-block" ; }
 #                                                                    ### THIS IS WRONG
                                                                     {
                                                                         process = "post" ;
