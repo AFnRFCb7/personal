@@ -655,7 +655,7 @@
                                                             single-quote = "'" ;
                                                             in
                                                                 [
-                                                                    { process = "pre" ; text = ''check-executable "$RESOURCES/clean"'' ; }
+                                                                    { process = "pre" ; text = ''check-executable "$RESOURCES/clean.sh"'' ; }
 #                                                                    { process = "pre" ; text = __resource.clean ; }
 #                                                                    { process = "pre" ; text = ''check-executable ${ __resource.resource.checks.true.true }'' ; }
 #                                                                    {
