@@ -709,7 +709,7 @@
                                                                                     }' > "$SCRATCH/cleaned.json"
                                                                             '' ;
                                                                     }
-                                                                    { process = "pre" ; text = ''check-redis-message message valid-init "$SCRATCH/cleaned.json"'' ; }
+                                                                    { process = "pre" ; text = ''check-redis-message message valid-init "$SCRATCH/cleaned.json" object'' ; }
                                                                     { process = "pre" ; text = "check-redis-block" ; }
 #                                                                    ### THIS IS WRONG
                                                                     {
@@ -724,7 +724,7 @@
                                                                                     }' > "$SCRATCH/post.json"
                                                                             '' ;
                                                                     }
-                                                                    { process = "post" ; text = ''check-redis-message message valid-release "$SCRATCH/post.json"'' ; }
+                                                                    { process = "post" ; text = ''check-redis-message message valid-release "$SCRATCH/post.json" object'' ; }
                                                                     { process = "post" ; text = ''check-executable "$RESOURCES/clean.sh"'' ; }
                                                                     { process = "post" ; text = ''"$RESOURCES/clean.sh"'' ; }
                                                                 ] ;
