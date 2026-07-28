@@ -669,7 +669,7 @@
                                                                         process = "pre" ;
                                                                         text =
                                                                             ''
-                                                                                # shellcheck disable=SC2288qq+
+                                                                                # shellcheck disable=SC2288
 
                                                                                 "$RESOURCES"/resources/'["checks","true","true"]'
                                                                             '' ;
