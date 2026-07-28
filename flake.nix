@@ -645,11 +645,17 @@
                                                 {
                                                     actions =
                                                         let
+                                                            __resource =
+                                                                _resource.implementation
+                                                                    {
+                                                                        gc-roots-directory = "/home/checker/.gc-roots" ;
+                                                                        resources-directoroy = "/home/checker/resources" ;
+                                                                    } ;
                                                             double-quote = ''"'' ;
                                                             single-quote = "'" ;
                                                             in
                                                                 [
-                                                                    { process = "pre" ; text = ''check-executable ${ _resource.clean }/bin/clean'' ; }
+                                                                    { process = "pre" ; text = ''check-executable ${ __resource.clean }/bin/clean'' ; }
 #                                                                    { process = "pre" ; text = ''"$RESOURCES/clean.sh"'' ; }
 #                                                                    { process = "pre" ; text = ''check-verify-executable ${ double-quote }$RESOURCES${ double-quote }/resources/${ single-quote }["checks","true","true"]${ single-quote }'' ; }
 #                                                                    {
