@@ -664,15 +664,15 @@
                                                                                 check-executable "$RESOURCES"/resources/'["checks","true","true"]'
                                                                             '' ;
                                                                     }
-#                                                                    {
-#                                                                        expected-standard-output = "/home/checker/resources/mounts/0000000000000000" ;
-#                                                                        process = "pre" ;
-#                                                                        text =
-#                                                                            ''
-#                                                                                # shellcheck disable=SC2288
-#                                                                                ${ double-quote }$RESOURCES${ double-quote }/resources/${ single-quote }["checks","true","true"]${ single-quote } <&189
-#                                                                            '' ;
-#                                                                    }
+                                                                    {
+                                                                        expected-standard-output = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                        process = "pre" ;
+                                                                        text =
+                                                                            ''
+                                                                                # shellcheck disable=SC2288
+                                                                                "$RESOURCES"/resources/'["checks","true","true"]' <&189
+                                                                            '' ;
+                                                                    }
 #                                                                    {
 #                                                                        process = "pre" ;
 #                                                                        text =
