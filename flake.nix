@@ -649,7 +649,7 @@
                                                             single-quote = "'" ;
                                                             in
                                                                 [
-#                                                                    { process = "pre" ; text = ''check--executable "$RESOURCES/clean.sh"'' ; }
+                                                                    { process = "pre" ; text = ''check--executable "$RESOURCES/clean.sh"'' ; }
 #                                                                    { process = "pre" ; text = ''"$RESOURCES/clean.sh"'' ; }
 #                                                                    { process = "pre" ; text = ''check-verify-executable ${ double-quote }$RESOURCES${ double-quote }/resources/${ single-quote }["checks","true","true"]${ single-quote }'' ; }
 #                                                                    {
