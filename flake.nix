@@ -649,7 +649,7 @@
                                                                 _resource.implementation
                                                                     {
                                                                         gc-roots-directory = "/home/checker/.gc-roots" ;
-                                                                        resources-directoroy = "/home/checker/resources" ;
+                                                                        resources-directory = "/home/checker/resources" ;
                                                                     } ;
                                                             double-quote = ''"'' ;
                                                             single-quote = "'" ;
