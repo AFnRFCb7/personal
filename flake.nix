@@ -665,7 +665,10 @@
                                                                             '' ;
                                                                     }
                                                                     {
-                                                                        expected-standard-output = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                        expected-standard-output =
+                                                                            ''
+                                                                                /home/checker/resources/mounts/0000000000000000
+                                                                            '' ;
                                                                         process = "pre" ;
                                                                         text =
                                                                             ''
