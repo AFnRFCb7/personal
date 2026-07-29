@@ -194,8 +194,8 @@
                                                                                                                                                         git init 2> /scratch/init
                                                                                                                                                         git remote add https ${ config.personal.secrets.remotes.https }
                                                                                                                                                         git remote add ssh ${ config.personal.secrets.remotes.ssh }
-                                                                                                                                                        # git fetch https ${ config.personal.secrets.branch } 2> /scratch/fetch
-                                                                                                                                                        # git checkout https/${ config.personal.secrets.branch } 2> /scratch/checkout
+                                                                                                                                                        git fetch https ${ config.personal.secrets.branch } 2> /scratch/fetch
+                                                                                                                                                        git checkout https/${ config.personal.secrets.branch } 2> /scratch/checkout
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                 } ;
@@ -211,10 +211,35 @@
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                 } ;
-                                                                                                                        # targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
-                                                                                                                        targets = [ ".git" ] ;
+                                                                                                                        targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
+                                                                                                                        # targets = [ ".git" ] ;
                                                                                                                         temporary = false ;
                                                                                                                     } ;
+                                                                                                            plaintext =
+                                                                                                                let
+                                                                                                                    in
+                                                                                                                        {
+                                                                                                                            dot-gnupg =
+                                                                                                                                {
+                                                                                                                                    secret-keys = null ;
+                                                                                                                                    ownertrust = null ;
+                                                                                                                                } ;
+                                                                                                                            dot-ssh =
+                                                                                                                                {
+                                                                                                                                    github =
+                                                                                                                                        {
+                                                                                                                                            identity = null ;
+                                                                                                                                            known-hosts = null ;
+                                                                                                                                        } ;
+                                                                                                                                    mobile =
+                                                                                                                                        {
+                                                                                                                                            identity = null ;
+                                                                                                                                            known-hosts = null ;
+                                                                                                                                        } ;
+                                                                                                                                    github = null ;
+                                                                                                                                } ;
+                                                                                                                            github = { } ;
+                                                                                                                        } ;
                                                                                                         } ;
                                                                                                 } ;
                                                                                         } ;
