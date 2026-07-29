@@ -710,7 +710,7 @@
                                                                             '' ;
                                                                     }
                                                                     { process = "pre" ; text = ''check-redis-message message valid-init "$SCRATCH/cleaned.json" object'' ; }
-                                                                    { process = "pre" ; text = "check-redis-block" ; }
+                                                                    { process = "pre" ; text = "check-redis-block" ; uuid = "4123733772938815" ;}
 #                                                                    ### THIS IS WRONG
                                                                     {
                                                                         process = "post" ;
@@ -724,7 +724,7 @@
                                                                                     }' > "$SCRATCH/post.json"
                                                                             '' ;
                                                                     }
-                                                                    { process = "post" ; text = ''check-redis-message message valid-release "$SCRATCH/post.json" object'' ; }
+                                                                    { process = "post" ; text = ''check-redis-message message valid-release "$SCRATCH/post.json" object'' ; uuid = "3177289165823618" ; }
                                                                     { process = "post" ; text = ''check-executable "$RESOURCES/clean.sh"'' ; }
                                                                     { process = "post" ; text = ''"$RESOURCES/clean.sh"'' ; }
                                                                 ] ;
