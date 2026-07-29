@@ -221,20 +221,20 @@
                                                                                                                         {
                                                                                                                             dot-gnupg =
                                                                                                                                 {
-                                                                                                                                    secret-keys = null ;
-                                                                                                                                    ownertrust = null ;
+                                                                                                                                    secret-keys = { } ;
+                                                                                                                                    ownertrust = { } ;
                                                                                                                                 } ;
                                                                                                                             dot-ssh =
                                                                                                                                 {
                                                                                                                                     github =
                                                                                                                                         {
-                                                                                                                                            identity = null ;
-                                                                                                                                            known-hosts = null ;
+                                                                                                                                            identity = { } ;
+                                                                                                                                            known-hosts = { } ;
                                                                                                                                         } ;
                                                                                                                                     mobile =
                                                                                                                                         {
-                                                                                                                                            identity = null ;
-                                                                                                                                            known-hosts = null ;
+                                                                                                                                            identity = { } ;
+                                                                                                                                            known-hosts = { } ;
                                                                                                                                         } ;
                                                                                                                                 } ;
                                                                                                                             github = { } ;
