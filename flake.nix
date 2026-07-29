@@ -429,6 +429,17 @@
                                                             {
                                                                 services =
                                                                     {
+                                                                        log =
+                                                                            {
+                                                                                wantedBy = [ "multi-user.target" ];
+                                                                                after = [ "network.target" ];
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart = __resource.log ;
+                                                                                        Restart = "always";
+                                                                                        User = config.personal.name ;
+                                                                                    } ;
+                                                                            } ;
                                                                         release =
                                                                             {
                                                                                 wantedBy = [ "multi-user.target" ];
