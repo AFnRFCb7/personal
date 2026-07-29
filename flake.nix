@@ -905,6 +905,7 @@
                                                                     { process = "post" ; text = ''check-executable "$RESOURCES/clean.sh"'' ; }
                                                                     { process = "post" ; text = ''"$RESOURCES/clean.sh"'' ; }
                                                                     { text = "ping -c 1 127.0.0.1 > /dev/null" ; }
+                                                                    { text = "ping -c 1 mobile > /dev/null" ; }
                                                                 ] ;
                                                     gc-roots-directory = "/home/checker/.gc-roots" ;
                                                     machines =
