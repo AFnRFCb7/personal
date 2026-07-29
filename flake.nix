@@ -909,7 +909,7 @@
                                                             "mobile" =
                                                                 { ... } :
                                                                     {
-                                                                    };
+                                                                    } ;
                                                         } ;
                                                     nixosTest = pkgs.nixosTest ;
                                                     pkgs = pkgs ;
