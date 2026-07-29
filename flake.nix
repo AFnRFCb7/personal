@@ -174,6 +174,32 @@
                                                                                                                     } ;
                                                                                                         } ;
                                                                                                 } ;
+                                                                                            production =
+                                                                                                {
+                                                                                                    secrets =
+                                                                                                        {
+                                                                                                            ciphertext =
+                                                                                                                ignore :
+                                                                                                                    {
+                                                                                                                        init =
+                                                                                                                            ignore :
+                                                                                                                                {
+                                                                                                                                    action =
+                                                                                                                                        ignore :
+                                                                                                                                            {
+                                                                                                                                                targetPkgs = pkgs : [ pkgs.git ] ;
+                                                                                                                                                text =
+                                                                                                                                                ''
+                                                                                                                                                    git init
+                                                                                                                                                    git remote add https ${ config.personal.repositories.secrets.remotes.https }
+                                                                                                                                                    git remote add ssh ${ config.personal.repositories.secrets.remotes.ssh }
+                                                                                                                                                    git fetch https ${ config.personal.repositories.secrets.branch } 2> /scratch/fetch
+                                                                                                                                                '' ;
+                                                                                                                                            } ;
+                                                                                                                                }
+                                                                                                                    }
+                                                                                                        }
+                                                                                                } ;
                                                                                         } ;
                                                                                 in builtins.concatStringsSep "\n" ( builtins.concatLists [ clean release resources ] ) ;
                                                                     }
