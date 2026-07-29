@@ -197,6 +197,18 @@
                                                                                                                                                 '' ;
                                                                                                                                             } ;
                                                                                                                                 } ;
+                                                                                                                        release =
+                                                                                                                            ignore :
+                                                                                                                                {
+                                                                                                                                    action =
+                                                                                                                                        ignore :
+                                                                                                                                            {
+                                                                                                                                                targetPkgs = pkgs : [ ] ;
+                                                                                                                                                text =
+                                                                                                                                                    ''
+                                                                                                                                                    '' ;
+                                                                                                                                            } ;
+                                                                                                                                } ;
                                                                                                                     } ;
                                                                                                         } ;
                                                                                                 } ;
