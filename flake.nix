@@ -719,7 +719,7 @@
                             checks =
                                 private :
                                     {
-                                        ${ "resource: happy path" } =
+                                        happu =
                                             _resource.check
                                                 {
                                                     actions =
@@ -815,7 +815,7 @@
                                                     resources-directory = "/home/checker/resources" ;
                                                     user = "checker" ;
                                                 } ;
-                                        ${ "resource: normal path" } =
+                                        normal =
                                             _resource.check
                                                 {
                                                     actions =
