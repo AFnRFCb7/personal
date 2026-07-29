@@ -288,6 +288,7 @@
                                                             } ;
                                                         networking =
                                                             {
+                                                                interfaces.wlp0s20f3.ip44.addresses = [ "192.168.0.200" "192.168.0.201" ] ;
                                                                 wireless =
                                                                     {
                                                                         enable = true ;
