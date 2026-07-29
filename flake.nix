@@ -808,6 +808,7 @@
                                                                     { process = "post" ; text = ''"$RESOURCES/clean.sh"'' ; }
                                                                 ] ;
                                                     gc-roots-directory = "/home/checker/.gc-roots" ;
+                                                    machines = { } ;
                                                     nixosTest = pkgs.nixosTest ;
                                                     pkgs = pkgs ;
                                                     private = private ;
@@ -903,6 +904,7 @@
                                                                     { process = "post" ; text = ''"$RESOURCES/clean.sh"'' ; }
                                                                 ] ;
                                                     gc-roots-directory = "/home/checker/.gc-roots" ;
+                                                    machine = { } ;
                                                     nixosTest = pkgs.nixosTest ;
                                                     pkgs = pkgs ;
                                                     private = private ;
