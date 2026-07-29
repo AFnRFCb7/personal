@@ -192,9 +192,9 @@
                                                                                                                                                 text =
                                                                                                                                                 ''
                                                                                                                                                     git init
-                                                                                                                                                    git remote add https ${ config.personal.repository.secrets.remotes.https }
-                                                                                                                                                    git remote add ssh ${ config.personal.repository.secrets.remotes.ssh }
-                                                                                                                                                    git fetch https ${ config.personal.repository.secrets.branch } 2> /scratch/fetch
+                                                                                                                                                    git remote add https ${ config.personal.secrets.remotes.https }
+                                                                                                                                                    git remote add ssh ${ config.personal.secrets.remotes.ssh }
+                                                                                                                                                    git fetch https ${ config.personal.secrets.branch } 2> /scratch/fetch
                                                                                                                                                 '' ;
                                                                                                                                             } ;
                                                                                                                                 } ;
