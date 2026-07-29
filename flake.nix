@@ -904,7 +904,13 @@
                                                                     { process = "post" ; text = ''"$RESOURCES/clean.sh"'' ; }
                                                                 ] ;
                                                     gc-roots-directory = "/home/checker/.gc-roots" ;
-                                                    machines = { } ;
+                                                    machines =
+                                                        {
+                                                            "github.com" =
+                                                                { ... } :
+                                                                    [
+                                                                    };
+                                                        } ;
                                                     nixosTest = pkgs.nixosTest ;
                                                     pkgs = pkgs ;
                                                     private = private ;
