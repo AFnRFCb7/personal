@@ -909,6 +909,10 @@
                                                             "mobile" =
                                                                 { ... } :
                                                                     {
+                                                                        users.users.git =
+                                                                            {
+                                                                                isNormalUser = true l
+                                                                            } ;
                                                                     } ;
                                                         } ;
                                                     nixosTest = pkgs.nixosTest ;
