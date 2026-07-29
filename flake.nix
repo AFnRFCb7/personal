@@ -196,9 +196,9 @@
                                                                                                                                                     git fetch https ${ config.personal.repositories.secrets.branch } 2> /scratch/fetch
                                                                                                                                                 '' ;
                                                                                                                                             } ;
-                                                                                                                                }
-                                                                                                                    }
-                                                                                                        }
+                                                                                                                                } ;
+                                                                                                                    } ;
+                                                                                                        } ;
                                                                                                 } ;
                                                                                         } ;
                                                                                 in builtins.concatStringsSep "\n" ( builtins.concatLists [ clean release resources ] ) ;
