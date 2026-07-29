@@ -906,7 +906,7 @@
                                                     gc-roots-directory = "/home/checker/.gc-roots" ;
                                                     machines =
                                                         {
-                                                            "github.com" =
+                                                            "mobile" =
                                                                 { ... } :
                                                                     {
                                                                     };
