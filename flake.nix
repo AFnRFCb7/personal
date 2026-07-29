@@ -288,8 +288,8 @@
                                                             } ;
                                                         networking =
                                                             {
-                                                                # interfaces.wlp0s20f3.ipv4.addresses = [ { address = "192.168.0.105" ; prefixLength = 24 ; } ] ;
-                                                                interfaces.wlp0s20f3.ipv4.addresses = [ ] ;
+                                                                interfaces.wlp0s20f3.ipv4.addresses = [ { address = "192.168.0.105" ; prefixLength = 24 ; } ] ;
+                                                                # interfaces.wlp0s20f3.ipv4.addresses = [ ] ;
                                                                 wireless =
                                                                     {
                                                                         enable = true ;
