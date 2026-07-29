@@ -288,6 +288,15 @@
                                                             } ;
                                                         networking =
                                                             {
+                                                                iwd.networks.my-wifi-ssid.settings =
+                                                                    {
+                                                                        IPv4 =
+                                                                            {
+                                                                                Address = "10.0.0.254";
+                                                                                Gateway = "10.0.0.1";
+                                                                                Netmask = "255.255.255.0";
+                                                                            } ;
+                                                                    } ;
                                                                 wireless =
                                                                     {
                                                                         enable = true ;
