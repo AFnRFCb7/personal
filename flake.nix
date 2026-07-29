@@ -830,6 +830,7 @@
                                                             single-quote = "'" ;
                                                             in
                                                                 [
+                                                                    { text = "true" ; }
                                                                     { process = "pre" ; text = ''check-executable "$RESOURCES/clean.sh"'' ; }
                                                                     { process = "pre" ; text = ''"$RESOURCES/clean.sh"'' ; }
                                                                     {
