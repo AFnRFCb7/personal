@@ -195,7 +195,7 @@
                                                                 sessionVariables =
                                                                     {
                                                                         RESOURCES = "${ builtins.toString resources }" ;
-                                                                        IS_NIX_FLAKE_CHECK=false
+                                                                        IS_NIX_FLAKE_CHECK= "false" ;
                                                                     } ;
                                                             } ;
                                                         hardware.pulseaudio =
