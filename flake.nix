@@ -236,7 +236,6 @@
                                                                                                                                             identity = null ;
                                                                                                                                             known-hosts = null ;
                                                                                                                                         } ;
-                                                                                                                                    github = null ;
                                                                                                                                 } ;
                                                                                                                             github = { } ;
                                                                                                                         } ;
