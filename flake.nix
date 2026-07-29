@@ -709,6 +709,7 @@
                                                                                     }' > "$SCRATCH/cleaned.json"
                                                                             '' ;
                                                                     }
+                                                                    { process = "pre" ; text = "echo 8118829963874519" ; }
                                                                     { process = "pre" ; text = ''check-redis-message message valid-init "$SCRATCH/cleaned.json" object'' ; }
                                                                     { process = "pre" ; text = "check-redis-block" ; }
 #                                                                    ### THIS IS WRONG
