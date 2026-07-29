@@ -719,7 +719,7 @@
                             checks =
                                 private :
                                     {
-                                        happu =
+                                        happy =
                                             _resource.check
                                                 {
                                                     actions =
