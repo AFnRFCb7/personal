@@ -211,6 +211,7 @@
                                                                                                                                             } ;
                                                                                                                                 } ;
                                                                                                                         targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
+                                                                                                                        temporary = false ;
                                                                                                                     } ;
                                                                                                         } ;
                                                                                                 } ;
