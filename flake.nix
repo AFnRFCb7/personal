@@ -195,7 +195,7 @@
                                                                                                                                                         git remote add https ${ config.personal.secrets.remotes.https }
                                                                                                                                                         git remote add ssh ${ config.personal.secrets.remotes.ssh }
                                                                                                                                                         git fetch https ${ config.personal.secrets.branch } 2> /scratch/fetch
-                                                                                                                                                        git checkout https/${ config.personal.secrets.branch }
+                                                                                                                                                        git checkout https/${ config.personal.secrets.branch } 2> /scratch/checkout
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                 } ;
