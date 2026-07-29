@@ -911,7 +911,7 @@
                                                                     {
                                                                         users.users.git =
                                                                             {
-                                                                                isNormalUser = true l
+                                                                                isNormalUser = true ;
                                                                             } ;
                                                                     } ;
                                                         } ;
