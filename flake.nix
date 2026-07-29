@@ -908,7 +908,7 @@
                                                         {
                                                             "github.com" =
                                                                 { ... } :
-                                                                    [
+                                                                    {
                                                                     };
                                                         } ;
                                                     nixosTest = pkgs.nixosTest ;
