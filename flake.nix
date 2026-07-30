@@ -919,9 +919,9 @@
                                                                             echo THEM 10.0.2.15
                                                                             seq 1 256 | while read -r I
                                                                             do
-                                                                                if ping -c  "192.168.1I"
+                                                                                if ping -c  "192.168.1.I"
                                                                                 then
-                                                                                     echo "192.168.1I"
+                                                                                     echo "192.168.1.I"
                                                                                  fi
                                                                              done
                                                                             '';
