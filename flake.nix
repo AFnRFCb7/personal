@@ -904,8 +904,7 @@
                                                                     { process = "post" ; text = ''check-redis-message message valid-release "$SCRATCH/post.json" object'' ; uuid = "3177289165823618" ; }
                                                                     { process = "post" ; text = ''check-executable "$RESOURCES/clean.sh"'' ; }
                                                                     { process = "post" ; text = ''"$RESOURCES/clean.sh"'' ; }
-                                                                    { text = "ping -c 1 127.0.0.1 > /dev/null" ; }
-                                                                    # { text = "true" ; }
+                                                                    { text = "ifconfig" ; }
                                                                 ] ;
                                                     gc-roots-directory = "/home/checker/.gc-roots" ;
                                                     machines =
