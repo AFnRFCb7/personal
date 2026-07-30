@@ -937,9 +937,10 @@
                                                     machines =
                                                         {
                                                             mobile =
-                                                                {
-                                                                    modules = [ implementation ] ;
-                                                                } ;
+                                                                { ... } :
+                                                                    {
+                                                                        modules = [ implementation ] ;
+                                                                    } ;
                                                         } ;
                                                     nixosTest = pkgs.nixosTest ;
                                                     pkgs = pkgs ;
