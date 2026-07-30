@@ -939,7 +939,7 @@
                                                             mobile =
                                                                 { _class , config , lib , modulesPath , options , pkgs , specialArgs } :
                                                                     {
-                                                                        modules = [ implementation ] ;
+                                                                        # modules = [ implementation ] ;
                                                                     } ;
                                                         } ;
                                                     nixosTest = pkgs.nixosTest ;
