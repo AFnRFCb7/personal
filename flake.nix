@@ -937,9 +937,24 @@
                                                     machines =
                                                         {
                                                             mobile =
-                                                                { _class , config , lib , modulesPath , options , pkgs , specialArgs } :
+                                                                { ... } :
                                                                     {
-                                                                        imports = [ implementation ] ;
+                                                                        imports =
+                                                                            [
+                                                                                implementation
+                                                                                (
+                                                                                    { ... } :
+                                                                                        {
+                                                                                            options =
+                                                                                                {
+                                                                                                    personal =
+                                                                                                        {
+                                                                                                            name = "XXXX" ;
+                                                                                                        } ;
+                                                                                                } ;
+                                                                                        }
+                                                                                )
+                                                                            ] ;
                                                                     } ;
                                                         } ;
                                                     nixosTest = pkgs.nixosTest ;
