@@ -948,6 +948,7 @@
                                                                                             personal =
                                                                                                 {
                                                                                                     name = "XXXX" ;
+                                                                                                    password = "XXXX" ;
                                                                                                 } ;
                                                                                         }
                                                                                 )
