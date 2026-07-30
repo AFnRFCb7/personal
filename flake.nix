@@ -906,8 +906,8 @@
                                                                     {
                                                                         text =
                                                                             ''
-                                                                                echo SSH 10.0.2.2
-                                                                                ssh -i ${ ./kludge/identity } git@10.0.2.2 true
+                                                                                echo SSH 10.0.2.3
+                                                                                ssh -i ${ ./kludge/identity } git@10.0.2.3 true
                                                                                 echo ME
                                                                                 ifconfig
                                                                                 echo THEM 10.0.2.15
