@@ -936,7 +936,10 @@
                                                     gc-roots-directory = "/home/checker/.gc-roots" ;
                                                     machines =
                                                         {
-                                                            mobile = implementation ;
+                                                            mobile =
+                                                                [
+                                                                    implementation
+                                                                ] ;
                                                         } ;
                                                     nixosTest = pkgs.nixosTest ;
                                                     pkgs = pkgs ;
