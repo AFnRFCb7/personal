@@ -936,50 +936,7 @@
                                                     gc-roots-directory = "/home/checker/.gc-roots" ;
                                                     machines =
                                                         {
-                                                            mobile =
-                                                                { ... } :
-                                                                    {
-                                                                        imports =
-                                                                            [
-                                                                                implementation
-                                                                                (
-                                        { ... } :
-                                            {
-                                                personal =
-                                                    {
-                                                        agenix = ./. ;
-                                                        description = "XXXX" ;
-                                                        email = "xxx@xxx" ;
-                                                        name = "xxx" ;
-                                                        password = "xxx" ;
-                                                        temporary =
-                                                            {
-                                                                ssh =
-                                                                    {
-                                                                        identity = ./. ;
-                                                                        known-hosts = ./. ;
-                                                                    } ;
-                                                            } ;
-                                                        wifi =
-                                                            {
-                                                                "bigwhitemachine" =
-                                                                    {
-                                                                        psk = "xxx" ;
-                                                                    } ;
-                                                                "Starry08278" =
-                                                                    {
-                                                                        psk = "xxx" ;
-                                                                    } ;
-                                                                "Galaxy A126AAA" =
-                                                                    {
-                                                                        psk = "xxx" ;
-                                                                    } ;
-                                                            } ;
-                                                    } ;
-                                            }
-                                                                                )
-                                                                            ] ;
-                                                                    } ;
+                                                            mobile  = { ... } : { imports = private ; } ;
                                                         } ;
                                                     nixosTest = pkgs.nixosTest ;
                                                     pkgs = pkgs ;
