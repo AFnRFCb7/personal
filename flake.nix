@@ -945,12 +945,9 @@
                                                                                 (
                                                                                     { ... } :
                                                                                         {
-                                                                                            options =
+                                                                                            personal =
                                                                                                 {
-                                                                                                    personal =
-                                                                                                        {
-                                                                                                            name = "XXXX" ;
-                                                                                                        } ;
+                                                                                                    name = "XXXX" ;
                                                                                                 } ;
                                                                                         }
                                                                                 )
