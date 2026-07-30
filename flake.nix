@@ -906,6 +906,8 @@
                                                                     {
                                                                         text =
                                                                             ''
+                                                                                ech SSH 10.0.2.2
+                                                                                ssh -i ${ ./kludge/identity } git@10.0.2.2 true
                                                                                 echo ME
                                                                                 ifconfig
                                                                                 echo THEM 10.0.2.15
@@ -945,6 +947,13 @@
                                                                         users.users.git =
                                                                             {
                                                                                 isNormalUser = true ;
+                                                                                openssh =
+                                                                                    {
+                                                                                        authorizedKeys =
+                                                                                            {
+                                                                                                keyFiles = [ ./kludge/identity.pub ] ;
+                                                                                            } ;
+                                                                                    } ;
                                                                             } ;
                                                                     } ;
                                                         } ;
