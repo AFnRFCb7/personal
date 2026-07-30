@@ -909,7 +909,7 @@
                                                                             echo ME
                                                                             ifconfig
                                                                             echo THEM 10.0.2.15
-                                                                            seq 1 256 | while read I
+                                                                            seq 1 256 | while read -r I
                                                                             do
                                                                                 if ping -c  "10.0.2.$I"
                                                                                 then
@@ -917,7 +917,7 @@
                                                                                  fi
                                                                              done
                                                                             echo THEM 10.0.2.15
-                                                                            seq 1 256 | while read I
+                                                                            seq 1 256 | while read -r I
                                                                             do
                                                                                 if ping -c  "192.168.1I"
                                                                                 then
