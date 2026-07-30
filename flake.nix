@@ -911,12 +911,12 @@
                                                                             echo THEM 10.0.2.15
                                                                             seq 1 256 | while read -r I
                                                                             do
-                                                                                if ping -c 1 "10.0.2.$I"
+                                                                                if ping -c 1 "10.0.2.$I" > /dev/null
                                                                                 then
                                                                                      echo "10.0.2.$I"
                                                                                  fi
                                                                              done
-                                                                            echo THEM 10.0.2.15
+                                                                            echo THEM 10.0.2.15 > /dev/null
                                                                             seq 1 256 | while read -r I
                                                                             do
                                                                                 if ping -c 1 "192.168.1.$I"
