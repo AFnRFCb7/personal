@@ -911,7 +911,10 @@
                                                             mobile =
                                                                 { ... } :
                                                                     {
-                                                                        networking.wireless.enable = true ;
+                                                                        networking.wireless =
+                                                                            {
+                                                                                enable = true ;
+                                                                            } ;
                                                                         users.users.git =
                                                                             {
                                                                                 isNormalUser = true ;
