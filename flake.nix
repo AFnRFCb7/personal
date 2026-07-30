@@ -914,6 +914,7 @@
                                                                         networking.wireless =
                                                                             {
                                                                                 enable = true ;
+                                                                                networks = config.personal.wifi ;
                                                                             } ;
                                                                         users.users.git =
                                                                             {
