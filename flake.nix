@@ -324,7 +324,6 @@
                                                                                     name : value :
                                                                                         ''
                                                                                             /home/${ config.personal.name }/pad/${ name })
-                                                                                                ;;
                                                                                         '' ;
                                                                                 in
                                                                                     ''
@@ -912,6 +911,7 @@
                                                             mobile =
                                                                 { ... } :
                                                                     {
+                                                                        networking.wireless.enable = true ;
                                                                         users.users.git =
                                                                             {
                                                                                 isNormalUser = true ;
