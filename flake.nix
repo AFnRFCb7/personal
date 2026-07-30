@@ -937,7 +937,7 @@
                                                     machines =
                                                         {
                                                             mobile =
-                                                                { config , lib , pkgs } :
+                                                                { config , lib , options , pkgs } :
                                                                     {
                                                                         modules = [ implementation ] ;
                                                                     } ;
