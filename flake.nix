@@ -918,7 +918,7 @@
                                                                                          echo "10.0.2.$I"
                                                                                      fi
                                                                                 done
-                                                                                echo THEM 10.0.2.15 > /dev/null
+                                                                                echo THEM 192.168.1.1 > /dev/null
                                                                                 seq 1 256 | while read -r I
                                                                                 do
                                                                                     if ping -c 1 "192.168.1.$I"
