@@ -908,7 +908,22 @@
                                                                             ''
                                                                             echo ME
                                                                             ifconfig
-                                                                            echo THEM
+                                                                            echo THEM 10.0.2.15
+                                                                            seq 1 256 | while read I
+                                                                            do
+                                                                                if ping -c  "10.0.2.$I"
+                                                                                then
+                                                                                     echo "10.0.2.$I"
+                                                                                 fi
+                                                                             done
+                                                                            echo THEM 10.0.2.15
+                                                                            seq 1 256 | while read I
+                                                                            do
+                                                                                if ping -c  "192.168.1I"
+                                                                                then
+                                                                                     echo "192.168.1I"
+                                                                                 fi
+                                                                             done
                                                                             '';
                                                                     }
                                                                 ] ;
