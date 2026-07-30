@@ -936,27 +936,7 @@
                                                     gc-roots-directory = "/home/checker/.gc-roots" ;
                                                     machines =
                                                         {
-                                                            mobile =
-                                                                { config , ... } :
-                                                                    {
-                                                                        networking.useDHCP = true ;
-                                                                        networking.wireless =
-                                                                            {
-                                                                                enable = true ;
-                                                                                networks = config.personal.wifi ;
-                                                                            } ;
-                                                                        users.users.git =
-                                                                            {
-                                                                                isNormalUser = true ;
-                                                                                openssh =
-                                                                                    {
-                                                                                        authorizedKeys =
-                                                                                            {
-                                                                                                keyFiles = [ ./kludge/identity.pub ] ;
-                                                                                            } ;
-                                                                                    } ;
-                                                                            } ;
-                                                                    } ;
+                                                            mobile = implementation ;
                                                         } ;
                                                     nixosTest = pkgs.nixosTest ;
                                                     pkgs = pkgs ;
