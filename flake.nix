@@ -943,14 +943,40 @@
                                                                             [
                                                                                 implementation
                                                                                 (
-                                                                                    { ... } :
-                                                                                        {
-                                                                                            personal =
-                                                                                                {
-                                                                                                    name = "XXXX" ;
-                                                                                                    password = "XXXX" ;
-                                                                                                } ;
-                                                                                        }
+                                        { ... } :
+                                            {
+                                                personal =
+                                                    {
+                                                        agenix = ./. ;
+                                                        description = "XXXX" ;
+                                                        email = "xxx@xxx" ;
+                                                        name = "xxx" ;
+                                                        password = "xxx" ;
+                                                        temporary =
+                                                            {
+                                                                ssh =
+                                                                    {
+                                                                        identity = ./. ;
+                                                                        known-hosts = ./. ;
+                                                                    } ;
+                                                            } ;
+                                                        wifi =
+                                                            {
+                                                                "bigwhitemachine" =
+                                                                    {
+                                                                        psk = "xxx" ;
+                                                                    } ;
+                                                                "Starry08278" =
+                                                                    {
+                                                                        psk = "xxx" ;
+                                                                    } ;
+                                                                "Galaxy A126AAA" =
+                                                                    {
+                                                                        psk = "xxx" ;
+                                                                    } ;
+                                                            } ;
+                                                    } ;
+                                            }
                                                                                 )
                                                                             ] ;
                                                                     } ;
