@@ -909,7 +909,7 @@
                                                     machines =
                                                         {
                                                             mobile =
-                                                                { ... } :
+                                                                { config , ... } :
                                                                     {
                                                                         networking.wireless =
                                                                             {
