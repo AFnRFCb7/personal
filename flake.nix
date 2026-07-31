@@ -729,7 +729,7 @@
                                                             client =
                                                                 { ... } :
                                                                     {
-
+                                                                        virtualisation.vlans = [ 0 ] ;
                                                                     } ;
                                                             server =
                                                                 { ... } :
