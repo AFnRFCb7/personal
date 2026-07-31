@@ -723,6 +723,10 @@
                                         experimental =
                                             pkgs.nixosTest
                                                 {
+                                                    meta =
+                                                        {
+                                                            description = "we are learning about tests" ;
+                                                        } ;
                                                     name = "experimental" ;
                                                     nodes =
                                                         {
