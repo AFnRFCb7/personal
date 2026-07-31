@@ -734,7 +734,7 @@
                                                             server =
                                                                 { ... } :
                                                                     {
-
+                                                                        virtualization.vlans = [ 0 ] ;
                                                                     } ;
                                                         } ;
                                                     testScript =
