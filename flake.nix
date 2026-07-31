@@ -721,7 +721,7 @@
                                 private :
                                     {
                                         experimental =
-                                            pkgs.nixos-test
+                                            pkgs.nixosTest
                                                 {
                                                     nodes =
                                                         {
