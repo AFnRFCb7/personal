@@ -723,6 +723,7 @@
                                         experimental =
                                             pkgs.nixosTest
                                                 {
+                                                    containers = { } ;
                                                     name = "experimental" ;
                                                     nodes =
                                                         {
@@ -738,7 +739,6 @@
                                                                     } ;
                                                         } ;
                                                     skipLint = true ;
-                                                    sshBackdoor.enable = true ;
                                                     testScript =
                                                         ''
                                                             client.wait_for_unit("network-online.target")
