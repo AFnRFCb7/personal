@@ -725,7 +725,7 @@
                                                 {
                                                     meta =
                                                         {
-                                                            description = "we are learning about tests" ;
+                                                            longDescription = "we are learning about tests" ;
                                                         } ;
                                                     name = "experimental" ;
                                                     nodes =
