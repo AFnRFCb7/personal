@@ -723,7 +723,6 @@
                                         experimental =
                                             pkgs.nixosTest
                                                 {
-                                                    containers = { } ;
                                                     name = "experimental" ;
                                                     nodes =
                                                         {
