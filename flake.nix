@@ -720,6 +720,28 @@
                             checks =
                                 private :
                                     {
+                                        experimental =
+                                            pkgs.nixos-test
+                                                {
+                                                    nodes =
+                                                        {
+                                                            client =
+                                                                { ... } :
+                                                                    {
+
+                                                                    } ;
+                                                            server =
+                                                                { ... } :
+                                                                    {
+
+                                                                    } ;
+                                                        } ;
+                                                    testScript =
+                                                        ''
+                                                            client.wait_for_unit("network-online.target")
+                                                            server.wait_for_unit("network-online.target")
+                                                        '' ;
+                                                } ;
                                         happy =
                                             _resource.check
                                                 {
