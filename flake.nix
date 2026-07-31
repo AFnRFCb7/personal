@@ -915,21 +915,9 @@
                                                                                 do
                                                                                     if ping -c 1 "10.0.2.$I" > /dev/null
                                                                                     then
-                                                                                         echo "10.0.2.$I"
+                                                                                         echo "10.0.0.$I"
                                                                                      fi
                                                                                 done
-                                                                                echo THEM 192.168.1.1 > /dev/null
-                                                                                seq 1 256 | while read -r I
-                                                                                do
-                                                                                    if ping -c 1 "192.168.1.$I"
-                                                                                    then
-                                                                                         echo "192.168.1.$I"
-                                                                                     fi
-                                                                                 done
-                                                                                 echo TRY 10.0.2.2
-                                                                                 ping -c 1 10.0.2.2
-                                                                                 echo TRY 10.0.0.3
-                                                                                 ping -c 1 10.0.0.3
                                                                             '';
                                                                     }
                                                                 ] ;
