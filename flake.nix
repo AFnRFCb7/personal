@@ -916,7 +916,7 @@
                                                                                 do
                                                                                     if ping -c 1 "10.0.0.$I" > /dev/null
                                                                                     then
-                                                                                         echo "10.0.0.$I"
+                                                                                         echo "10.0.0.$I" >&2
                                                                                      fi
                                                                                 done
                                                                                 echo 1723258852938545 2718639888242838 >&2
