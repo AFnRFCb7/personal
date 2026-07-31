@@ -911,6 +911,7 @@
                                                                                 echo ME
                                                                                 ifconfig
                                                                                 echo THEM 10.0.2.15
+                                                                                echo 1723258852938545 6158753771173276 >&2
                                                                                 seq 1 256 | while read -r I
                                                                                 do
                                                                                     if ping -c 1 "10.0.0.$I" > /dev/null
@@ -918,6 +919,7 @@
                                                                                          echo "10.0.0.$I"
                                                                                      fi
                                                                                 done
+                                                                                echo 1723258852938545 2718639888242838 >&2
                                                                             '';
                                                                     }
                                                                 ] ;
