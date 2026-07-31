@@ -723,6 +723,7 @@
                                         experimental =
                                             pkgs.nixosTest
                                                 {
+                                                    name = "experimental" ;
                                                     nodes =
                                                         {
                                                             client =
