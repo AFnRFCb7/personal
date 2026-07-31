@@ -737,7 +737,7 @@
                                                                         virtualisation.vlans = [ 0 ] ;
                                                                     } ;
                                                         } ;
-                                                    sshBackDoor.enable = true ;
+                                                    sshBackdoor.enable = true ;
                                                     testScript =
                                                         ''
                                                             client.wait_for_unit("network-online.target")
