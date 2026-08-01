@@ -739,7 +739,7 @@
                                                             { ... } :
                                                                 {
                                                                     networking.firewall.enable = false ;
-                                                                    networking.interfaces.eth2.ipv4.addresses = lib.mkOrder 10000 [
+                                                                    networking.interfaces.eth2.ipv4.addresses = pkgs.lib.mkOrder 10000 [
                                                                       {
                                                                         address = "192.168.0.100" ;
                                                                         prefixLength = 24;
