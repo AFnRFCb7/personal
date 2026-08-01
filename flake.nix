@@ -798,12 +798,68 @@
                                                     in
                                                         {
                                                             client =
-                                                                { _class , config , lib , modulesPath , nodes , options, specialArgs } @primary :
-                                                                    builtins.trace ( builtins.toJSON ( builtins.attrNames nodes ) ) {} ;
+                                                                { _class , config , lib , modulesPath , nodes , options, specialArgs }  :
+                                                                    {
+                                                                        networking =
+                                                                            {
+                                                                                defaultGateway =
+                                                                                    let
+                                                                                        router = pkgs.lib.head nodes.router.networking.interfaces.eth1.ipv4.addresses ;
+                                                                                        in router.address ;
+                                                                                firewall = false ;
+                                                                                nftables = false ;
+                                                                                useDHCP = false ;
+                                                                            } ;
+                                                                        virtualisation.vlans = [ 1 ] ;
+                                                                    } ;
                                                             router =
                                                                 { ... } :
                                                                     {
-
+                                                                        networking =
+                                                                            {
+                                                                                defaultGateway =
+                                                                                    let
+                                                                                        router = pkgs.lib.head nodes.router.networking.interfaces.eth1.ipv4.addresses ;
+                                                                                        in router.address ;
+                                                                                firewall = false ;
+                                                                                interfaces.eth2.ipv4.addresses =
+                                                                                    [
+                                                                                        {
+                                                                                            address = "192.168.2.234" ;
+                                                                                            prefixLength = 24;
+                                                                                        }
+                                                                                    ];
+                                                                                nat =
+                                                                                    let
+                                                                                        clientIp = ( pkgs.lib.head nodes.client.networking.interfaces.eth1.ipv4.addresses ).address;
+                                                                                        serverIp = ( pkgs.lib.head nodes.router.networking.interfaces.eth2.ipv4.addresses ).address;
+                                                                                    in
+                                                                                        {
+                                                                                            enable = true;
+                                                                                            internalIPs = [ "${clientIp}/24" ];
+                                                                                            externalInterface = "eth2";
+                                                                                            externalIP = serverIp;
+                                                                                            loopbackIPs = [ serverIp ];
+                                                                                        } ;
+                                                                                nftables = false ;
+                                                                                useDHCP = false ;
+                                                                            } ;
+                                                                        virtualisation.vlans = [ 1 2 ] ;
+                                                                    } ;
+                                                            server =
+                                                                { ... } :
+                                                                    {
+                                                                        networking =
+                                                                            {
+                                                                                defaultGateway =
+                                                                                    let
+                                                                                        router = pkgs.lib.head nodes.router.networking.interfaces.eth1.ipv4.addresses ;
+                                                                                        in router.address ;
+                                                                                firewall = false ;
+                                                                                nftables = false ;
+                                                                                useDHCP = false ;
+                                                                            } ;
+                                                                        virtualisation.vlans = [ 2 ] ;
                                                                     } ;
                                                         } ;
                                                         skipLint = true ;
