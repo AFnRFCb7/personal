@@ -729,12 +729,19 @@
                                                             client =
                                                                 { ... } :
                                                                     {
-                                                                        virtualisation.vlans = [ 0 ] ;
+                                                                        networking.defaultGateway =
+                                                                            let
+                                                                                server = pkgs.lib.head nodes.server.networking.interfaces.eth1.ipv4.addresses ;
+                                                                                in server.address ;
+                                                                                networking.firewall.enable = false ;
+                                                                        virtualisation.vlans = [ 1 ] ;
+
                                                                     } ;
                                                             server =
                                                                 { ... } :
                                                                     {
-                                                                        virtualisation.vlans = [ 0 ] ;
+                                                                        networking.firewall.enable = false ;
+                                                                        virtualisation.vlans = [ 1 ] ;
                                                                     } ;
                                                         } ;
                                                     skipLint = true ;
