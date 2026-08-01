@@ -806,8 +806,6 @@
                                                                                     let
                                                                                         router = pkgs.lib.head nodes.router.networking.interfaces.eth1.ipv4.addresses ;
                                                                                         in router.address ;
-                                                                                # firewall = false ;
-                                                                                # nftables = false ;
                                                                                 useDHCP = false ;
                                                                             } ;
                                                                         virtualisation.vlans = [ 1 ] ;
@@ -817,7 +815,6 @@
                                                                     {
                                                                         networking =
                                                                             {
-                                                                                # firewall = false ;
                                                                                 interfaces.eth2.ipv4.addresses =
                                                                                     [
                                                                                         {
@@ -825,19 +822,6 @@
                                                                                             prefixLength = 24;
                                                                                         }
                                                                                     ];
-                                                                                nat =
-                                                                                    let
-                                                                                        clientIp = ( pkgs.lib.head nodes.client.networking.interfaces.eth1.ipv4.addresses ).address;
-                                                                                        # serverIp = ( pkgs.lib.head nodes.router.networking.interfaces.eth2.ipv4.addresses ).address;
-                                                                                    in
-                                                                                        {
-                                                                                            enable = true;
-                                                                                            internalIPs = [ "${clientIp}/24" ];
-#                                                                                            externalInterface = "eth2";
-#                                                                                            externalIP = serverIp;
-#                                                                                            loopbackIPs = [ serverIp ];
-                                                                                        } ;
-                                                                                # nftables = false ;
                                                                                 useDHCP = false ;
                                                                             } ;
                                                                         virtualisation.vlans = [ 1 2 ] ;
