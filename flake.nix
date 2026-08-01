@@ -799,7 +799,7 @@
                                                         {
                                                             client =
                                                                 { ... } @primary :
-                                                                    builtins.trace ( bultins.toJSON ( builtins.attrNames primary ) ) {} ;
+                                                                    builtins.trace ( builtins.toJSON ( builtins.attrNames primary ) ) {} ;
                                                         } ;
                                                         skipLint = true ;
                                                         testScript =
