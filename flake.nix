@@ -726,6 +726,7 @@
                                                     name = "experimental" ;
                                                 nodes =
                                                     let
+                                                        routerAlternativeExternalIp = "192.168.2.234";
                                                         nftables = false ;
                                                         makeNginxConfig = hostname: {
                                                           enable = true;
