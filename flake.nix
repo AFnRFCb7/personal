@@ -732,7 +732,7 @@
                                                                     networking.defaultGateway =
                                                                         let
                                                                             server = pkgs.lib.head nodes.server.networking.interfaces.eth1.ipv4.addresses ;
-                                                                            in builtins.trace ( ( builtins.toJSON ( builtins.attrNames primary ) ) )server.address _ ;
+                                                                            in builtins.trace ( builtins.toJSON ( builtins.attrNames primary ) ) server.address ;
                                                                     networking.firewall.enable = false ;
                                                                     virtualisation.vlans = [ 1 ] ;
 
