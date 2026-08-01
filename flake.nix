@@ -729,7 +729,7 @@
                                                                 {
                                                                     networking.defaultGateway =
                                                                         let
-                                                                            server = pkgs.lib.head nodes.server.networking.interfaces.eth1.ipv4.addresses ;
+                                                                            server = pkgs.lib.head nodes.server.networking.interfaces.eth2.ipv4.addresses ;
                                                                             in server.address ;
                                                                             networking.firewall.enable = false ;
                                                                     virtualisation.vlans = [ 1 ] ;
