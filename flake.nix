@@ -725,7 +725,7 @@
                                                 nodes =
                                                     {
                                                         client =
-                                                            { ... } :
+                                                            { nodes ,... } :
                                                                 {
                                                                     networking.defaultGateway =
                                                                         let
