@@ -817,7 +817,7 @@
                                                                     {
                                                                         networking =
                                                                             {
-                                                                                firewall = false ;
+                                                                                # firewall = false ;
                                                                                 interfaces.eth2.ipv4.addresses =
                                                                                     [
                                                                                         {
