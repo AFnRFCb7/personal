@@ -807,7 +807,7 @@
                                                                                         router = pkgs.lib.head nodes.router.networking.interfaces.eth1.ipv4.addresses ;
                                                                                         in router.address ;
                                                                                 # firewall = false ;
-                                                                                nftables = false ;
+                                                                                # nftables = false ;
                                                                                 useDHCP = false ;
                                                                             } ;
                                                                         virtualisation.vlans = [ 1 ] ;
