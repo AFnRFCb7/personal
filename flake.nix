@@ -726,142 +726,180 @@
                                                     name = "experimental" ;
                                                 nodes =
                                                     let
-                                                            nftables = false ;
-                                                            makeNginxConfig = hostname: {
-                                                              enable = true;
-                                                              virtualHosts."${hostname}" = {
-                                                                root = "/etc";
-                                                                locations."/".index = "hostname";
-                                                                listen = [
-                                                                  {
-                                                                    addr = "0.0.0.0";
-                                                                    port = 80;
-                                                                  }
-                                                                  {
-                                                                    addr = "0.0.0.0";
-                                                                    port = 8080;
-                                                                  }
-                                                                ];
-                                                              };
-                                                            };
-                                                        makeCommonConfig = hostname: {
-                                                          services.nginx = makeNginxConfig hostname;
-                                                          services.vsftpd = {
-                                                            enable = true;
-                                                            anonymousUser = true;
-                                                            localRoot = "/etc/";
-                                                            extraConfig = ''
-                                                              pasv_min_port=51000
-                                                              pasv_max_port=51999
-                                                            '';
-                                                          };
-                                                    in
-                                                    {
-                                                          client =
-                                                            { pkgs, nodes, ... }:
-                                                            pkgs.lib.mkMerge [
-                                                              (makeCommonConfig "client")
+                                                        nftables = false ;
+                                                        makeNginxConfig = hostname: {
+                                                          enable = true;
+                                                          virtualHosts."${hostname}" = {
+                                                            root = "/etc";
+                                                            locations."/".index = "hostname";
+                                                            listen = [
                                                               {
-                                                                virtualisation.vlans = [ 1 ];
-                                                                networking.defaultGateway =
-                                                                  (pkgs.lib.head nodes.router.networking.interfaces.eth1.ipv4.addresses).address;
-                                                                networking.nftables.enable = nftables;
-                                                                networking.firewall.enable = false;
+                                                                addr = "0.0.0.0";
+                                                                port = 80;
+                                                              }
+                                                              {
+                                                                addr = "0.0.0.0";
+                                                                port = 8080;
                                                               }
                                                             ];
+                                                          };
+                                                        };
+                                                    makeCommonConfig = hostname: {
+                                                      services.nginx = makeNginxConfig hostname;
+                                                      services.vsftpd = {
+                                                        enable = true;
+                                                        anonymousUser = true;
+                                                        localRoot = "/etc/";
+                                                        extraConfig = ''
+                                                          pasv_min_port=51000
+                                                          pasv_max_port=51999
+                                                        '';
+                                                      };
 
-                                                          router =
-                                                            { nodes, ... }:
-                                                            pkgs.lib.mkMerge [
-                                                              (makeCommonConfig "router")
-                                                              {
-                                                                virtualisation.vlans = [
-                                                                  1
-                                                                  2
-                                                                ];
-                                                                networking.firewall = {
-                                                                  enable = withFirewall;
-                                                                  filterForward = nftables;
-                                                                  allowedTCPPorts = [
-                                                                    21
-                                                                    80
-                                                                    8080
-                                                                  ];
-                                                                  # For FTP passive mode
-                                                                  allowedTCPPortRanges = [
-                                                                    {
-                                                                      from = 51000;
-                                                                      to = 51999;
-                                                                    }
-                                                                  ];
-                                                                };
-                                                                networking.nftables.enable = nftables;
-                                                                networking.nat =
-                                                                  let
-                                                                    clientIp = (pkgs.lib.head nodes.client.networking.interfaces.eth1.ipv4.addresses).address;
-                                                                    serverIp = (pkgs.lib.head nodes.router.networking.interfaces.eth2.ipv4.addresses).address;
-                                                                  in
+                                                      # Disable eth0 autoconfiguration
+                                                      networking.useDHCP = false;
+
+                                                      environment.systemPackages = [
+                                                        (pkgs.writeScriptBin "check-connection" ''
+                                                          #!/usr/bin/env bash
+
+                                                          set -e
+
+                                                          if [[ "$2" == "" || "$3" == "" || "$1" == "--help" || "$1" == "-h" ]];
+                                                          then
+                                                              echo "check-connection <target-address> <target-hostname> <[expect-success|expect-failure]>"
+                                                              exit 1
+                                                          fi
+
+                                                          ADDRESS="$1"
+                                                          HOSTNAME="$2"
+
+                                                          function test_icmp() { timeout 3 ping -c 1 $ADDRESS; }
+                                                          function test_http() { [[ `timeout 3 curl $ADDRESS` == "$HOSTNAME" ]]; }
+                                                          function test_ftp() { timeout 3 curl ftp://$ADDRESS; }
+
+                                                          if [[ "$3" == "expect-success" ]];
+                                                          then
+                                                              test_icmp; test_http; test_ftp
+                                                          else
+                                                              ! test_icmp; ! test_http; ! test_ftp
+                                                          fi
+                                                        '')
+                                                        (pkgs.writeScriptBin "check-last-clients-ip" ''
+                                                          #!/usr/bin/env bash
+                                                          set -e
+
+                                                          [[ `cat /var/log/nginx/access.log | tail -n1 | awk '{print $1}'` == "$1" ]]
+                                                        '')
+                                                      ];
+                                                    };
+                                                    in
+                                                        {
+                                                              client =
+                                                                { pkgs, nodes, ... }:
+                                                                pkgs.lib.mkMerge [
+                                                                  (makeCommonConfig "client")
                                                                   {
-                                                                    enable = true;
-                                                                    internalIPs = [ "${clientIp}/24" ];
-                                                                    # internalInterfaces = [ "eth1" ];
-                                                                    externalInterface = "eth2";
-                                                                    externalIP = serverIp;
+                                                                    virtualisation.vlans = [ 1 ];
+                                                                    networking.defaultGateway =
+                                                                      (pkgs.lib.head nodes.router.networking.interfaces.eth1.ipv4.addresses).address;
+                                                                    networking.nftables.enable = nftables;
+                                                                    networking.firewall.enable = false;
+                                                                  }
+                                                                ];
 
-                                                                    forwardPorts = [
+                                                              router =
+                                                                { nodes, ... }:
+                                                                pkgs.lib.mkMerge [
+                                                                  (makeCommonConfig "router")
+                                                                  {
+                                                                    virtualisation.vlans = [
+                                                                      1
+                                                                      2
+                                                                    ];
+                                                                    networking.firewall = {
+                                                                      enable = withFirewall;
+                                                                      filterForward = nftables;
+                                                                      allowedTCPPorts = [
+                                                                        21
+                                                                        80
+                                                                        8080
+                                                                      ];
+                                                                      # For FTP passive mode
+                                                                      allowedTCPPortRanges = [
+                                                                        {
+                                                                          from = 51000;
+                                                                          to = 51999;
+                                                                        }
+                                                                      ];
+                                                                    };
+                                                                    networking.nftables.enable = nftables;
+                                                                    networking.nat =
+                                                                      let
+                                                                        clientIp = (pkgs.lib.head nodes.client.networking.interfaces.eth1.ipv4.addresses).address;
+                                                                        serverIp = (pkgs.lib.head nodes.router.networking.interfaces.eth2.ipv4.addresses).address;
+                                                                      in
                                                                       {
-                                                                        destination = "${clientIp}:8080";
-                                                                        proto = "tcp";
-                                                                        sourcePort = 8080;
+                                                                        enable = true;
+                                                                        internalIPs = [ "${clientIp}/24" ];
+                                                                        # internalInterfaces = [ "eth1" ];
+                                                                        externalInterface = "eth2";
+                                                                        externalIP = serverIp;
 
-                                                                        loopbackIPs = [ serverIp ];
+                                                                        forwardPorts = [
+                                                                          {
+                                                                            destination = "${clientIp}:8080";
+                                                                            proto = "tcp";
+                                                                            sourcePort = 8080;
+
+                                                                            loopbackIPs = [ serverIp ];
+                                                                          }
+                                                                        ];
+                                                                      };
+
+                                                                    networking.interfaces.eth2.ipv4.addresses = lib.mkOrder 10000 [
+                                                                      {
+                                                                        address = routerAlternativeExternalIp;
+                                                                        prefixLength = 24;
                                                                       }
                                                                     ];
-                                                                  };
 
-                                                                networking.interfaces.eth2.ipv4.addresses = lib.mkOrder 10000 [
-                                                                  {
-                                                                    address = routerAlternativeExternalIp;
-                                                                    prefixLength = 24;
+                                                                    services.nginx.virtualHosts.router.listen = pkgs.lib.mkOrder (-1) [
+                                                                      {
+                                                                        addr = routerAlternativeExternalIp;
+                                                                        port = 8080;
+                                                                      }
+                                                                    ];
+
+                                                                    specialisation.no-nat.configuration = {
+                                                                      networking.nat.enable = pkgs.lib.mkForce false;
+                                                                    };
                                                                   }
                                                                 ];
 
-                                                                services.nginx.virtualHosts.router.listen = pkgs.lib.mkOrder (-1) [
+                                                              server =
+                                                                { nodes, ... }:
+                                                                pkgs.lib.mkMerge [
+                                                                  (makeCommonConfig "server")
                                                                   {
-                                                                    addr = routerAlternativeExternalIp;
-                                                                    port = 8080;
+                                                                    virtualisation.vlans = [ 2 ];
+                                                                    networking.firewall.enable = false;
+
+                                                                    networking.defaultGateway =
+                                                                      (pkgs.lib.head nodes.router.networking.interfaces.eth2.ipv4.addresses).address;
                                                                   }
                                                                 ];
-
-                                                                specialisation.no-nat.configuration = {
-                                                                  networking.nat.enable = pkgs.lib.mkForce false;
-                                                                };
-                                                              }
-                                                            ];
-
-                                                          server =
-                                                            { nodes, ... }:
-                                                            pkgs.lib.mkMerge [
-                                                              (makeCommonConfig "server")
-                                                              {
-                                                                virtualisation.vlans = [ 2 ];
-                                                                networking.firewall.enable = false;
-
-                                                                networking.defaultGateway =
-                                                                  (pkgs.lib.head nodes.router.networking.interfaces.eth2.ipv4.addresses).address;
-                                                              }
-                                                            ];
+                                                        } ;
+                                                        skipLint = true ;
+                                                        testScript =
+                                                            ''
+                                                                client.wait_for_unit("network-online.target")
+                                                                router.wait_for_unit("network-online.target")
+                                                                client.succeed("ifconfig >&2")
+                                                                router.succeed("ifconfig >&2")
+                                                                client.fail("true")
+                                                            '' ;
                                                     } ;
-                                                    skipLint = true ;
-                                                    testScript =
-                                                        ''
-                                                            client.wait_for_unit("network-online.target")
-                                                            router.wait_for_unit("network-online.target")
-                                                            client.succeed("ifconfig >&2")
-                                                            router.succeed("ifconfig >&2")
-                                                            client.fail("true")
-                                                        '' ;
-                                                } ;
                                         happy =
                                             _resource.check
                                                 {
