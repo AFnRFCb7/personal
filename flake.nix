@@ -721,9 +721,7 @@
                                 private :
                                     {
                                         experimental =
-                                            pkgs.nixosTest
-                                                {
-                                                    name = "experimental" ;
+                                            let
                                                     nodes =
                                                         {
                                                             client =
@@ -744,16 +742,21 @@
                                                                         virtualisation.vlans = [ 1 ] ;
                                                                     } ;
                                                         } ;
-                                                    skipLint = true ;
-                                                    testScript =
-                                                        ''
-                                                            client.wait_for_unit("network-online.target")
-                                                            server.wait_for_unit("network-online.target")
-                                                            client.succeed("ifconfig >&2")
-                                                            server.succeed("ifconfig >&2")
-                                                            client.fail("true")
-                                                        '' ;
-                                                } ;
+                                                in
+                                                    pkgs.nixosTest
+                                                        {
+                                                            name = "experimental" ;
+                                                            nodes = nodes ;
+                                                            skipLint = true ;
+                                                            testScript =
+                                                                ''
+                                                                    client.wait_for_unit("network-online.target")
+                                                                    server.wait_for_unit("network-online.target")
+                                                                    client.succeed("ifconfig >&2")
+                                                                    server.succeed("ifconfig >&2")
+                                                                    client.fail("true")
+                                                                '' ;
+                                                        } ;
                                         happy =
                                             _resource.check
                                                 {
