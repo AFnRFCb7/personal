@@ -722,26 +722,32 @@
                                     {
                                         experimental =
                                             let
-                                                    nodes =
-                                                        {
-                                                            client =
-                                                                { ... } :
-                                                                    {
-                                                                        networking.defaultGateway =
-                                                                            let
-                                                                                server = pkgs.lib.head nodes.server.networking.interfaces.eth1.ipv4.addresses ;
-                                                                                in server.address ;
-                                                                                networking.firewall.enable = false ;
-                                                                        virtualisation.vlans = [ 1 ] ;
+                                                nodes =
+                                                    {
+                                                        client =
+                                                            { ... } :
+                                                                {
+                                                                    networking.defaultGateway =
+                                                                        let
+                                                                            server = pkgs.lib.head nodes.server.networking.interfaces.eth1.ipv4.addresses ;
+                                                                            in server.address ;
+                                                                            networking.firewall.enable = false ;
+                                                                    virtualisation.vlans = [ 1 ] ;
 
-                                                                    } ;
-                                                            server =
-                                                                { ... } :
-                                                                    {
-                                                                        networking.firewall.enable = false ;
-                                                                        virtualisation.vlans = [ 1 ] ;
-                                                                    } ;
-                                                        } ;
+                                                                } ;
+                                                        server =
+                                                            { ... } :
+                                                                {
+                                                                    networking.firewall.enable = false ;
+                                                                    networking.interfaces.eth2.ipv4.addresses = lib.mkOrder 10000 [
+                                                                      {
+                                                                        address = "192.168.0.100" ;
+                                                                        prefixLength = 24;
+                                                                      }
+                                                                    ];
+                                                                    virtualisation.vlans = [ 1 ] ;
+                                                                } ;
+                                                    } ;
                                                 in
                                                     pkgs.nixosTest
                                                         {
