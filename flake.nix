@@ -727,18 +727,18 @@
                                                 nodes =
                                                     {
                                                         client =
-                                                            { nodes ,... } :
+                                                            { nodes ,... } @primary :
                                                                 {
                                                                     networking.defaultGateway =
                                                                         let
                                                                             server = pkgs.lib.head nodes.server.networking.interfaces.eth1.ipv4.addresses ;
-                                                                            in server.address ;
+                                                                            in builtins.trace ( ( builtins.toJSON ( builtins.attrNames primary ) ) )server.address _ ;
                                                                     networking.firewall.enable = false ;
                                                                     virtualisation.vlans = [ 1 ] ;
 
                                                                 } ;
-                                                        server =
-                                                            { ... } :
+                                                        router =
+                                                            { nodes , ... } :
                                                                 {
                                                                     networking.firewall.enable = false ;
                                                                     networking.interfaces.eth2.ipv4.addresses = [
@@ -747,6 +747,27 @@
                                                                         prefixLength = 24;
                                                                       }
                                                                     ];
+                                                                    networking.nat =
+                                                                      let
+                                                                        clientIp = (pkgs.lib.head nodes.client.networking.interfaces.eth1.ipv4.addresses).address;
+                                                                      in
+                                                                      {
+                                                                        enable = true;
+                                                                        internalIPs = [ "${clientIp}/24" ];
+                                                                        # internalInterfaces = [ "eth1" ];
+                                                                        externalInterface = "eth2";
+                                                                        externalIP = serverIp;
+
+                                                                        forwardPorts = [
+                                                                          {
+                                                                            destination = "${clientIp}:8080";
+                                                                            proto = "tcp";
+                                                                            sourcePort = 8080;
+
+                                                                            loopbackIPs = [ serverIp ];
+                                                                          }
+                                                                        ];
+                                                                      };
                                                                     virtualisation.vlans = [ 1 ] ;
                                                                 } ;
                                                     } ;
@@ -754,9 +775,9 @@
                                                     testScript =
                                                         ''
                                                             client.wait_for_unit("network-online.target")
-                                                            server.wait_for_unit("network-online.target")
+                                                            router.wait_for_unit("network-online.target")
                                                             client.succeed("ifconfig >&2")
-                                                            server.succeed("ifconfig >&2")
+                                                            router.succeed("ifconfig >&2")
                                                             client.fail("true")
                                                         '' ;
                                                 } ;
