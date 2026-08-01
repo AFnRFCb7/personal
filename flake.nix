@@ -837,7 +837,7 @@
                                                                                             externalIP = serverIp;
                                                                                             loopbackIPs = [ serverIp ];
                                                                                         } ;
-                                                                                nftables = false ;
+                                                                                # nftables = false ;
                                                                                 useDHCP = false ;
                                                                             } ;
                                                                         virtualisation.vlans = [ 1 2 ] ;
