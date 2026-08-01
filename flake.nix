@@ -755,8 +755,6 @@
                                                                         enable = true;
                                                                         internalIPs = [ "${clientIp}/24" ];
                                                                         # internalInterfaces = [ "eth1" ];
-                                                                        externalInterface = "eth2";
-                                                                        externalIP = serverIp;
 
                                                                         forwardPorts = [
                                                                           {
