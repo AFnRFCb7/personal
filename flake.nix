@@ -819,28 +819,13 @@
                                                                                     [
                                                                                         {
                                                                                             address = "192.168.2.234" ;
-                                                                                            prefixLength = 24;
+                                                                                            prefixLength = 24 ;
                                                                                         }
                                                                                     ];
                                                                                 useDHCP = false ;
                                                                             } ;
                                                                         virtualisation.vlans = [ 1 2 ] ;
                                                                     } ;
-#                                                            server =
-#                                                                { nodes , ... } :
-#                                                                    {
-#                                                                        networking =
-#                                                                            {
-#                                                                                defaultGateway =
-#                                                                                    let
-#                                                                                        router = pkgs.lib.head nodes.router.networking.interfaces.eth1.ipv4.addresses ;
-#                                                                                        in router.address ;
-#                                                                                firewall = false ;
-#                                                                                nftables = false ;
-#                                                                                useDHCP = false ;
-#                                                                            } ;
-#                                                                        virtualisation.vlans = [ 2 ] ;
-#                                                                    } ;
                                                         } ;
                                                         skipLint = true ;
                                                         testScript =
