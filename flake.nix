@@ -813,7 +813,7 @@
                                                                         virtualisation.vlans = [ 1 ] ;
                                                                     } ;
                                                             router =
-                                                                { ... } :
+                                                                { nodes , ... } :
                                                                     {
                                                                         networking =
                                                                             {
@@ -847,7 +847,7 @@
                                                                         virtualisation.vlans = [ 1 2 ] ;
                                                                     } ;
                                                             server =
-                                                                { ... } :
+                                                                { nodes , ... } :
                                                                     {
                                                                         networking =
                                                                             {
