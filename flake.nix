@@ -798,9 +798,9 @@
                                                     in
                                                         {
                                                               client =
-                                                                { nodes, ... }:
+                                                                { nodes, ... } @primary :
                                                                 pkgs.lib.mkMerge [
-                                                                  (makeCommonConfig "client")
+                                                                  (makeCommonConfig ( builtins.trace ( builtins.toJSON ( builtins.attNames primary )) ) "client")
                                                                   {
                                                                     virtualisation.vlans = [ 1 ];
                                                                     networking.defaultGateway =
@@ -902,102 +902,102 @@
                                                                 client.fail("true")
                                                             '' ;
                                                     } ;
-                                        happy =
-                                            _resource.check
-                                                {
-                                                    actions =
-                                                        let
-                                                            __resource =
-                                                                _resource.implementation
-                                                                    {
-                                                                        gc-roots-directory = "/home/checker/.gc-roots" ;
-                                                                        resources-directory = "/home/checker/resources" ;
-                                                                    } ;
-                                                            double-quote = ''"'' ;
-                                                            single-quote = "'" ;
-                                                            in
-                                                                [
-                                                                    { process = "pre" ; text = ''check-executable "$RESOURCES/clean.sh"'' ; }
-                                                                    { process = "pre" ; text = ''"$RESOURCES/clean.sh"'' ; }
-                                                                    {
-                                                                        process = "pre" ;
-                                                                        text =
-                                                                            ''
-                                                                                check-executable "$RESOURCES"/resources/'["checks","true","true"]'
-                                                                            '' ;
-                                                                    }
-                                                                    {
-                                                                        expected-standard-output = "/home/checker/resources/mounts/0000000000000000" ;
-                                                                        process = "pre" ;
-                                                                        text =
-                                                                            ''
-                                                                                # shellcheck disable=SC2288
-
-                                                                                "$RESOURCES"/resources/'["checks","true","true"]' 9416174984176284
-                                                                            '' ;
-                                                                    }
-                                                                    {
-                                                                        process = "pre" ;
-                                                                        text =
-                                                                            ''
-                                                                                jq \
-                                                                                    --null-input \
-                                                                                    '{
-                                                                                        "arguments" : [ "9416174984176284" ] ,
-                                                                                        "index" : "0000000000000000" ,
-                                                                                        "inputs" : { } ,
-                                                                                        "seed" :
-                                                                                            [
-                                                                                                {
-                                                                                                    "path" : [ 0 ] ,
-                                                                                                    "type" : "string" ,
-                                                                                                    "value" : "checks"
-                                                                                                } ,
-                                                                                                {
-                                                                                                    "path" : [ 1 ] ,
-                                                                                                    "type" : "string" ,
-                                                                                                    "value" : "true"
-                                                                                                } ,
-                                                                                                {
-                                                                                                    "path" : [ 2 ] ,
-                                                                                                    "type" : "string" ,
-                                                                                                    "value" : "true"
-                                                                                                }
-                                                                                            ] ,
-                                                                                        "standard-output" : "4819688586897478\n" ,
-                                                                                        "targets" : [ "1968976268514822" ] ,
-                                                                                        "text" : "echo 4819688586897478\ntouch 1968976268514822\n" ,
-                                                                                        "temporary" : false
-                                                                                    }' > "$SCRATCH/cleaned.json"
-                                                                            '' ;
-                                                                    }
-                                                                    { process = "pre" ; text = ''check-redis-message message valid-init "$SCRATCH/cleaned.json" object'' ; }
-                                                                    { process = "pre" ; text = "check-redis-block" ; uuid = "4123733772938815" ;}
-#                                                                    ### THIS IS WRONG
-                                                                    {
-                                                                        process = "post" ;
-                                                                        text =
-                                                                            ''
-                                                                                jq \
-                                                                                    --null-input \
-                                                                                    '{
-                                                                                        "standard-output" : "2679141487527185" ,
-                                                                                        "status" : 0
-                                                                                    }' > "$SCRATCH/post.json"
-                                                                            '' ;
-                                                                    }
-                                                                    { process = "post" ; text = ''check-redis-message message valid-release "$SCRATCH/post.json" object'' ; uuid = "3177289165823618" ; }
-                                                                    { process = "post" ; text = ''check-executable "$RESOURCES/clean.sh"'' ; }
-                                                                    { process = "post" ; text = ''"$RESOURCES/clean.sh"'' ; }
-                                                                ] ;
-                                                    gc-roots-directory = "/home/checker/.gc-roots" ;
-                                                    machines = { } ;
-                                                    nixosTest = pkgs.nixosTest ;
-                                                    pkgs = pkgs ;
-                                                    private = private ;
-                                                    resources-directory = "/home/checker/resources" ;
-                                                    user = "checker" ;
-                                                } ;
+#                                        happy =
+#                                            _resource.check
+#                                                {
+#                                                    actions =
+#                                                        let
+#                                                            __resource =
+#                                                                _resource.implementation
+#                                                                    {
+#                                                                        gc-roots-directory = "/home/checker/.gc-roots" ;
+#                                                                        resources-directory = "/home/checker/resources" ;
+#                                                                    } ;
+#                                                            double-quote = ''"'' ;
+#                                                            single-quote = "'" ;
+#                                                            in
+#                                                                [
+#                                                                    { process = "pre" ; text = ''check-executable "$RESOURCES/clean.sh"'' ; }
+#                                                                    { process = "pre" ; text = ''"$RESOURCES/clean.sh"'' ; }
+#                                                                    {
+#                                                                        process = "pre" ;
+#                                                                        text =
+#                                                                            ''
+#                                                                                check-executable "$RESOURCES"/resources/'["checks","true","true"]'
+#                                                                            '' ;
+#                                                                    }
+#                                                                    {
+#                                                                        expected-standard-output = "/home/checker/resources/mounts/0000000000000000" ;
+#                                                                        process = "pre" ;
+#                                                                        text =
+#                                                                            ''
+#                                                                                # shellcheck disable=SC2288
+#
+#                                                                                "$RESOURCES"/resources/'["checks","true","true"]' 9416174984176284
+#                                                                            '' ;
+#                                                                    }
+#                                                                    {
+#                                                                        process = "pre" ;
+#                                                                        text =
+#                                                                            ''
+#                                                                                jq \
+#                                                                                    --null-input \
+#                                                                                    '{
+#                                                                                        "arguments" : [ "9416174984176284" ] ,
+#                                                                                        "index" : "0000000000000000" ,
+#                                                                                        "inputs" : { } ,
+#                                                                                        "seed" :
+#                                                                                            [
+#                                                                                                {
+#                                                                                                    "path" : [ 0 ] ,
+#                                                                                                    "type" : "string" ,
+#                                                                                                    "value" : "checks"
+#                                                                                                } ,
+#                                                                                                {
+#                                                                                                    "path" : [ 1 ] ,
+#                                                                                                    "type" : "string" ,
+#                                                                                                    "value" : "true"
+#                                                                                                } ,
+#                                                                                                {
+#                                                                                                    "path" : [ 2 ] ,
+#                                                                                                    "type" : "string" ,
+#                                                                                                    "value" : "true"
+#                                                                                                }
+#                                                                                            ] ,
+#                                                                                        "standard-output" : "4819688586897478\n" ,
+#                                                                                        "targets" : [ "1968976268514822" ] ,
+#                                                                                        "text" : "echo 4819688586897478\ntouch 1968976268514822\n" ,
+#                                                                                        "temporary" : false
+#                                                                                    }' > "$SCRATCH/cleaned.json"
+#                                                                            '' ;
+#                                                                    }
+#                                                                    { process = "pre" ; text = ''check-redis-message message valid-init "$SCRATCH/cleaned.json" object'' ; }
+#                                                                    { process = "pre" ; text = "check-redis-block" ; uuid = "4123733772938815" ;}
+##                                                                    ### THIS IS WRONG
+#                                                                    {
+#                                                                        process = "post" ;
+#                                                                        text =
+#                                                                            ''
+#                                                                                jq \
+#                                                                                    --null-input \
+#                                                                                    '{
+#                                                                                        "standard-output" : "2679141487527185" ,
+#                                                                                        "status" : 0
+#                                                                                    }' > "$SCRATCH/post.json"
+#                                                                            '' ;
+#                                                                    }
+#                                                                    { process = "post" ; text = ''check-redis-message message valid-release "$SCRATCH/post.json" object'' ; uuid = "3177289165823618" ; }
+#                                                                    { process = "post" ; text = ''check-executable "$RESOURCES/clean.sh"'' ; }
+#                                                                    { process = "post" ; text = ''"$RESOURCES/clean.sh"'' ; }
+#                                                                ] ;
+#                                                    gc-roots-directory = "/home/checker/.gc-roots" ;
+#                                                    machines = { } ;
+#                                                    nixosTest = pkgs.nixosTest ;
+#                                                    pkgs = pkgs ;
+#                                                    private = private ;
+#                                                    resources-directory = "/home/checker/resources" ;
+#                                                    user = "checker" ;
+#                                                } ;
                                         visitor-happy =
                                             _visitor.check
                                                 {
