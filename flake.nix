@@ -798,7 +798,7 @@
                                                     in
                                                         {
                                                             client =
-                                                                { ... } @primary :
+                                                                { _class , config , lib , modulesPath , options, specialArgs } @primary :
                                                                     builtins.trace ( builtins.toJSON ( builtins.attrNames primary ) ) {} ;
                                                         } ;
                                                         skipLint = true ;
