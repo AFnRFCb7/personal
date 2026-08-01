@@ -799,7 +799,7 @@
                                                         {
                                                             client =
                                                                 { _class , config , lib , modulesPath , nodes , options, specialArgs } @primary :
-                                                                    builtins.trace ( builtins.toJSON ( bultins.attrNames nodes ) ) {} ;
+                                                                    builtins.trace ( builtins.toJSON ( builtins.attrNames nodes ) ) {} ;
                                                             router =
                                                                 { ... } :
                                                                     {
