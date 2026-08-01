@@ -721,7 +721,9 @@
                                 private :
                                     {
                                         experimental =
-                                            let
+                                            pkgs.nixosTest
+                                                {
+                                                    name = "experimental" ;
                                                 nodes =
                                                     {
                                                         client =
@@ -729,9 +731,9 @@
                                                                 {
                                                                     networking.defaultGateway =
                                                                         let
-                                                                            server = pkgs.lib.head nodes.server.networking.interfaces.eth2.ipv4.addresses ;
+                                                                            server = pkgs.lib.head nodes.server.networking.interfaces.eth1.ipv4.addresses ;
                                                                             in server.address ;
-                                                                            networking.firewall.enable = false ;
+                                                                    networking.firewall.enable = false ;
                                                                     virtualisation.vlans = [ 1 ] ;
 
                                                                 } ;
@@ -748,21 +750,16 @@
                                                                     virtualisation.vlans = [ 1 ] ;
                                                                 } ;
                                                     } ;
-                                                in
-                                                    pkgs.nixosTest
-                                                        {
-                                                            name = "experimental" ;
-                                                            nodes = nodes ;
-                                                            skipLint = true ;
-                                                            testScript =
-                                                                ''
-                                                                    client.wait_for_unit("network-online.target")
-                                                                    server.wait_for_unit("network-online.target")
-                                                                    client.succeed("ifconfig >&2")
-                                                                    server.succeed("ifconfig >&2")
-                                                                    client.fail("true")
-                                                                '' ;
-                                                        } ;
+                                                    skipLint = true ;
+                                                    testScript =
+                                                        ''
+                                                            client.wait_for_unit("network-online.target")
+                                                            server.wait_for_unit("network-online.target")
+                                                            client.succeed("ifconfig >&2")
+                                                            server.succeed("ifconfig >&2")
+                                                            client.fail("true")
+                                                        '' ;
+                                                } ;
                                         happy =
                                             _resource.check
                                                 {
