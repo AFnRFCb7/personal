@@ -730,21 +730,11 @@
                                                                 { ... } :
                                                                     {
                                                                         virtualisation.vlans = [ 0 ] ;
-                                                                        virtualisation.qemu.networkingOptions =
-                                                                            [
-                                                                              "-net nic,netdev=user.0,model=virtio"
-                                                                              "-netdev user,id=user.0,\${QEMU_NET_OPTS:+,$QEMU_NET_OPTS}"
-                                                                            ] ;
                                                                     } ;
                                                             server =
                                                                 { ... } :
                                                                     {
                                                                         virtualisation.vlans = [ 0 ] ;
-                                                                        virtualisation.qemu.networkingOptions =
-                                                                            [
-                                                                              "-net nic,netdev=user.1,model=virtio"
-                                                                              "-netdev user,id=user.1,\${QEMU_NET_OPTS:+,$QEMU_NET_OPTS}"
-                                                                            ] ;
                                                                     } ;
                                                         } ;
                                                     skipLint = true ;
