@@ -799,7 +799,7 @@
                                                         {
                                                             client =
                                                                 { _class , config , lib , modulesPath , options, specialArgs } @primary :
-                                                                    builtins.trace ( builtins.toJSON ( builtins.attrNames primary ) ) {} ;
+                                                                    builtins.trace ( builtins.toJSON ( primary ) ) {} ;
                                                         } ;
                                                         skipLint = true ;
                                                         testScript =
