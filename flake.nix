@@ -761,8 +761,6 @@
                                                                             destination = "${clientIp}:8080";
                                                                             proto = "tcp";
                                                                             sourcePort = 8080;
-
-                                                                            loopbackIPs = [ serverIp ];
                                                                           }
                                                                         ];
                                                                       };
