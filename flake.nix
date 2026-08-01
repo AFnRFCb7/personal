@@ -799,7 +799,12 @@
                                                         {
                                                             client =
                                                                 { _class , config , lib , modulesPath , nodes , options, specialArgs } @primary :
-                                                                    builtins.trace ( builtins.toJSON ( specialArgs ) ) {} ;
+                                                                    builtins.trace ( builtins.toJSON ( bultins.attrNames nodes ) ) {} ;
+                                                            router =
+                                                                { ... } :
+                                                                    {
+
+                                                                    } ;
                                                         } ;
                                                         skipLint = true ;
                                                         testScript =
