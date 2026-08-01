@@ -798,7 +798,7 @@
                                                     in
                                                         {
                                                               client =
-                                                                { pkgs, nodes, ... }:
+                                                                { nodes, ... }:
                                                                 pkgs.lib.mkMerge [
                                                                   (makeCommonConfig "client")
                                                                   {
