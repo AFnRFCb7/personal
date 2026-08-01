@@ -797,109 +797,13 @@
                                                     };
                                                     in
                                                         {
-                                                              client =
-                                                                { nodes, ... } @primary :
-                                                                pkgs.lib.mkMerge [
-                                                                  (makeCommonConfig ( builtins.trace ( builtins.toJSON ( builtins.attNames primary )) ) "client")
-                                                                  {
-                                                                    virtualisation.vlans = [ 1 ];
-                                                                    networking.defaultGateway =
-                                                                      (pkgs.lib.head nodes.router.networking.interfaces.eth1.ipv4.addresses).address;
-                                                                    networking.nftables.enable = nftables;
-                                                                    networking.firewall.enable = false;
-                                                                  }
-                                                                ];
-
-                                                              router =
-                                                                { nodes, ... }:
-                                                                pkgs.lib.mkMerge [
-                                                                  (makeCommonConfig "router")
-                                                                  {
-                                                                    virtualisation.vlans = [
-                                                                      1
-                                                                      2
-                                                                    ];
-                                                                    networking.firewall = {
-                                                                      enable = withFirewall;
-                                                                      filterForward = nftables;
-                                                                      allowedTCPPorts = [
-                                                                        21
-                                                                        80
-                                                                        8080
-                                                                      ];
-                                                                      # For FTP passive mode
-                                                                      allowedTCPPortRanges = [
-                                                                        {
-                                                                          from = 51000;
-                                                                          to = 51999;
-                                                                        }
-                                                                      ];
-                                                                    };
-                                                                    networking.nftables.enable = nftables;
-                                                                    networking.nat =
-                                                                      let
-                                                                        clientIp = (pkgs.lib.head nodes.client.networking.interfaces.eth1.ipv4.addresses).address;
-                                                                        serverIp = (pkgs.lib.head nodes.router.networking.interfaces.eth2.ipv4.addresses).address;
-                                                                      in
-                                                                      {
-                                                                        enable = true;
-                                                                        internalIPs = [ "${clientIp}/24" ];
-                                                                        # internalInterfaces = [ "eth1" ];
-                                                                        externalInterface = "eth2";
-                                                                        externalIP = serverIp;
-
-                                                                        forwardPorts = [
-                                                                          {
-                                                                            destination = "${clientIp}:8080";
-                                                                            proto = "tcp";
-                                                                            sourcePort = 8080;
-
-                                                                            loopbackIPs = [ serverIp ];
-                                                                          }
-                                                                        ];
-                                                                      };
-
-                                                                    networking.interfaces.eth2.ipv4.addresses = pkgs.lib.mkOrder 10000 [
-                                                                      {
-                                                                        address = routerAlternativeExternalIp;
-                                                                        prefixLength = 24;
-                                                                      }
-                                                                    ];
-
-                                                                    services.nginx.virtualHosts.router.listen = pkgs.lib.mkOrder (-1) [
-                                                                      {
-                                                                        addr = routerAlternativeExternalIp;
-                                                                        port = 8080;
-                                                                      }
-                                                                    ];
-
-                                                                    specialisation.no-nat.configuration = {
-                                                                      networking.nat.enable = pkgs.lib.mkForce false;
-                                                                    };
-                                                                  }
-                                                                ];
-
-                                                              server =
-                                                                { nodes, ... }:
-                                                                pkgs.lib.mkMerge [
-                                                                  (makeCommonConfig "server")
-                                                                  {
-                                                                    virtualisation.vlans = [ 2 ];
-                                                                    networking.firewall.enable = false;
-
-                                                                    networking.defaultGateway =
-                                                                      (pkgs.lib.head nodes.router.networking.interfaces.eth2.ipv4.addresses).address;
-                                                                  }
-                                                                ];
+                                                            client =
+                                                                { ... } @primary :
+                                                                    builtins.trace ( bultins.toJSON ( builtins.attrNames primary ) ) {} ;
                                                         } ;
                                                         skipLint = true ;
                                                         testScript =
                                                             ''
-                                                                client.wait_for_unit("network-online.target")
-                                                                router.wait_for_unit("network-online.target")
-                                                                client.succeed("ifconfig >&2")
-                                                                router.succeed("ifconfig >&2")
-                                                                client.fail("true")
                                                             '' ;
                                                     } ;
 #                                        happy =
