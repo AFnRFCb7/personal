@@ -848,11 +848,11 @@
                                                                                             }
                                                                                         ];
                                                                                     useDHCP = false ;
-                                                                                    users.users.git =
-                                                                                        {
-                                                                                            isNormalUser = true ;
-                                                                                            openssh.authorizedKeys = [ "${ pseudo-secrets }/identity.pub" ] ;
-                                                                                        } ;
+                                                                                } ;
+                                                                            users.users.git =
+                                                                                {
+                                                                                    isNormalUser = true ;
+                                                                                    openssh.authorizedKeys = [ "${ pseudo-secrets }/identity.pub" ] ;
                                                                                 } ;
                                                                             virtualisation.vlans = [ 1 2 ] ;
                                                                         } ;
