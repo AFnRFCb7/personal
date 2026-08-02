@@ -831,6 +831,8 @@
                                                         testScript =
                                                             ''
                                                                 router.wait_for_unit("network-online.target")
+                                                                router.success("ifconfig")
+                                                                router.fail("true")
                                                             '' ;
                                                     } ;
 #                                        happy =
