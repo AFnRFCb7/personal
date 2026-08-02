@@ -833,7 +833,7 @@
                                                                 router.wait_for_unit("network-online.target")
                                                                 router.succeed("ifconfig >&2")
                                                                 client.wait_for_unit("network-online.target")
-                                                                # client.succeed("ifconfig >&2")
+                                                                client.succeed("ifconfig >&2")
                                                                 router.fail("true")
                                                             '' ;
                                                     } ;
