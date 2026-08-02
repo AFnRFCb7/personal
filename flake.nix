@@ -850,6 +850,7 @@
                                                                                         ];
                                                                                     useDHCP = false ;
                                                                                 } ;
+                                                                            services.openssh.enable = true ;
                                                                             users.users.git =
                                                                                 {
                                                                                     description = "GITHUB" ;
