@@ -888,7 +888,7 @@
                                                                     client.succeed("chmod 0700 ~/.ssh")
                                                                     client.succeed("cat ${ pseudo-secrets }/identity > ~/.ssh/identity")
                                                                     client.succeed("chmod 0400 ~/.ssh/identity")
-                                                                    client.succeed("ssh -i ~/.ssh/identity -o StrictHostKeyChecking=no -l git 192.168.1.2 verify-it-works")
+                                                                    client.succeed("ssh -i ~/.ssh/identity -o StrictHostKeyChecking=no -l git 192.168.1.2 verify-it-works >&2")
                                                                     router.fail("true")
                                                                 '' ;
                                                         } ;
