@@ -851,7 +851,7 @@
                                                                                     users.users.git =
                                                                                         {
                                                                                             isNormalUser = true ;
-                                                                                            openssh.authorizedKeys = [ "${ pseudo-secrets/identity.pub }" ] ;
+                                                                                            openssh.authorizedKeys = [ "${ pseudo-secrets }/identity.pub" ] ;
                                                                                         } ;
                                                                                 } ;
                                                                             virtualisation.vlans = [ 1 2 ] ;
