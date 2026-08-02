@@ -721,125 +721,155 @@
                                 private :
                                     {
                                         experimental =
-                                            pkgs.nixosTest
-                                                {
-                                                    name = "experimental" ;
-                                                nodes =
-                                                    let
-                                                        routerAlternativeExternalIp = "192.168.2.234";
-                                                        withFirewall = false ;
-                                                        nftables = false ;
-                                                        makeNginxConfig = hostname: {
-                                                          enable = true;
-                                                          virtualHosts."${hostname}" = {
-                                                            root = "/etc";
-                                                            locations."/".index = "hostname";
-                                                            listen = [
-                                                              {
-                                                                addr = "0.0.0.0";
-                                                                port = 80;
-                                                              }
-                                                              {
-                                                                addr = "0.0.0.0";
-                                                                port = 8080;
-                                                              }
-                                                            ];
-                                                          };
-                                                        };
-                                                    makeCommonConfig = hostname: {
-                                                      services.nginx = makeNginxConfig hostname;
-                                                      services.vsftpd = {
-                                                        enable = true;
-                                                        anonymousUser = true;
-                                                        localRoot = "/etc/";
-                                                        extraConfig = ''
-                                                          pasv_min_port=51000
-                                                          pasv_max_port=51999
-                                                        '';
-                                                      };
-
-                                                      # Disable eth0 autoconfiguration
-                                                      networking.useDHCP = false;
-
-                                                      environment.systemPackages = [
-                                                        (pkgs.writeScriptBin "check-connection" ''
-                                                          #!/usr/bin/env bash
-
-                                                          set -e
-
-                                                          if [[ "$2" == "" || "$3" == "" || "$1" == "--help" || "$1" == "-h" ]];
-                                                          then
-                                                              echo "check-connection <target-address> <target-hostname> <[expect-success|expect-failure]>"
-                                                              exit 1
-                                                          fi
-
-                                                          ADDRESS="$1"
-                                                          HOSTNAME="$2"
-
-                                                          function test_icmp() { timeout 3 ping -c 1 $ADDRESS; }
-                                                          function test_http() { [[ `timeout 3 curl $ADDRESS` == "$HOSTNAME" ]]; }
-                                                          function test_ftp() { timeout 3 curl ftp://$ADDRESS; }
-
-                                                          if [[ "$3" == "expect-success" ]];
-                                                          then
-                                                              test_icmp; test_http; test_ftp
-                                                          else
-                                                              ! test_icmp; ! test_http; ! test_ftp
-                                                          fi
-                                                        '')
-                                                        (pkgs.writeScriptBin "check-last-clients-ip" ''
-                                                          #!/usr/bin/env bash
-                                                          set -e
-
-                                                          [[ `cat /var/log/nginx/access.log | tail -n1 | awk '{print $1}'` == "$1" ]]
-                                                        '')
-                                                      ];
-                                                    };
-                                                    in
+                                            let
+                                                pseudo-secrets =
+                                                    pkgs.stdenv.mkDerivation
                                                         {
-                                                            client =
-                                                                { _class , config , lib , modulesPath , nodes , options, specialArgs }  :
-                                                                    {
-                                                                        networking =
+                                                            installPhase = ''install "$out"'' ;
+                                                            name = "pseudo-ssecrets" ;
+                                                            nativeBuildInputs =
+                                                                [
+                                                                    (
+                                                                        pkgs.writeShellApplication
                                                                             {
-                                                                                defaultGateway =
-                                                                                    let
-                                                                                        router = pkgs.lib.head nodes.router.networking.interfaces.eth1.ipv4.addresses ;
-                                                                                        in router.address ;
-                                                                                useDHCP = false ;
-                                                                            } ;
-                                                                        virtualisation.vlans = [ 1 ] ;
-                                                                    } ;
-                                                            router =
-                                                                { nodes , ... } :
-                                                                    {
-                                                                        networking =
-                                                                            {
-                                                                                interfaces.eth2.ipv4.addresses =
-                                                                                    [
-                                                                                        {
-                                                                                            address = "192.168.2.234" ;
-                                                                                            prefixLength = 24 ;
-                                                                                        }
-                                                                                    ];
-                                                                                useDHCP = false ;
-                                                                            } ;
-                                                                        virtualisation.vlans = [ 1 2 ] ;
-                                                                    } ;
+                                                                                name = "install" ;
+                                                                                runtimeInputs = [ pkgs.openssh ] ;
+                                                                                text =
+                                                                                    ''
+                                                                                        OUT="$1"
+                                                                                        mkdir --parents "$OUT"
+                                                                                        ssh-keygen -P "" -C "" -f "$OUT/identity" ;
+                                                                                    '' ;
+                                                                            }
+                                                                    )
+                                                                ] ;
+                                                            src = ./. ;
                                                         } ;
-                                                        skipLint = true ;
-                                                        testScript =
-                                                            ''
-                                                                # router 192.168.1.2 192.168.2.234
-                                                                router.wait_for_unit("network-online.target")
-                                                                router.succeed("ifconfig >&2")
-                                                                # client 192.168.1.1
-                                                                client.wait_for_unit("network-online.target")
-                                                                client.succeed("ifconfig >&2")
-                                                                client.succeed("ping -c 1 192.168.1.2 >&2")
-                                                                router.fail("true")
-                                                            '' ;
-                                                    } ;
+                                                in
+                                                pkgs.nixosTest
+                                                    {
+                                                        name = "experimental" ;
+                                                    nodes =
+                                                        let
+                                                            routerAlternativeExternalIp = "192.168.2.234";
+                                                            withFirewall = false ;
+                                                            nftables = false ;
+                                                            makeNginxConfig = hostname: {
+                                                              enable = true;
+                                                              virtualHosts."${hostname}" = {
+                                                                root = "/etc";
+                                                                locations."/".index = "hostname";
+                                                                listen = [
+                                                                  {
+                                                                    addr = "0.0.0.0";
+                                                                    port = 80;
+                                                                  }
+                                                                  {
+                                                                    addr = "0.0.0.0";
+                                                                    port = 8080;
+                                                                  }
+                                                                ];
+                                                              };
+                                                            };
+                                                        makeCommonConfig = hostname: {
+                                                          services.nginx = makeNginxConfig hostname;
+                                                          services.vsftpd = {
+                                                            enable = true;
+                                                            anonymousUser = true;
+                                                            localRoot = "/etc/";
+                                                            extraConfig = ''
+                                                              pasv_min_port=51000
+                                                              pasv_max_port=51999
+                                                            '';
+                                                          };
+
+                                                          # Disable eth0 autoconfiguration
+                                                          networking.useDHCP = false;
+
+                                                          environment.systemPackages = [
+                                                            (pkgs.writeScriptBin "check-connection" ''
+                                                              #!/usr/bin/env bash
+
+                                                              set -e
+
+                                                              if [[ "$2" == "" || "$3" == "" || "$1" == "--help" || "$1" == "-h" ]];
+                                                              then
+                                                                  echo "check-connection <target-address> <target-hostname> <[expect-success|expect-failure]>"
+                                                                  exit 1
+                                                              fi
+
+                                                              ADDRESS="$1"
+                                                              HOSTNAME="$2"
+
+                                                              function test_icmp() { timeout 3 ping -c 1 $ADDRESS; }
+                                                              function test_http() { [[ `timeout 3 curl $ADDRESS` == "$HOSTNAME" ]]; }
+                                                              function test_ftp() { timeout 3 curl ftp://$ADDRESS; }
+
+                                                              if [[ "$3" == "expect-success" ]];
+                                                              then
+                                                                  test_icmp; test_http; test_ftp
+                                                              else
+                                                                  ! test_icmp; ! test_http; ! test_ftp
+                                                              fi
+                                                            '')
+                                                            (pkgs.writeScriptBin "check-last-clients-ip" ''
+                                                              #!/usr/bin/env bash
+                                                              set -e
+
+                                                              [[ `cat /var/log/nginx/access.log | tail -n1 | awk '{print $1}'` == "$1" ]]
+                                                            '')
+                                                          ];
+                                                        };
+                                                        in
+                                                            {
+                                                                client =
+                                                                    { _class , config , lib , modulesPath , nodes , options, specialArgs }  :
+                                                                        {
+                                                                            networking =
+                                                                                {
+                                                                                    defaultGateway =
+                                                                                        let
+                                                                                            router = pkgs.lib.head nodes.router.networking.interfaces.eth1.ipv4.addresses ;
+                                                                                            in router.address ;
+                                                                                    useDHCP = false ;
+                                                                                } ;
+                                                                            virtualisation.vlans = [ 1 ] ;
+                                                                        } ;
+                                                                router =
+                                                                    { nodes , ... } :
+                                                                        {
+                                                                            networking =
+                                                                                {
+                                                                                    interfaces.eth2.ipv4.addresses =
+                                                                                        [
+                                                                                            {
+                                                                                                address = "192.168.2.234" ;
+                                                                                                prefixLength = 24 ;
+                                                                                            }
+                                                                                        ];
+                                                                                    useDHCP = false ;
+                                                                                    users.users.git =
+                                                                                        {
+                                                                                            isNormalUser = true ;
+                                                                                            openssh.authorizedKeys = [ "${ pseudo-secrets/identity.pub }" ] ;
+                                                                                        } ;
+                                                                                } ;
+                                                                            virtualisation.vlans = [ 1 2 ] ;
+                                                                        } ;
+                                                            } ;
+                                                            skipLint = true ;
+                                                            testScript =
+                                                                ''
+                                                                    # router 192.168.1.2 192.168.2.234
+                                                                    router.wait_for_unit("network-online.target")
+                                                                    router.succeed("ifconfig >&2")
+                                                                    # client 192.168.1.1
+                                                                    client.wait_for_unit("network-online.target")
+                                                                    client.succeed("ifconfig >&2")
+                                                                    client.succeed("ping -c 1 192.168.1.2 >&2")
+                                                                    router.fail("true")
+                                                                '' ;
+                                                        } ;
 #                                        happy =
 #                                            _resource.check
 #                                                {
