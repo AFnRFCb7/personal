@@ -836,7 +836,7 @@
                                                                 # client 192.168.1.1
                                                                 client.wait_for_unit("network-online.target")
                                                                 client.succeed("ifconfig >&2")
-                                                                client.succeed("ping -c 1 192.168.1.2")
+                                                                client.succeed("ping -c 1 192.168.1.2 >&2")
                                                                 router.fail("true")
                                                             '' ;
                                                     } ;
