@@ -840,10 +840,7 @@
                                                                         {
                                                                             networking =
                                                                                 {
-                                                                                    defaultGateway =
-                                                                                        let
-                                                                                            client = pkgs.lib.head nodes.client.networking.interfaces.eth1.ipv4.addresses ;
-                                                                                            in client.address ;
+                                                                                    firewall.enable = false ;
                                                                                     interfaces.eth2.ipv4.addresses =
                                                                                         [
                                                                                             {
