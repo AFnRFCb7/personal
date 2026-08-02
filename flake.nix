@@ -868,7 +868,11 @@
                                                                     client.wait_for_unit("network-online.target")
                                                                     client.succeed("ifconfig >&2")
                                                                     client.succeed("ping -c 1 192.168.1.2 >&2")
-                                                                    client.succeed("ssh -c ${ pseudo-secrets }/identity git@192.168.1.2 true")
+                                                                    client.succeed("mkdir -- parents ~/.ssh")
+                                                                    client.succeed("chmod 0700 ~/.ssh")
+                                                                    client.suceed("cat ${ pseudo-secrets }/identity ~/.ssh/identity")
+                                                                    client.succeed("chmod 0400 ~/.ssh/identity")
+                                                                    client.succeed("ssh -c ~/.ssh/identity git@192.168.1.2 true")
                                                                     router.fail("true")
                                                                 '' ;
                                                         } ;
