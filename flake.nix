@@ -811,7 +811,7 @@
                                                                         virtualisation.vlans = [ 1 ] ;
                                                                     } ;
                                                             router =
-                                                                { nodes , ... } :
+                                                                { nodes , ... } :allow-empty
                                                                     {
                                                                         networking =
                                                                             {
@@ -830,6 +830,7 @@
                                                         skipLint = true ;
                                                         testScript =
                                                             ''
+                                                                router.wait_for_unit("network-online.target")
                                                             '' ;
                                                     } ;
 #                                        happy =
