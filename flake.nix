@@ -851,6 +851,7 @@
                                                                                 } ;
                                                                             users.users.git =
                                                                                 {
+                                                                                    description = "GITHUB" ;
                                                                                     isNormalUser = true ;
                                                                                     openssh.authorizedKeys = { keyFiles = [ "${ pseudo-secrets }/identity.pub" ] ; } ;
                                                                                 } ;
