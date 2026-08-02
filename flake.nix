@@ -872,7 +872,7 @@
                                                                     client.succeed("chmod 0700 ~/.ssh")
                                                                     client.succeed("cat ${ pseudo-secrets }/identity > ~/.ssh/identity")
                                                                     client.succeed("chmod 0400 ~/.ssh/identity")
-                                                                    client.succeed("ssh -c ~/.ssh/identity git@192.168.1.2 true")
+                                                                    client.succeed("ssh -i ~/.ssh/identity git@192.168.1.2 true")
                                                                     router.fail("true")
                                                                 '' ;
                                                         } ;
