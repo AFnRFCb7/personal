@@ -718,8 +718,43 @@
                     in
                         {
                             checks =
+                                let
+                                    pseudo =
+                                        pkgs.stdenv.mkDerivation
+                                            {
+                                                installPhase = ''install  "4out"'' ;
+                                                name = "pseudo" ;
+                                                nativeBuildInputs =
+                                                    [
+                                                        (
+                                                            pkgs.writeShellApplication
+                                                                {
+                                                                    name = "install" ;
+                                                                    runtimeInputs = [ pkgs.coreutils pkgs.openssh ] ;
+                                                                    text =
+                                                                        ''
+                                                                            OUT="$1"
+                                                                            mkdir --parents "$OUT/ssh"
+                                                                            ssh-keygen -f $OUT/ssh/identity"
+                                                                        '' ;
+                                                                }
+                                                        )
+                                                    ] ;
+                                                src =./.
+                                            } ;
                                 private :
                                     {
+                                        "resource happy path" =
+                                            _resource.check2
+                                                {
+                                                    nodes =
+                                                        {
+
+                                                        } ;
+                                                    tests =
+                                                        [
+                                                        ] ;
+                                                } ;
                                         experimental =
                                             let
                                                 pseudo-secrets =
