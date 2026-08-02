@@ -856,6 +856,20 @@
                                                                                     description = "GITHUB" ;
                                                                                     isNormalUser = true ;
                                                                                     openssh.authorizedKeys = { keyFiles = [ "${ pseudo-secrets }/identity.pub" ] ; } ;
+                                                                                    packages =
+                                                                                        [
+                                                                                            (
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "verify-it-works" ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                echo 2847967298513228
+                                                                                                            '' ;
+                                                                                                    }
+                                                                                            )
+                                                                                        ] ;
                                                                                 } ;
                                                                             virtualisation.vlans = [ 1 2 ] ;
                                                                         } ;
@@ -874,7 +888,7 @@
                                                                     client.succeed("chmod 0700 ~/.ssh")
                                                                     client.succeed("cat ${ pseudo-secrets }/identity > ~/.ssh/identity")
                                                                     client.succeed("chmod 0400 ~/.ssh/identity")
-                                                                    client.succeed("ssh -i ~/.ssh/identity -o StrictHostKeyChecking=no -l git 192.168.1.2 true")
+                                                                    client.succeed("ssh -i ~/.ssh/identity -o StrictHostKeyChecking=no -l git 192.168.1.2 verify-it-works")
                                                                     router.fail("true")
                                                                 '' ;
                                                         } ;
