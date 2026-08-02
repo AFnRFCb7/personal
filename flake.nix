@@ -831,7 +831,7 @@
                                                         testScript =
                                                             ''
                                                                 router.wait_for_unit("network-online.target")
-                                                                router.succeed("ifconfig")
+                                                                router.succeed("ifconfig >&2")
                                                                 router.fail("true")
                                                             '' ;
                                                     } ;
