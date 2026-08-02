@@ -811,7 +811,7 @@
                                                                         virtualisation.vlans = [ 1 ] ;
                                                                     } ;
                                                             router =
-                                                                { nodes , ... } :allow-empty
+                                                                { nodes , ... } :
                                                                     {
                                                                         networking =
                                                                             {
