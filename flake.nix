@@ -840,6 +840,10 @@
                                                                         {
                                                                             networking =
                                                                                 {
+                                                                                    defaultGateway =
+                                                                                        let
+                                                                                            client = pkgs.lib.head nodes.client.networking.interfaces.eth1.ipv4.addresses ;
+                                                                                            in client.address ;
                                                                                     interfaces.eth2.ipv4.addresses =
                                                                                         [
                                                                                             {
