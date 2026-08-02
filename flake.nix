@@ -830,8 +830,10 @@
                                                         skipLint = true ;
                                                         testScript =
                                                             ''
+                                                                # router 192.168.1.2 192.168.2.234
                                                                 router.wait_for_unit("network-online.target")
                                                                 router.succeed("ifconfig >&2")
+                                                                # client 192.168.1.1
                                                                 client.wait_for_unit("network-online.target")
                                                                 client.succeed("ifconfig >&2")
                                                                 router.fail("true")
