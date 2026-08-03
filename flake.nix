@@ -815,7 +815,7 @@
                                                             tests =
                                                                 action-derivation :
                                                                     [
-                                                                        # ''github.wait_for_unit("network-online.target")''
+                                                                        ''github.wait_for_unit("network-online.target")''
                                                                         # ''client.wait_for_unit("network-online.target")''
                                                                     ] ;
                                                         } ;
