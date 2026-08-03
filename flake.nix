@@ -720,84 +720,91 @@
                             checks =
                                 private :
                                     let
-                                        shared-resource =
-                                            pkgs.writeShellAppliction
+                                        client =
+                                            { nodes , ...}  :
                                                 {
-                                                    name = "install" ;
-                                                    runtimeInputs = [ pkgs.age pkgs.openssh ] ;
-                                                    text =
-                                                        ''
-                                                            OUT="$1"
-                                                            mkdir --parents "$OUT/age"
-                                                            age-keygen -o "$OUT/age"
-                                                            mkdir --parents "$OUT/openssh" ;
-                                                            ssh-keygen -f "$OUT/openssh/identity" -C "" - P ""
-                                                        '' ;
+                                                    imports = private ;
+                                                    networking =
+                                                        {
+                                                            defaultGateway =
+                                                                let
+                                                                    router = pkgs.lib.head nodes.router.networking.interfaces.eth1.ipv4.addresses ;
+                                                                    in router.address ;
+                                                            useDHCP = false ;
+                                                        } ;
+                                                    personal =
+                                                        {
+                                                            agenix = "${ shared }/age" ;
+                                                            description = "Chester Checker" ;
+                                                            email = "chester@checker.com" ;
+                                                            name = "checker" ;
+                                                            password = "chester" ;
+                                                            temporary =
+                                                                {
+                                                                    ssh =
+                                                                        {
+                                                                            identity = "${ shared }/ssh/identity" ;
+                                                                            known-hosts = ./temporary/known-hosts ;
+                                                                        } ;
+                                                                } ;
+                                                            wifi = { } ;
+                                                        } ;
+                                                    virtualisation.vlans = [ 1 ] ;
+                                                } ;
+                                        github =
+                                            { nodes , ... } :
+                                                {
+                                                    networking =
+                                                        {
+                                                            firewall.enable = false ;
+                                                            interfaces.eth2.ipv4.addresses =
+                                                                [
+                                                                    {
+                                                                        address = "192.168.2.234" ;
+                                                                        prefixLength = 24 ;
+                                                                    }
+                                                                ];
+                                                            useDHCP = false ;
+                                                        } ;
+                                                    services.openssh.enable = true ;
+                                                    users.users.git =
+                                                        {
+                                                            isNormalUser = true ;
+                                                            openssh.authorizedKeys = { keyFiles = [ "${ shared }/ssh/identity.pub" ] ; } ;
+                                                        } ;
+                                                    virtualisation.vlans = [ 1 2 ] ;
+                                                } ;
+                                        shared =
+                                            pkgs.stdenv.mkDerivation
+                                                {
+                                                    installPhase =''install "$out"'' ;
+                                                    name = "shared" ;
+                                                    nativeBuildInputs =
+                                                        [
+                                                            (
+                                                                pkgs.writeShellAppliction
+                                                                    {
+                                                                        name = "install" ;
+                                                                        runtimeInputs = [ pkgs.age pkgs.openssh ] ;
+                                                                        text =
+                                                                            ''
+                                                                                OUT="$1"
+                                                                                mkdir --parents "$OUT/age"
+                                                                                age-keygen -o "$OUT/age"
+                                                                                mkdir --parents "$OUT/openssh" ;
+                                                                                ssh-keygen -f "$OUT/openssh/identity" -C "" - P ""
+                                                                            '' ;
+                                                                    }
+                                                            )
+                                                        ] ;
+                                                    src = ./. ;
                                                 } ;
                                         in
                                             {
                                                 "resource happy path" =
                                                     _resource.check2
                                                         {
-                                                            nodes =
-                                                                {
-                                                                    client =
-                                                                        shared-derivation :
-                                                                            { nodes , ...}  :
-                                                                                {
-                                                                                    imports = private ;
-                                                                                    networking =
-                                                                                        {
-                                                                                            defaultGateway =
-                                                                                                let
-                                                                                                    router = pkgs.lib.head nodes.router.networking.interfaces.eth1.ipv4.addresses ;
-                                                                                                    in router.address ;
-                                                                                            useDHCP = false ;
-                                                                                        } ;
-                                                                                    personal =
-                                                                                        {
-                                                                                            agenix = "${ shared-derivation }/age" ;
-                                                                                            description = "Chester Checker" ;
-                                                                                            email = "chester@checker.com" ;
-                                                                                            name = "checker" ;
-                                                                                            password = "chester" ;
-                                                                                            temporary =
-                                                                                                {
-                                                                                                    ssh =
-                                                                                                        {
-                                                                                                            identity = "${ shared-derivation }/ssh/identity" ;
-                                                                                                            known-hosts = ./temporary/known-hosts ;
-                                                                                                        } ;
-                                                                                                } ;
-                                                                                            wifi = { } ;
-                                                                                        } ;
-                                                                                    virtualisation.vlans = [ 1 ] ;
-                                                                                } ;
-                                                                    github =
-                                                                        shared-derivation :
-                                                                            { nodes , ... } :
-                                                                                {
-                                                                                    networking =
-                                                                                        {
-                                                                                            firewall.enable = false ;
-                                                                                            interfaces.eth2.ipv4.addresses =
-                                                                                                [
-                                                                                                    {
-                                                                                                        address = "192.168.2.234" ;
-                                                                                                        prefixLength = 24 ;
-                                                                                                    }
-                                                                                                ];
-                                                                                            useDHCP = false ;
-                                                                                        } ;
-                                                                                    services.openssh.enable = true ;
-                                                                                    users.users.git =
-                                                                                        {
-                                                                                            isNormalUser = true ;
-                                                                                            openssh.authorizedKeys = { keyFiles = [ "${ shared-derivation }/ssh/identity.pub" ] ; } ;
-                                                                                        } ;
-                                                                                    virtualisation.vlans = [ 1 2 ] ;
-                                                                                } ;
-                                                                } ;
+                                                            nodes = { client = client ; github = github ; } ;
                                                             tests =
                                                                 [
                                                                     ( action-derivation : ''github.wait_for_unit("network-online.target")'' )
