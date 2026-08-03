@@ -805,6 +805,7 @@
                                                     _resource.check2
                                                         {
                                                             nodes = { client = client ; github = github ; } ;
+                                                            pkgs = pkgs ;
                                                             tests =
                                                                 [
                                                                     ( action-derivation : ''github.wait_for_unit("network-online.target")'' )
