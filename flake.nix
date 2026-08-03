@@ -782,7 +782,7 @@
                                                     nativeBuildInputs =
                                                         [
                                                             (
-                                                                pkgs.writeShellAppliction
+                                                                pkgs.writeShellApplication
                                                                     {
                                                                         name = "install" ;
                                                                         runtimeInputs = [ pkgs.age pkgs.openssh ] ;
