@@ -811,7 +811,7 @@
                                                         {
                                                             actions =
                                                                 [
-                                                                    { process = "pre" ; command = ''check-executable "$RESOURCES"/resources/'["checks","true","true"]'"'' ; }
+                                                                    { process = "pre" ; text = ''check-executable "$RESOURCES"/resources/'["checks","true","true"]'"'' ; }
                                                                 ] ;
                                                             nodes = { client = client ; github = github ; } ;
                                                             pkgs = pkgs ;
