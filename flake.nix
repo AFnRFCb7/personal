@@ -815,7 +815,7 @@
                                                                         process = "pre" ;
                                                                         text =
                                                                             ''
-                                                                                check-executable "$RESOURCES"/resources/'["checks","true","true"]'
+                                                                                check-executable WTF"$RESOURCES"/resources/'["checks","true","true"]'
                                                                             '' ;
                                                                     }
                                                                 ] ;
