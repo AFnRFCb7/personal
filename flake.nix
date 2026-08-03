@@ -791,7 +791,7 @@
                                                                                 OUT="$1"
                                                                                 mkdir --parents "$OUT"
                                                                                 age-keygen -o "$OUT/age"
-                                                                                mkdir --parents "$OUT/openssh" ;
+                                                                                mkdir --parents "$OUT/openssh"
                                                                                 ssh-keygen -f "$OUT/openssh/identity" -C "" - P ""
                                                                             '' ;
                                                                     }
