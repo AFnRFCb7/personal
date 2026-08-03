@@ -800,8 +800,8 @@
                                                                 } ;
                                                             tests =
                                                                 [
-                                                                    ( action-derivation : ''"github.wait_for_unit("network-online.target")'' )
-                                                                    ( action-derivation : ''"client.wait_for_unit("network-online.target")'' )
+                                                                    ( action-derivation : ''github.wait_for_unit("network-online.target")'' )
+                                                                    ( action-derivation : ''client.wait_for_unit("network-online.target")'' )
                                                                 ] ;
                                                         } ;
                                         experimental =
