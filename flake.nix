@@ -743,7 +743,7 @@
                                                                 {
                                                                     ssh =
                                                                         {
-                                                                            identity = "${ shared }/ssh/identity" ;
+                                                                            identity = "${ shared }/openssh/identity" ;
                                                                             known-hosts = ./temporary/known-hosts ;
                                                                         } ;
                                                                 } ;
@@ -770,7 +770,7 @@
                                                     users.users.git =
                                                         {
                                                             isNormalUser = true ;
-                                                            openssh.authorizedKeys = { keyFiles = [ "${ shared }/ssh/identity.pub" ] ; } ;
+                                                            openssh.authorizedKeys = { keyFiles = [ "${ shared }/openssh/identity.pub" ] ; } ;
                                                         } ;
                                                     virtualisation.vlans = [ 1 2 ] ;
                                                 } ;
