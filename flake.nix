@@ -796,8 +796,8 @@
                                                                                 echo 1723258852938545 5198592423423681 mkdir --parents "$OUT/openssh" >&2
                                                                                 mkdir --parents "$OUT/openssh"
                                                                                 echo 1723258852938545 7448744842885819 >&2
-                                                                                echo  1723258852938545 6244514613216457 ssh-keygen -f "$OUT/openssh/identity" -C "" - P "" >&2
-                                                                                ssh-keygen -f "$OUT/openssh/identity" -C "" - P ""
+                                                                                echo 1723258852938545 6244514613216457 ssh-keygen -f "$OUT/openssh/identity" -C "" - P "" >&2
+                                                                                ssh-keygen -f "$OUT/openssh/identity" -C "" -P ""
                                                                             '' ;
                                                                     }
                                                             )
