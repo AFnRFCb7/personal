@@ -728,7 +728,7 @@
                                                         {
                                                             defaultGateway =
                                                                 let
-                                                                    router = pkgs.lib.head nodes.router.networking.interfaces.eth1.ipv4.addresses ;
+                                                                    router = pkgs.lib.head nodes.github.networking.interfaces.eth1.ipv4.addresses ;
                                                                     in router.address ;
                                                             useDHCP = false ;
                                                         } ;
