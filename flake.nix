@@ -826,7 +826,7 @@
                                                                     [
                                                                         ''github.wait_for_unit("network-online.target")''
                                                                         ''client.wait_for_unit("network-online.target")''
-                                                                        ''client.succeed("runuseer -user checker -- ${ action-derivation }/execute")''
+                                                                        ''client.succeed("runuser -user checker -- ${ action-derivation }/execute")''
                                                                     ] ;
                                                         } ;
 #                                                experimental =
