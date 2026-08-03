@@ -822,6 +822,7 @@
                                                                 ] ;
                                                             nodes = { client = client ; github = github ; } ;
                                                             pkgs = pkgs ;
+                                                            resources-directory = "/home/checker/resources" ;
                                                             tests =
                                                                 action-derivation :
                                                                     [
