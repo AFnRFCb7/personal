@@ -809,7 +809,10 @@
                                                 "resource happy path" =
                                                     _resource.check2
                                                         {
-                                                            actions = [ ] ;
+                                                            actions =
+                                                                [
+                                                                    { process = "pre" ; command = ''check-executable "$RESOURCES"/resources/'["checks","true","true"]'"'' ; }
+                                                                ] ;
                                                             nodes = { client = client ; github = github ; } ;
                                                             pkgs = pkgs ;
                                                             tests =
@@ -817,6 +820,7 @@
                                                                     [
                                                                         ''github.wait_for_unit("network-online.target")''
                                                                         ''client.wait_for_unit("network-online.target")''
+                                                                        ''client.succeed("qqqrunuseer -user checker -- ${ action-derivation }/execute")''
                                                                     ] ;
                                                         } ;
 #                                                experimental =
