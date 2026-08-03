@@ -735,75 +735,75 @@
                                                         '' ;
                                                 } ;
                                         in
-                                    {
-                                        "resource happy path" =
-                                            _resource.check2
-                                                {
-                                                    nodes =
+                                            {
+                                                "resource happy path" =
+                                                    _resource.check2
                                                         {
-                                                            client =
-                                                                shared-derivation :
-                                                                    { nodes , ...}  :
-                                                                        {
-                                                                            imports = private ;
-                                                                            networking =
+                                                            nodes =
+                                                                {
+                                                                    client =
+                                                                        shared-derivation :
+                                                                            { nodes , ...}  :
                                                                                 {
-                                                                                    defaultGateway =
-                                                                                        let
-                                                                                            router = pkgs.lib.head nodes.router.networking.interfaces.eth1.ipv4.addresses ;
-                                                                                            in router.address ;
-                                                                                    useDHCP = false ;
-                                                                                } ;
-                                                                            personal =
-                                                                                {
-                                                                                    agenix = "${ shared-derivation }/age" ;
-                                                                                    description = "Chester Checker" ;
-                                                                                    email = "chester@checker.com" ;
-                                                                                    name = "checker" ;
-                                                                                    password = "chester" ;
-                                                                                    temporary =
+                                                                                    imports = private ;
+                                                                                    networking =
                                                                                         {
-                                                                                            ssh =
-                                                                                                {
-                                                                                                    identity = "${ shared-derivation }/ssh/identity" ;
-                                                                                                    known-hosts = ./temporary/known-hosts ;
-                                                                                                } ;
+                                                                                            defaultGateway =
+                                                                                                let
+                                                                                                    router = pkgs.lib.head nodes.router.networking.interfaces.eth1.ipv4.addresses ;
+                                                                                                    in router.address ;
+                                                                                            useDHCP = false ;
                                                                                         } ;
-                                                                                    wifi = { } ;
+                                                                                    personal =
+                                                                                        {
+                                                                                            agenix = "${ shared-derivation }/age" ;
+                                                                                            description = "Chester Checker" ;
+                                                                                            email = "chester@checker.com" ;
+                                                                                            name = "checker" ;
+                                                                                            password = "chester" ;
+                                                                                            temporary =
+                                                                                                {
+                                                                                                    ssh =
+                                                                                                        {
+                                                                                                            identity = "${ shared-derivation }/ssh/identity" ;
+                                                                                                            known-hosts = ./temporary/known-hosts ;
+                                                                                                        } ;
+                                                                                                } ;
+                                                                                            wifi = { } ;
+                                                                                        } ;
+                                                                                    virtualisation.vlans = [ 1 ] ;
                                                                                 } ;
-                                                                            virtualisation.vlans = [ 1 ] ;
-                                                                        } ;
-                                                            github =
-                                                                shared-derivation :
-                                                                    { nodes , ... } :
-                                                                        {
-                                                                            networking =
+                                                                    github =
+                                                                        shared-derivation :
+                                                                            { nodes , ... } :
                                                                                 {
-                                                                                    firewall.enable = false ;
-                                                                                    interfaces.eth2.ipv4.addresses =
-                                                                                        [
-                                                                                            {
-                                                                                                address = "192.168.2.234" ;
-                                                                                                prefixLength = 24 ;
-                                                                                            }
-                                                                                        ];
-                                                                                    useDHCP = false ;
+                                                                                    networking =
+                                                                                        {
+                                                                                            firewall.enable = false ;
+                                                                                            interfaces.eth2.ipv4.addresses =
+                                                                                                [
+                                                                                                    {
+                                                                                                        address = "192.168.2.234" ;
+                                                                                                        prefixLength = 24 ;
+                                                                                                    }
+                                                                                                ];
+                                                                                            useDHCP = false ;
+                                                                                        } ;
+                                                                                    services.openssh.enable = true ;
+                                                                                    users.users.git =
+                                                                                        {
+                                                                                            isNormalUser = true ;
+                                                                                            openssh.authorizedKeys = { keyFiles = [ "${ shared-derivation }/ssh/identity.pub" ] ; } ;
+                                                                                        } ;
+                                                                                    virtualisation.vlans = [ 1 2 ] ;
                                                                                 } ;
-                                                                            services.openssh.enable = true ;
-                                                                            users.users.git =
-                                                                                {
-                                                                                    isNormalUser = true ;
-                                                                                    openssh.authorizedKeys = { keyFiles = [ "${ shared-derivation }/ssh/identity.pub" ] ; } ;
-                                                                                } ;
-                                                                            virtualisation.vlans = [ 1 2 ] ;
-                                                                        } ;
+                                                                } ;
+                                                            tests =
+                                                                [
+                                                                    ( action-derivation : ''"github.wait_for_unit("network-online.target")'' )
+                                                                    ( action-derivation : ''"client.wait_for_unit("network-online.target")'' )
+                                                                ] ;
                                                         } ;
-                                                    tests =
-                                                        [
-                                                            ( action-derivation : ''"github.wait_for_unit("network-online.target")'' )
-                                                            ( action-derivation : ''"client.wait_for_unit("network-online.target")'' )
-                                                        ] ;
-                                                } ;
                                         experimental =
                                             let
                                                 pseudo-secrets =
