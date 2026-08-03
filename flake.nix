@@ -789,11 +789,11 @@
                                                                         text =
                                                                             ''
                                                                                 OUT="$1"
-                                                                                echo 1723258852938545 1627957233171753 >&2
+                                                                                echo 1723258852938545 1627957233171753 mkdir --parents "$OUT" >&2
                                                                                 mkdir --parents "$OUT"
                                                                                 echo 1723258852938545 1734789156698614 >&2
                                                                                 age-keygen -o "$OUT/age"
-                                                                                echo 1723258852938545 5198592423423681 >&2
+                                                                                echo 1723258852938545 5198592423423681 mkdir --parents "$OUT/openssh" >&2
                                                                                 mkdir --parents "$OUT/openssh"
                                                                                 echo 1723258852938545 7448744842885819 >&2
                                                                                 echo ssh-keygen -f "$OUT/openssh/identity" -C "" - P "" >&2
