@@ -813,10 +813,11 @@
                                                             nodes = { client = client ; github = github ; } ;
                                                             pkgs = pkgs ;
                                                             tests =
-                                                                [
-                                                                    ( action-derivation : ''github.wait_for_unit("network-online.target")'' )
-                                                                    ( action-derivation : ''client.wait_for_unit("network-online.target")'' )
-                                                                ] ;
+                                                                action-derivation :
+                                                                    [
+                                                                        ''github.wait_for_unit("network-online.target")''
+                                                                        ''client.wait_for_unit("network-online.target")''
+                                                                    ] ;
                                                         } ;
                                                 experimental =
                                                     let
