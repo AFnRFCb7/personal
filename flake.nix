@@ -804,6 +804,7 @@
                                                 "resource happy path" =
                                                     _resource.check2
                                                         {
+                                                            actions = [ ] ;
                                                             nodes = { client = client ; github = github ; } ;
                                                             pkgs = pkgs ;
                                                             tests =
