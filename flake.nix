@@ -815,7 +815,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                WTFe19df043f732788e20ad6a41b1af46f5d62d59cf282c557cde637f731e8f6e7e4c78453e873ffc913bbff732791eb07409c7e2e083ee3bf576143fda41539eb0
+                                                                                cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e
                                                                             '';
                                                                         text = ''check-resources-directory "SCRATCH.out.yaml"'' ;
                                                                     }
