@@ -24,6 +24,7 @@
                                         invalid-release-channel = "invalid-release" ;
                                         flock = pkgs.flock ;
                                         gnused = pkgs.gnused ;
+                                        log-channel = "log" ;
                                         mkDerivation = pkgs.stdenv.mkDerivation ;
                                         jq = pkgs.jq ;
                                         redis = pkgs.redis ;
