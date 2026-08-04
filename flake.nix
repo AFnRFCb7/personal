@@ -939,6 +939,7 @@
                                                                         process = "post" ;
                                                                         text =
                                                                             ''
+                                                                                sleep 10s
                                                                                 journalctl -u releaser.service
                                                                             '' ;
                                                                     }
