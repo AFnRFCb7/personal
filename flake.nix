@@ -811,7 +811,7 @@
                                                         {
                                                             actions =
                                                                 [
-                                                                    { process = "pre" ; text = "check-file" ; }
+                                                                    { process = "pre" ; standard-output = "" ; text = "check-file" ; }
                                                                     {
                                                                         process = "pre" ;
                                                                         text =
