@@ -978,6 +978,7 @@
                                                                         ''client.wait_for_unit("network-online.target")''
                                                                         ''client.wait_for_unit("log.service")''
                                                                         ''client.wait_for_unit("release.service")''
+                                                                        ''client.succeed{"sleep 30s")''
                                                                         ''client.succeed("runuser checker -- ${ action-derivation }/execute")''
                                                                     ] ;
                                                         } ;
