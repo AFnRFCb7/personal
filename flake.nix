@@ -812,13 +812,13 @@
                                                             actions =
                                                                 [
                                                                     { process = "pre" ; standard-output = "e19df043f732788e20ad6a41b1af46f5d62d59cf282c557cde637f731e8f6e7e4c78453e873ffc913bbff732791eb07409c7e2e083ee3bf576143fda41539eb0" ; text = ''check-resources-directory "SCRATCH.out.yaml"'' ; }
-#                                                                    {
-#                                                                        process = "pre" ;
-#                                                                        text =
-#                                                                            ''
-#                                                                                check-executable "$RESOURCES"/resources/'["checks","true","true"]'
-#                                                                            '' ;
-#                                                                    }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        text =
+                                                                            ''
+                                                                                check-executable "$RESOURCES"/resources/'["checks","true","true"]'
+                                                                            '' ;
+                                                                    }
                                                                 ] ;
                                                             nodes = { client = client ; github = github ; } ;
                                                             pkgs = pkgs ;
