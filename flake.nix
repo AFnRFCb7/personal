@@ -937,7 +937,6 @@
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
                                                                     {
-                                                                        document = true ;
                                                                         process = "post"  ;
                                                                         standard-output =
                                                                             ''
@@ -946,7 +945,6 @@
                                                                         text = "check-log" ;
                                                                     }
                                                                     {
-                                                                        document = true ;
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
