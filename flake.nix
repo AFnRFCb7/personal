@@ -458,25 +458,25 @@
                                                                     {
                                                                         log =
                                                                             {
-                                                                                wantedBy = [ "multi-user.target" ];
-                                                                                after = [ "network.target" ];
+                                                                                after = [ "network.target" "redis.service" ];
                                                                                 serviceConfig =
                                                                                     {
                                                                                         ExecStart = __resource.log ;
                                                                                         Restart = "always";
                                                                                         User = config.personal.name ;
                                                                                     } ;
+                                                                                wantedBy = [ "multi-user.target" ];
                                                                             } ;
                                                                         release =
                                                                             {
-                                                                                wantedBy = [ "multi-user.target" ];
-                                                                                after = [ "network.target" ];
+                                                                                after = [ "network.target" "redis.service" ];
                                                                                 serviceConfig =
                                                                                     {
                                                                                         ExecStart = __resource.release ;
                                                                                         Restart = "always";
                                                                                         User = config.personal.name ;
                                                                                     } ;
+                                                                                wantedBy = [ "multi-user.target" ];
                                                                             } ;
                                                                     } ;
                                                                 timers =
@@ -940,7 +940,6 @@
                                                                         standard-output = "wrong" ;
                                                                         text =
                                                                             ''
-                                                                                sleep 10s
                                                                                 journalctl -u release.service
                                                                             '' ;
                                                                     }
