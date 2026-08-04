@@ -932,7 +932,7 @@
                                                                         standard-output = "findme1" ;
                                                                         text =
                                                                             ''
-                                                                                echo 1723258852938545 8837285488965195 $$ $PPID >&2
+                                                                                echo 1723258852938545 8837285488965195 "$$" "$PPID"
                                                                                 ${ pkgs.pstree }/bin/pstree "$$"
                                                                             '' ;
                                                                     }
@@ -950,7 +950,7 @@
                                                                         standard-output = "wrong" ;
                                                                         text =
                                                                             ''
-                                                                                echo 1723258852938545 3978518735367487
+                                                                                echo 1723258852938545 3978518735367487 "$$" "$PPID"
                                                                                 sleep 5
                                                                                 ${ pkgs.pstree }/bin/pstree -p "$$"
                                                                                 find /home/checker/resources | sort
