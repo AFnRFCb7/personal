@@ -940,7 +940,7 @@
                                                                         text =
                                                                             ''
                                                                                 sleep 10s
-                                                                                journalctl -u releaser.service
+                                                                                journalctl -u release.service
                                                                             '' ;
                                                                     }
                                                                     {
