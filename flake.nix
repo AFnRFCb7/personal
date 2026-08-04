@@ -889,7 +889,6 @@
                                                                         standard-output = "WRONG" ;
                                                                         text =
                                                                             ''
-                                                                                env
                                                                                 # shellcheck disable=SC2288
                                                                                 "$RESOURCES"/resources/'["checks","true","true"]'
                                                                             '' ;
