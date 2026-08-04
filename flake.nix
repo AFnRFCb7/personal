@@ -813,6 +813,10 @@
                                                             actions =
                                                                 [
                                                                     {
+                                                                        process = "pre"  ;
+                                                                        text = "check-log" ;
+                                                                    }
+                                                                    {
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
