@@ -944,6 +944,7 @@
                                                                         text = "check-log" ;
                                                                     }
                                                                     {
+                                                                        document = true ;
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
