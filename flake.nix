@@ -930,7 +930,7 @@
                                                                     {
                                                                         process = "pre" ;
                                                                         standard-output = "findme1" ;
-                                                                        text = "echo $$" ;
+                                                                        text = "echo PIDS $$ $PPID" ;
                                                                     }
                                                                     {
                                                                         process = "post" ;
