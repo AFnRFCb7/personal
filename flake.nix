@@ -850,7 +850,7 @@
                                                                             ''
                                                                                 29b3573989378848e91465abb8bb12aaad1c40f01ddba6ce5dce4de88d61d49621cd4272bc6f889cd469e9490040b412eb0a237cf2cd49c637da1d5de5903f3d
                                                                             '' ;
-                                                                        text = "check-redis subscribe invalid-release number" ;
+                                                                        text = "check-redis subscribe valid-release number" ;
                                                                     }
                                                                     { process = "pre" ; text = "check-redis" ; }
                                                                     {
