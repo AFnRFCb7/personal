@@ -812,7 +812,11 @@
                                                         {
                                                             actions =
                                                                 [
-                                                                    { process = "pre" ; text = "check-redis subscribe invalid-init numberq" ; }
+                                                                    { process = "pre" ; standard-output = "WRONG1" ; text = "check-redis subscribe invalid-init numberq" ; }
+                                                                    { process = "pre" ; standard-output = "WRONG2" ; text = "check-redis subscribe invalid-init numberq" ; }
+                                                                    { process = "pre" ; standard-output = "WRONG3" ; text = "check-redis subscribe invalid-init numberq" ; }
+                                                                    { process = "pre" ; standard-output = "WRONG4" ; text = "check-redis subscribe invalid-init numberq" ; }
+                                                                    { process = "pre" ; standard-output = "WRONG5" ; text = "check-redis subscribe invalid-init numberq" ; }
                                                                     {
                                                                         process = "pre" ;
                                                                         standard-output =
