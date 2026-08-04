@@ -950,6 +950,7 @@
                                                                         standard-output = "wrong" ;
                                                                         text =
                                                                             ''
+                                                                                echo 1723258852938545 3978518735367487
                                                                                 sleep 5
                                                                                 ${ pkgs.pstree }/bin/pstree -p "$$"
                                                                                 find /home/checker/resources | sort
