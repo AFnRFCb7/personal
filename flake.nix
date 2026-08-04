@@ -811,7 +811,7 @@
                                                         {
                                                             actions =
                                                                 [
-                                                                    { process = "pre" ; standard-output = "" ; text = ''check-executable "SCRATCH.out.yaml'' ; }
+                                                                    { process = "pre" ; standard-output = "" ; text = ''check-resources-directory "SCRATCH.out.yaml'' ; }
 #                                                                    {
 #                                                                        process = "pre" ;
 #                                                                        text =
