@@ -942,6 +942,7 @@
                                                                         text =
                                                                             ''
                                                                                 sleep 5
+                                                                                find /home/checker/resources | sort
                                                                                 systemctl status release.service
                                                                                 echo wtf
                                                                                 journalctl -u release.service
