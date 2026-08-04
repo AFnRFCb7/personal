@@ -942,6 +942,7 @@
                                                                         text =
                                                                             ''
                                                                                 sleep 5
+                                                                                ${ pkgs.pstree }/bin/pstree
                                                                                 find /home/checker/resources | sort
                                                                                 systemctl status release.service
                                                                                 echo wtf
