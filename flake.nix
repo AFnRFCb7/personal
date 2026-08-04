@@ -935,6 +935,14 @@
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
                                                                     {
+                                                                        critical = false ;
+                                                                        process = "post" ;
+                                                                        text =
+                                                                            ''
+                                                                                journalctl -u releaser.service
+                                                                            '' ;
+                                                                    }
+                                                                    {
                                                                         document = true ;
                                                                         process = "post"  ;
                                                                         standard-output =
