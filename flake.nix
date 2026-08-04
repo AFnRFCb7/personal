@@ -905,9 +905,17 @@
                                                                         process = "pre"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                b596ca96c26a9c602763282613e675c403981801d682f107ea4c50a69f1d20a07973008b5d23b154ac39d86a180080f58c93976cba2af27b32bef01fbd856c92
+                                                                                a318a9a415c124b02c148cd7c5ca53dcf6484280ddc6e27f09a1c6e08bece2a7f4f3117c1f114088518ab7d4b09790ef87faeeedc1abee3cb164b5eaa305ab0c
                                                                             '' ;
                                                                         text = "check-log" ;
+                                                                    }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                29b3573989378848e91465abb8bb12aaad1c40f01ddba6ce5dce4de88d61d49621cd4272bc6f889cd469e9490040b412eb0a237cf2cd49c637da1d5de5903f3d
+                                                                            '' ;
+                                                                        text = "check-redis message valid-init number" ;
                                                                     }
                                                                 ] ;
                                                             gc-roots-directory = "/home/checker/.gc-roots" ;
