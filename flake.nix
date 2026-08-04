@@ -935,8 +935,9 @@
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
                                                                     {
-                                                                        critical = false ;
+                                                                        document = true ;
                                                                         process = "post" ;
+                                                                        standard-output = "wrong" ;
                                                                         text =
                                                                             ''
                                                                                 sleep 10s
