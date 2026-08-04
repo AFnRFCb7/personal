@@ -941,7 +941,7 @@
                                                                         standard-output = "wrong" ;
                                                                         text =
                                                                             ''
-                                                                                sleep 30
+                                                                                sleep 5
                                                                                 systemctl status release.service
                                                                                 echo wtf
                                                                                 journalctl -u release.service
