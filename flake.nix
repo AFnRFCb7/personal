@@ -886,7 +886,7 @@
                                                                     }
                                                                     {
                                                                         process = "pre" ;
-                                                                        standard-output = "WRONG" ;
+                                                                        standard-output = "/home/checker/resources/mounts/0000000000000000" ;
                                                                         text =
                                                                             ''
                                                                                 # shellcheck disable=SC2288
