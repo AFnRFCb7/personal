@@ -972,7 +972,7 @@
                                                                     [
                                                                         ''github.wait_for_unit("network-online.target")''
                                                                         ''client.wait_for_unit("network-online.target")''
-                                                                        ''client.succeed("${ action-derivation }/execute")''
+                                                                        ''client.succeed("runasuser --user checker -- ${ action-derivation }/execute")''
                                                                     ] ;
                                                         } ;
 #                                                experimental =
