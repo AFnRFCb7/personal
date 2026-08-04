@@ -889,6 +889,7 @@
                                                                         standard-output = "WRONG" ;
                                                                         text =
                                                                             ''
+                                                                                echo "IS_NIX_FLAKE_CHECK"
                                                                                 # shellcheck disable=SC2288
                                                                                 "$RESOURCES"/resources/'["checks","true","true"]'
                                                                             '' ;
