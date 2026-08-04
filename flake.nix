@@ -941,7 +941,7 @@
                                                                         text =
                                                                             ''
                                                                                 sleep 10s
-                                                                                systemctl status release.service
+                                                                                journalctl -u release.service
                                                                             '' ;
                                                                     }
                                                                     {
