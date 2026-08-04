@@ -824,7 +824,7 @@
                                                                         process = "pre"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                313001e49157cd458bc79f4edc40bfdb1107197794125b7cc8063c62454a3254c55c156fe53265327e694cfe250fd7adf5ad4d4d9cbb08d7ece93208d130c9e6
+                                                                                56ab205f189266e5f4692f6b0cbbe34d81b431002d45571bbde0950e4c29f866b38c00497f9112066e350b4ef845431eea8014fc14f24fa192cdef10079aa201
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
@@ -906,7 +906,7 @@
                                                                         process = "pre"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                35c53120ce9848c2329a73ebe6bcd51d93c6a95dd563942b43b3a69c2bba3217bd16b617dfc7c806aa26f47a9826482c09e693ab7d343e65bf390e907d95dc33
+                                                                                cedf4275a516a752c09a245ceb462ef48c092c92d33b160f9ed2627ddb54923f52f654812ac353ee37bd1a56299881b6370689f6b47ad2f1bcfa393aed069028
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
