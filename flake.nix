@@ -811,6 +811,7 @@
                                                         {
                                                             actions =
                                                                 [
+                                                                    { process = "pre" ; text = "check-redis" ; }
                                                                     {
                                                                         process = "pre" ;
                                                                         standard-output =
