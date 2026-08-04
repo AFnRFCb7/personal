@@ -814,6 +814,10 @@
                                                                 [
                                                                     {
                                                                         process = "pre"  ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                b596ca96c26a9c602763282613e675c403981801d682f107ea4c50a69f1d20a07973008b5d23b154ac39d86a180080f58c93976cba2af27b32bef01fbd856c92
+                                                                            '' ;
                                                                         text = "check-log" ;
                                                                     }
                                                                     {
