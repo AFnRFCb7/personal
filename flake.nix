@@ -916,7 +916,7 @@
                                                                             ''
                                                                                 e1a9587a1f9520a4afcc5f13550bc9372cff7fddd1cc19958f26856f3456cf333d0ec62e2d6688b14b5e733c15e00fbaa64bcd7f38f1dd72e9df1621717fc39
                                                                             '' ;
-                                                                        text = "check-redis message valid-init number" ;
+                                                                        text = "check-redis message valid-init set" ;
                                                                     }
                                                                 ] ;
                                                             gc-roots-directory = "/home/checker/.gc-roots" ;
