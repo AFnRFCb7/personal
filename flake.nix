@@ -836,6 +836,7 @@
                                                                         ''github.wait_for_unit("network-online.target")''
                                                                         ''client.wait_for_unit("network-online.target")''
                                                                         ''client.succeed("${ action-derivation }/execute")''
+                                                                        ''client.copy_from_machine("$SCRATCH","scratch")''
                                                                     ] ;
                                                         } ;
 #                                                experimental =
