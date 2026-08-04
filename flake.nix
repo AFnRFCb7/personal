@@ -928,6 +928,11 @@
                                                                         text = ''check-resources-directory'' ;
                                                                     }
                                                                     {
+                                                                        process = "pre" ;
+                                                                        standard-output = "findme1" ;
+                                                                        text = "echo $$" ;
+                                                                    }
+                                                                    {
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
