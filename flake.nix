@@ -930,7 +930,11 @@
                                                                     {
                                                                         process = "pre" ;
                                                                         standard-output = "findme1" ;
-                                                                        text = "echo PIDS $$ $PPID" ;
+                                                                        text =
+                                                                            ''
+                                                                                echo 1723258852938545 8837285488965195 $$ $PPID >&2
+                                                                                ${ pkgs.pstree }/bin/pstree "$$"
+                                                                            '' ;
                                                                     }
                                                                     {
                                                                         process = "post" ;
@@ -947,7 +951,7 @@
                                                                         text =
                                                                             ''
                                                                                 sleep 5
-                                                                                ${ pkgs.pstree }/bin/pstree
+                                                                                ${ pkgs.pstree }/bin/pstree -p "$$"
                                                                                 find /home/checker/resources | sort
                                                                                 systemctl status release.service
                                                                                 echo wtf
