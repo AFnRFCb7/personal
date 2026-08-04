@@ -889,6 +889,7 @@
                                                                         standard-output = "WRONG" ;
                                                                         text =
                                                                             ''
+                                                                                # shellcheck disable=SC2288
                                                                                 "$RESOURCES"/resources/'["checks","true","true"]'
                                                                             '' ;
                                                                     }
