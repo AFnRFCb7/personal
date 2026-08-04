@@ -917,6 +917,7 @@
                                                                             '' ;
                                                                         text = "check-redis message valid-init set" ;
                                                                     }
+                                                                    { process = "pre" ; text = "check-redis" ; }
                                                                 ] ;
                                                             gc-roots-directory = "/home/checker/.gc-roots" ;
                                                             nodes = { client = client ; github = github ; } ;
