@@ -811,7 +811,7 @@
                                                         {
                                                             actions =
                                                                 [
-                                                                    { process = "pre" ; standard-output = "" ; text = "check-file" ; }
+                                                                    { process = "pre" ; standard-output = "" ; text = ''check-file "SCRATCH.out.yaml'' ; }
                                                                     {
                                                                         process = "pre" ;
                                                                         text =
