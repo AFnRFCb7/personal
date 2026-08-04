@@ -940,6 +940,8 @@
                                                                         standard-output = "wrong" ;
                                                                         text =
                                                                             ''
+                                                                                systemctl status release.service
+                                                                                echo wtf
                                                                                 journalctl -u release.service
                                                                             '' ;
                                                                     }
