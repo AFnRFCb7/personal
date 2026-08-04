@@ -836,8 +836,22 @@
                                                                             '' ;
                                                                         text = "check-redis subscribe log number" ;
                                                                     }
-                                                                    { process = "pre" ; standard-output = "WRONG4" ; text = "check-redis subscribe valid-init number" ; }
-                                                                    { process = "pre" ; standard-output = "WRONG5" ; text = "check-redis subscribe invalid-release number" ; }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                db545c410fd0c8ede533d5b0666cd2798ba380bd25b655619cd5fd3a33a255569b3ccc319bfdef3322d8392d894d15c2e6aa2d53346e6ac54eaf5d627bfe6a9a
+                                                                            '' ;
+                                                                            text = "check-redis subscribe valid-init number" ;
+                                                                    }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                29b3573989378848e91465abb8bb12aaad1c40f01ddba6ce5dce4de88d61d49621cd4272bc6f889cd469e9490040b412eb0a237cf2cd49c637da1d5de5903f3d
+                                                                            '' ;
+                                                                        text = "check-redis subscribe invalid-release number" ;
+                                                                    }
                                                                     { process = "pre" ; text = "check-redis" ; }
                                                                     {
                                                                         process = "pre" ;
