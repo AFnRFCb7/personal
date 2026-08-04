@@ -884,6 +884,14 @@
                                                                                 check-executable "$RESOURCES"/resources/'["checks","true","true"]'
                                                                             '' ;
                                                                     }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        standard-output = "WRONG" ;
+                                                                        text =
+                                                                            ''
+                                                                                "$RESOURCES"/resources/'["checks","true","true"]'
+                                                                            '' ;
+                                                                    }
                                                                 ] ;
                                                             gc-roots-directory = "/home/checker/.gc-roots" ;
                                                             nodes = { client = client ; github = github ; } ;
