@@ -935,12 +935,21 @@
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
                                                                     {
+                                                                        document = true ;
                                                                         process = "post"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                1c007a634f7b9868e59d40b8f1d02d3827d0a81ccdcbcbc5811885cdf16ee9def275be5fc4e83858096bb5991eca246b8c4e25c0594c6cd905ab401c72b1c5e1
+                                                                                b7a9336ed3a424b5d4d59d9b20d0bbc33217207b584db6b758fddb9a70b99e7c8c9f8387ef318a6b2039e62f09a3a2592bf5c76d6947a6ea1d107b924d7461f4
                                                                             '' ;
                                                                         text = "check-log" ;
+                                                                    }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                3abb6677af34ac57c0ca5828fd94f9d886c26ce59a8ce60ecf6778079423dccff1d6f19cb655805d56098e6d38a1a710dee59523eed7511e5a9e4b8ccb3a4686
+                                                                            '' ;
+                                                                        text = "check-redis message valid-release set" ;
                                                                     }
                                                                 ] ;
                                                             gc-roots-directory = "/home/checker/.gc-roots" ;
