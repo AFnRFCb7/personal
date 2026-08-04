@@ -820,8 +820,22 @@
                                                                             '' ;
                                                                         text = "check-redis subscribe invalid-init number" ;
                                                                     }
-                                                                    { process = "pre" ; standard-output = "WRONG2" ; text = "check-redis subscribe invalid-release number" ; }
-                                                                    { process = "pre" ; standard-output = "WRONG3" ; text = "check-redis subscribe log number" ; }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                63e22ec2fbeebabf005e58fbfb0eee607c4aa417045a68a0cc63767b048e3559268d35e72f367d3b2dbd5dbddf12fc4397762ba149260b3795a0391713bddcd7
+                                                                            '' ;
+                                                                        text = "check-redis subscribe invalid-release number" ;
+                                                                    }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                2b59d179d9815994f687383a886ea34109889756efca5ab27318cc67ce2a21261d12fa6fee6b8c716f72214ead55ee0d789d6c35cff977d40ef5728ba9188a803
+                                                                            '' ;
+                                                                        text = "check-redis subscribe log number" ;
+                                                                    }
                                                                     { process = "pre" ; standard-output = "WRONG4" ; text = "check-redis subscribe valid-init number" ; }
                                                                     { process = "pre" ; standard-output = "WRONG5" ; text = "check-redis subscribe invalid-release number" ; }
                                                                     { process = "pre" ; text = "check-redis" ; }
