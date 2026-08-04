@@ -812,12 +812,19 @@
                                                         {
                                                             actions =
                                                                 [
-                                                                    { process = "pre" ; standard-output = "WRONG1" ; text = "check-redis subscribe invalid-init number" ; }
-                                                                    { process = "pre" ; standard-output = "WRONG2" ; text = "check-redis subscribe invalid-init number" ; }
-                                                                    { process = "pre" ; standard-output = "WRONG3" ; text = "check-redis subscribe invalid-init number" ; }
-                                                                    { process = "pre" ; standard-output = "WRONG4" ; text = "check-redis subscribe invalid-init number" ; }
-                                                                    { process = "pre" ; standard-output = "WRONG5" ; text = "check-redis subscribe invalid-init number" ; }
-                                                                    { process = "pre" ; text = "check-redis s" ; }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                3abb6677af34ac57c0ca5828fd94f9d886c26ce59a8ce60ecf6778079423dccff1d6f19cb655805d56098e6d38a1a710dee59523eed7511e5a9e4b8ccb3a4686
+                                                                            '' ;
+                                                                        text = "check-redis subscribe invalid-init number" ;
+                                                                    }
+                                                                    { process = "pre" ; standard-output = "WRONG2" ; text = "check-redis subscribe invalid-release number" ; }
+                                                                    { process = "pre" ; standard-output = "WRONG3" ; text = "check-redis subscribe log number" ; }
+                                                                    { process = "pre" ; standard-output = "WRONG4" ; text = "check-redis subscribe valid-init number" ; }
+                                                                    { process = "pre" ; standard-output = "WRONG5" ; text = "check-redis subscribe invalid-release number" ; }
+                                                                    { process = "pre" ; text = "check-redis" ; }
                                                                     {
                                                                         process = "pre" ;
                                                                         standard-output =
