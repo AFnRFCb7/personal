@@ -204,7 +204,7 @@
                                                                                                                                                                                         mkdir --parents "${ gc-roots-directory }/$INDEX"
                                                                                                                                                                                         # shellcheck disable=SC2288
                                                                                                                                                                                         KNOWN_HOSTS="$( "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]' )"
-                                                                                                                                                                                        # ln --symbolic "$KNOWN_HOSTS" "${ gc-roots-directory }/$INDEX/known-hosts"
+                                                                                                                                                                                        ln --symbolic "$KNOWN_HOSTS" "${ gc-roots-directory }/$INDEX/known-hosts"
                                                                                                                                                                                         cat > config <<EOF
                                                                                                                                                                                         HostName github.com
                                                                                                                                                                                         Host github.com
@@ -1230,7 +1230,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                ba6944e60045ad05908ee0892f066992b5ca1ee8152d771fb35ad868fa84301ad0bf6305c1e834a0b794cd1c6d6579905dd771de4619b574c58f84f006797256
+                                                                                606068119163969f0aa95b316eac0000f11b31021b97432c18e39eefd440e38764b208d605e34fae6bbb524f7cbb43eb2189fb2715dc661d4b0aedfb49ad8942
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
