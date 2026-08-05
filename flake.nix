@@ -198,7 +198,7 @@
                                                                                                                                                                         pkgs.writeShellApplication
                                                                                                                                                                             {
                                                                                                                                                                                 name = "identith" ;
-                                                                                                                                                                                runtimeInouts = [ pkgs.coreutils ] ;
+                                                                                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                                                                                 text =
                                                                                                                                                                                     ''
                                                                                                                                                                                         cat ${ config.personal.temporary.identity } > "config"
