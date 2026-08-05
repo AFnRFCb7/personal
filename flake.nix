@@ -1236,14 +1236,6 @@
                                                                             '' ;
                                                                         text = "check-redis message valid-init set" ;
                                                                     }
-                                                                    {
-                                                                        process = "pre" ;
-                                                                        standard-output =
-                                                                            ''
-                                                                                4356f74236aadd2b5522e0f7c64cee1232298e7b330fd61bc063d211d9571f5887a011991eebf92e5314166d55f20b282669a12f3a1a600afc8b92694aee4e51
-                                                                            '' ;
-                                                                        text = "check-redis message valid-init set" ;
-                                                                    }
                                                                     { process = "pre" ; text = "check-redis" ; }
                                                                     {
                                                                         process = "pre" ;
