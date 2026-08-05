@@ -203,7 +203,7 @@
                                                                                                                                                                                     ''
                                                                                                                                                                                         # shellcheck disable=SC2288
                                                                                                                                                                                         KNOWN_HOSTS="$( "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]' )"
-                                                                                                                                                                                        ln --symbolic "$KNOWN_HOSTS" /gc-root//$INDEX/known-hosts"
+                                                                                                                                                                                        ln --symbolic "$KNOWN_HOSTS" /gc-root/known-hosts
                                                                                                                                                                                         cat > config <<EOF
                                                                                                                                                                                         HostName github.com
                                                                                                                                                                                         Host github.com
