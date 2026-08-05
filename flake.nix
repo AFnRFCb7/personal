@@ -1221,7 +1221,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                a84e0ccd3477378ead720c2b46f4c23398aa43de0b31b2bcfaafbf592103dacfa3d92661d8726710224e88d34e83fdbafa990f3187eb0d0abc61487d65abfc78
+                                                                                6a8b0a64c20ee69fe5f85d2f1a1fd10fe962fc7d433bf72c189aa246dcb3e0bdc0069a709e7985b5b23942f743c42f2f639699ff95fbbf94313ea6b2aefd029f
                                                                             '' ;
                                                                         text = "check-redis message valid-init set" ;
                                                                     }
