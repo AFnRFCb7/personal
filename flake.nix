@@ -184,7 +184,7 @@
                                                                                                                     github =
                                                                                                                         ignore :
                                                                                                                             {
-                                                                                                                                error = builtins.tace "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA hi" 168 ;
+                                                                                                                                error = builtins.trace "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA hi" 168 ;
                                                                                                                                 init =
                                                                                                                                     ignore :
                                                                                                                                         {
