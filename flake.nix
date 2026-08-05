@@ -204,10 +204,14 @@
                                                                                                                                                                                         # shellcheck disable=SC2288
                                                                                                                                                                                         KNOWN_HOSTS="$( "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]' )"
                                                                                                                                                                                         ln --symbolic "$KNOWN_HOSTS" /gc-root/known-hosts
+                                                                                                                                                                                        # shellcheck disable=SC2288
+                                                                                                                                                                                        IDENTITY="$( "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' )"
+                                                                                                                                                                                        ln --symbolic "$IDENTITY" /gc-root/identity
                                                                                                                                                                                         cat > config <<EOF
                                                                                                                                                                                         HostName github.com
                                                                                                                                                                                         Host github.com
                                                                                                                                                                                         User git
+                                                                                                                                                                                        IdentityFile $IDENTITY
                                                                                                                                                                                         UserKnownHostsFile $KNOWN_HOSTS
                                                                                                                                                                                         StrictHostKeyChecking yes
                                                                                                                                                                                         EOF
@@ -1196,7 +1200,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e
+                                                                                46c951072e840fa5dca5709414b6bcfbae3baeab785859d4043bc283c4eae149c7c529768dc7d4d50748fe7422de94e7175b87300be918926bc3855744d61186
                                                                             '';
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
