@@ -807,7 +807,7 @@
                                                                                 echo 1723258852938545 5198592423423681 mkdir --parents "$OUT/openssh" >&2
                                                                                 mkdir --parents "$OUT/openssh"
                                                                                 cat ${ self }/checker/identity > "$OUT/openssh/identity"
-                                                                                ssh-keyen -f "$OUT/openssh/identity" -y > "$OUT/openssh/identity.pub"
+                                                                                ssh-keygen -f "$OUT/openssh/identity" -y > "$OUT/openssh/identity.pub"
                                                                                 touch "$OUT/openssh/known-hosts"
                                                                             '' ;
                                                                     }
