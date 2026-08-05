@@ -184,7 +184,7 @@
                                                                                                                     github =
                                                                                                                         ignore :
                                                                                                                             {
-                                                                                                                                error = 140 ;
+                                                                                                                                error = 168 ;
                                                                                                                                 init =
                                                                                                                                     ignore :
                                                                                                                                         {
@@ -1148,7 +1148,7 @@
                                                                         process = "pre"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                d1cdc71f6010c13c073a18ea45e4d88edff0dafbc2592f1e04ef6fe29c986f02c153a91047d4954133909d932e8176ac41503a5e95eb905efba098eb39589606
+                                                                                0a1bd837e70e3f95672a069293d76a6e6d7420247a3b9f7369d862838ed29b400a79779819afa4bc77ccd2e000da424fdb873f167c1ce0321d21fa3e168a6e00
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
@@ -1156,7 +1156,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                f262ee41682301adbeb5d035ef1b80c7139064d2648cb99b68cb8492ea277023d485d897e65ee3a0cde6876c57181942cb9c5796dbbe39e7f7125971624721be
+                                                                                176c1dee8f5a13908ce0a88b652f0cc2c2c5b370297e23b69882443223d35cacabb218c8395f1ef47b2016ca0f10e789679e0132583ec1f3672139698928158f
                                                                             '' ;
                                                                         text = "check-redis message valid-init set" ;
                                                                     }
@@ -1165,7 +1165,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                c00a49559bf08e754ff97ecebc95366ecfc31c577cc3011b4301f145da983e0e6bff3b237a042fe69498dbb35dbe6c0522433ceaf49fcb9d497adf8b66d17c4f
+                                                                                0edf3bd6db248aeff31ee097db68b56c2be9f020d10f5fbc0b6a0d710918c8eb47890c9b203d83fc4c2916c1eabac00ba3d2b1af879e162a5802e6cf8511d896
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
@@ -1181,7 +1181,7 @@
                                                                         process = "post"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                cd921eab2c2411df969869076fc476371b523b5ee7dd76d69c335890c299d4c6a88a1982a58e80eb293cf9bd4232fd860a2c955c2462101bffb71c53f33a41a5
+                                                                                b7a9336ed3a424b5d4d59d9b20d0bbc33217207b584db6b758fddb9a70b99e7c8c9f8387ef318a6b2039e62f09a3a2592bf5c76d6947a6ea1d107b924d7461f4
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
