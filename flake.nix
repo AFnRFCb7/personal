@@ -1205,7 +1205,7 @@
                                                                         process = "pre"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                3a0f905c9ef1b920946149c1053d315b0ca6a27fee8b6ac6f7505379a81c51dfd6a82bc39f41b4d358d66dec9fee48e84152812e9e73c42b3dd2db7fc42f7e8a
+                                                                                30ae7ccf2eb86f033b73fd25f42ff0d854d45b747530a52ef9dba8fcab4254b618066b0052df9e02bd4cc4c48107aba704bacb323686979e0667357ec81b1843
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
@@ -1213,7 +1213,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                6a8b0a64c20ee69fe5f85d2f1a1fd10fe962fc7d433bf72c189aa246dcb3e0bdc0069a709e7985b5b23942f743c42f2f639699ff95fbbf94313ea6b2aefd029f
+                                                                                a84e0ccd3477378ead720c2b46f4c23398aa43de0b31b2bcfaafbf592103dacfa3d92661d8726710224e88d34e83fdbafa990f3187eb0d0abc61487d65abfc78
                                                                             '' ;
                                                                         text = "check-redis message valid-init set" ;
                                                                     }
