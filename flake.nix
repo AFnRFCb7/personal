@@ -116,7 +116,7 @@
                                                                                             ln --symbolic ${ __resource.release } "$1/release.sh"
                                                                                         ''
                                                                                     ] ;
-                                                                                resources_ =
+                                                                                resources =
                                                                                     _visitor.implementation
                                                                                         {
                                                                                             lambda =
@@ -333,7 +333,7 @@
                                                                                                         } ;
                                                                                                 } ;
                                                                                         } ;
-                                                                                in builtins.concatStringsSep "\n" ( builtins.concatLists [ clean release resources_ ] ) ;
+                                                                                in builtins.concatStringsSep "\n" ( builtins.concatLists [ clean release resources ] ) ;
                                                                     }
                                                             )
                                                         ] ;
