@@ -983,7 +983,6 @@
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
                                                                     {
-                                                                        document = true ;
                                                                         process = "post"  ;
                                                                         standard-output =
                                                                             ''
