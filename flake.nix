@@ -952,6 +952,14 @@
                                                                         text = "check-redis message valid-release set" ;
                                                                     }
                                                                     { process = "post" ; text = "check-redis" ; }
+                                                                    {
+                                                                        process = "post" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                0bd5d956ddeb5828cbebce548f0e025d1cdf5938efd4b029480acd9923fcfd506dda3ef76a469f1fe9ad54dc6af0bbcbfcbc71213763729ae6552ab66f1a4f87
+                                                                            '';
+                                                                        text = ''check-resources-directory'' ;
+                                                                    }
                                                                 ] ;
                                                             gc-roots-directory = "/home/checker/.gc-roots" ;
                                                             nodes = { client = client ; github = github ; } ;
