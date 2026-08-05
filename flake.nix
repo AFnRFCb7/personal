@@ -1229,6 +1229,7 @@
                                                                         text = "check-redis message valid-init set" ;
                                                                     }
                                                                     {
+                                                                        document = true ;
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
