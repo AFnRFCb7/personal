@@ -184,7 +184,7 @@
                                                                                                                     github =
                                                                                                                         ignore :
                                                                                                                             {
-                                                                                                                                error = builtins.trace "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ${ builtins.typeOf resources }" 168 ;
+                                                                                                                                error = 101 ;
                                                                                                                                 init =
                                                                                                                                     ignore :
                                                                                                                                         {
@@ -203,16 +203,11 @@
                                                                                                                                                                                     ''
                                                                                                                                                                                         mkdir --parents "${ gc-roots-directory }/$INDEX"
                                                                                                                                                                                         # shellcheck disable=SC2288
-                                                                                                                                                                                        KNOWN_HOSTS="$( "$RESOURCES"/'["production","dot-ssh","known-hosts","github"]' )"
+                                                                                                                                                                                        # KNOWN_HOSTS="$( "$RESOURCES"/'["production","dot-ssh","known-hosts","github"]' )"
                                                                                                                                                                                         ln --symbolic "$KNOWN_HOSTS" "${ gc-roots-directory }/$INDEX/known-hosts"
-                                                                                                                                                                                        # shellcheck disable=SC2288
-                                                                                                                                                                                        IDENTITY="$( "$RESOURCES"/'["production","dot-ssh","identity","github"]' )"
-                                                                                                                                                                                        ln --symbolic "$IDENTITY" "${ gc-roots-directory }/$INDEX/identity"
                                                                                                                                                                                         cat > config <<EOF
                                                                                                                                                                                         HostName github.com
                                                                                                                                                                                         User git
-                                                                                                                                                                                        IdentityFile $IDENTITY/identity
-                                                                                                                                                                                        UserKnownHostsFile $KNOWN_HOSTS/known-hosts
                                                                                                                                                                                         EOF
                                                                                                                                                                                         chmod 0400 config
                                                                                                                                                                                     '' ;
@@ -1241,7 +1236,7 @@
                                                                         process = "post"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                b7a9336ed3a424b5d4d59d9b20d0bbc33217207b584db6b758fddb9a70b99e7c8c9f8387ef318a6b2039e62f09a3a2592bf5c76d6947a6ea1d107b924d7461f4
+                                                                                WTF-b7a9336ed3a424b5d4d59d9b20d0bbc33217207b584db6b758fddb9a70b99e7c8c9f8387ef318a6b2039e62f09a3a2592bf5c76d6947a6ea1d107b924d7461f4
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
@@ -1249,7 +1244,7 @@
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
-                                                                                WTFb205c607d559d8bc4bb6267db23fe2a44ee918774e8e2a4a245a56d268852e9dda0cf56c2e6a1209b8714f91d50514129a8cd2a49edd4007480f8c15c4a31da4
+                                                                                b205c607d559d8bc4bb6267db23fe2a44ee918774e8e2a4a245a56d268852e9dda0cf56c2e6a1209b8714f91d50514129a8cd2a49edd4007480f8c15c4a31da4
                                                                             '' ;
                                                                         text = "check-redis message valid-release set" ;
                                                                     }
