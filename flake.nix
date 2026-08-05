@@ -1153,7 +1153,7 @@
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
-                                                                                56abb796a267e813b30586f26614cdf3c123c73bf7d80ef4a05eee7ac18cb677f10029bfb3b9c2759e795b10a17c6f786bcde36d310a2bee2fa16bb997dc3cc5
+                                                                                b205c607d559d8bc4bb6267db23fe2a44ee918774e8e2a4a245a56d268852e9dda0cf56c2e6a1209b8714f91d50514129a8cd2a49edd4007480f8c15c4a31da4q
                                                                             '' ;
                                                                         text = "check-redis message valid-release set" ;
                                                                     }
