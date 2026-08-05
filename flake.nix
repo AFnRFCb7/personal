@@ -201,7 +201,7 @@
                                                                                                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                                                                                 text =
                                                                                                                                                                                     ''
-                                                                                                                                                                                        cat ${ config.personal.temporary.identity } > "config"
+                                                                                                                                                                                        cat ${ config.personal.temporary.ssh.identity } > "config"
                                                                                                                                                                                         chmod 0400 "config"
                                                                                                                                                                                     '' ;
                                                                                                                                                                             }
