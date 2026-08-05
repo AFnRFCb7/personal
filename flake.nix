@@ -754,7 +754,7 @@
                                                                 {
                                                                     ssh =
                                                                         {
-                                                                            identity = "${ shared }/openssh/identity" ;
+                                                                            identity = "${ self }/checker/identity" ;
                                                                             known-hosts = ./temporary/known-hosts ;
                                                                         } ;
                                                                 } ;
@@ -806,8 +806,8 @@
                                                                                 age-keygen -o "$OUT/age"
                                                                                 echo 1723258852938545 5198592423423681 mkdir --parents "$OUT/openssh" >&2
                                                                                 mkdir --parents "$OUT/openssh"
-                                                                                cat ${ ./checker/identity } > "$OUT/openssh/identity" ;
-                                                                                ssh-keygen -f  "$OUT/openssh/identity" -y > "$OUT/openssh/identity.pub"
+                                                                                touch "$OUT/openssh/identity"
+                                                                                touch "$OUT/openssh/identity"
                                                                             '' ;
                                                                     }
                                                             )
