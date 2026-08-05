@@ -1286,6 +1286,7 @@
                                                                             '' ;
                                                                     }
                                                                     {
+                                                                        document = true ;
                                                                         process = "post" ;
                                                                         text =
                                                                             ''
