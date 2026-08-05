@@ -991,6 +991,14 @@
                                                                         text = "check-log" ;
                                                                     }
                                                                     { process = "post" ; text = "check-redis" ; }
+                                                                    {
+                                                                        process = "post" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                7d2141a0937ebf0dc0420c31c75d2dd16fd2a266ebaa299c4d1439c3aa2436140bbcb0f0c40a7ab42e4b093b63a2bda4c8e121cb6c42f46bc1497d3bc2feb3e6
+                                                                            '';
+                                                                        text = ''check-resources-directory'' ;
+                                                                    }
                                                                 ] ;
                                                             gc-roots-directory = "/home/checker/.gc-roots" ;
                                                             nodes = { client = client ; github = github ; } ;
