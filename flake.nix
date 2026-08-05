@@ -225,7 +225,6 @@
                                                                                                                                 targets = [ "known-hosts" ] ;
                                                                                                                                 temporary = false ;
                                                                                                                             } ;
-                                                                                                                    } ;
                                                                                                                 } ;
                                                                                                             identity =
                                                                                                                 {
@@ -274,6 +273,7 @@
                                                                                                                                 temporary = false ;
                                                                                                                             } ;
                                                                                                                 } ;
+                                                                                                        } ;
                                                                                                 } ;
                                                                                         } ;
                                                                                 in builtins.concatStringsSep "\n" ( builtins.concatLists [ clean release resources ] ) ;
