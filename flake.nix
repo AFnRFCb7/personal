@@ -935,7 +935,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                0bd5d956ddeb5828cbebce548f0e025d1cdf5938efd4b029480acd9923fcfd506dda3ef76a469f1fe9ad54dc6af0bbcbfcbc71213763729ae6552ab66f1a4f87
+                                                                                197c7ad3b1233f6f332686110de239c37cb8259fe67b226d6a37561a8c39c78303856edc7c86cd6a8e83d722e8d0b4330270cf5d2034434d25a7e4ddc78bde51
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
@@ -968,7 +968,7 @@
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
-                                                                                7d2141a0937ebf0dc0420c31c75d2dd16fd2a266ebaa299c4d1439c3aa2436140bbcb0f0c40a7ab42e4b093b63a2bda4c8e121cb6c42f46bc1497d3bc2feb3e6
+                                                                                9e8a6508bf1186cfb482a018e73af6843b0f2bc5ba32f291e78eac4327785235197b8aae23d5544cf16206a458e595fd7f03647f8dd41901533531345034d6d2
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
