@@ -936,10 +936,11 @@
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
                                                                     {
+                                                                        document = true ;
                                                                         process = "post"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                b7a9336ed3a424b5d4d59d9b20d0bbc33217207b584db6b758fddb9a70b99e7c8c9f8387ef318a6b2039e62f09a3a2592bf5c76d6947a6ea1d107b924d7461f4
+                                                                                9f36381c4e58bf119739918a8dbe60c38594026ece0b36ea836792e5ef693683390483bfd62cf185cb4ca0caf84403d942045588bba12bab51fbfd3091061931
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
@@ -947,7 +948,7 @@
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
-                                                                                3abb6677af34ac57c0ca5828fd94f9d886c26ce59a8ce60ecf6778079423dccff1d6f19cb655805d56098e6d38a1a710dee59523eed7511e5a9e4b8ccb3a4686
+                                                                                56abb796a267e813b30586f26614cdf3c123c73bf7d80ef4a05eee7ac18cb677f10029bfb3b9c2759e795b10a17c6f786bcde36d310a2bee2fa16bb997dc3cc5
                                                                             '' ;
                                                                         text = "check-redis message valid-release set" ;
                                                                     }
