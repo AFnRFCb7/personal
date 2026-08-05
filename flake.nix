@@ -1140,7 +1140,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                1969f9799a28943bbafa476d415468ba02d1deec0252811cba08de8df7f15771bef6bed4b353c66a113e3c6b862f8d9fce5f8ec1219ba7ce33481d0a869e4c90
+                                                                                1969f9799a28943bbafa476d415468ba02dd15df685162cdeb4bfe33a1c4dd65511e39d218f1941a0fa356ea77708e763480e8b473c8f70ad18526bd5492855f0b0efcc50c10a68ea6faedd020abdda29b01deec0252811cba08de8df7f15771bef6bed4b353c66a113e3c6b862f8d9fce5f8ec1219ba7ce33481d0a869e4c90
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
