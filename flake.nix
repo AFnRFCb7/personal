@@ -202,7 +202,7 @@
                                                                                                                                                                                 text =
                                                                                                                                                                                     ''
                                                                                                                                                                                         mkdir --parents "${ gc-roots-directory }/$INDEX"
-                                                                                                                                                                                        shellcheck disable=SC2288
+                                                                                                                                                                                        # shellcheck disable=SC2288
                                                                                                                                                                                         KNOWN_HOSTS="$( "$RESOURCES"/'["production","dot-ssh","known-hosts","github"]' )"
                                                                                                                                                                                         # ln --symbolic "$KNOWN_HOSTS" "${ gc-roots-directory }/$INDEX/known-hosts"
                                                                                                                                                                                         cat > config <<EOF
