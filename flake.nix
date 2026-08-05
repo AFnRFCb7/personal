@@ -197,7 +197,7 @@
                                                                                                                                                                     (
                                                                                                                                                                         pkgs.writeShellApplication
                                                                                                                                                                             {
-                                                                                                                                                                                name = "identityq" ;
+                                                                                                                                                                                name = "identity" ;
                                                                                                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                                                                                 text =
                                                                                                                                                                                     ''
