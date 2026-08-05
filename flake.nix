@@ -191,12 +191,23 @@
                                                                                                                                             action =
                                                                                                                                                 ignore :
                                                                                                                                                     {
-                                                                                                                                                        targetPkgs = pkgs : [ pkgs.coreutils ] ;
-                                                                                                                                                        text =
-                                                                                                                                                            ''
-                                                                                                                                                                echo WTF > identity
-                                                                                                                                                                chmod 0400 identity
-                                                                                                                                                            '' ;
+                                                                                                                                                        targetPkgs =
+                                                                                                                                                            pkgs :
+                                                                                                                                                                [
+                                                                                                                                                                    (
+                                                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                                                            {
+                                                                                                                                                                                name = "identith" ;
+                                                                                                                                                                                runtimeInouts = [ pkgs.coreutils ] ;
+                                                                                                                                                                                text =
+                                                                                                                                                                                    ''
+                                                                                                                                                                                        cat ${ config.personal.temporary.identity } > "config"
+                                                                                                                                                                                        chmod 0400 "config"
+                                                                                                                                                                                    '' ;
+                                                                                                                                                                            }
+                                                                                                                                                                    )
+                                                                                                                                                                ] ;
+                                                                                                                                                        text = "identity" ;
                                                                                                                                                     } ;
                                                                                                                                         } ;
                                                                                                                                 release =
