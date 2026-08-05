@@ -149,7 +149,7 @@
                                                                                                                                     action =
                                                                                                                                         ignore :
                                                                                                                                             {
-                                                                                                                                                targetPkgs = pkgs : [ pkgs.coreutils pkgs.psmisc ] ;
+                                                                                                                                                targetPkgs = { pkgs , ... } : [ pkgs.coreutils pkgs.psmisc ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         echo 4819688586897478
@@ -163,7 +163,7 @@
                                                                                                                                     action =
                                                                                                                                         ignore :
                                                                                                                                             {
-                                                                                                                                                targetPkgs = pkgs : [ pkgs.coreutils ] ;
+                                                                                                                                                targetPkgs = { pkgs , ... } : [ pkgs.coreutils ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         echo 2679141487527185
@@ -192,22 +192,32 @@
                                                                                                                                                 ignore :
                                                                                                                                                     {
                                                                                                                                                         targetPkgs =
-                                                                                                                                                            pkgs :
+                                                                                                                                                            { gc-roots-directory , pkgs , resources } :
                                                                                                                                                                 [
                                                                                                                                                                     (
                                                                                                                                                                         pkgs.writeShellApplication
                                                                                                                                                                             {
-                                                                                                                                                                                name = "known-hosts" ;
+                                                                                                                                                                                name = "config" ;
                                                                                                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                                                                                 text =
                                                                                                                                                                                     ''
-                                                                                                                                                                                        cat ${ config.personal.temporary.ssh.known-hosts } > "known-hosts"
-                                                                                                                                                                                        chmod 0400 "known-hosts"
+                                                                                                                                                                                        mkdir --parents "${ gc-roots-directory }/$INDEX"
+                                                                                                                                                                                        KNOWN_HOSTS=${ resources.dot-ssh.known-hosts.github { } }
+                                                                                                                                                                                        ln --symbolic "$KNOWN_HOSTS" "${ gc-roots-directory }/$INDEX/known-hosts"
+                                                                                                                                                                                        IDENTITY=${ resources.dot-ssh.identity.github { } }
+                                                                                                                                                                                        ln --symbolic "$IDENTITY" "${ gc-roots-directory }/$INDEX/identity"
+                                                                                                                                                                                        cat > config <<EOF
+                                                                                                                                                                                        HostName github.com
+                                                                                                                                                                                        User git
+                                                                                                                                                                                        IdentityFile $IDENTITY/identity
+                                                                                                                                                                                        UserKnownHostsFile $KNOWN_HOSTS/known-hosts
+                                                                                                                                                                                        EOF
+                                                                                                                                                                                        chmod 0400 config
                                                                                                                                                                                     '' ;
                                                                                                                                                                             }
                                                                                                                                                                     )
                                                                                                                                                                 ] ;
-                                                                                                                                                        text = "known-hosts" ;
+                                                                                                                                                        text = "config" ;
                                                                                                                                                     } ;
                                                                                                                                         } ;
                                                                                                                                 release =
@@ -216,13 +226,13 @@
                                                                                                                                             action =
                                                                                                                                                 ignore :
                                                                                                                                                     {
-                                                                                                                                                        targetPkgs = pkgs : [ ] ;
+                                                                                                                                                        targetPkgs = { pkgs , ... } : [ ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
                                                                                                                                         } ;
-                                                                                                                                targets = [ "known-hosts" ] ;
+                                                                                                                                targets = [ "config" ] ;
                                                                                                                                 temporary = false ;
                                                                                                                             } ;
                                                                                                                 } ;
@@ -263,7 +273,7 @@
                                                                                                                                             action =
                                                                                                                                                 ignore :
                                                                                                                                                     {
-                                                                                                                                                        targetPkgs = pkgs : [ ] ;
+                                                                                                                                                        targetPkgs = { pkgs , ... } : [ ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                             '' ;
@@ -310,7 +320,7 @@
                                                                                                                                             action =
                                                                                                                                                 ignore :
                                                                                                                                                     {
-                                                                                                                                                        targetPkgs = pkgs : [ ] ;
+                                                                                                                                                        targetPkgs = { pkgs , ... } : [ ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                             '' ;
