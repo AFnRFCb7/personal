@@ -807,7 +807,7 @@
                                                                                 echo 1723258852938545 5198592423423681 mkdir --parents "$OUT/openssh" >&2
                                                                                 mkdir --parents "$OUT/openssh"
                                                                                 touch "$OUT/openssh/identity"
-                                                                                touch "$OUT/openssh/identity"
+                                                                                touch "$OUT/openssh/identity.pub"
                                                                             '' ;
                                                                     }
                                                             )
