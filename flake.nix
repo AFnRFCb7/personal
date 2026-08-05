@@ -755,7 +755,7 @@
                                                                     ssh =
                                                                         {
                                                                             identity = "${ self }/checker/identity" ;
-                                                                            known-hosts = ./temporary/known-hosts ;
+                                                                            known-hosts = "${ self }/checker/identity" ;
                                                                         } ;
                                                                 } ;
                                                             wifi = { } ;
