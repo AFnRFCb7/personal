@@ -202,7 +202,7 @@
                                                                                                                                                                                 text =
                                                                                                                                                                                     ''
                                                                                                                                                                                         mkdir --parents "${ gc-roots-directory }/$INDEX"
-
+                                                                                                                                                                                        IDENTITY_FILE="$( "$RESOURCES"/'["production","dot-ssh","known-hosts"]' )"
                                                                                                                                                                                         ln --symbolic "$KNOWN_HOSTS" "${ gc-roots-directory }/$INDEX/known-hosts"
 
                                                                                                                                                                                         ln --symbolic "$IDENTITY" "${ gc-roots-directory }/$INDEX/identity"
