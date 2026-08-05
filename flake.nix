@@ -956,7 +956,7 @@
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
-                                                                                0bd5d956ddeb5828cbebce548f0e025d1cdf5938efd4b029480acd9923fcfd506dda3ef76a469f1fe9ad54dc6af0bbcbfcbc71213763729ae6552ab66f1a4f87
+                                                                                7d2141a0937ebf0dc0420c31c75d2dd16fd2a266ebaa299c4d1439c3aa2436140bbcb0f0c40a7ab42e4b093b63a2bda4c8e121cb6c42f46bc1497d3bc2feb3e6
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
