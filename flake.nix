@@ -1241,7 +1241,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                606068119163969f0aa95b316eac0000f11b31021b97432c18e39eefd440e38764b208d605e34fae6bbb524f7cbb43eb2189fb2715dc661d4b0aedfb49ad8942
+                                                                                7d98fb666fa6f532f98443a160c0290703aa3398c0763c374d0cdc71ec4921704a90549c7e04fbfa2fb21d24d6dc2a32182e32caf0a75b18b67462f60f5ec058
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
@@ -1249,7 +1249,7 @@
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
-                                                                                cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e
+                                                                                7df21bacfd5dd993ae14e086516888d16763fd787f36db9436ab83a85e1b2eb06dcfe0b023e2330dd62809b86dfdb1ffcee8de746a2ac21588c13c94514b8a5f
                                                                             '';
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
@@ -1274,7 +1274,7 @@
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
-                                                                                9e8a6508bf1186cfb482a018e73af6843b0f2bc5ba32f291e78eac4327785235197b8aae23d5544cf16206a458e595fd7f03647f8dd41901533531345034d6d2
+                                                                                d38f692d12ebfc11349fc795713cddc081b57c1259d7b2c2a1508dbc3949d1fac01256984640f11e83bd7e1e2eb58a5d9b500ae2c82f8f757f19cb576937deee
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
