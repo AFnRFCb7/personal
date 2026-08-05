@@ -990,6 +990,7 @@
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
+                                                                    { process = "post" ; text = "check-redis" ; }
                                                                 ] ;
                                                             gc-roots-directory = "/home/checker/.gc-roots" ;
                                                             nodes = { client = client ; github = github ; } ;
