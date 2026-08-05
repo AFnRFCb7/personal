@@ -754,8 +754,8 @@
                                                                 {
                                                                     ssh =
                                                                         {
-                                                                            identity = "${ self }/checker/identity2" ;
-                                                                            known-hosts = "${ self }/checker/identity" ;
+                                                                            identity = "${ shared }/openssh/identityq" ;
+                                                                            known-hosts = "${ shared }/openssh/known-hosts" ;
                                                                         } ;
                                                                 } ;
                                                             wifi = { } ;
