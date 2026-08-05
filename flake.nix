@@ -964,14 +964,14 @@
                                                                         process = "post" ;
                                                                         text =
                                                                             ''
-                                                                                check-executable "$RESOURCES"/clean
+                                                                                check-executable "$RESOURCES"/clean.sh
                                                                             '' ;
                                                                     }
                                                                     {
                                                                         process = "post" ;
                                                                         text =
                                                                             ''
-                                                                                "$RESOURCES"/clean
+                                                                                "$RESOURCES"/clean.sh
                                                                             '' ;
                                                                     }
                                                                     {
