@@ -194,7 +194,7 @@
                                                                                                                                                         targetPkgs = pkgs : [ pkgs.coreutils ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
-                                                                                                                                                                cat ${ config.personal.temporary.ssh.identity } > identity
+                                                                                                                                                                echo WTF > identity
                                                                                                                                                                 chmod 0400 identity
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
