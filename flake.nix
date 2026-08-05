@@ -127,7 +127,7 @@
                                                                                                         ''
                                                                                                         (
                                                                                                             ''
-                                                                                                                ln --symbolic ${ __resource.resource ( { resources = { dot-ssh = null ; } ; seed = path ; } // ( value null ) ) } "$1"/resources/'${ builtins.toJSON path }'
+                                                                                                                ln --symbolic ${ __resource.resource ( { resources = { production = null ; } ; seed = path ; } // ( value null ) ) } "$1"/resources/'${ builtins.toJSON path }'
                                                                                                             ''
                                                                                                         )
                                                                                                     ] ;
@@ -202,9 +202,9 @@
                                                                                                                                                                                 text =
                                                                                                                                                                                     ''
                                                                                                                                                                                         mkdir --parents "${ gc-roots-directory }/$INDEX"
-                                                                                                                                                                                        KNOWN_HOSTS=${ resources.dot-ssh.known-hosts.github { } }
+                                                                                                                                                                                        KNOWN_HOSTS=${ resources.production.dot-ssh.known-hosts.github { } }
                                                                                                                                                                                         ln --symbolic "$KNOWN_HOSTS" "${ gc-roots-directory }/$INDEX/known-hosts"
-                                                                                                                                                                                        IDENTITY=${ resources.dot-ssh.identity.github { } }
+                                                                                                                                                                                        IDENTITY=${ resources.production.dot-ssh.identity.github { } }
                                                                                                                                                                                         ln --symbolic "$IDENTITY" "${ gc-roots-directory }/$INDEX/identity"
                                                                                                                                                                                         cat > config <<EOF
                                                                                                                                                                                         HostName github.com
