@@ -201,7 +201,6 @@
                                                                                                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                                                                                 text =
                                                                                                                                                                                     ''
-                                                                                                                                                                                        mkdir --parents "${ gc-roots-directory }/$INDEX"
                                                                                                                                                                                         # shellcheck disable=SC2288
                                                                                                                                                                                         KNOWN_HOSTS="$( "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]' )"
                                                                                                                                                                                         ln --symbolic "$KNOWN_HOSTS" /gc-root//$INDEX/known-hosts"
