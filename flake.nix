@@ -1207,7 +1207,7 @@
                                                                     }
                                                                 ] ;
                                                             gc-roots-directory = "/home/checker/.gc-roots" ;
-                                                            nodes = { client = client ; } ;
+                                                            nodes = { github = github ; client = client ; } ;
                                                             pkgs = pkgs ;
                                                             resources-directory = "/home/checker/resources" ;
                                                             tests =
