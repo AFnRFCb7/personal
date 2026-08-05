@@ -960,6 +960,13 @@
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        text =
+                                                                            ''
+                                                                                check-executable "$RESOURCES"/clean
+                                                                            '' ;
+                                                                    }
                                                                 ] ;
                                                             gc-roots-directory = "/home/checker/.gc-roots" ;
                                                             nodes = { client = client ; github = github ; } ;
