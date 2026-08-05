@@ -903,11 +903,10 @@
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
                                                                     {
-                                                                        document = true ;
                                                                         process = "pre"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                22985d9664f6db8aee75a3911ee02e15194d594dbacbbb8894440e0a50c03373854ecb69a304bc5f00f45379df7033807cc090797ba76ecc6448eb88ac3e372e
+                                                                                0b8897e768ec01c1a28d561c612f9803e5d58c883fabacc5c0280c3675b51550fa572ccc5be074b40f9586c7770e0fd908cf6e98b3069f75b2c752d93d28551c
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
