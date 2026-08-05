@@ -806,8 +806,8 @@
                                                                                 age-keygen -o "$OUT/age"
                                                                                 echo 1723258852938545 5198592423423681 mkdir --parents "$OUT/openssh" >&2
                                                                                 mkdir --parents "$OUT/openssh"
-                                                                                touch "$OUT/openssh/identity"
-                                                                                touch "$OUT/openssh/identity.pub"
+                                                                                cat ${ self }/checker/identity > "$OUT/openssh/identity"
+                                                                                ssh-keyen -f "$OUT/openssh/identity" -y > "$OUT/openssh/identity.pub"
                                                                             '' ;
                                                                     }
                                                             )
