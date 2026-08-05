@@ -1271,6 +1271,7 @@
                                                                     }
                                                                     { process = "post" ; text = "check-redis" ; }
                                                                     {
+                                                                        document = true ;
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
