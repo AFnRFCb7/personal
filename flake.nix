@@ -249,7 +249,7 @@
                                                                                                                                                 ignore :
                                                                                                                                                     {
                                                                                                                                                         targetPkgs =
-                                                                                                                                                            pkgs :
+                                                                                                                                                            { pkgs , ... } :
                                                                                                                                                                 [
                                                                                                                                                                     (
                                                                                                                                                                         pkgs.writeShellApplication
