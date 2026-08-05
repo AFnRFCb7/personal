@@ -184,7 +184,7 @@
                                                                                                                     github =
                                                                                                                         ignore :
                                                                                                                             {
-                                                                                                                                error = 168 ;
+                                                                                                                                error = builtins.tace "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA hi" 168 ;
                                                                                                                                 init =
                                                                                                                                     ignore :
                                                                                                                                         {
