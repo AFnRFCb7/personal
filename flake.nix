@@ -754,7 +754,7 @@
                                                                 {
                                                                     ssh =
                                                                         {
-                                                                            identity = "${ shared }/openssh/identityq" ;
+                                                                            identity = "${ shared }/openssh/identity" ;
                                                                             known-hosts = "${ shared }/openssh/known-hosts" ;
                                                                         } ;
                                                                 } ;
