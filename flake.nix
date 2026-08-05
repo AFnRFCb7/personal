@@ -179,6 +179,53 @@
                                                                                                 {
                                                                                                     dot-ssh =
                                                                                                         {
+                                                                                                             config =
+                                                                                                                {
+                                                                                                                    github =
+                                                                                                                        ignore :
+                                                                                                                            {
+                                                                                                                                error = 168 ;
+                                                                                                                                init =
+                                                                                                                                    ignore :
+                                                                                                                                        {
+                                                                                                                                            action =
+                                                                                                                                                ignore :
+                                                                                                                                                    {
+                                                                                                                                                        targetPkgs =
+                                                                                                                                                            pkgs :
+                                                                                                                                                                [
+                                                                                                                                                                    (
+                                                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                                                            {
+                                                                                                                                                                                name = "known-hosts" ;
+                                                                                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                                                                                text =
+                                                                                                                                                                                    ''
+                                                                                                                                                                                        cat ${ config.personal.temporary.ssh.known-hosts } > "known-hosts"
+                                                                                                                                                                                        chmod 0400 "known-hosts"
+                                                                                                                                                                                    '' ;
+                                                                                                                                                                            }
+                                                                                                                                                                    )
+                                                                                                                                                                ] ;
+                                                                                                                                                        text = "known-hosts" ;
+                                                                                                                                                    } ;
+                                                                                                                                        } ;
+                                                                                                                                release =
+                                                                                                                                    ignore :
+                                                                                                                                        {
+                                                                                                                                            action =
+                                                                                                                                                ignore :
+                                                                                                                                                    {
+                                                                                                                                                        targetPkgs = pkgs : [ ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                        } ;
+                                                                                                                                targets = [ "known-hosts" ] ;
+                                                                                                                                temporary = false ;
+                                                                                                                            } ;
+                                                                                                                } ;
                                                                                                              known-hosts =
                                                                                                                 {
                                                                                                                     github =
