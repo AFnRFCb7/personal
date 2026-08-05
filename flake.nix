@@ -192,7 +192,7 @@
                                                                                                                                                 ignore :
                                                                                                                                                     {
                                                                                                                                                         targetPkgs =
-                                                                                                                                                            { gc-roots-directory , pkgs , resources } :
+                                                                                                                                                            { pkgs , resources , ... } :
                                                                                                                                                                 [
                                                                                                                                                                     (
                                                                                                                                                                         pkgs.writeShellApplication
@@ -204,7 +204,7 @@
                                                                                                                                                                                         mkdir --parents "${ gc-roots-directory }/$INDEX"
                                                                                                                                                                                         # shellcheck disable=SC2288
                                                                                                                                                                                         KNOWN_HOSTS="$( "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]' )"
-                                                                                                                                                                                        ln --symbolic "$KNOWN_HOSTS" "${ gc-roots-directory }/$INDEX/known-hosts"
+                                                                                                                                                                                        ln --symbolic "$KNOWN_HOSTS" /gc-root//$INDEX/known-hosts"
                                                                                                                                                                                         cat > config <<EOF
                                                                                                                                                                                         HostName github.com
                                                                                                                                                                                         Host github.com
