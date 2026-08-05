@@ -982,6 +982,15 @@
                                                                             '';
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
+                                                                    {
+                                                                        critical = false ;
+                                                                        process = "post"  ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                b7a9336ed3a424b5d4d59d9b20d0bbc33217207b584db6b758fddb9a70b99e7c8c9f8387ef318a6b2039e62f09a3a2592bf5c76d6947a6ea1d107b924d7461f4
+                                                                            '' ;
+                                                                        text = "check-log" ;
+                                                                    }
                                                                 ] ;
                                                             gc-roots-directory = "/home/checker/.gc-roots" ;
                                                             nodes = { client = client ; github = github ; } ;
