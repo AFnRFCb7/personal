@@ -1200,7 +1200,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                7df21bacfd5dd993ae14e086516888d16763fd787f36db9436ab83a85e1b2eb06dcfe0b023e2330dd62809b86dfdb1ffcee8de746a2ac21588c13c94514b8a5f
+                                                                                4d2848684f1f1fa4cc83311a596b72a1314bf59a7b95c006a47ec39a52df87429a777be45e183da1e68197f7d115f08e7cc5a903c099880b13508b7fb19aeb13
                                                                             '';
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
