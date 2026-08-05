@@ -179,6 +179,54 @@
                                                                                                 {
                                                                                                     dot-ssh =
                                                                                                         {
+                                                                                                             known-hosts =
+                                                                                                                {
+                                                                                                                    github =
+                                                                                                                        ignore :
+                                                                                                                            {
+                                                                                                                                error = 140 ;
+                                                                                                                                init =
+                                                                                                                                    ignore :
+                                                                                                                                        {
+                                                                                                                                            action =
+                                                                                                                                                ignore :
+                                                                                                                                                    {
+                                                                                                                                                        targetPkgs =
+                                                                                                                                                            pkgs :
+                                                                                                                                                                [
+                                                                                                                                                                    (
+                                                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                                                            {
+                                                                                                                                                                                name = "known-hosts" ;
+                                                                                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                                                                                text =
+                                                                                                                                                                                    ''
+                                                                                                                                                                                        cat ${ config.personal.temporary.ssh.known-hosts } > "known-hosts"
+                                                                                                                                                                                        chmod 0400 "known-hosts"
+                                                                                                                                                                                    '' ;
+                                                                                                                                                                            }
+                                                                                                                                                                    )
+                                                                                                                                                                ] ;
+                                                                                                                                                        text = "known-hosts" ;
+                                                                                                                                                    } ;
+                                                                                                                                        } ;
+                                                                                                                                release =
+                                                                                                                                    ignore :
+                                                                                                                                        {
+                                                                                                                                            action =
+                                                                                                                                                ignore :
+                                                                                                                                                    {
+                                                                                                                                                        targetPkgs = pkgs : [ ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                        } ;
+                                                                                                                                targets = [ "known-hosts" ] ;
+                                                                                                                                temporary = false ;
+                                                                                                                            } ;
+                                                                                                                    } ;
+                                                                                                                } ;
                                                                                                             identity =
                                                                                                                 {
                                                                                                                     github =
@@ -225,32 +273,7 @@
                                                                                                                                 targets = [ "identity" ] ;
                                                                                                                                 temporary = false ;
                                                                                                                             } ;
-                                                                                                                    } ;
-                                                                                                            plaintext =
-                                                                                                                let
-                                                                                                                    in
-                                                                                                                        {
-                                                                                                                            dot-gnupg =
-                                                                                                                                {
-                                                                                                                                    secret-keys = { } ;
-                                                                                                                                    ownertrust = { } ;
-                                                                                                                                } ;
-                                                                                                                            dot-ssh =
-                                                                                                                                {
-                                                                                                                                    github =
-                                                                                                                                        {
-                                                                                                                                            identity = { } ;
-                                                                                                                                            known-hosts = { } ;
-                                                                                                                                        } ;
-                                                                                                                                    mobile =
-                                                                                                                                        {
-                                                                                                                                            identity = { } ;
-                                                                                                                                            known-hosts = { } ;
-                                                                                                                                        } ;
-                                                                                                                                } ;
-                                                                                                                            github = { } ;
-                                                                                                                        } ;
-                                                                                                        } ;
+                                                                                                                } ;
                                                                                                 } ;
                                                                                         } ;
                                                                                 in builtins.concatStringsSep "\n" ( builtins.concatLists [ clean release resources ] ) ;
