@@ -1197,11 +1197,10 @@
                                                                             '' ;
                                                                     }
                                                                     {
-                                                                        document = true ;
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                46c951072e840fa5dca5709414b6bcfbae3baeab785859d4043bc283c4eae149c7c529768dc7d4d50748fe7422de94e7175b87300be918926bc3855744d61186
+                                                                                7df21bacfd5dd993ae14e086516888d16763fd787f36db9436ab83a85e1b2eb06dcfe0b023e2330dd62809b86dfdb1ffcee8de746a2ac21588c13c94514b8a5f
                                                                             '';
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
@@ -1209,7 +1208,7 @@
                                                                         process = "pre"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                30ae7ccf2eb86f033b73fd25f42ff0d854d45b747530a52ef9dba8fcab4254b618066b0052df9e02bd4cc4c48107aba704bacb323686979e0667357ec81b1843
+                                                                                2695467bca240cf1a8bac663b4e4ea07c59e2b0c11854fecea11256d71715629003d1853136d0299ea92b47eefa38d4b3f49095c985296dd9a9a0418189f7d91
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
@@ -1225,7 +1224,15 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                6a8b0a64c20ee69fe5f85d2f1a1fd10fe962fc7d433bf72c189aa246dcb3e0bdc0069a709e7985b5b23942f743c42f2f639699ff95fbbf94313ea6b2aefd029f
+                                                                                4356f74236aadd2b5522e0f7c64cee1232298e7b330fd61bc063d211d9571f5887a011991eebf92e5314166d55f20b282669a12f3a1a600afc8b92694aee4e51
+                                                                            '' ;
+                                                                        text = "check-redis message valid-init set" ;
+                                                                    }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                4356f74236aadd2b5522e0f7c64cee1232298e7b330fd61bc063d211d9571f5887a011991eebf92e5314166d55f20b282669a12f3a1a600afc8b92694aee4e51
                                                                             '' ;
                                                                         text = "check-redis message valid-init set" ;
                                                                     }
