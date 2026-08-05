@@ -202,9 +202,9 @@
                                                                                                                                                                                 text =
                                                                                                                                                                                     ''
                                                                                                                                                                                         mkdir --parents "${ gc-roots-directory }/$INDEX"
-                                                                                                                                                                                        IDENTITY_FILE="$( "$RESOURCES"/'["production","dot-ssh","known-hosts"]' )"
+                                                                                                                                                                                        KNOWN_HOSTS="$( "$RESOURCES"/'["production","dot-ssh","known-hosts","github"]' )"
                                                                                                                                                                                         ln --symbolic "$KNOWN_HOSTS" "${ gc-roots-directory }/$INDEX/known-hosts"
-
+                                                                                                                                                                                        IDENTITY_FILE="$( "$RESOURCES"/'["production","dot-ssh","identity","github"]'
                                                                                                                                                                                         ln --symbolic "$IDENTITY" "${ gc-roots-directory }/$INDEX/identity"
                                                                                                                                                                                         cat > config <<EOF
                                                                                                                                                                                         HostName github.com
