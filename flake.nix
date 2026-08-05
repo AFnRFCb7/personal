@@ -808,6 +808,7 @@
                                                                                 mkdir --parents "$OUT/openssh"
                                                                                 cat ${ self }/checker/identity > "$OUT/openssh/identity"
                                                                                 ssh-keyen -f "$OUT/openssh/identity" -y > "$OUT/openssh/identity.pub"
+                                                                                touch "$OUT/openssh/known-hosts"
                                                                             '' ;
                                                                     }
                                                             )
