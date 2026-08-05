@@ -1196,6 +1196,7 @@
                                                                             '' ;
                                                                     }
                                                                     {
+                                                                        document = true ;
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
