@@ -1249,7 +1249,7 @@
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
-                                                                                b205c607d559d8bc4bb6267db23fe2a44ee918774e8e2a4a245a56d268852e9dda0cf56c2e6a1209b8714f91d50514129a8cd2a49edd4007480f8c15c4a31da4
+                                                                                WTFb205c607d559d8bc4bb6267db23fe2a44ee918774e8e2a4a245a56d268852e9dda0cf56c2e6a1209b8714f91d50514129a8cd2a49edd4007480f8c15c4a31da4
                                                                             '' ;
                                                                         text = "check-redis message valid-release set" ;
                                                                     }
