@@ -177,44 +177,43 @@
                                                                                                 } ;
                                                                                             production =
                                                                                                 {
-                                                                                                    secrets =
+                                                                                                    dot-ssh =
                                                                                                         {
-                                                                                                            ciphertext =
-                                                                                                                ignore :
-                                                                                                                    {
-                                                                                                                        error = 107 ;
-                                                                                                                        init =
-                                                                                                                            ignore :
-                                                                                                                                {
-                                                                                                                                    action =
-                                                                                                                                        ignore :
-                                                                                                                                            {
-                                                                                                                                                targetPkgs = pkgs : [ pkgs.git ] ;
-                                                                                                                                                text =
-                                                                                                                                                    ''
-                                                                                                                                                        git init 2> /scratch/init
-                                                                                                                                                        git remote add https ${ config.personal.secrets.remotes.https }
-                                                                                                                                                        git remote add ssh ${ config.personal.secrets.remotes.ssh }
-                                                                                                                                                        git fetch https ${ config.personal.secrets.branch } 2> /scratch/fetch
-                                                                                                                                                        git checkout https/${ config.personal.secrets.branch } 2> /scratch/checkout
-                                                                                                                                                    '' ;
-                                                                                                                                            } ;
-                                                                                                                                } ;
-                                                                                                                        release =
-                                                                                                                            ignore :
-                                                                                                                                {
-                                                                                                                                    action =
-                                                                                                                                        ignore :
-                                                                                                                                            {
-                                                                                                                                                targetPkgs = pkgs : [ ] ;
-                                                                                                                                                text =
-                                                                                                                                                    ''
-                                                                                                                                                    '' ;
-                                                                                                                                            } ;
-                                                                                                                                } ;
-                                                                                                                        targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
-                                                                                                                        # targets = [ ".git" ] ;
-                                                                                                                        temporary = false ;
+                                                                                                            identity =
+                                                                                                                {
+                                                                                                                    github =
+                                                                                                                        ignore :
+                                                                                                                            {
+                                                                                                                                error = 140 ;
+                                                                                                                                init =
+                                                                                                                                    ignore :
+                                                                                                                                        {
+                                                                                                                                            action =
+                                                                                                                                                ignore :
+                                                                                                                                                    {
+                                                                                                                                                        targetPkgs = pkgs : [ pkgs.coreutils ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                cat ${ config.personal.temporary.identity } > identity
+                                                                                                                                                                chmod 0400 identity
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                        } ;
+                                                                                                                                release =
+                                                                                                                                    ignore :
+                                                                                                                                        {
+                                                                                                                                            action =
+                                                                                                                                                ignore :
+                                                                                                                                                    {
+                                                                                                                                                        targetPkgs = pkgs : [ ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                        } ;
+                                                                                                                                targets = [ "identity" ] ;
+                                                                                                                                temporary = false ;
+                                                                                                                            } ;
                                                                                                                     } ;
                                                                                                             plaintext =
                                                                                                                 let
@@ -807,7 +806,7 @@
                                                 } ;
                                         in
                                             {
-                                                "resource happy path" =
+                                                "generic resource happy path" =
                                                     _resource.check2
                                                         {
                                                             actions =
@@ -1008,6 +1007,212 @@
                                                                 action-derivation :
                                                                     [
                                                                         ''github.wait_for_unit("network-online.target")''
+                                                                        ''client.wait_for_unit("network-online.target")''
+                                                                        ''client.wait_for_unit("log.service")''
+                                                                        ''client.wait_for_unit("release.service")''
+                                                                        ''client.succeed("runuser checker -- ${ action-derivation }/execute")''
+                                                                    ] ;
+                                                        } ;
+                                                "resource happy path : bootstrap identity" =
+                                                    _resource.check2
+                                                        {
+                                                            actions =
+                                                                [
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e
+                                                                            '';
+                                                                        text = ''check-gc-roots-directory'' ;
+                                                                    }
+                                                                    {
+                                                                        process = "pre"  ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                b7a9336ed3a424b5d4d59d9b20d0bbc33217207b584db6b758fddb9a70b99e7c8c9f8387ef318a6b2039e62f09a3a2592bf5c76d6947a6ea1d107b924d7461f4
+                                                                            '' ;
+                                                                        text = "check-log" ;
+                                                                    }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                3abb6677af34ac57c0ca5828fd94f9d886c26ce59a8ce60ecf6778079423dccff1d6f19cb655805d56098e6d38a1a710dee59523eed7511e5a9e4b8ccb3a4686
+                                                                            '' ;
+                                                                        text = "check-redis subscribe invalid-init number" ;
+                                                                    }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                63e22ec2fbeebabf005e58fbfb0eee607c4aa417045a68a0cc63767b048e3559268d35e72f367d3b2dbd5dbddf12fc4397762ba149260b3795a0391713bddcd7
+                                                                            '' ;
+                                                                        text = "check-redis subscribe invalid-release number" ;
+                                                                    }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                2b59d179d9815994f687383a886ea34109889756efca5ab27318cc67ce2a21261d12fa6fee6b8c716f72214ead55ee0d789d6c35cff977d40ef5728ba9188a80
+                                                                            '' ;
+                                                                        text = "check-redis subscribe log number" ;
+                                                                    }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                db545c410fd0c8ede533d5b0666cd2798ba380bd25b655619cd5fd3a33a255569b3ccc319bfdef3322d8392d894d15c2e6aa2d53346e6ac54eaf5d627bfe6a9a
+                                                                            '' ;
+                                                                            text = "check-redis subscribe valid-init number" ;
+                                                                    }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                29b3573989378848e91465abb8bb12aaad1c40f01ddba6ce5dce4de88d61d49621cd4272bc6f889cd469e9490040b412eb0a237cf2cd49c637da1d5de5903f3d
+                                                                            '' ;
+                                                                        text = "check-redis subscribe valid-release number" ;
+                                                                    }
+                                                                    { process = "pre" ; text = "check-redis" ; }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e
+                                                                            '';
+                                                                        text = ''check-resources-directory'' ;
+                                                                    }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        text =
+                                                                            ''
+                                                                                check-executable "$RESOURCES"/resources/'["checks","true","true"]'
+                                                                            '' ;
+                                                                    }
+                                                                    {
+                                                                        reads = false ;
+                                                                        process = "pre" ;
+                                                                        standard-output = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                        text =
+                                                                            ''
+                                                                                # shellcheck disable=SC2288
+                                                                                "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]'
+                                                                            '' ;
+                                                                    }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e
+                                                                            '';
+                                                                        text = ''check-gc-roots-directory'' ;
+                                                                    }
+                                                                    {
+                                                                        process = "pre"  ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                0b8897e768ec01c1a28d561c612f9803e5d58c883fabacc5c0280c3675b51550fa572ccc5be074b40f9586c7770e0fd908cf6e98b3069f75b2c752d93d28551c
+                                                                            '' ;
+                                                                        text = "check-log" ;
+                                                                    }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                7bd79c439ad21624d36b0fb505543eaca8cb76a19df297b1e4f4bb6bd7be538df8797cd140f1895bb789838d4a49450c4d13039a227fb74707576ec1d1b83cd9
+                                                                            '' ;
+                                                                        text = "check-redis message valid-init set" ;
+                                                                    }
+                                                                    { process = "pre" ; text = "check-redis" ; }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                0bd5d956ddeb5828cbebce548f0e025d1cdf5938efd4b029480acd9923fcfd506dda3ef76a469f1fe9ad54dc6af0bbcbfcbc71213763729ae6552ab66f1a4f87
+                                                                            '';
+                                                                        text = ''check-resources-directory'' ;
+                                                                    }
+                                                                    {
+                                                                        process = "post" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e
+                                                                            '';
+                                                                        text = ''check-gc-roots-directory'' ;
+                                                                    }
+                                                                    {
+                                                                        process = "post"  ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                b7a9336ed3a424b5d4d59d9b20d0bbc33217207b584db6b758fddb9a70b99e7c8c9f8387ef318a6b2039e62f09a3a2592bf5c76d6947a6ea1d107b924d7461f4
+                                                                            '' ;
+                                                                        text = "check-log" ;
+                                                                    }
+                                                                    {
+                                                                        process = "post" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                56abb796a267e813b30586f26614cdf3c123c73bf7d80ef4a05eee7ac18cb677f10029bfb3b9c2759e795b10a17c6f786bcde36d310a2bee2fa16bb997dc3cc5
+                                                                            '' ;
+                                                                        text = "check-redis message valid-release set" ;
+                                                                    }
+                                                                    { process = "post" ; text = "check-redis" ; }
+                                                                    {
+                                                                        process = "post" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                7d2141a0937ebf0dc0420c31c75d2dd16fd2a266ebaa299c4d1439c3aa2436140bbcb0f0c40a7ab42e4b093b63a2bda4c8e121cb6c42f46bc1497d3bc2feb3e6
+                                                                            '';
+                                                                        text = ''check-resources-directory'' ;
+                                                                    }
+                                                                    {
+                                                                        process = "post" ;
+                                                                        text =
+                                                                            ''
+                                                                                check-executable "$RESOURCES"/clean.sh
+                                                                            '' ;
+                                                                    }
+                                                                    {
+                                                                        process = "post" ;
+                                                                        text =
+                                                                            ''
+                                                                                "$RESOURCES"/clean.sh
+                                                                            '' ;
+                                                                    }
+                                                                    {
+                                                                        process = "post" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e
+                                                                            '';
+                                                                        text = ''check-gc-roots-directory'' ;
+                                                                    }
+                                                                    {
+                                                                        process = "post"  ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                b7a9336ed3a424b5d4d59d9b20d0bbc33217207b584db6b758fddb9a70b99e7c8c9f8387ef318a6b2039e62f09a3a2592bf5c76d6947a6ea1d107b924d7461f4
+                                                                            '' ;
+                                                                        text = "check-log" ;
+                                                                    }
+                                                                    { process = "post" ; text = "check-redis" ; }
+                                                                    {
+                                                                        process = "post" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e
+                                                                            '';
+                                                                        text = ''check-resources-directory'' ;
+                                                                    }
+                                                                ] ;
+                                                            gc-roots-directory = "/home/checker/.gc-roots" ;
+                                                            nodes = { client = client ; } ;
+                                                            pkgs = pkgs ;
+                                                            resources-directory = "/home/checker/resources" ;
+                                                            tests =
+                                                                action-derivation :
+                                                                    [
                                                                         ''client.wait_for_unit("network-online.target")''
                                                                         ''client.wait_for_unit("log.service")''
                                                                         ''client.wait_for_unit("release.service")''
