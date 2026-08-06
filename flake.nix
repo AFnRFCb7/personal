@@ -410,7 +410,7 @@
                                                                                                                                                                                 # shellcheck disable=SC2288
                                                                                                                                                                                 CONFIG="$( "$RESOURCES"/'["production","dot-ssh","config","bootstrap"]' )" || exit 172
                                                                                                                                                                                 ln --symbolic ${ pkgs.openssh } /gc-root/config
-                                                                                                                                                                                git config core.sshCommaand "${ pkgs.openssh }/bin/ssf -F $CONFIG"
+                                                                                                                                                                                git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $CONFIG"
                                                                                                                                                                              '' ;
                                                                                                                                                                     }
                                                                                                                                                             )
@@ -553,7 +553,7 @@
                                                                     ''
                                                                         %wheel ALL=(ALL) NOPASSWD: ${ password-less-core pkgs.nix "nix-collect-garbage" }/bin/nix-collect-garbage
                                                                         %wheel ALL=(ALL) NOPASSWD: ${ password-less-core pkgs.nixos-rebuild "nixos-rebuild" }/bin/nixos-rebuild
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.nettools }/binifconfig
+                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.nettools }/bin/ifconfig
                                                                     '' ;
                                                             } ;
                                                         services =
