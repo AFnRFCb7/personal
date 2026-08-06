@@ -187,6 +187,7 @@
                                                                                                                                             ''
                                                                                                                                                 echo 4819688586897478
                                                                                                                                                 touch 1968976268514822
+                                                                                                                                                # shellcheck disable=SC2288
                                                                                                                                                 ALPHA="$( "$RESOURCES"/release/'["checks","alpha"]' )" || exit 136
                                                                                                                                                 ln --symbolic "$ALPHA" /gc-root/alpha
                                                                                                                                             '' ;
