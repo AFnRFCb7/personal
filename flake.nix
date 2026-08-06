@@ -403,7 +403,7 @@
                                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                                     {
                                                                                                                                                                         name = "configure-ssh" ;
-                                                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkga.openssh ] ;
+                                                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.openssh ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
                                                                                                                                                                                 ln --symbolic ${ pkgs.openssh } /gc-root/open-ssh
