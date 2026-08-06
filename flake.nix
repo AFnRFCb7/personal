@@ -989,6 +989,7 @@
                                                                                 "$RESOURCES"/resources/'["checks","true","true"]'
                                                                             '' ;
                                                                     }
+                                                                    { kludge = true ;process = "pre" ; text = "sleep 10s" ;}
                                                                     {
                                                                         process = "pre" ;
                                                                         standard-output =
@@ -1018,7 +1019,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                5e9eff0b937bdac74d0a5ed4cc71ec200bd7d1bfb78ff619a2dc3f53783374a7cb4a9b4eb2952acfb77c27a936f68abf0d9561827f05bcc90593366ce5c14c3c
+                                                                                20e96cba47509fc06521ac7c90cee3fe3c93ec023b22cc00387373cf0debe45a256377d39c52ab3d7ead0ed236c5f1d1838b7e38ac87daae91ad7e0d522eda5c
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
