@@ -407,6 +407,7 @@
                                                                                                                                                                         text =
                                                                                                                                                                             ''
                                                                                                                                                                                 ln --symbolic ${ pkgs.openssh } /gc-root/open-ssh
+                                                                                                                                                                                # shellcheck disable=SC2288
                                                                                                                                                                                 CONFIG="$( "$RESOURCES"/'["production","dot-ssh","config","bootstrap"]' )" || exit 172
                                                                                                                                                                                 ln --symbolic ${ pkgs.openssh } /gc-root/config
                                                                                                                                                                                 git config core.sshCommaand "${ pkgs.openssh }/bin/ssf -F $CONFIG"
