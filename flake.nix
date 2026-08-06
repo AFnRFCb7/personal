@@ -439,7 +439,7 @@
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                 } ;
-                                                                                                                        targets = [ "identity" ] ;
+                                                                                                                        targets = [ ".git" "dot-gpg" "dot-ssh" "github" ] ;
                                                                                                                         temporary = false ;
                                                                                                                     } ;
                                                                                                         } ;
