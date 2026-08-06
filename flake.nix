@@ -1246,11 +1246,12 @@
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
-                                                                    { document = true ; kludge = true ; process = "post" ; text = "sleep 60s" ; }
+                                                                    { document = true ; kludge = true ; process = "post" ; text = "sleep 60s && false" ; }
                                                                     {
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
+                                                                                cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e
                                                                             '';
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
@@ -1258,6 +1259,7 @@
                                                                         process = "post"  ;
                                                                         standard-output =
                                                                             ''
+                                                                                d36952b5103c0fc5e336807442b8e05485bc061848a1e00c92f1508b085f2d080ac93f5ba17404384ee1000b1cfcc0ae1e3906c68c0240c23660b4f489f8a88e
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
@@ -1265,6 +1267,7 @@
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
+                                                                                b205c607d559d8bc4bb6267db23fe2a44ee918774e8e2a4a245a56d268852e9dda0cf56c2e6a1209b8714f91d50514129a8cd2a49edd4007480f8c15c4a31da4
                                                                             '' ;
                                                                         text = "check-redis message valid-release set" ;
                                                                     }
@@ -1272,6 +1275,7 @@
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
+                                                                                b205c607d559d8bc4bb6267db23fe2a44ee918774e8e2a4a245a56d268852e9dda0cf56c2e6a1209b8714f91d50514129a8cd2a49edd4007480f8c15c4a31da4
                                                                             '' ;
                                                                         text = "check-redis message valid-release set" ;
                                                                     }
@@ -1279,6 +1283,7 @@
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
+                                                                                b205c607d559d8bc4bb6267db23fe2a44ee918774e8e2a4a245a56d268852e9dda0cf56c2e6a1209b8714f91d50514129a8cd2a49edd4007480f8c15c4a31da4
                                                                             '' ;
                                                                         text = "check-redis message valid-release set" ;
                                                                     }
