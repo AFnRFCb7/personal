@@ -1246,7 +1246,7 @@
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
-                                                                    { kludge = true ; process = "post" ; text = "sleep 60s" ; }
+                                                                    { kludge = true ; process = "post" ; text = "sleep 30s" ; }
                                                                     {
                                                                         process = "post" ;
                                                                         standard-output =
@@ -1267,7 +1267,7 @@
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
-                                                                                4da9e3339b48613167f63a29d2bade2d276c111f4550a1f9c7f105683bb591bf92bf2e9f9ab6c6710266ce57ca2dc4101c0a47e626e9be116bbd7507d3b839a7
+                                                                                X4da9e3339b48613167f63a29d2bade2d276c111f4550a1f9c7f105683bb591bf92bf2e9f9ab6c6710266ce57ca2dc4101c0a47e626e9be116bbd7507d3b839a7
                                                                             '' ;
                                                                         text = "check-redis message valid-release set" ;
                                                                     }
@@ -1275,7 +1275,7 @@
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
-                                                                                28f1bfdb71bf4bc287ed21563cc420406cc35a210877142b90663ca8ea0c04a9ce64b7819b1d1cc36bfcacdfaa4936a89afcdd0cdf14088be5ff11b501ae1430
+                                                                                X28f1bfdb71bf4bc287ed21563cc420406cc35a210877142b90663ca8ea0c04a9ce64b7819b1d1cc36bfcacdfaa4936a89afcdd0cdf14088be5ff11b501ae1430
                                                                             '' ;
                                                                         text = "check-redis message valid-release set" ;
                                                                     }
@@ -1283,7 +1283,7 @@
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
-                                                                                b205c607d559d8bc4bb6267db23fe2a44ee918774e8e2a4a245a56d268852e9dda0cf56c2e6a1209b8714f91d50514129a8cd2a49edd4007480f8c15c4a31da4
+                                                                                Xb205c607d559d8bc4bb6267db23fe2a44ee918774e8e2a4a245a56d268852e9dda0cf56c2e6a1209b8714f91d50514129a8cd2a49edd4007480f8c15c4a31da4
                                                                             '' ;
                                                                         text = "check-redis message valid-release set" ;
                                                                     }
