@@ -989,7 +989,7 @@
                                                                                 "$RESOURCES"/resources/'["checks","true","true"]'
                                                                             '' ;
                                                                     }
-                                                                    { kludge = true ;process = "pre" ; text = "sleep 10s" ;}
+                                                                    { kludge = true ; process = "pre" ; text = "sleep 60s" ;}
                                                                     {
                                                                         process = "pre" ;
                                                                         standard-output =
@@ -1002,7 +1002,7 @@
                                                                         process = "pre"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                0b8897e768ec01c1a28d561c612f9803e5d58c883fabacc5c0280c3675b51550fa572ccc5be074b40f9586c7770e0fd908cf6e98b3069f75b2c752d93d28551c
+                                                                                224ad2df9a60380b19ecf5c1760c57bc83a10475effef5f7525a701aaad00b27bd46629193f9e5ca08269b4ed15a06cf391253e1556e73a4932d5e1ca09c051a
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
