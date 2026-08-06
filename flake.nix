@@ -1349,7 +1349,7 @@
                                                                         ''client.wait_for_unit("log.service")''
                                                                         ''client.wait_for_unit("release.service")''
                                                                         ''client.succeed("runuser checker -- ${ action-derivation }/execute")''
-                                                                        ''client.copy_from_host_via_shell("/tmp/documents","/tmp/documents/_3")''
+                                                                        ''client.copy_from_host_via_shell("/tmp/client-documents","/tmp/documents/_3")''
                                                                     ] ;
                                                         } ;
                                                 "resource happy path : bootstrap github known hosts" =
@@ -1563,7 +1563,7 @@
                                                                         ''client.wait_for_unit("log.service")''
                                                                         ''client.wait_for_unit("release.service")''
                                                                         ''client.succeed("runuser checker -- ${ action-derivation }/execute")''
-                                                                        ''client.copy_from_host_via_shell("/tmp/documents","/tmp/documents/_1")''
+                                                                        ''client.copy_from_host_via_shell("/tmp/client-documents","/tmp/documents/_1")''
                                                                     ] ;
                                                         } ;
                                                 "resource happy path : bootstrap github identity" =
@@ -1771,7 +1771,7 @@
                                                                         ''client.wait_for_unit("log.service")''
                                                                         ''client.wait_for_unit("release.service")''
                                                                         ''client.succeed("runuser checker -- ${ action-derivation }/execute")''
-                                                                        ''client.copy_from_host_via_shell("/tmp/documents","/tmp/documents/_2")''
+                                                                        ''client.copy_from_host_via_shell("/tmp/client-documents","/tmp/documents/_2")''
                                                                     ] ;
                                                         } ;
                                                 visitor-happy =
