@@ -1500,7 +1500,7 @@
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
-                                                                                9e8a6508bf1186cfb482a018e73af6843b0f2bc5ba32f291e78eac4327785235197b8aae23d5544cf16206a458e595fd7f03647f8dd41901533531345034d6d2
+                                                                                44dfab3c68db47d89406967c85282e764d9b37015d444c399f19508476bad99063fed267ecf7f8cfe3dbd2d6dc172fba8a6a4d71b8865c9cdb781fc4b2cbe57a
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
@@ -1534,7 +1534,13 @@
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
-                                                                    { process = "post" ; text = "check-redis" ; }
+                                                                    {
+                                                                        process = "post" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                            '' ;
+                                                                        text = "check-redis" ;
+                                                                    }
                                                                     {
                                                                         process = "post" ;
                                                                         standard-output =
