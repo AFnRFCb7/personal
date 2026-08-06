@@ -1229,7 +1229,6 @@
                                                                         text = "check-redis message valid-init set" ;
                                                                     }
                                                                     {
-                                                                        document = true ;
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
@@ -1242,7 +1241,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                e10c1e45988fe4a33f95d36337eba2b624f67bee099d0527c30c9223ae74b94a64314d251b09842c778c4d6f11db70191135bf79800de2e4d044faa8a77181e3
+                                                                                a6bf49db8eda4a17861a9431e5c43dfc70c96ca53f415287a33bacb16699cca6d04cd5b4153c7f7a12416a415e4ab82899f112a1d8be4cdcb91a70e5c6589ecd
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
@@ -1250,7 +1249,7 @@
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
-                                                                                7df21bacfd5dd993ae14e086516888d16763fd787f36db9436ab83a85e1b2eb06dcfe0b023e2330dd62809b86dfdb1ffcee8de746a2ac21588c13c94514b8a5f
+                                                                                4d2848684f1f1fa4cc83311a596b72a1314bf59a7b95c006a47ec39a52df87429a777be45e183da1e68197f7d115f08e7cc5a903c099880b13508b7fb19aeb13
                                                                             '';
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
@@ -1264,11 +1263,8 @@
                                                                     }
                                                                     {
                                                                         process = "post" ;
-                                                                        standard-output =
-                                                                            ''
-                                                                                b205c607d559d8bc4bb6267db23fe2a44ee918774e8e2a4a245a56d268852e9dda0cf56c2e6a1209b8714f91d50514129a8cd2a49edd4007480f8c15c4a31da4
-                                                                            '' ;
-                                                                        text = "check-redis message valid-release set" ;
+                                                                        standard-output = "" ;
+                                                                        text = "check-redis" ;
                                                                     }
                                                                     { process = "post" ; text = "check-redis" ; }
                                                                     {
