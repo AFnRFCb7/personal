@@ -1248,7 +1248,7 @@
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
-                                                                    { kludge = true ; process = "post" ; text = "sleep 15s" ; }
+                                                                    { kludge = true ; process = "post" ; text = "sleep 6s" ; }
                                                                     {
                                                                         process = "post" ;
                                                                         standard-output =
