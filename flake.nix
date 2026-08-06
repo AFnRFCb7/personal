@@ -989,7 +989,6 @@
                                                                                 "$RESOURCES"/resources/'["checks","true","true"]'
                                                                             '' ;
                                                                     }
-                                                                    { kludge = true ; process = "pre" ; text = "sleep 60s" ;}
                                                                     {
                                                                         process = "pre" ;
                                                                         standard-output =
@@ -1187,6 +1186,7 @@
                                                                                 check-executable "$RESOURCES"/resources/'["production","dot-ssh","config","github"]'
                                                                             '' ;
                                                                     }
+                                                                    { kludge = true ; process = "pre" ; text = "sleep 15s" ; }
                                                                     {
                                                                         reads = false ;
                                                                         process = "pre" ;
