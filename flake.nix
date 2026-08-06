@@ -1246,12 +1246,11 @@
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
-                                                                    { document = true ; kludge = true ; process = "post" ; text = "sleep 30s" ; }
+                                                                    { document = true ; kludge = true ; process = "post" ; text = "sleep 60s" ; }
                                                                     {
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
-                                                                                cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e
                                                                             '';
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
@@ -1259,14 +1258,29 @@
                                                                         process = "post"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                18a80c9136cad3eae0f20bf04f77475c9dcb6c93a069805bc96fdfb7f3b027a2a9a998969307f3107375ea600d6c7fa125b81b04c03c512155fbd2497e84bc8e
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
                                                                     {
                                                                         process = "post" ;
-                                                                        standard-output = "" ;
-                                                                        text = "check-redis" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                            '' ;
+                                                                        text = "check-redis message valid-release set" ;
+                                                                    }
+                                                                    {
+                                                                        process = "post" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                            '' ;
+                                                                        text = "check-redis message valid-release set" ;
+                                                                    }
+                                                                    {
+                                                                        process = "post" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                            '' ;
+                                                                        text = "check-redis message valid-release set" ;
                                                                     }
                                                                     { process = "post" ; text = "check-redis" ; }
                                                                     {
