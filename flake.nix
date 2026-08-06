@@ -1250,7 +1250,7 @@
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
-                                                                    { kludge = true ; process = "post" ; text = "sleep 16s" ; }
+                                                                    { kludge = true ; process = "post" ; text = "sleep 56s" ; }
                                                                     {
                                                                         process = "post" ;
                                                                         standard-output =
@@ -1474,7 +1474,7 @@
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
-                                                                    { kludge = true ; process = "post" ; text = "sleep 6s" ; }
+                                                                    { kludge = true ; process = "post" ; text = "sleep 56s" ; }
                                                                     {
                                                                         process = "post" ;
                                                                         standard-output =
@@ -1688,7 +1688,7 @@
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
-                                                                    { kludge = true ; process = "post" ; text = "sleep 6s" ; }
+                                                                    { kludge = true ; process = "post" ; text = "sleep 56s" ; }
                                                                     {
                                                                         process = "post" ;
                                                                         standard-output =
@@ -1929,7 +1929,7 @@
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
-                                                                    { kludge = true ; process = "post" ; text = "sleep 6s" ; }
+                                                                    { kludge = true ; process = "post" ; text = "sleep 56s" ; }
                                                                     {
                                                                         process = "post" ;
                                                                         standard-output =
