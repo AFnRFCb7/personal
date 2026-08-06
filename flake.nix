@@ -1209,7 +1209,7 @@
                                                                         process = "pre"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                c72f824230aaae6dfe1dcfe8c5b7e81bd3c8972d2ed4018b1b8320d09b5b5656817a0eeb2643180e278ce3dcc7150c6bd2eabb968dcd971a2f4b8546b70dba13
+                                                                                2695467bca240cf1a8bac663b4e4ea07c59e2b0c11854fecea11256d71715629003d1853136d0299ea92b47eefa38d4b3f49095c985296dd9a9a0418189f7d91
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
@@ -1256,10 +1256,11 @@
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
                                                                     {
+                                                                        document = true ;
                                                                         process = "post"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                b7a9336ed3a424b5d4d59d9b20d0bbc33217207b584db6b758fddb9a70b99e7c8c9f8387ef318a6b2039e62f09a3a2592bf5c76d6947a6ea1d107b924d7461f4
+                                                                                cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
