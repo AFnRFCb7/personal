@@ -445,7 +445,7 @@
                                                                     ''
                                                                         %wheel ALL=(ALL) NOPASSWD: ${ password-less-core pkgs.nix "nix-collect-garbage" }/bin/nix-collect-garbage
                                                                         %wheel ALL=(ALL) NOPASSWD: ${ password-less-core pkgs.nixos-rebuild "nixos-rebuild" }/bin/nixos-rebuild
-                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.nettols }/bin/ifconfig
+                                                                        %wheel ALL=(ALL) NOPASSWD: ${ pkgs.nettools }/bin/ifconfig
                                                                     '' ;
                                                             } ;
                                                         services =
