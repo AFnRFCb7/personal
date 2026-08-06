@@ -1273,7 +1273,7 @@
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
-                                                                                1d0b9b8a52bd0226e4cf7bafcc3cd94ca2d4023905b28f0c3657a02d2c366e9a3464f825badc5c6af3fa8ac01412d2c278b2cd3339a5cdcc15b6057bf4dee86a
+                                                                                a6bf49db8eda4a17861a9431e5c43dfc70c96ca53f415287a33bacb16699cca6d04cd5b4153c7f7a12416a415e4ab82899f112a1d8be4cdcb91a70e5c6589ecd
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
