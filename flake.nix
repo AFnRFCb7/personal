@@ -1242,7 +1242,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                858c87d1effd6aaf297bb90136a1db0fcc6617d7e7c70b4a2cc66c339f1e661d64ee968c8f82fb6c9b5f513b44df02f528c355f7476386ad02a93756478c43e7
+                                                                                70a792fcf47329ae3ce2b5a8e33b84c8b25813969cbc2298018db3e16227e5c774e9cfd9537f38b411e7380382f010d84dca901a91e8b75d990d923a593ef189
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
