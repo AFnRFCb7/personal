@@ -1902,7 +1902,7 @@
                                                                     }
                                                                     {
                                                                         process ="pre" ;
-                                                                        text = ''sudo ${ pkgs.nettools }/bin/ifconfig down'' ;
+                                                                        text = ''sudo ${ pkgs.nettools }/bin/ifconfig eth1 down'' ;
                                                                     }
                                                                     {
                                                                         process = "pre" ;
