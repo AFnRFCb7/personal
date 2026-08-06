@@ -1261,7 +1261,7 @@
                                                                         process = "post"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                98ce68ad0eb0a01eef2078b5d07808a1ecef9c50c81096be69e73f0f8e43d94b34d9b6395f921a47e26d43098fed9528bf4fbb24455870a6951002e43b6bec33
+                                                                                54b1ce043fc28d76be35006dba8a58897af226f300cc990d93e848cfe664753465bbf35ca40f9f0f6eb2bb2078a77f8ecd200d0a4ed214da480a621c16c903cb
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
