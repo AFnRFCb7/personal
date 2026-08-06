@@ -445,6 +445,7 @@
                                                                     ''
                                                                         %wheel ALL=(ALL) NOPASSWD: ${ password-less-core pkgs.nix "nix-collect-garbage" }/bin/nix-collect-garbage
                                                                         %wheel ALL=(ALL) NOPASSWD: ${ password-less-core pkgs.nixos-rebuild "nixos-rebuild" }/bin/nixos-rebuild
+                                                                        %wheel ALL=(ALL) NOPASSWD: ${ password-less-core pkgs.nettools "ifconfig" }/bin/ifconfig
                                                                     '' ;
                                                             } ;
                                                         services =
@@ -845,6 +846,25 @@
                                                                 } ;
                                                             wifi = { } ;
                                                         } ;
+                                                    users.users.checker.packages =
+                                                        [
+                                                            (
+                                                                pkgs.writeShellApplication
+                                                                    {
+                                                                        name = "monkey-wrench" ;
+                                                                        runtimeInputs =
+                                                                            [
+                                                                                pkgs.coreutils
+                                                                                pkgs.sudo
+                                                                                ( password-less-core pkgs.nettools "ifconfig" )
+                                                                            ] ;
+                                                                        text =
+                                                                            ''
+                                                                                sudo ifconfig eth0 "$1"
+                                                                            '' ;
+                                                                    }
+                                                            )
+                                                        ] ;
                                                     virtualisation.vlans = [ 1 ] ;
                                                 } ;
                                         github =
