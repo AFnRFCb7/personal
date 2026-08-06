@@ -1242,11 +1242,11 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                a6bf49db8eda4a17861a9431e5c43dfc70c96ca53f415287a33bacb16699cca6d04cd5b4153c7f7a12416a415e4ab82899f112a1d8be4cdcb91a70e5c6589ecd
+                                                                                70a792fcf47329ae3ce2b5a8e33b84c8b25813969cbc2298018db3e16227e5c774e9cfd9537f38b411e7380382f010d84dca901a91e8b75d990d923a593ef189
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
-                                                                    { document = true ; kludge = true ; process = "post" ; text = "sleep 60s && false" ; }
+                                                                    { kludge = true ; process = "post" ; text = "sleep 60s" ; }
                                                                     {
                                                                         process = "post" ;
                                                                         standard-output =
