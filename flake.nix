@@ -1770,11 +1770,11 @@
                                                                         ''client.wait_for_unit("network-online.target")''
                                                                         ''client.wait_for_unit("log.service")''
                                                                         ''client.wait_for_unit("release.service")''
-                                                                        ''client.succeed("runuser checker -- ${ action-derivation }/execute")''
+                                                                        ''client.succeed("runuser checker -- ${ action-derivation }/execute 9347215719838394") ''
                                                                         # ''client.copy_from_host_via_shell("/tmp/client-documents","/tmp/documents/_2")''
                                                                     ] ;
                                                         } ;
-                                                "resource happy path : bootstrap github identity" =
+                                                "sad path : bootstrap github identity:  init is good but release fails and no recovery" =
                                                     _resource.check2
                                                         {
                                                             actions =
@@ -1978,7 +1978,7 @@
                                                                         ''client.wait_for_unit("network-online.target")''
                                                                         ''client.wait_for_unit("log.service")''
                                                                         ''client.wait_for_unit("release.service")''
-                                                                        ''client.succeed("runuser checker -- ${ action-derivation }/execute")''
+                                                                        ''client.succeed("runuser checker -- ${ action-derivation }/execute 4781227439695115")''
                                                                         # ''client.copy_from_host_via_shell("/tmp/client-documents","/tmp/documents/_2")''
                                                                     ] ;
                                                         } ;
