@@ -236,6 +236,18 @@
                                                                                                                                                             ''
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
+                                                                                                                                            recovery =
+                                                                                                                                                {
+                                                                                                                                                    check =
+                                                                                                                                                        ignore :
+                                                                                                                                                            {
+                                                                                                                                                                targetPkgs = { pkgs , ... } : [ pkgs.coreutils  ] ;
+                                                                                                                                                                text =
+                                                                                                                                                                    ''
+                                                                                                                                                                        echo 9131352568195371
+                                                                                                                                                                    '' ;
+                                                                                                                                                            } ;
+                                                                                                                                                } ;
                                                                                                                                         } ;
                                                                                                                                 targets = [ "config" ] ;
                                                                                                                                 temporary = false ;
