@@ -821,6 +821,7 @@
                                             { nodes , ... }  :
                                                 {
                                                     imports = private ;
+                                                    environment.defaulPackages = [ pkgs.nettols ] ;
                                                     networking =
                                                         {
                                                             defaultGateway =
@@ -846,25 +847,6 @@
                                                                 } ;
                                                             wifi = { } ;
                                                         } ;
-                                                    users.users.checker.packages =
-                                                        [
-                                                            (
-                                                                pkgs.writeShellApplication
-                                                                    {
-                                                                        name = "monkey-wrench" ;
-                                                                        runtimeInputs =
-                                                                            [
-                                                                                pkgs.coreutils
-                                                                                pkgs.nettols
-                                                                                pkgs.sudo
-                                                                            ] ;
-                                                                        text =
-                                                                            ''
-                                                                                sudo ifconfig eth0 "$1"
-                                                                            '' ;
-                                                                    }
-                                                            )
-                                                        ] ;
                                                     virtualisation.vlans = [ 1 ] ;
                                                 } ;
                                         github =
