@@ -1263,6 +1263,7 @@
                                                                         text = "check-log" ;
                                                                     }
                                                                     {
+                                                                        document = true ;
                                                                         process = "post" ;
                                                                         standard-output = "" ;
                                                                         text = "check-redis" ;
@@ -1285,7 +1286,6 @@
                                                                             '' ;
                                                                     }
                                                                     {
-                                                                        document = true ;
                                                                         process = "post" ;
                                                                         text =
                                                                             ''
