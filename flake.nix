@@ -395,7 +395,7 @@
                                                                                                                                     action =
                                                                                                                                         ignore :
                                                                                                                                             {
-                                                                                                                                                targetPkgs = { pkgs , ... } : [ pkgs.coreutils pkgs.git pkgs.openssh ] :
+                                                                                                                                                targetPkgs = { pkgs , ... } : [ pkgs.coreutils pkgs.git pkgs.openssh ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         git init 2>&1
