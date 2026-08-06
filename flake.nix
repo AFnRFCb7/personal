@@ -399,8 +399,7 @@
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         git init 2>&1
-                                                                                                                                                        CONFIG="$( "$RESOURCES"/'["production","dot-ssh","config","bootstrap"]' )" || exit 172
-                                                                                                                                                        git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $CONFIG"
+                                                                                                                                                        # CONFIG="$( "$RESOURCES"/'["production","dot-ssh","config","bootstrap"]' )" || exit 172
                                                                                                                                                         git config user.email "${ config.personal.secrets.email }"
                                                                                                                                                         git config user.name "${ config.personal.secrets.name }"
                                                                                                                                                         git remote add origin "${ config.personal.secrets.remotes.ssh }"
