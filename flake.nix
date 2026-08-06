@@ -1187,7 +1187,6 @@
                                                                                 check-executable "$RESOURCES"/resources/'["production","dot-ssh","config","github"]'
                                                                             '' ;
                                                                     }
-                                                                    { kludge = true ; process = "pre" ; text = "sleep 15s" ; }
                                                                     {
                                                                         reads = false ;
                                                                         process = "pre" ;
@@ -1210,7 +1209,7 @@
                                                                         process = "pre"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                2695467bca240cf1a8bac663b4e4ea07c59e2b0c11854fecea11256d71715629003d1853136d0299ea92b47eefa38d4b3f49095c985296dd9a9a0418189f7d91
+                                                                                c72f824230aaae6dfe1dcfe8c5b7e81bd3c8972d2ed4018b1b8320d09b5b5656817a0eeb2643180e278ce3dcc7150c6bd2eabb968dcd971a2f4b8546b70dba13
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
@@ -1247,6 +1246,7 @@
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
+                                                                    { kludge = true ; process = "post" ; text = "sleep 15s" ; }
                                                                     {
                                                                         process = "post" ;
                                                                         standard-output =
