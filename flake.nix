@@ -821,7 +821,7 @@
                                             { nodes , ... }  :
                                                 {
                                                     imports = private ;
-                                                    environment.defaulPackages = [ pkgs.netools ] ;
+                                                    environment.defaulPackages = [ pkgs.nettools ] ;
                                                     networking =
                                                         {
                                                             defaultGateway =
