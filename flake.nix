@@ -1680,7 +1680,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                c00a49559bf08e754ff97ecebc95366ecfc31c577cc3011b4301f145da983e0e6bff3b237a042fe69498dbb35dbe6c0522433ceaf49fcb9d497adf8b66d17c4f
+                                                                                fa0e123efcd013516c21cf8d7f0e20c137bab458b1c81c1abaea76477684c948c77ec929f3803f331a47146bf64cc4e1a17c98026c585b301faf022768691565
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
@@ -1697,7 +1697,7 @@
                                                                         process = "post"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                b7a9336ed3a424b5d4d59d9b20d0bbc33217207b584db6b758fddb9a70b99e7c8c9f8387ef318a6b2039e62f09a3a2592bf5c76d6947a6ea1d107b924d7461f4
+                                                                                18e6f8edc871b599c8fd0c00139f5463dee3e277768b792a4e06163d8350a196fc8c9a3806d4b5ca043066684344a2cb21d2bdcbf4f20a1ab322609318d9298d
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
@@ -1705,7 +1705,7 @@
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
-                                                                                b205c607d559d8bc4bb6267db23fe2a44ee918774e8e2a4a245a56d268852e9dda0cf56c2e6a1209b8714f91d50514129a8cd2a49edd4007480f8c15c4a31da4
+                                                                                4da9e3339b48613167f63a29d2bade2d276c111f4550a1f9c7f105683bb591bf92bf2e9f9ab6c6710266ce57ca2dc4101c0a47e626e9be116bbd7507d3b839a7
                                                                             '' ;
                                                                         text = "check-redis message valid-release set" ;
                                                                     }
@@ -1714,7 +1714,7 @@
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
-                                                                                9e8a6508bf1186cfb482a018e73af6843b0f2bc5ba32f291e78eac4327785235197b8aae23d5544cf16206a458e595fd7f03647f8dd41901533531345034d6d2
+                                                                                c76deb7556f5960e0388547e064ab106ec038465b436d8e713f2d2d9c9290e97ca768da67649d6268c8a55e4634d415aeed1eb48f5c650ed853f723563f1f9a7
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
