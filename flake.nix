@@ -1898,8 +1898,12 @@
                                                                     }
                                                                     {
                                                                         process ="pre" ;
-                                                                        text = ''check-executable ${ pkgs }/bin/ifconfig'' ;
+                                                                        text = ''check-executable ${ pkgs.nettools }/bin/ifconfig'' ;
                                                                     }
+#                                                                    {
+#                                                                        process ="pre" ;
+#                                                                        text = ''sudo ${ pkgs.nettools }/bin/ifconfig'' ;
+#                                                                    }
                                                                     { kludge = true ; process = "post" ; text = "sleep 6s" ; }
                                                                     {
                                                                         process = "post" ;
