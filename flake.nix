@@ -383,6 +383,49 @@
                                                                                                                             } ;
                                                                                                                 } ;
                                                                                                         } ;
+                                                                                                    repository =
+                                                                                                        {
+                                                                                                            secrets =
+                                                                                                                ignore :
+                                                                                                                    {
+                                                                                                                        error = 124 ;
+                                                                                                                        init =
+                                                                                                                            ignore :
+                                                                                                                                {
+                                                                                                                                    action =
+                                                                                                                                        ignore :
+                                                                                                                                            {
+                                                                                                                                                targetPkgs = { pkgs , ... } : [ pkgs.coreutils pkgs.git pkgs.openssh ] :
+                                                                                                                                                text =
+                                                                                                                                                    ''
+                                                                                                                                                        git init 2>&1
+                                                                                                                                                        CONFIG="$( "$RESOURCES"/'["production","dot-ssh","config","bootstrap"]' )" || exit 172
+                                                                                                                                                        git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $CONFIG"
+                                                                                                                                                        git config user.email "${ personal.secrets.committer.email }"
+                                                                                                                                                        git config user.name "${ personal.secrets.committer.name }"
+                                                                                                                                                        git remote add origin "${ personal.secrets.committer.remotes.ssh }"
+                                                                                                                                                        git fetch origin "${ personal.secrets.branch }" 2>&1
+                                                                                                                                                        git checkout "${ personal.secrets.branch } 2>&1
+                                                                                                                                                    '' ;
+                                                                                                                                            } ;
+                                                                                                                                } ;
+                                                                                                                        release =
+                                                                                                                            ignore :
+                                                                                                                                {
+                                                                                                                                    action =
+                                                                                                                                        ignore :
+                                                                                                                                            {
+                                                                                                                                                targetPkgs = { pkgs , ... } : [ pkgs.git ] ;
+                                                                                                                                                text =
+                                                                                                                                                    ''
+                                                                                                                                                        git push origin HEAD
+                                                                                                                                                    '' ;
+                                                                                                                                            } ;
+                                                                                                                                } ;
+                                                                                                                        targets = [ "identity" ] ;
+                                                                                                                        temporary = false ;
+                                                                                                                    } ;
+                                                                                                        } ;
                                                                                                 } ;
                                                                                         } ;
                                                                                 in builtins.concatStringsSep "\n" ( builtins.concatLists [ clean release resources ] ) ;
