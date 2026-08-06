@@ -989,7 +989,6 @@
                                                                                 "$RESOURCES"/resources/'["checks","true","true"]'
                                                                             '' ;
                                                                     }
-                                                                    { kludge = true ; process = "pre" ; text = "sleep 15s" ; }
                                                                     {
                                                                         process = "pre" ;
                                                                         standard-output =
@@ -1023,6 +1022,7 @@
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
+                                                                    { kludge = true ; process = "post" ; text = "sleep 15s" ; }
                                                                     {
                                                                         process = "post" ;
                                                                         standard-output =
