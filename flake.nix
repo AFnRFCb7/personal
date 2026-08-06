@@ -1242,7 +1242,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                70a792fcf47329ae3ce2b5a8e33b84c8b25813969cbc2298018db3e16227e5c774e9cfd9537f38b411e7380382f010d84dca901a91e8b75d990d923a593ef189
+                                                                                08a62f1df64e9a39354699b2e46fd8dff89e18267da811fb6a87a32a592b0dcd66d5d4e8ab4e531ce97bf32823667ef41ac9b7f2a7ba1098b8b48d02bb42008a
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
@@ -1259,7 +1259,7 @@
                                                                         process = "post"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                ad567a2024f4354754a813ef1431f15873b0064a3774e9491b4c91cfafb7d794a48b7470d4e10c3f98088545a2243676ce97881c373dc913be2b936b01a0077a
+                                                                                98ce68ad0eb0a01eef2078b5d07808a1ecef9c50c81096be69e73f0f8e43d94b34d9b6395f921a47e26d43098fed9528bf4fbb24455870a6951002e43b6bec33
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
