@@ -136,39 +136,78 @@
                                                                                         }
                                                                                         {
                                                                                             check =
-                                                                                                ignore :
-                                                                                                    {
-                                                                                                        error = 134 ;
-                                                                                                        init =
-                                                                                                            ignore :
-                                                                                                                {
-                                                                                                                    action =
-                                                                                                                        ignore :
-                                                                                                                            {
-                                                                                                                                targetPkgs = { pkgs , ... } : [ pkgs.coreutils pkgs.psmisc ] ;
-                                                                                                                                text =
-                                                                                                                                    ''
-                                                                                                                                        echo 4819688586897478
-                                                                                                                                        touch 1968976268514822
-                                                                                                                                    '' ;
-                                                                                                                            } ;
-                                                                                                                } ;
-                                                                                                        release =
-                                                                                                            ignore :
-                                                                                                                {
-                                                                                                                    action =
-                                                                                                                        ignore :
-                                                                                                                            {
-                                                                                                                                targetPkgs = { pkgs , ... } : [ pkgs.coreutils ] ;
-                                                                                                                                text =
-                                                                                                                                    ''
-                                                                                                                                        echo 2679141487527185
-                                                                                                                                        exit 124
-                                                                                                                                    '' ;
-                                                                                                                            } ;
-                                                                                                                } ;
-                                                                                                        targets = [ "1968976268514822" ] ;
-                                                                                                        temporary = false ;
+                                                                                                {
+                                                                                                    alpha =
+                                                                                                        ignore :
+                                                                                                            {
+                                                                                                                error = 134 ;
+                                                                                                                init =
+                                                                                                                    ignore :
+                                                                                                                        {
+                                                                                                                            action =
+                                                                                                                                ignore :
+                                                                                                                                    {
+                                                                                                                                        targetPkgs = { pkgs , ... } : [ pkgs.coreutils pkgs.psmisc ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                echo 4819688586897478
+                                                                                                                                                touch 1968976268514822
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                        } ;
+                                                                                                                release =
+                                                                                                                    ignore :
+                                                                                                                        {
+                                                                                                                            action =
+                                                                                                                                ignore :
+                                                                                                                                    {
+                                                                                                                                        targetPkgs = { pkgs , ... } : [ pkgs.coreutils ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                echo 2679141487527185
+                                                                                                                                                exit 124
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                        } ;
+                                                                                                                targets = [ "1968976268514822" ] ;
+                                                                                                                temporary = false ;
+                                                                                                            } ;
+                                                                                                    beta =
+                                                                                                        ignore :
+                                                                                                            {
+                                                                                                                error = 134 ;
+                                                                                                                init =
+                                                                                                                    ignore :
+                                                                                                                        {
+                                                                                                                            action =
+                                                                                                                                ignore :
+                                                                                                                                    {
+                                                                                                                                        targetPkgs = { pkgs , ... } : [ pkgs.coreutils ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                echo 4819688586897478
+                                                                                                                                                touch 1968976268514822
+                                                                                                                                                ALPHA="$( "$RESOURCES"/release/'["checks","alpha"]' )" || exit 136
+                                                                                                                                                ln --symbolic "$ALPHA" /gc-root/alpha
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                        } ;
+                                                                                                                release =
+                                                                                                                    ignore :
+                                                                                                                        {
+                                                                                                                            action =
+                                                                                                                                ignore :
+                                                                                                                                    {
+                                                                                                                                        targetPkgs = { pkgs , ... } : [ pkgs.coreutils ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                echo 2679141487527185
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                        } ;
+                                                                                                                targets = [ "1968976268514822" ] ;
+                                                                                                                temporary = false ;
+                                                                                                            } ;
                                                                                                     } ;
                                                                                             production =
                                                                                                 {
