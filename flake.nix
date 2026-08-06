@@ -401,8 +401,8 @@
                                                                                                                                                         git init 2>&1
                                                                                                                                                         CONFIG="$( "$RESOURCES"/'["production","dot-ssh","config","bootstrap"]' )" || exit 172
                                                                                                                                                         git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $CONFIG"
-                                                                                                                                                        git config user.email "${ config.personal.secrets.committer.email }"
-                                                                                                                                                        git config user.name "${ config.personal.secrets.committer.name }"
+                                                                                                                                                        git config user.email "${ config.personal.secrets.email }"
+                                                                                                                                                        git config user.name "${ config.personal.secrets.name }"
                                                                                                                                                         git remote add origin "${ config.personal.secrets.committer.remotes.ssh }"
                                                                                                                                                         git fetch origin "${ config.personal.secrets.branch }" 2>&1
                                                                                                                                                         git checkout "${ config.personal.secrets.branch } 2>&1
