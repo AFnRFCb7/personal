@@ -1900,10 +1900,35 @@
                                                                         process ="pre" ;
                                                                         text = ''check-executable ${ pkgs.nettools }/bin/ifconfig'' ;
                                                                     }
-#                                                                    {
-#                                                                        process ="pre" ;
-#                                                                        text = ''sudo ${ pkgs.nettools }/bin/ifconfig'' ;
-#                                                                    }
+                                                                    {
+                                                                        process ="pre" ;
+                                                                        text = ''sudo ${ pkgs.nettools }/bin/ifconfig'' ;
+                                                                    }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e
+                                                                            '';
+                                                                        text = ''check-gc-roots-directory'' ;
+                                                                    }
+                                                                    {
+                                                                        process = "pre"  ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                d1cdc71f6010c13c073a18ea45e4d88edff0dafbc2592f1e04ef6fe29c986f02c153a91047d4954133909d932e8176ac41503a5e95eb905efba098eb39589606
+                                                                            '' ;
+                                                                        text = "check-log" ;
+                                                                    }
+                                                                    { process = "pre" ; text = "check-redis" ; }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                fa0e123efcd013516c21cf8d7f0e20c137bab458b1c81c1abaea76477684c948c77ec929f3803f331a47146bf64cc4e1a17c98026c585b301faf022768691565
+                                                                            '';
+                                                                        text = ''check-resources-directory'' ;
+                                                                    }
                                                                     { kludge = true ; process = "post" ; text = "sleep 6s" ; }
                                                                     {
                                                                         process = "post" ;
