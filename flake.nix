@@ -395,11 +395,30 @@
                                                                                                                                     action =
                                                                                                                                         ignore :
                                                                                                                                             {
-                                                                                                                                                targetPkgs = { pkgs , ... } : [ pkgs.coreutils pkgs.git pkgs.openssh ] ;
+                                                                                                                                                targetPkgs =
+                                                                                                                                                    { pkgs , ... } :
+                                                                                                                                                        [
+                                                                                                                                                            pkgs.git
+                                                                                                                                                            (
+                                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                                    {
+                                                                                                                                                                        name = "configure-ssh" ;
+                                                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkga.openssh ] ;
+                                                                                                                                                                        text =
+                                                                                                                                                                            ''
+                                                                                                                                                                                ln --symbolic ${ pkgs.openssh } /gc-root/open-ssh
+                                                                                                                                                                                CONFIG="$( "$RESOURCES"/'["production","dot-ssh","config","bootstrap"]' )" || exit 172
+                                                                                                                                                                                ln --symbolic ${ pkgs.openssh } /gc-root/config
+                                                                                                                                                                                git config core.sshCommaand "${ pkgs.openssh }/bin/ssf -F $CONFIG"
+                                                                                                                                                                             '' ;
+                                                                                                                                                                    }
+                                                                                                                                                            )
+                                                                                                                                                            )
+                                                                                                                                                        ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         git init 2>&1
-                                                                                                                                                        # CONFIG="$( "$RESOURCES"/'["production","dot-ssh","config","bootstrap"]' )" || exit 172
+                                                                                                                                                        configure-ssh
                                                                                                                                                         git config user.email "${ config.personal.secrets.email }"
                                                                                                                                                         git config user.name "${ config.personal.secrets.name }"
                                                                                                                                                         git remote add origin "${ config.personal.secrets.remotes.ssh }"
