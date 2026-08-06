@@ -1246,9 +1246,8 @@
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
-                                                                    { document = true ; kludge = true ; process = "post" ; text = "sleep 60s" ; }
+                                                                    { document = true ; kludge = true ; process = "post" ; text = "sleep 30s" ; }
                                                                     {
-                                                                        document = true ;
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
@@ -1257,7 +1256,6 @@
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
                                                                     {
-                                                                        document = true ;
                                                                         process = "post"  ;
                                                                         standard-output =
                                                                             ''
@@ -1266,14 +1264,12 @@
                                                                         text = "check-log" ;
                                                                     }
                                                                     {
-                                                                        document = true ;
                                                                         process = "post" ;
                                                                         standard-output = "" ;
                                                                         text = "check-redis" ;
                                                                     }
                                                                     { process = "post" ; text = "check-redis" ; }
                                                                     {
-                                                                        document = true ;
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
