@@ -1898,7 +1898,7 @@
                                                                     }
                                                                     {
                                                                         process ="pre" ;
-                                                                        text = ''check-executable ${ pkgs }/bin/ifconfig'' ; } ;
+                                                                        text = ''check-executable ${ pkgs }/bin/ifconfig'' ;
                                                                     }
                                                                     { kludge = true ; process = "post" ; text = "sleep 6s" ; }
                                                                     {
