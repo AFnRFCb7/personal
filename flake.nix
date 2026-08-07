@@ -1006,6 +1006,7 @@
                                                                 {
                                                                     serviceConfig =
                                                                         {
+                                                                            after = [ "network.target" ] ;
                                                                             ExecStart =
                                                                                 let
                                                                                     application =
@@ -1024,6 +1025,7 @@
                                                                                     in "${ application }/binExecStart" ;
                                                                             User = "checker" ;
                                                                         } ;
+                                                                    wantedBy = [ "multi-user.target" ] ;
                                                                 } ;
                                                         } ;
                                                     virtualisation.vlans = [ 1 2 ] ;
