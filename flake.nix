@@ -1284,7 +1284,7 @@
                                                                 [
                                                                     {
                                                                         process = "pre" ;
-                                                                        text = "sudo ifconfig eth1 down" ;
+                                                                        text = "sudo ifconfig" ;
                                                                     }
                                                                     {
                                                                         process = "pre" ;
