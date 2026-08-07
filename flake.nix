@@ -1098,7 +1098,7 @@
                                                                         text =
                                                                             ''
                                                                                 # shellcheck disable=SC2288
-                                                                                "$RESOURCES"/resources/'["production","dot-ssh","config","github"]'
+                                                                                RESOURCE="$( "$RESOURCES"/resources/'["production","dot-ssh","config","github"]' )" || exit 188
                                                                             '' ;
                                                                     }
                                                                     {
@@ -1338,7 +1338,7 @@
                                                                         text =
                                                                             ''
                                                                                 # shellcheck disable=SC2288
-                                                                                "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]'
+                                                                                RESOURCE="$( "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]' )" || exit 171
                                                                             '' ;
                                                                     }
                                                                     {
@@ -1542,7 +1542,7 @@
                                                                         process = "pre" ;
                                                                         text =
                                                                             ''
-                                                                                check-executable "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]'
+                                                                                RESOURCE="$( check-executable "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' )" || exit 148
                                                                             '' ;
                                                                     }
                                                                     {
