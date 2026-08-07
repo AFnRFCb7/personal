@@ -1016,8 +1016,8 @@
                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        mkdir --parents /home/github/secrets
-                                                                                                        cd /home/github/secrets
+                                                                                                        mkdir --parents /home/git/secrets
+                                                                                                        cd /home/git/secrets
                                                                                                         git init --bare
                                                                                                         sleep inf
                                                                                                     '' ;
