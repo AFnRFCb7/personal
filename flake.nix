@@ -250,7 +250,7 @@
                                                                                                                                                                                             User git
                                                                                                                                                                                             IdentityFile $IDENTITY/identity
                                                                                                                                                                                             UserKnownHostsFile $KNOWN_HOSTS/known-hosts
-                                                                                                                                                                                            # StrictHostKeyChecking yes
+                                                                                                                                                                                            StrictHostKeyChecking no
                                                                                                                                                                                         EOF
                                                                                                                                                                                         chmod 0400 config
                                                                                                                                                                                     '' ;
@@ -333,7 +333,7 @@
                                                                                                                                                                                 text =
                                                                                                                                                                                     ''
                                                                                                                                                                                         cat ${ config.personal.temporary.ssh.known-hosts } > "known-hosts"
-                                                                                                                                                                                        # chmod 0400 "known-hosts"
+                                                                                                                                                                                        chmod 0600 "known-hosts"
                                                                                                                                                                                     '' ;
                                                                                                                                                                             }
                                                                                                                                                                     )
