@@ -1437,7 +1437,7 @@
                                                                         standard-output =
                                                                             ''
                                                                                 ac09ebc7302124a40a16382aa30fb363f018a5af465e0148bb2b821264ed9a10caa17abffd3df483eeb34c8d278f68cf6eb927ab6293d0957880ee92fd5b516c
-                                                                            ''
+                                                                            '' ;
                                                                         text = ''check-resources-directory'' ;
                                                                     }
                                                                     { kludge = true ; process = "post" ; text = "sleep 56s" ; }
