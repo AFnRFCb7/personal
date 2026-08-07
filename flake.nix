@@ -410,7 +410,7 @@
                                                                                                                                                                                 # shellcheck disable=SC2288
                                                                                                                                                                                 CONFIG="$( "$RESOURCES"/resources/'["production","dot-ssh","config","github"]' )" || exit 172
                                                                                                                                                                                 ln --symbolic ${ pkgs.openssh } /gc-root/config
-                                                                                                                                                                                git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $CONFIG"
+                                                                                                                                                                                git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $CONFIG/config"
                                                                                                                                                                              '' ;
                                                                                                                                                                     }
                                                                                                                                                             )
