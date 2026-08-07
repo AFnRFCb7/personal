@@ -1033,10 +1033,10 @@
                                                                                                         # mkdir dot-ssh
                                                                                                         # mkdir github
                                                                                                         git commit -am "" --allow-empty --allow-empty-message
+                                                                                                        sleep inf
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/ExecStart" ;
-                                                                            Type = "oneshot" ;
                                                                             User = "git" ;
                                                                         } ;
                                                                     wantedBy = [ "multi-user.target" ] ;
