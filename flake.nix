@@ -1000,6 +1000,35 @@
                                                             isNormalUser = true ;
                                                             openssh.authorizedKeys = { keyFiles = [ "${ shared }/openssh/identity.pub" ] ; } ;
                                                         } ;
+                                                    systemd =
+                                                        {
+                                                            services.github =
+                                                                {
+                                                                    serviceConfig =
+                                                                        {
+                                                                            ExecStart =
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "ExecStart" ;
+                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        mkdir --parents /home/checker/secrets
+                                                                                                        cd /home/checker/secrets
+                                                                                                        git init --bare
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/binExecStart" ;
+
+                                                                        } ;
+                                                                } ;
+                                                            timers.github =
+                                                                {
+
+                                                                } ;
+                                                        } ;
                                                     virtualisation.vlans = [ 1 2 ] ;
                                                 } ;
                                         shared =
