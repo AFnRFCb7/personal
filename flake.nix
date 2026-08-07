@@ -1018,13 +1018,20 @@
                                                                                                     ''
                                                                                                         # mkdir --parents /home/git/secrets
                                                                                                         # cd /home/git/secrets
-                                                                                                        # git init --bare
+                                                                                                        # git init
+                                                                                                        # git config user.email "git@git"
+                                                                                                        # git config user.name "GIT"
+                                                                                                        # git checkout -b main
+                                                                                                        # mkdir dot-gnupg
+                                                                                                        # mkdir dot-ssh
+                                                                                                        # mkdir github
+                                                                                                        # git commit -am ""
                                                                                                         sleep inf
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/ExecStart" ;
                                                                             # Type = "oneshot" ;
-                                                                            User = "checker" ;
+                                                                            User = "git" ;
                                                                         } ;
                                                                     wantedBy = [ "multi-user.target" ] ;
                                                                 } ;
