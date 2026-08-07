@@ -422,7 +422,7 @@
                                                                                                                                                         git config user.email "${ config.personal.secrets.email }"
                                                                                                                                                         git config user.name "${ config.personal.secrets.name }"
                                                                                                                                                         git remote add origin "${ config.personal.secrets.remotes.ssh }"
-                                                                                                                                                        git fetch origin "${ config.personal.secrets.branch }" 2>&1
+                                                                                                                                                        # git fetch origin "${ config.personal.secrets.branch }" 2>&1
                                                                                                                                                         # git checkout "${ config.personal.secrets.branch }" 2>&1
                                                                                                                                                     '' ;
                                                                                                                                             } ;
