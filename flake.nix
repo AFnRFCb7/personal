@@ -973,7 +973,7 @@
                                                                         {
                                                                             ssh = "192.168.2.234:secrets" ;
                                                                         } ;
-                                                                }
+                                                                } ;
                                                             temporary =
                                                                 {
                                                                     ssh =
