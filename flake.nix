@@ -454,8 +454,8 @@
                                                                                                                                                             ls -lah /home/checker/resources/mounts/*/*
                                                                                                                                                             exit 198
                                                                                                                                                         fi
-                                                                                                                                                        git fetch origin "${ config.personal.secrets.branch }" 2>&1
-                                                                                                                                                        git checkout "${ config.personal.secrets.branch }" 2>&1
+                                                                                                                                                        # git fetch origin "${ config.personal.secrets.branch }" 2>&1
+                                                                                                                                                        # git checkout "${ config.personal.secrets.branch }" 2>&1
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                 } ;
