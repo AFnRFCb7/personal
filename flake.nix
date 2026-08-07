@@ -1436,8 +1436,8 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                133980c9b451afbcb3f32bb464b8858bce4623825b0aa2654621b583a2f09f62ba4be2c58bdf2bac04c77ba33d3b7ed96d315a23e1799d1674b544325d498273
-                                                                            '';
+                                                                                ac09ebc7302124a40a16382aa30fb363f018a5af465e0148bb2b821264ed9a10caa17abffd3df483eeb34c8d278f68cf6eb927ab6293d0957880ee92fd5b516c
+                                                                            ''
                                                                         text = ''check-resources-directory'' ;
                                                                     }
                                                                     { kludge = true ; process = "post" ; text = "sleep 56s" ; }
