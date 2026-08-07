@@ -246,7 +246,7 @@
                                                                                                                                                                                         ln --symbolic "$IDENTITY" /gc-root/identity
                                                                                                                                                                                         cat > config <<EOF
                                                                                                                                                                                         HostName github.com
-                                                                                                                                                                                        Host github.com
+                                                                                                                                                                                        Host ${ config.personal.secret.host }
                                                                                                                                                                                         User git
                                                                                                                                                                                         IdentityFile $IDENTITY/identity
                                                                                                                                                                                         UserKnownHostsFile $KNOWN_HOSTS/known-hosts
@@ -899,6 +899,7 @@
                                                                 secrets =
                                                                     {
                                                                         email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
+                                                                        host = lib.mkOption { default = "github.com" ; type = lib.types.str ; } ;
                                                                         name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
                                                                         organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                         remotes =
@@ -971,6 +972,7 @@
                                                             password = "chester" ;
                                                             secrets =
                                                                 {
+                                                                    host = "192.168.2.234" ;
                                                                     remotes =
                                                                         {
                                                                             ssh = "192.168.2.234:secrets" ;
