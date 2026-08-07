@@ -1021,12 +1021,9 @@
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/binExecStart" ;
-
+                                                                            User = "checker" ;
+                                                                            Type = "oneshot" ;
                                                                         } ;
-                                                                } ;
-                                                            timers.github =
-                                                                {
-
                                                                 } ;
                                                         } ;
                                                     virtualisation.vlans = [ 1 2 ] ;
