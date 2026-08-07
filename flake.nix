@@ -1965,6 +1965,8 @@
                                                             tests =
                                                                 action-derivation :
                                                                     [
+                                                                        ''github.wait_for_unit("network-online.target")''
+                                                                        ''github.wait_for_unit("github.service")''
                                                                         ''client.wait_for_unit("network-online.target")''
                                                                         ''client.wait_for_unit("log.service")''
                                                                         ''client.wait_for_unit("release.service")''
