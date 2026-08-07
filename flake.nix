@@ -1097,7 +1097,7 @@
                                                                         standard-output = "/home/checker/resources/mounts/0000000000000000" ;
                                                                         text =
                                                                             ''
-                                                                                # shellcheck disable=SC2288,SC2034
+                                                                                # shellcheck disable=SC2288,SC2034,SC2153
                                                                                 RESOURCE="$( "$RESOURCES"/resources/'["production","dot-ssh","config","github"]' )" || exit 188
                                                                             '' ;
                                                                     }
@@ -1337,7 +1337,7 @@
                                                                         standard-output = "/home/checker/resources/mounts/0000000000000000" ;
                                                                         text =
                                                                             ''
-                                                                                # shellcheck disable=SC2288,SC2034
+                                                                                # shellcheck disable=SC2288,SC2034,SC2153
                                                                                 RESOURCE="$( "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]' )" || exit 171
                                                                             '' ;
                                                                     }
@@ -1552,7 +1552,7 @@
                                                                         standard-output = "/home/checker/resources/mounts/0000000000000000" ;
                                                                         text =
                                                                             ''
-                                                                                # shellcheck disable=SC2288,SC2034
+                                                                                # shellcheck disable=SC2288,SC2034,SC2153
                                                                                 RESOURCE="$( "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' )" || exit 133
                                                                             '' ;
                                                                     }
