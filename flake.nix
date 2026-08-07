@@ -1282,10 +1282,10 @@
                                                         {
                                                             actions =
                                                                 [
-                                                                    {
-                                                                        process = "pre" ;
-                                                                        text = "sudo ifconfig" ;
-                                                                    }
+#                                                                    {
+#                                                                        process = "pre" ;
+#                                                                        text = "sudo ifconfig" ;
+#                                                                    }
                                                                     {
                                                                         process = "pre" ;
                                                                         standard-output =
