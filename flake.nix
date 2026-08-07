@@ -408,7 +408,7 @@
                                                                                                                                                                             ''
                                                                                                                                                                                 ln --symbolic ${ pkgs.openssh } /gc-root/open-ssh
                                                                                                                                                                                 # shellcheck disable=SC2288
-                                                                                                                                                                                CONFIG="$( "$RESOURCES"/'["production","dot-ssh","config","bootstrap"]' )" || exit 172
+                                                                                                                                                                                CONFIG="$( "$RESOURCES"/'["production","dot-ssh","config","github"]' )" || exit 172
                                                                                                                                                                                 ln --symbolic ${ pkgs.openssh } /gc-root/config
                                                                                                                                                                                 git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $CONFIG"
                                                                                                                                                                              '' ;
@@ -418,12 +418,12 @@
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         git init 2>&1
-                                                                                                                                                        # configure-ssh
-                                                                                                                                                        # git config user.email "${ config.personal.secrets.email }"
-                                                                                                                                                        # git config user.name "${ config.personal.secrets.name }"
-                                                                                                                                                        # git remote add origin "${ config.personal.secrets.remotes.ssh }"
-                                                                                                                                                        # git fetch origin "${ config.personal.secrets.branch }" 2>&1
-                                                                                                                                                        # git checkout "${ config.personal.secrets.branch }" 2>&1
+                                                                                                                                                        configure-ssh
+                                                                                                                                                        git config user.email "${ config.personal.secrets.email }"
+                                                                                                                                                        git config user.name "${ config.personal.secrets.name }"
+                                                                                                                                                        git remote add origin "${ config.personal.secrets.remotes.ssh }"
+                                                                                                                                                        git fetch origin "${ config.personal.secrets.branch }" 2>&1
+                                                                                                                                                        git checkout "${ config.personal.secrets.branch }" 2>&1
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                 } ;
