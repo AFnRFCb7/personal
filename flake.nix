@@ -433,6 +433,8 @@
                                                                                                                                                                                 CONFIG="$( "$RESOURCES"/resources/'["production","dot-ssh","config","github"]' )" || exit 172
                                                                                                                                                                                 ln --symbolic "$CONFIG" /gc-root/config
                                                                                                                                                                                 git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $CONFIG/config"
+                                                                                                                                                                                cat "$CONFIG/config"
+                                                                                                                                                                                ping -c 1 192.168.2.234
                                                                                                                                                                              '' ;
                                                                                                                                                                     }
                                                                                                                                                             )
@@ -1826,7 +1828,7 @@
                                                                         text =
                                                                             ''
                                                                                 # shellcheck disable=SC2288,SC2034,SC2153
-                                                                                RESOURCE="$( "$RESOURCES"/resources/'["production","repository","secrets"]' )" || exit 188
+                                                                                RESOURCE="$( "$RESOURCES"/resources/'["production","repository","secrets"]' )" || exit 198
                                                                                 echo -en "$RESOURCE"
                                                                             '' ;
                                                                     }
