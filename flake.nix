@@ -1099,7 +1099,7 @@
                                                                             ''
                                                                                 # shellcheck disable=SC2288,SC2034,SC2153
                                                                                 RESOURCE="$( "$RESOURCES"/resources/'["production","dot-ssh","config","github"]' )" || exit 188
-                                                                                echo "$RESOURCE"
+                                                                                echo -en "$RESOURCE"
                                                                             '' ;
                                                                     }
                                                                     {
@@ -1340,7 +1340,7 @@
                                                                             ''
                                                                                 # shellcheck disable=SC2288,SC2034,SC2153
                                                                                 RESOURCE="$( "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]' )" || exit 171
-                                                                                echo "$RESOURCE"
+                                                                                echo -en "$RESOURCE"
                                                                             '' ;
                                                                     }
                                                                     {
@@ -1556,7 +1556,7 @@
                                                                             ''
                                                                                 # shellcheck disable=SC2288,SC2034,SC2153
                                                                                 RESOURCE="$( "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' )" || exit 133
-                                                                                echo "$RESOURCE"
+                                                                                echo -en "$RESOURCE"
                                                                             '' ;
                                                                     }
                                                                     {
