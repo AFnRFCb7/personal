@@ -1018,11 +1018,11 @@
                                                                                                         mkdir --parents /home/checker/secrets
                                                                                                         cd /home/checker/secrets
                                                                                                         git init --bare
+                                                                                                        sleep inf
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/binExecStart" ;
                                                                             User = "checker" ;
-                                                                            Type = "oneshot" ;
                                                                         } ;
                                                                 } ;
                                                         } ;
