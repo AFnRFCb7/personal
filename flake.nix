@@ -449,6 +449,7 @@
                                                                                                                                                             chmod 0400 "/home/checker/resources/mounts/0000000000000002/known-hosts"
                                                                                                                                                             ssh -i "/home/checker/resources/mounts/0000000000000003/identity" -o StrictHostKeyChecking=no -o UserKnownHostsFile=/home/checker/resources/mounts/0000000000000002/known-hosts git@github.com
                                                                                                                                                             cat /home/checker/resources/mounts/0000000000000002/known-hosts
+                                                                                                                                                            git fetch origin "${ config.personal.secrets.branch }"
                                                                                                                                                             exit 192
                                                                                                                                                         else
                                                                                                                                                             ls -lah /home/checker/resources/mounts/*/*
@@ -1221,7 +1222,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                742e99e087b00438d9985c01cb962cc6e8ed3e1730c1c7a1f25fd450b882668760a5426142cd2cba44b6518aecd1a429f38df6267a5e133c49614f3132626878
+                                                                                5808909c75153b27989c874db5f524aa9b47e1ffd2bd837e3e50562d94ea7ca0dc9a242ba92c182d897ebfbd8636f16dc4dd6291371565a77956394b3305a1bc
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
