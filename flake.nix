@@ -444,7 +444,7 @@
                                                                                                                                                         git config user.email "${ config.personal.secrets.email }"
                                                                                                                                                         git config user.name "${ config.personal.secrets.name }"
                                                                                                                                                         git remote add origin "${ config.personal.secrets.remotes.ssh }"
-                                                                                                                                                        git fetch origin "${ config.personal.secrets.branch }" 2>&1
+                                                                                                                                                        time timeout 10s git fetch origin "${ config.personal.secrets.branch }" 2>&1
                                                                                                                                                         # git checkout "${ config.personal.secrets.branch }" 2>&1
                                                                                                                                                     '' ;
                                                                                                                                             } ;
@@ -1211,7 +1211,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                41f3410c23314004786b67fc8902f07a68160d90b65ee24e1f2673fb575890dd5a053096c404d67cf46acda8e8bd10d7e45414c5ddfa5599e0076354d666e873
+                                                                                742e99e087b00438d9985c01cb962cc6e8ed3e1730c1c7a1f25fd450b882668760a5426142cd2cba44b6518aecd1a429f38df6267a5e133c49614f3132626878
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
