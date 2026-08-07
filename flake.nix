@@ -1017,12 +1017,13 @@
                                                                                                 text =
                                                                                                     ''
                                                                                                         mkdir --parents /home/git/secrets
-                                                                                                        cd /home/git/secrets
-                                                                                                        git init --bare
-                                                                                                        sleep inf
+                                                                                                        # cd /home/git/secrets
+                                                                                                        # git init --bare
+                                                                                                        # sleep inf
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/binExecStart" ;
+                                                                            Type = "oneshot" ;
                                                                             User = "checker" ;
                                                                         } ;
                                                                     wantedBy = [ "multi-user.target" ] ;
