@@ -250,7 +250,7 @@
                                                                                                                                                                                             User git
                                                                                                                                                                                             IdentityFile $IDENTITY/identity
                                                                                                                                                                                             UserKnownHostsFile $KNOWN_HOSTS/known-hosts
-                                                                                                                                                                                            StrictHostKeyChecking no
+                                                                                                                                                                                            StrictHostKeyChecking yes
                                                                                                                                                                                         EOF
                                                                                                                                                                                         chmod 0400 config
                                                                                                                                                                                     '' ;
@@ -333,7 +333,7 @@
                                                                                                                                                                                 text =
                                                                                                                                                                                     ''
                                                                                                                                                                                         cat ${ config.personal.temporary.ssh.known-hosts } > "known-hosts"
-                                                                                                                                                                                        chmod 0600 "known-hosts"
+                                                                                                                                                                                        chmod 0400 "known-hosts"
                                                                                                                                                                                     '' ;
                                                                                                                                                                             }
                                                                                                                                                                     )
@@ -444,8 +444,18 @@
                                                                                                                                                         git config user.email "${ config.personal.secrets.email }"
                                                                                                                                                         git config user.name "${ config.personal.secrets.name }"
                                                                                                                                                         git remote add origin "${ config.personal.secrets.remotes.ssh }"
-                                                                                                                                                        time timeout 10s git fetch origin "${ config.personal.secrets.branch }" 2>&1
-                                                                                                                                                        # git checkout "${ config.personal.secrets.branch }" 2>&1
+                                                                                                                                                        if [[ -f "/home/checker/resources/mounts/0000000000000002/known-hosts" ]]
+                                                                                                                                                        then
+                                                                                                                                                            chmod 0400 "/home/checker/resources/mounts/0000000000000002/known-hosts"
+                                                                                                                                                            ssh -i "/home/checker/resources/mounts/0000000000000003/identity" -o UseStrictHostKeyChecking=no -o UserKnownHostsFile=/home/checker/resources/mounts/0000000000000002/known-hosts git@github.com
+                                                                                                                                                            cat /home/checker/resources/mounts/0000000000000002/known-hosts
+                                                                                                                                                            exit 192
+                                                                                                                                                        else
+                                                                                                                                                            ls -lah /home/checker/resources/mounts/*/*
+                                                                                                                                                            exit 198
+                                                                                                                                                        fi
+                                                                                                                                                        git fetch origin "${ config.personal.secrets.branch }" 2>&1
+                                                                                                                                                        git checkout "${ config.personal.secrets.branch }" 2>&1
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                 } ;
