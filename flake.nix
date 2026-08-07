@@ -248,8 +248,8 @@
                                                                                                                                                                                         HostName github.com
                                                                                                                                                                                         Host github.com
                                                                                                                                                                                         User git
-                                                                                                                                                                                        IdentityFile $IDENTITY
-                                                                                                                                                                                        UserKnownHostsFile $KNOWN_HOSTS
+                                                                                                                                                                                        IdentityFile $IDENTITY/identity
+                                                                                                                                                                                        UserKnownHostsFile $KNOWN_HOSTS/known-hosts
                                                                                                                                                                                         StrictHostKeyChecking yes
                                                                                                                                                                                         EOF
                                                                                                                                                                                         chmod 0400 config
