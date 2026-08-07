@@ -1776,7 +1776,7 @@
                                                                         process = "pre" ;
                                                                         text =
                                                                             ''
-                                                                                check-executable "$RESOURCES"/resources/'["production","secrets"]'
+                                                                                check-executable "$RESOURCES"/resources/'["production","repository","secrets"]'
                                                                             '' ;
                                                                     }
                                                                     {
@@ -1786,7 +1786,7 @@
                                                                         text =
                                                                             ''
                                                                                 # shellcheck disable=SC2288,SC2034,SC2153
-                                                                                RESOURCE="$( "$RESOURCES"/resources/'["production","secrets"]' )" || exit 188
+                                                                                RESOURCE="$( "$RESOURCES"/resources/'["production","repository","secrets"]' )" || exit 188
                                                                                 echo -en "$RESOURCE"
                                                                             '' ;
                                                                     }
