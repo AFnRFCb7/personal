@@ -1543,7 +1543,7 @@
                                                                         text =
                                                                             ''
                                                                                 # shellcheck disable=SC2288
-                                                                                RESOURCE="$( check-executable "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' )" || exit 148
+                                                                                check-executable "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]'
                                                                             '' ;
                                                                     }
                                                                     {
