@@ -246,7 +246,7 @@
                                                                                                                                                                                         ln --symbolic "$IDENTITY" /gc-root/identity
                                                                                                                                                                                         cat > config <<EOF
                                                                                                                                                                                         HostName github.com
-                                                                                                                                                                                        Host ${ config.personal.secret.host }
+                                                                                                                                                                                        Host ${ config.personal.secrets.host }
                                                                                                                                                                                         User git
                                                                                                                                                                                         IdentityFile $IDENTITY/identity
                                                                                                                                                                                         UserKnownHostsFile $KNOWN_HOSTS/known-hosts
