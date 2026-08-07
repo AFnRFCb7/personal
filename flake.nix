@@ -1016,14 +1016,14 @@
                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        mkdir --parents /home/git/secrets
+                                                                                                        # mkdir --parents /home/git/secrets
                                                                                                         # cd /home/git/secrets
                                                                                                         # git init --bare
-                                                                                                        # sleep inf
+                                                                                                        sleep inf
                                                                                                     '' ;
                                                                                             } ;
-                                                                                    in "${ application }/binExecStart" ;
-                                                                            Type = "oneshot" ;
+                                                                                    in "${ application }/bin/ExecStart" ;
+                                                                            # Type = "oneshot" ;
                                                                             User = "checker" ;
                                                                         } ;
                                                                     wantedBy = [ "multi-user.target" ] ;
