@@ -433,8 +433,6 @@
                                                                                                                                                                                 CONFIG="$( "$RESOURCES"/resources/'["production","dot-ssh","config","github"]' )" || exit 172
                                                                                                                                                                                 ln --symbolic "$CONFIG" /gc-root/config
                                                                                                                                                                                 git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $CONFIG/config"
-                                                                                                                                                                                cat "$CONFIG/config"
-                                                                                                                                                                                ping -c 1 192.168.2.234
                                                                                                                                                                              '' ;
                                                                                                                                                                     }
                                                                                                                                                             )
@@ -1213,7 +1211,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                bd054218a2d3f3c2d95dd4c7ab4f33c524298af138bfc18fcb2f620f07aa3306f0f37f1684f335ff8c9aa9dadd22e20fab67e22f73b9b1cc9bb8b3f88cc9fa61
+                                                                                17d7c68e8b4d05ad403cdfda7c7c5e62d11f7cb538b047380710318f87a75ad880d631c33f4d08c6a1dd496b2c10a92e7add37a3d07d91d545d7fdb745e89f12
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
