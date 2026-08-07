@@ -1016,16 +1016,16 @@
                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        # mkdir --parents /home/git/secrets
-                                                                                                        # cd /home/git/secrets
-                                                                                                        # git init
-                                                                                                        # git config user.email "git@git"
-                                                                                                        # git config user.name "GIT"
-                                                                                                        # git checkout -b main
+                                                                                                        mkdir --parents /home/git/secrets
+                                                                                                        cd /home/git/secrets
+                                                                                                        git init
+                                                                                                        git config user.email "git@git"
+                                                                                                        git config user.name "GIT"
+                                                                                                        git checkout -b main
                                                                                                         # mkdir dot-gnupg
                                                                                                         # mkdir dot-ssh
                                                                                                         # mkdir github
-                                                                                                        # git commit -am ""
+                                                                                                        git commit -am "" --allow-empty --allow-empty-message
                                                                                                         sleep inf
                                                                                                     '' ;
                                                                                             } ;
