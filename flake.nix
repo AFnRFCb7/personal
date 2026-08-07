@@ -259,6 +259,28 @@
                                                                                                                                                                 ] ;
                                                                                                                                                         text = "config" ;
                                                                                                                                                     } ;
+                                                                                                                                            recovery =
+                                                                                                                                                {
+                                                                                                                                                    fail =
+                                                                                                                                                        ignore :
+                                                                                                                                                            {
+                                                                                                                                                                targetPkgs = pkgs : [ pkgs.coreutils ] ;
+                                                                                                                                                                text =
+                                                                                                                                                                    ''
+                                                                                                                                                                        echo 7179669781491843
+                                                                                                                                                                        exit 117
+                                                                                                                                                                    '' ;
+                                                                                                                                                            } ;
+                                                                                                                                                    pass =
+                                                                                                                                                        ignore :
+                                                                                                                                                            {
+                                                                                                                                                                targetPkgs = pkgs : [ pkgs.coreutils ] ;
+                                                                                                                                                                text =
+                                                                                                                                                                    ''
+                                                                                                                                                                        echo 8921335538452797
+                                                                                                                                                                    '' ;
+                                                                                                                                                            } ;
+                                                                                                                                                } ;
                                                                                                                                         } ;
                                                                                                                                 release =
                                                                                                                                     ignore :
