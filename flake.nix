@@ -1029,9 +1029,7 @@
                                                                                                         git config user.email "git@git"
                                                                                                         git config user.name "GIT"
                                                                                                         git checkout -b main
-                                                                                                        # mkdir dot-gnupg
-                                                                                                        # mkdir dot-ssh
-                                                                                                        # mkdir github
+                                                                                                        cp --recursive ${ self }/checker/github .
                                                                                                         git commit -am "" --allow-empty --allow-empty-message
                                                                                                         sleep inf
                                                                                                     '' ;
