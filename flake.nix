@@ -1220,6 +1220,7 @@ t                                                                               
                                                                                         mkdir --parents "$OUT/repository/secrets/plaintext/dot-gnupg"
                                                                                         cat "$OUT/age/identity"
                                                                                         age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/dot-gnupg/ownertrust.asc" "$OUT/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age"
+                                                                                        echo GGGGGGGG >&2
                                                                                         age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/dot-gnupg/secret-keys.asc" "$OUT/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age"
                                                                                         mkdir --parents "$OUT/repository/secrets/ciphertext/dot-ssh/mobile"
                                                                                         age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/dot-ssh/mobile/identity.asc" "$OUT/repository/secrets/ciphertext/dot-ssh/mobile/identity.asc.age"
