@@ -1200,7 +1200,7 @@ t                                                                               
                                                                                         cat ${ builtins.toFile "identity" dot-ssh.identity } > "$OUT/openssh/identity"
                                                                                         chmod 0400 "$OUT/openssh/identity"
                                                                                         ssh-keygen -f "$OUT/openssh/identity" -y > "$OUT/openssh/identity.pub"
-                                                                                        chmod 0400 "$OUT/openssh/identity" "$OUT/openssh/identity.pub"
+                                                                                        chmod 0400 "$OUT/openssh/identity.pub"
                                                                                         mkdir --parents "$OUT/repository/secrets/ciphertext/dot-gnupg"
                                                                                         ln --symbolic ${ builtins.toFile "ownertrust.asc.age" secrets.dot-gnupg.ownertrust } "$OUT/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age"
                                                                                         ln --symbolic ${ builtins.toFile "secret-keys.asc.age" secrets.dot-gnupg.secret-keys } "$OUT/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age"
