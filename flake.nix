@@ -1191,10 +1191,9 @@ t                                                                               
                                                                                         OUT="$1"
                                                                                         mkdir --parents  "$OUT"
                                                                                         echo ${ ip } > "$OUT/ip"
-#                                                                                        echo BBBBBBBBBB >&2
-#                                                                                        mkdir --parents "$OUT/age"
-#                                                                                        cat ${ builtins.toFile "identity" age } > "$OUT/age/identity"
-#                                                                                        age-keygen -y "$OUT/age/identity" > "$OUT/age/identity.pub"
+                                                                                        mkdir --parents "$OUT/age"
+                                                                                        cat ${ builtins.toFile "identity" age } > "$OUT/age/identity"
+                                                                                        age-keygen -y "$OUT/age/identity" > "$OUT/age/identity.pub"
 #                                                                                        echo CCCCCCCC >&2
 #                                                                                        mkdir --parents "$OUT/age"
 #                                                                                        echo DDDDDDD >&2
