@@ -1191,42 +1191,42 @@ t                                                                               
                                                                                         OUT="$1"
                                                                                         echo AAAAAAA >&2
                                                                                         mkdir --parents  "$OUT"
-                                                                                        echo AAAAAB >&2
-                                                                                        echo ${ ip } > "$OUT/ip"
-                                                                                        echo BBBBBBBBBB >&2
-                                                                                        mkdir --parents "$OUT/age"
-                                                                                        cat ${ builtins.toFile "identity" age } > "$OUT/age/identity"
-                                                                                        age-keygen -y "$OUT/age/identity" > "$OUT/age/identity.pub"
-                                                                                        echo CCCCCCCC >&2
-                                                                                        mkdir --parents "$OUT/age"
-                                                                                        echo DDDDDDD >&2
-                                                                                        mkdir --parents "$OUT/openssh"
-                                                                                        cat ${ builtins.toFile "known-hosts" dot-ssh.known-hosts } > "$OUT/openssh/known-hosts"
-                                                                                        cat ${ builtins.toFile "identity" dot-ssh.identity } > "$OUT/openssh/identity"
-                                                                                        chmod 0400 "$OUT/openssh/identity"
-                                                                                        ssh-keygen -f "$OUT/openssh/identity" -y > "$OUT/openssh/identity.pub"
-                                                                                        chmod 0400 "$OUT/openssh/identity.pub"
-                                                                                        echo EEEEEE >&2
-                                                                                        mkdir --parents "$OUT/repository/secrets/ciphertext/dot-gnupg"
-                                                                                        ln --symbolic ${ builtins.toFile "ownertrust.asc.age" secrets.dot-gnupg.ownertrust } "$OUT/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age"
-                                                                                        ln --symbolic ${ builtins.toFile "secret-keys.asc.age" secrets.dot-gnupg.secret-keys } "$OUT/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age"
-                                                                                        echo  FFFFFFFFFFFf >&2
-                                                                                        mkdir --parents "$OUT/repository/secrets/ciphertext/dot-ssh/mobile"
-                                                                                        ln --symbolic ${ builtins.toFile "identity.asc.age" secrets.dot-ssh.mobile.known-hosts } "$OUT/repository/secrets/ciphertext/dot-ssh/mobile/known-hosts.asc.age"
-                                                                                        ln --symbolic ${ builtins.toFile "user-keys.asc.age" secrets.dot-ssh.mobile.identity } "$OUT/repository/secrets/ciphertext/dot-ssh/mobile/identity.asc.age"
-                                                                                        mkdir --parents "$OUT/repository/secrets/ciphertext/github"
-                                                                                        mkdir --parents "$OUT/repository/secrets/dot-ssh"
-                                                                                        mkdir --parents "$OUT/repository/secrets/github"
-                                                                                        mkdir --parents "$OUT/repository/secrets/plaintext/dot-gnupg"
-                                                                                        cat "$OUT/age/identity"
-                                                                                        age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/dot-gnupg/ownertrust.asc" "$OUT/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age"
-                                                                                        echo GGGGGGGG >&2
-                                                                                        age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/dot-gnupg/secret-keys.asc" "$OUT/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age"
-                                                                                        mkdir --parents "$OUT/repository/secrets/ciphertext/dot-ssh/mobile"
-                                                                                        age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/dot-ssh/mobile/identity.asc" "$OUT/repository/secrets/ciphertext/dot-ssh/mobile/identity.asc.age"
-                                                                                        age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/dot-ssh/mobile/user-keyd.asc" "$OUT/repository/secrets/ciphertext/dot-ssh/mobile/user-keys.asc.age"
-                                                                                        mkdir --parents "$OUT/repository/secrets/plaintext/github"
-                                                                                        age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/github/token.asc" "$OUT/repository/secrets/ciphertext/github/token.asc.age"
+#                                                                                        echo AAAAAB >&2
+#                                                                                        echo ${ ip } > "$OUT/ip"
+#                                                                                        echo BBBBBBBBBB >&2
+#                                                                                        mkdir --parents "$OUT/age"
+#                                                                                        cat ${ builtins.toFile "identity" age } > "$OUT/age/identity"
+#                                                                                        age-keygen -y "$OUT/age/identity" > "$OUT/age/identity.pub"
+#                                                                                        echo CCCCCCCC >&2
+#                                                                                        mkdir --parents "$OUT/age"
+#                                                                                        echo DDDDDDD >&2
+#                                                                                        mkdir --parents "$OUT/openssh"
+#                                                                                        cat ${ builtins.toFile "known-hosts" dot-ssh.known-hosts } > "$OUT/openssh/known-hosts"
+#                                                                                        cat ${ builtins.toFile "identity" dot-ssh.identity } > "$OUT/openssh/identity"
+#                                                                                        chmod 0400 "$OUT/openssh/identity"
+#                                                                                        ssh-keygen -f "$OUT/openssh/identity" -y > "$OUT/openssh/identity.pub"
+#                                                                                        chmod 0400 "$OUT/openssh/identity.pub"
+#                                                                                        echo EEEEEE >&2
+#                                                                                        mkdir --parents "$OUT/repository/secrets/ciphertext/dot-gnupg"
+#                                                                                        ln --symbolic ${ builtins.toFile "ownertrust.asc.age" secrets.dot-gnupg.ownertrust } "$OUT/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age"
+#                                                                                        ln --symbolic ${ builtins.toFile "secret-keys.asc.age" secrets.dot-gnupg.secret-keys } "$OUT/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age"
+#                                                                                        echo  FFFFFFFFFFFf >&2
+#                                                                                        mkdir --parents "$OUT/repository/secrets/ciphertext/dot-ssh/mobile"
+#                                                                                        ln --symbolic ${ builtins.toFile "identity.asc.age" secrets.dot-ssh.mobile.known-hosts } "$OUT/repository/secrets/ciphertext/dot-ssh/mobile/known-hosts.asc.age"
+#                                                                                        ln --symbolic ${ builtins.toFile "user-keys.asc.age" secrets.dot-ssh.mobile.identity } "$OUT/repository/secrets/ciphertext/dot-ssh/mobile/identity.asc.age"
+#                                                                                        mkdir --parents "$OUT/repository/secrets/ciphertext/github"
+#                                                                                        mkdir --parents "$OUT/repository/secrets/dot-ssh"
+#                                                                                        mkdir --parents "$OUT/repository/secrets/github"
+#                                                                                        mkdir --parents "$OUT/repository/secrets/plaintext/dot-gnupg"
+#                                                                                        cat "$OUT/age/identity"
+#                                                                                        age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/dot-gnupg/ownertrust.asc" "$OUT/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age"
+#                                                                                        echo GGGGGGGG >&2
+#                                                                                        age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/dot-gnupg/secret-keys.asc" "$OUT/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age"
+#                                                                                        mkdir --parents "$OUT/repository/secrets/ciphertext/dot-ssh/mobile"
+#                                                                                        age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/dot-ssh/mobile/identity.asc" "$OUT/repository/secrets/ciphertext/dot-ssh/mobile/identity.asc.age"
+#                                                                                        age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/dot-ssh/mobile/user-keyd.asc" "$OUT/repository/secrets/ciphertext/dot-ssh/mobile/user-keys.asc.age"
+#                                                                                        mkdir --parents "$OUT/repository/secrets/plaintext/github"
+#                                                                                        age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/github/token.asc" "$OUT/repository/secrets/ciphertext/github/token.asc.age"
                                                                                     '' ;
                                                                         }
                                                             )
