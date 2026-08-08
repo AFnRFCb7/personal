@@ -433,8 +433,8 @@
                                                                                                                                                                                 CONFIG="$( "$RESOURCES"/resources/'["production","dot-ssh","config","github"]' )" || exit 172
                                                                                                                                                                                 ln --symbolic "$CONFIG" /gc-root/config
                                                                                                                                                                                 git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $CONFIG/config"
-                                                                                                                                                                                ping -c 1 192.168.2.234
-                                                                                                                                                                                ssh-keyscan 192.168.2.234
+                                                                                                                                                                                ping -c 1 192.168.2.234 >&2
+                                                                                                                                                                                ssh-keyscan 192.168.2.234 >&2
                                                                                                                                                                              '' ;
                                                                                                                                                                     }
                                                                                                                                                             )
@@ -1061,17 +1061,14 @@
                                                                         text =
                                                                             ''
                                                                                 OUT="$1"
-                                                                                echo 1723258852938545 1627957233171753 mkdir --parents "$OUT" >&2
                                                                                 mkdir --parents "$OUT"
-                                                                                echo 1723258852938545 1734789156698614 >&2
                                                                                 age-keygen -o "$OUT/age"
-                                                                                echo 1723258852938545 5198592423423681 mkdir --parents "$OUT/openssh" >&2
                                                                                 mkdir --parents "$OUT/openssh"
+                                                                                cat ${ self }/checker/known-hosts > "$OUT/openssh/known-hosts"
                                                                                 cat ${ self }/checker/identity > "$OUT/openssh/identity"
-                                                                                chmod 0400 "$OUT/openssh/identity"
+                                                                                chmod 0400 "$OUT/openssh/identity" "$OUT/openssh/identity"
                                                                                 ssh-keygen -f "$OUT/openssh/identity" -y > "$OUT/openssh/identity.pub"
                                                                                 chmod a+r "$OUT/openssh/identity"
-                                                                                touch "$OUT/openssh/known-hosts"
                                                                             '' ;
                                                                     }
                                                             )
