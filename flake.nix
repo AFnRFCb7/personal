@@ -1022,16 +1022,15 @@
                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        mkdir --parents /home/git/secrets
-                                                                                                        cd /home/git/secrets
+                                                                                                        mkdir --parents /home/git/secrets/dot-gnupg
+                                                                                                        cd /home/git/secrets/dot-gnupg
                                                                                                         git init
                                                                                                         git config user.email "git@git"
                                                                                                         git config user.name "git"
-                                                                                                        mkdir --parents /home/git/secrets/dot-gnupg
                                                                                                         git checkout -b main
                                                                                                         cp --recursive ${ self }/secrets/ciphertext .
-                                                                                                        # git add .
-                                                                                                        # git commit -m "" --allow-empty --allow-empty-message
+                                                                                                        git add .
+                                                                                                        git commit -m "" --allow-empty --allow-empty-message
                                                                                                         sleep inf
                                                                                                     '' ;
                                                                                             } ;
