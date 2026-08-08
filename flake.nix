@@ -1028,10 +1028,12 @@
                                                                                                         cd /home/git/secrets
                                                                                                         git init
                                                                                                         git config user.email "git@git"
-                                                                                                        git config user.name "GIT"
+                                                                                                        git config user.name "git"
+                                                                                                        mkdir --parents /home/git/secrets/dot-gnupg
                                                                                                         git checkout -b main
-                                                                                                        cp --recursive ${ self }/checker/github .
-                                                                                                        git commit -am "" --allow-empty --allow-empty-message
+                                                                                                        cp --recursive ${ self }/secrets/ciphertext
+                                                                                                        git add .
+                                                                                                        git commit -m "" --allow-empty --allow-empty-message
                                                                                                         sleep inf
                                                                                                     '' ;
                                                                                             } ;
@@ -1091,7 +1093,7 @@
                                                                                     } ;
                                                                                 secrets =
                                                                                     {
-                                                                                        dot-gunpg =
+                                                                                        dot-gnupg =
                                                                                             {
                                                                                                 ownertrust =
                                                                                                     ''
