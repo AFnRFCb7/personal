@@ -1190,7 +1190,7 @@ t                                                                               
                                                                                     ''
                                                                                         OUT="$1"
                                                                                         echo AAAAAAA >&2
-                                                                                        mkdir "$OUT"
+                                                                                        mkdir --parents  "$OUT"
                                                                                         echo AAAAAB >&2
                                                                                         echo ${ ip } > "$OUT/ip"
                                                                                         echo BBBBBBBBBB >&2
