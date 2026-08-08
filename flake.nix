@@ -1215,7 +1215,7 @@ t                                                                               
                                                                                         mkdir --parents "$OUT/repository/secrets/plaintext/dot-ssh/mobile"
                                                                                         cat "$OUT/repository/secrets/ciphertext/dot-ssh/mobile/known-hosts.asc.age" >&2
                                                                                         age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/dot-ssh/mobile/user-keyd.asc" "$OUT/repository/secrets/ciphertext/dot-ssh/mobile/known-hosts.asc.age"
-#                                                                                        age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/dot-ssh/mobile/identity.asc" "$OUT/repository/secrets/ciphertext/dot-ssh/mobile/identity.asc.age"
+                                                                                        age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/dot-ssh/mobile/identity.asc" "$OUT/repository/secrets/ciphertext/dot-ssh/mobile/identity.asc.age"
 #                                                                                        mkdir --parents "$OUT/repository/secrets/plaintext/github"
 #                                                                                        age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/github/token.asc" "$OUT/repository/secrets/ciphertext/github/token.asc.age"
                                                                                     '' ;
