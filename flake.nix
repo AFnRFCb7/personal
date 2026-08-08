@@ -900,7 +900,7 @@
                                                                     {
                                                                         email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
                                                                         host = lib.mkOption { default = "github.com" ; type = lib.types.str ; } ;
-                                                                        known-hosts = lib.mkOption { type = lib.types.str ; } ;
+                                                                        known-hosts = lib.mkOption { type = lib.types.path ; } ;
                                                                         name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
                                                                         organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                         remotes =
@@ -966,7 +966,7 @@
                                                         } ;
                                                     personal =
                                                         {
-                                                            agenix = "${ shared }/age" ;
+                                                            agenix = "${ shared }/age/identity" ;
                                                             description = "Chester Checker" ;
                                                             email = "chester@checker.com" ;
                                                             name = "checker" ;
@@ -974,16 +974,7 @@
                                                             secrets =
                                                                 {
                                                                     host = "192.168.2.234" ;
-                                                                    known-hosts =
-                                                                        ''
-                                                                            # 192.168.2.234:22 SSH-2.0-OpenSSH_9.9
-                                                                            192.168.2.234 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDKG/dId5d3MzHI5CPEhpfDxoZ8LtW+pErt2SMiU2yKI0KZis1lU4z9yU6BH1fcAIxVs0ujuHFex34m1Ws9wNIZuYG8al9wvTvjlizkYOq7sYRo/c0yAPK6Cc/jxSbsTXAfoa9VE48T+381AsO/6huTnmNa7jZj1G>
-                                                                            # 192.168.2.234:22 SSH-2.0-OpenSSH_9.9
-                                                                            # 192.168.2.234:22 SSH-2.0-OpenSSH_9.9
-                                                                            192.168.2.234 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIASR4QS2EQma9WH8HO0H029ve4jIJMvjGEq+enZKHN8d
-                                                                            # 192.168.2.234:22 SSH-2.0-OpenSSH_9.9
-                                                                            # 192.168.2.234:22 SSH-2.0-OpenSSH_9.9
-                                                                        '' ;
+                                                                    known-hosts = "$ shared }/dot-ssh/known-hosts" ;
                                                                     remotes =
                                                                         {
                                                                             ssh = "192.168.2.234:secrets" ;
@@ -993,8 +984,8 @@
                                                                 {
                                                                     ssh =
                                                                         {
-                                                                            identity = "${ shared }/openssh/identity" ;
-                                                                            known-hosts = "${ shared }/openssh/known-hosts" ;
+                                                                            identity = "${ shared }/dot-ssh/identity" ;
+                                                                            known-hosts = "${ shared }/dot-ssh/known-hosts" ;
                                                                         } ;
                                                                 } ;
                                                             wifi = { } ;
@@ -1017,11 +1008,6 @@
                                                             useDHCP = false ;
                                                         } ;
                                                     services.openssh.enable = true ;
-                                                    users.users.git =
-                                                        {
-                                                            isNormalUser = true ;
-                                                            openssh.authorizedKeys = { keyFiles = [ "${ shared }/openssh/identity.pub" ] ; } ;
-                                                        } ;
                                                     systemd =
                                                         {
                                                             services.github =
@@ -1055,6 +1041,11 @@
                                                                     wantedBy = [ "multi-user.target" ] ;
                                                                 } ;
                                                         } ;
+                                                    users.users.git =
+                                                        {
+                                                            isNormalUser = true ;
+                                                            openssh.authorizedKeys = { keyFiles = [ "${ shared }/dot-ssh/identity.pub" ] ; } ;
+                                                        } ;
                                                     virtualisation.vlans = [ 1 2 ] ;
                                                 } ;
                                         shared =
@@ -1071,6 +1062,10 @@
                                                                         runtimeInputs = [ pkgs.age pkgs.openssh ] ;
                                                                         text =
                                                                             let
+                                                                                age =
+                                                                                    ''
+                                                                                        AGE-SECRET-KEY-19MLHEMP493FLEL20MCNQJMAT2K5HS8G2A95NGM5APUGAJLV9AP2Q3YA5A5
+                                                                                    '' ;
                                                                                 dot-ssh =
                                                                                     {
                                                                                         known-hosts =
@@ -1098,11 +1093,14 @@
                                                                                     ''
                                                                                         OUT="$1"
                                                                                         mkdir --parents "$OUT"
-                                                                                        age-keygen -o "$OUT/age"
+                                                                                        cat ${ builtins.toFile "identity" age } > "$OUT/age/identity"
+                                                                                        age-keygen -y "$OUT/age/identity" > "$OUT/age/identity.pub"
+                                                                                        mkdir --parents "$OUT/age"
                                                                                         mkdir --parents "$OUT/openssh"
                                                                                         cat ${ builtins.toFile "known-hosts" dot-ssh.known-hosts } > "$OUT/openssh/known-hosts"
                                                                                         cat ${ builtins.toFile "identity" dot-ssh.identity } > "$OUT/openssh/identity"
                                                                                         ssh-keygen -f "$OUT/openssh/identity" -y > "$OUT/openssh/identity.pub"
+                                                                                        chmod 0400 "$OUT/openssh/identity.pub"
                                                                                         mkdir --parents "$OUT/repository/secrets"
                                                                                     '' ;
                                                                         }
