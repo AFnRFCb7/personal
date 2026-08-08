@@ -1209,7 +1209,7 @@ t                                                                               
                                                                                         ln --symbolic ${ builtins.toFile "user-keys.asc.age" secrets.dot-ssh.mobile.identity } "$OUT/repository/secrets/ciphertext/dot-ssh/mobile/identity.asc.age"
                                                                                         mkdir --parents "$OUT/repository/secrets/ciphertext/github"
                                                                                         ln --symbolic ${ builtins.toFile "token.asc.age" secrets.github.token } "$OUT/repository/secrets/ciphertext/github/token.asc.age"
-                                                                                        mkdir --parents "$OUT/repository/secrets/plaintext/dot-gnupg
+                                                                                        mkdir --parents "$OUT/repository/secrets/plaintext/dot-gnupg"
                                                                                         age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/dot-gnupg/ownertrust.asc" "$OUT/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age"
                                                                                         age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/dot-gnupg/secret-keys.asc" "$OUT/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age"
 #                                                                                        mkdir --parents "$OUT/repository/secrets/plaintext/dot-ssh/mobile"
