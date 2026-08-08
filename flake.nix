@@ -250,7 +250,7 @@
                                                                                                                                                                                             User git
                                                                                                                                                                                             IdentityFile $IDENTITY/identity
                                                                                                                                                                                             UserKnownHostsFile $KNOWN_HOSTS/known-hosts
-                                                                                                                                                                                            StrictHostKeyChecking yes
+                                                                                                                                                                                            StrictHostKeyChecking no
                                                                                                                                                                                         EOF
                                                                                                                                                                                         chmod 0400 config
                                                                                                                                                                                     '' ;
@@ -444,20 +444,8 @@
                                                                                                                                                         git config user.email "${ config.personal.secrets.email }"
                                                                                                                                                         git config user.name "${ config.personal.secrets.name }"
                                                                                                                                                         git remote add origin "${ config.personal.secrets.remotes.ssh }"
-                                                                                                                                                        if [[ -f "/home/checker/resources/mounts/0000000000000002/known-hosts" ]] && [[ -f "/home/checker/resources/mounts/0000000000000003/identity" ]]
-                                                                                                                                                        then
-                                                                                                                                                            chmod 0600 "/home/checker/resources/mounts/0000000000000002/known-hosts"
-                                                                                                                                                            time timeout 10s ssh -i "/home/checker/resources/mounts/0000000000000003/identity" -o StrictHostKeyChecking=no -o UserKnownHostsFile=/home/checker/resources/mounts/0000000000000002/known-hosts git@192.168.2.234 true
-                                                                                                                                                            cat /home/checker/resources/mounts/0000000000000002/known-hosts
-                                                                                                                                                            # git fetch origin "${ config.personal.secrets.branch }"
-                                                                                                                                                            # git checkout "${ config.personal.secrets.branch }"
-                                                                                                                                                            exit 192
-                                                                                                                                                        else
-                                                                                                                                                            ls -lah /home/checker/resources/mounts/*/*
-                                                                                                                                                            exit 198
-                                                                                                                                                        fi
-                                                                                                                                                        # git fetch origin "${ config.personal.secrets.branch }" 2>&1
-                                                                                                                                                        # git checkout "${ config.personal.secrets.branch }" 2>&1
+                                                                                                                                                        git fetch origin "${ config.personal.secrets.branch }" 2>&1
+                                                                                                                                                        git checkout "${ config.personal.secrets.branch }" 2>&1
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                 } ;
