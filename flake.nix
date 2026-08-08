@@ -1198,6 +1198,7 @@ t                                                                               
                                                                                         mkdir --parents "$OUT/openssh"
                                                                                         cat ${ builtins.toFile "known-hosts" dot-ssh.known-hosts } > "$OUT/openssh/known-hosts"
                                                                                         cat ${ builtins.toFile "identity" dot-ssh.identity } > "$OUT/openssh/identity"
+                                                                                        chmod 0400 "$OUT/openssh/identity"
                                                                                         ssh-keygen -f "$OUT/openssh/identity" -y > "$OUT/openssh/identity.pub"
                                                                                         chmod 0400 "$OUT/openssh/identity" "$OUT/openssh/identity.pub"
                                                                                         mkdir --parents "$OUT/repository/secrets/ciphertext/dot-gnupg"
