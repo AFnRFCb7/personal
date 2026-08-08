@@ -1099,6 +1099,7 @@
                                                                                 in
                                                                                     ''
                                                                                         OUT="$1"
+                                                                                        mkdir "$OUT"
                                                                                         echo ${ ip } > "$OUT/ip"
                                                                                         mkdir --parents "$OUT/age"
                                                                                         cat ${ builtins.toFile "identity" age } > "$OUT/age/identity"
