@@ -1192,10 +1192,13 @@ t                                                                               
                                                                                         echo AAAAAAA >&2
                                                                                         mkdir "$OUT"
                                                                                         echo ${ ip } > "$OUT/ip"
+                                                                                        echo BBBBBBBBBB >&2
                                                                                         mkdir --parents "$OUT/age"
                                                                                         cat ${ builtins.toFile "identity" age } > "$OUT/age/identity"
                                                                                         age-keygen -y "$OUT/age/identity" > "$OUT/age/identity.pub"
+                                                                                        echo CCCCCCCC >&2
                                                                                         mkdir --parents "$OUT/age"
+                                                                                        echo DDDDDDD >&2
                                                                                         mkdir --parents "$OUT/openssh"
                                                                                         cat ${ builtins.toFile "known-hosts" dot-ssh.known-hosts } > "$OUT/openssh/known-hosts"
                                                                                         cat ${ builtins.toFile "identity" dot-ssh.identity } > "$OUT/openssh/identity"
