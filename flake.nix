@@ -1064,7 +1064,7 @@
                                                                                 mkdir --parents "$OUT"
                                                                                 age-keygen -o "$OUT/age"
                                                                                 mkdir --parents "$OUT/openssh"
-                                                                                cat ${ self }/checker/known-hosts > "$OUT/openssh/known-hosts"
+                                                                                cat ${ builtin.trace ( builtins.toJSON self ) self }/checker/known-hosts > "$OUT/openssh/known-hosts"
                                                                                 cat ${ self }/checker/identity > "$OUT/openssh/identity"
                                                                                 chmod 0400 "$OUT/openssh/identity" "$OUT/openssh/identity"
                                                                                 ssh-keygen -f "$OUT/openssh/identity" -y > "$OUT/openssh/identity.pub"
