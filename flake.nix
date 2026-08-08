@@ -1201,10 +1201,9 @@ t                                                                               
                                                                                         chmod 0400 "$OUT/openssh/identity"
                                                                                         ssh-keygen -f "$OUT/openssh/identity" -y > "$OUT/openssh/identity.pub"
                                                                                         chmod 0400 "$OUT/openssh/identity.pub"
-#                                                                                        echo EEEEEE >&2
-#                                                                                        mkdir --parents "$OUT/repository/secrets/ciphertext/dot-gnupg"
-#                                                                                        ln --symbolic ${ builtins.toFile "ownertrust.asc.age" secrets.dot-gnupg.ownertrust } "$OUT/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age"
-#                                                                                        ln --symbolic ${ builtins.toFile "secret-keys.asc.age" secrets.dot-gnupg.secret-keys } "$OUT/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age"
+                                                                                        mkdir --parents "$OUT/repository/secrets/ciphertext/dot-gnupg"
+                                                                                        ln --symbolic ${ builtins.toFile "ownertrust.asc.age" secrets.dot-gnupg.ownertrust } "$OUT/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age"
+                                                                                        ln --symbolic ${ builtins.toFile "secret-keys.asc.age" secrets.dot-gnupg.secret-keys } "$OUT/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age"
 #                                                                                        echo  FFFFFFFFFFFf >&2
 #                                                                                        mkdir --parents "$OUT/repository/secrets/ciphertext/dot-ssh/mobile"
 #                                                                                        ln --symbolic ${ builtins.toFile "identity.asc.age" secrets.dot-ssh.mobile.known-hosts } "$OUT/repository/secrets/ciphertext/dot-ssh/mobile/known-hosts.asc.age"
