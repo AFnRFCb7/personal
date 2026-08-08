@@ -1028,10 +1028,10 @@
                                                                                                         git config user.email "git@git"
                                                                                                         git config user.name "git"
                                                                                                         git checkout -b main
-                                                                                                        # cp --recursive ${ self }/secrets/ciphertext .
+                                                                                                        # cp --recursive ${ shared }/secrets/ciphertext .
                                                                                                         # git add .
                                                                                                         # git commit -m "" --allow-empty --allow-empty-message
-                                                                                                        # sleep inf
+                                                                                                        sleep inf
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/ExecStart" ;
