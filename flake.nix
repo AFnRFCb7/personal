@@ -332,7 +332,7 @@
                                                                                                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                                                                                 text =
                                                                                                                                                                                     ''
-                                                                                                                                                                                        cat ${ config.personal.temporary.ssh.known-hosts } > "known-hosts"
+                                                                                                                                                                                        cat ${ config.personal.secrets.known-hosts } > "known-hosts"
                                                                                                                                                                                         chmod 0400 "known-hosts"
                                                                                                                                                                                     '' ;
                                                                                                                                                                             }
@@ -900,6 +900,7 @@
                                                                     {
                                                                         email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
                                                                         host = lib.mkOption { default = "github.com" ; type = lib.types.str ; } ;
+                                                                        known-hosts = lib.mkOption { type = lib.types.str ; } ;
                                                                         name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
                                                                         organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                         remotes =
@@ -973,6 +974,16 @@
                                                             secrets =
                                                                 {
                                                                     host = "192.168.2.234" ;
+                                                                    known-hosts =
+                                                                        ''
+                                                                            # 192.168.2.234:22 SSH-2.0-OpenSSH_9.9
+                                                                            192.168.2.234 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDKG/dId5d3MzHI5CPEhpfDxoZ8LtW+pErt2SMiU2yKI0KZis1lU4z9yU6BH1fcAIxVs0ujuHFex34m1Ws9wNIZuYG8al9wvTvjlizkYOq7sYRo/c0yAPK6Cc/jxSbsTXAfoa9VE48T+381AsO/6huTnmNa7jZj1G>
+                                                                            # 192.168.2.234:22 SSH-2.0-OpenSSH_9.9
+                                                                            # 192.168.2.234:22 SSH-2.0-OpenSSH_9.9
+                                                                            192.168.2.234 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIASR4QS2EQma9WH8HO0H029ve4jIJMvjGEq+enZKHN8d
+                                                                            # 192.168.2.234:22 SSH-2.0-OpenSSH_9.9
+                                                                            # 192.168.2.234:22 SSH-2.0-OpenSSH_9.9
+                                                                        '' ;
                                                                     remotes =
                                                                         {
                                                                             ssh = "192.168.2.234:secrets" ;
@@ -1064,7 +1075,8 @@
                                                                                 mkdir --parents "$OUT"
                                                                                 age-keygen -o "$OUT/age"
                                                                                 mkdir --parents "$OUT/openssh"
-                                                                                cat ${ builtins.trace ( builtins.toJSON self ) self }/checker/known-hosts > "$OUT/openssh/known-hosts"
+                                                                                touch "$OUT/openssh/known-hosts"
+                                                                                # cat ${ self }/checker/known-hosts > "$OUT/openssh/known-hosts"
                                                                                 cat ${ self }/checker/identity > "$OUT/openssh/identity"
                                                                                 chmod 0400 "$OUT/openssh/identity" "$OUT/openssh/identity"
                                                                                 ssh-keygen -f "$OUT/openssh/identity" -y > "$OUT/openssh/identity.pub"
