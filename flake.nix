@@ -1195,10 +1195,9 @@ t                                                                               
                                                                                         cat ${ builtins.toFile "identity" age } > "$OUT/age/identity"
                                                                                         age-keygen -y "$OUT/age/identity" > "$OUT/age/identity.pub"
                                                                                         mkdir --parents "$OUT/age"
-#                                                                                        echo DDDDDDD >&2
-#                                                                                        mkdir --parents "$OUT/openssh"
-#                                                                                        cat ${ builtins.toFile "known-hosts" dot-ssh.known-hosts } > "$OUT/openssh/known-hosts"
-#                                                                                        cat ${ builtins.toFile "identity" dot-ssh.identity } > "$OUT/openssh/identity"
+                                                                                        mkdir --parents "$OUT/openssh"
+                                                                                        cat ${ builtins.toFile "known-hosts" dot-ssh.known-hosts } > "$OUT/openssh/known-hosts"
+                                                                                        cat ${ builtins.toFile "identity" dot-ssh.identity } > "$OUT/openssh/identity"
 #                                                                                        chmod 0400 "$OUT/openssh/identity"
 #                                                                                        ssh-keygen -f "$OUT/openssh/identity" -y > "$OUT/openssh/identity.pub"
 #                                                                                        chmod 0400 "$OUT/openssh/identity.pub"
