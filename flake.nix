@@ -974,7 +974,7 @@
                                                             secrets =
                                                                 {
                                                                     host = "192.168.2.234" ;
-                                                                    known-hosts = "$ shared }/dot-ssh/known-hosts" ;
+                                                                    known-hosts = "${ shared }/dot-ssh/known-hosts" ;
                                                                     remotes =
                                                                         {
                                                                             ssh = "192.168.2.234:secrets" ;
