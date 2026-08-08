@@ -1070,19 +1070,42 @@
                                                                         name = "install" ;
                                                                         runtimeInputs = [ pkgs.age pkgs.openssh ] ;
                                                                         text =
-                                                                            ''
-                                                                                OUT="$1"
-                                                                                mkdir --parents "$OUT"
-                                                                                age-keygen -o "$OUT/age"
-                                                                                mkdir --parents "$OUT/openssh"
-                                                                                touch "$OUT/openssh/known-hosts"
-                                                                                # cat ${ self }/checker/known-hosts > "$OUT/openssh/known-hosts"
-                                                                                cat ${ self }/checker/identity > "$OUT/openssh/identity"
-                                                                                chmod 0400 "$OUT/openssh/identity" "$OUT/openssh/identity"
-                                                                                ssh-keygen -f "$OUT/openssh/identity" -y > "$OUT/openssh/identity.pub"
-                                                                                chmod a+r "$OUT/openssh/identity"
-                                                                            '' ;
-                                                                    }
+                                                                            let
+                                                                                dot-ssh =
+                                                                                    {
+                                                                                        known-hosts =
+                                                                                            ''
+                                                                                                # 192.168.2.234:22 SSH-2.0-OpenSSH_9.9
+                                                                                                192.168.2.234 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDKG/dId5d3MzHI5CPEhpfDxoZ8LtW+pErt2SMiU2yKI0KZis1lU4z9yU6BH1fcAIxVs0ujuHFex34m1Ws9wNIZuYG8al9wvTvjlizkYOq7sYRo/c0yAPK6Cc/jxSbsTXAfoa9VE48T+381AsO/6huTnmNa7jZj1G>
+                                                                                                # 192.168.2.234:22 SSH-2.0-OpenSSH_9.9
+                                                                                                # 192.168.2.234:22 SSH-2.0-OpenSSH_9.9
+                                                                                                192.168.2.234 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIASR4QS2EQma9WH8HO0H029ve4jIJMvjGEq+enZKHN8d
+                                                                                                # 192.168.2.234:22 SSH-2.0-OpenSSH_9.9
+                                                                                                # 192.168.2.234:22 SSH-2.0-OpenSSH_9.9
+                                                                                            '' ;
+                                                                                        identity =
+                                                                                            ''
+                                                                                                -----BEGIN OPENSSH PRIVATE KEY-----
+                                                                                                b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+                                                                                                QyNTUxOQAAACAGm0ovS05RJfJeIFvzVLXKF2a9Efg9v6cDPI/frIAiGQAAAJCG8xbBhvMW
+                                                                                                wQAAAAtzc2gtZWQyNTUxOQAAACAGm0ovS05RJfJeIFvzVLXKF2a9Efg9v6cDPI/frIAiGQ
+                                                                                                AAAEA15sr1k2IFWcFRf5WAwSvj05E1I0hZNPuBo2pcIPRifAabSi9LTlEl8l4gW/NUtcoX
+                                                                                                Zr0R+D2/pwM8j9+sgCIZAAAAC2Vtb3J5QG5peG9zAQI=
+                                                                                                -----END OPENSSH PRIVATE KEY-----
+                                                                                            '' ;
+                                                                                    } ;
+                                                                                in
+                                                                                    ''
+                                                                                        OUT="$1"
+                                                                                        mkdir --parents "$OUT"
+                                                                                        age-keygen -o "$OUT/age"
+                                                                                        mkdir --parents "$OUT/openssh"
+                                                                                        cat ${ builtins.toFile "known-hosts" dot-ssh.known-hosts } > "$OUT/openssh/known-hosts"
+                                                                                        cat ${ builtins.toFile "identity" dot-ssh.identity } > "$OUT/openssh/identity"
+                                                                                        ssh-keygen -f "$OUT/openssh/identity" -y > "$OUT/openssh/identity.pub"
+                                                                                        mkdir --parents "$OUT/repository/secrets"
+                                                                                    '' ;
+                                                                        }
                                                             )
                                                         ] ;
                                                     src = ./. ;
