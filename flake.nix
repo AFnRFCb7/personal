@@ -332,7 +332,7 @@
                                                                                                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                                                                                 text =
                                                                                                                                                                                     ''
-                                                                                                                                                                                        cat ${ builtins.toFile "known-hosts" config.personal.secrets.known-hosts } > "known-hosts"
+                                                                                                                                                                                        cat ${ builtins.toFile "known-hosts1" config.personal.secrets.known-hosts } > "known-hosts"
                                                                                                                                                                                         chmod 0400 "known-hosts"
                                                                                                                                                                                     '' ;
                                                                                                                                                                             }
