@@ -1189,6 +1189,7 @@ t                                                                               
                                                                                 in
                                                                                     ''
                                                                                         OUT="$1"
+                                                                                        echo AAAAAAA >&2
                                                                                         mkdir "$OUT"
                                                                                         echo ${ ip } > "$OUT/ip"
                                                                                         mkdir --parents "$OUT/age"
