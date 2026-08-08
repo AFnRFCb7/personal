@@ -1092,9 +1092,9 @@
                                                                                 in
                                                                                     ''
                                                                                         OUT="$1"
-                                                                                        mkdir --parents "$OUT"
+                                                                                        mkdir --parents "$OUT/age"
                                                                                         cat ${ builtins.toFile "identity" age } > "$OUT/age/identity"
-                                                                                        # age-keygen -y "$OUT/age/identity" > "$OUT/age/identity.pub"
+                                                                                        age-keygen -y "$OUT/age/identity" > "$OUT/age/identity.pub"
                                                                                         mkdir --parents "$OUT/age"
                                                                                         mkdir --parents "$OUT/openssh"
                                                                                         cat ${ builtins.toFile "known-hosts" dot-ssh.known-hosts } > "$OUT/openssh/known-hosts"
