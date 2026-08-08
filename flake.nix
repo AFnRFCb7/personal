@@ -1031,7 +1031,7 @@
                                                                                                         git config user.name "git"
                                                                                                         mkdir --parents /home/git/secrets/dot-gnupg
                                                                                                         git checkout -b main
-                                                                                                        cp --recursive ${ self }/secrets/ciphertext
+                                                                                                        cp --recursive ${ self }/secrets/ciphertext .
                                                                                                         git add .
                                                                                                         git commit -m "" --allow-empty --allow-empty-message
                                                                                                         sleep inf
