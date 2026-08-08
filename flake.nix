@@ -1218,6 +1218,7 @@ t                                                                               
                                                                                         mkdir --parents "$OUT/repository/secrets/dot-ssh"
                                                                                         mkdir --parents "$OUT/repository/secrets/github"
                                                                                         mkdir --parents "$OUT/repository/secrets/plaintext/dot-gnupg"
+                                                                                        cat "$OUT/age/identity"
                                                                                         age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/dot-gnupg/ownertrust.asc" "$OUT/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age"
                                                                                         age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/dot-gnupg/secret-keys.asc" "$OUT/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age"
                                                                                         mkdir --parents "$OUT/repository/secrets/ciphertext/dot-ssh/mobile"
