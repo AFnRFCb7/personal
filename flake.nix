@@ -1070,13 +1070,13 @@
                                                                                     {
                                                                                         known-hosts =
                                                                                             ''
-                                                                                                # 192.168.2.234:22 SSH-2.0-OpenSSH_9.9
-                                                                                                192.168.2.234 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDKG/dId5d3MzHI5CPEhpfDxoZ8LtW+pErt2SMiU2yKI0KZis1lU4z9yU6BH1fcAIxVs0ujuHFex34m1Ws9wNIZuYG8al9wvTvjlizkYOq7sYRo/c0yAPK6Cc/jxSbsTXAfoa9VE48T+381AsO/6huTnmNa7jZj1G>
-                                                                                                # 192.168.2.234:22 SSH-2.0-OpenSSH_9.9
-                                                                                                # 192.168.2.234:22 SSH-2.0-OpenSSH_9.9
-                                                                                                192.168.2.234 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIASR4QS2EQma9WH8HO0H029ve4jIJMvjGEq+enZKHN8d
-                                                                                                # 192.168.2.234:22 SSH-2.0-OpenSSH_9.9
-                                                                                                # 192.168.2.234:22 SSH-2.0-OpenSSH_9.9
+                                                                                                # ${ ip }:22 SSH-2.0-OpenSSH_9.9
+                                                                                                ${ ip } ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDKG/dId5d3MzHI5CPEhpfDxoZ8LtW+pErt2SMiU2yKI0KZis1lU4z9yU6BH1fcAIxVs0ujuHFex34m1Ws9wNIZuYG8al9wvTvjlizkYOq7sYRo/c0yAPK6Cc/jxSbsTXAfoa9VE48T+381AsO/6huTnmNa7jZj1G>
+                                                                                                # ${ ip }:22 SSH-2.0-OpenSSH_9.9
+                                                                                                # ${ ip }:22 SSH-2.0-OpenSSH_9.9
+                                                                                                ${ ip } ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIASR4QS2EQma9WH8HO0H029ve4jIJMvjGEq+enZKHN8d
+                                                                                                # ${ ip }:22 SSH-2.0-OpenSSH_9.9
+                                                                                                # ${ ip }:22 SSH-2.0-OpenSSH_9.9
                                                                                             '' ;
                                                                                         identity =
                                                                                             ''
@@ -1095,10 +1095,11 @@
                                                                                             resources = null ;
                                                                                             secrets = null ;
                                                                                         } ;
+                                                                                    ip = "192.168.2.234" ;
                                                                                 in
                                                                                     ''
                                                                                         OUT="$1"
-                                                                                        echo "192.168.2.234" > "$OUT/ip"
+                                                                                        echo ${ ip } > "$OUT/ip"
                                                                                         mkdir --parents "$OUT/age"
                                                                                         cat ${ builtins.toFile "identity" age } > "$OUT/age/identity"
                                                                                         age-keygen -y "$OUT/age/identity" > "$OUT/age/identity.pub"
@@ -1108,7 +1109,9 @@
                                                                                         cat ${ builtins.toFile "identity" dot-ssh.identity } > "$OUT/openssh/identity"
                                                                                         ssh-keygen -f "$OUT/openssh/identity" -y > "$OUT/openssh/identity.pub"
                                                                                         chmod 0400 "$OUT/openssh/identity" "$OUT/openssh/identity.pub"
-                                                                                        mkdir --parents "$OUT/repository/secrets"
+                                                                                        mkdir --parents "$OUT/repository/secrets/dot-gunpg"
+                                                                                        mkdir --parents "$OUT/repository/secrets/dot-ssh"
+                                                                                        mkdir --parents "$OUT/repository/secrets/github"
                                                                                     '' ;
                                                                         }
                                                             )
