@@ -1030,7 +1030,7 @@
                                                                                                         git checkout -b main
                                                                                                         cp --recursive ${ shared }/secrets/ciphertext .
                                                                                                         git add .
-                                                                                                        git commit -m "" --allow-empty --allow-empty-message
+                                                                                                        # git commit -m "" --allow-empty --allow-empty-message
                                                                                                         sleep inf
                                                                                                     '' ;
                                                                                             } ;
