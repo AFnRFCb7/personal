@@ -973,11 +973,11 @@
                                                             password = "chester" ;
                                                             secrets =
                                                                 {
-                                                                    host = "192.168.2.234" ;
+                                                                    host = builtins.readFile "${ shared }/ip" ;
                                                                     known-hosts = "${ shared }/dot-ssh/known-hosts" ;
                                                                     remotes =
                                                                         {
-                                                                            ssh = "192.168.2.234:secrets" ;
+                                                                            ssh = "${ builtins.readFile "${ shared }/ip" }:secrets" ;
                                                                         } ;
                                                                 } ;
                                                             temporary =
@@ -1001,7 +1001,7 @@
                                                             interfaces.eth2.ipv4.addresses =
                                                                 [
                                                                     {
-                                                                        address = "192.168.2.234" ;
+                                                                        address = builtins.readFile "${ shared }/ip" ;
                                                                         prefixLength = 24 ;
                                                                     }
                                                                 ];
@@ -1089,9 +1089,16 @@
                                                                                                 -----END OPENSSH PRIVATE KEY-----
                                                                                             '' ;
                                                                                     } ;
+                                                                                    repositot =
+                                                                                        {
+                                                                                            private = null ;
+                                                                                            resources = null ;
+                                                                                            secrets = null ;
+                                                                                        } ;
                                                                                 in
                                                                                     ''
                                                                                         OUT="$1"
+                                                                                        echo "192.168.2.234" > "$OUT/ip"
                                                                                         mkdir --parents "$OUT/age"
                                                                                         cat ${ builtins.toFile "identity" age } > "$OUT/age/identity"
                                                                                         age-keygen -y "$OUT/age/identity" > "$OUT/age/identity.pub"
