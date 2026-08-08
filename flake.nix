@@ -1089,13 +1089,101 @@
                                                                                                 -----END OPENSSH PRIVATE KEY-----
                                                                                             '' ;
                                                                                     } ;
-                                                                                    repositot =
-                                                                                        {
-                                                                                            private = null ;
-                                                                                            resources = null ;
-                                                                                            secrets = null ;
-                                                                                        } ;
-                                                                                    ip = "192.168.2.234" ;
+                                                                                secrets =
+                                                                                    {
+                                                                                        dot-gunpg =
+                                                                                            {
+                                                                                                ownertrust =
+                                                                                                    ''
+                                                                                                        -----BEGIN AGE ENCRYPTED FILE-----
+                                                                                                        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBrYWE3UWVCOVlnOU1UeHk0
+                                                                                                        ZUt0NXNlaDRLYlo3anhWc1grMnVrUmc5Q0QwCmZRREMvSmRtWk9GUkYyWUo0VTJR
+                                                                                                        S1RrNUpYcjVoWkRaR05uVGJCL01qeVUKLS0tIGdWTE9SZ0xTSTBTa1l5NE1EY1R4
+                                                                                                        ZjBocEhKZVh2eG8vOTFwNGdnZndzUUkKZxEmtPgUfBw9uoLnvnaTtSgXIu+Zflcd
+                                                                                                        xQ+auzrqvgwwvmdfyhegDNnfChusmRynuW/k4m5bQBSrgSZbYTJJfI8wpN8iN0Gr
+                                                                                                        ln5yA4NFCBqXTbcCBdnQhdsNHC74U3/ZZ5ZAEIMVdNXXBDNiKJQSTqMj1eG4wfGj
+                                                                                                        N7MOLTgl+YgMwLLqwLjpWwADyJFYQPcPaXiiHmTxZ+XgHqgHV2ztGY5zkxJXQR+L
+                                                                                                        5831Rs8TQ157uUvSTTgkh0/qW+eK2fqBS8bt74Cl
+                                                                                                        -----END AGE ENCRYPTED FILE-----
+                                                                                                    '' ;
+                                                                                                secret-keys =
+                                                                                                    ''
+                                                                                                        -----BEGIN AGE ENCRYPTED FILE-----
+                                                                                                        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBvU0xzalpjWkJ6YlZ3dXVo
+                                                                                                        L3RaV09XRmZpNDVhdzZiL1ZIOW9MMkZaNm1RCmM5RTFBK2dETXdLRzd1WHJuRHlJ
+                                                                                                        eldYZHkxVTl2ekMwVEtEOEhnaGx1MncKLS0tIFYvcDRnczl3cTRtcHpOTHVqZE5J
+                                                                                                        WTA1UVlhb1ZOTTkxdW41a2FYVGpnanMKnL+wtPzAR2LYfYAXlnV2MjuA5IB2i+RT
+                                                                                                        pAYXwgePuiXxe7E9Mz4Pk9WyplFugLAnzWH1F8HT0NcGlqaL/bg0HiaCTVEPwPMy
+                                                                                                        oemJaZUDlP6GIGja+u2n6snGVD+0Ck/w+PuQ2tsE+HRtbLe8gdGZuiu6jLtEFf0x
+                                                                                                        JfKi5eXjxKLsvuCSjsOk8DP/GEfoCgeUQA5RpTMaTCyrkigueDibNTo/k8WmGYEN
+                                                                                                        5eRap3Go2jwM/zzDhHili1vJMqD9FUcbeuwpZSt659uuWhTdxFfkjT7D2xXdMfyb
+                                                                                                        QkHPlLQkhJ3Vl92tVBnHvf5r5LVy4IqYZXYS8Ll74Av9SLaTtQkGe3/jD3bWyK/Z
+                                                                                                        CYl4Yfc0iAmwRQfcmO9NCgW0oxsOYH9ONtOlFMKzC+YlIE0dMMMYgCOXUiGeCDHa
+                                                                                                        YGOVBSS870PPAdMvNdNyU/AstK1IJIsusAn3OjXUzw9tQtiC2BWhSXoKpGcRU8j2
+                                                                                                        C//wQNeWCEvu3nZZHr0AHu8mdyVFKYBDqHO+3VKYuCZKTMtS7JaWfAFfJL9xABjb
+                                                                                                        i2cPUsYdEz9wSdf/G1EINGEQD7tPXDZDLvsubKd+WrS4I79CdsddFI/7GIO+3k2l
+                                                                                                        p/Y1PBDGrMhPldMlNFUF+zS/EcL3t/hl3aOqOcaJtai76Uf1U+wRk5Vg8vpLNAEa
+                                                                                                        I+GjDCSx5QdyIulXN9UA0EZcAnGdD5f73vl1AR8tN9xfwhTADQw2LsmF0we2BVbQ
+                                                                                                        EC0xQJdmbC1U7UruVCZU5PwWx6CKQcxx1Vj0ab5uHQePw7xTY3tRXYTvSGCjUVXg
+                                                                                                        GFO8wPKqmzkGJf/ptiFSUvqmsvDDN89Or3HadCxliN1SN/ZLto9EXsXVFj2aHIn1
+                                                                                                        NnJnHb5jKL//OUh+Jfe/giXaQyT8NrU7TyokG8Wku489F2jYSBEsZJ5SUAhzodfs
+                                                                                                        TStdZUJvudMqO4THPaIwIzjWNjw8g6sitOri1C4sAzqYglDU+EMhCoRiqfMXrNTk
+                                                                                                        wfW+xunA+3mmeL/XudkM/e8wYVplz1lTc/0HNx6SzNNQnqo1QdifI5ctU0OOv4sj
+                                                                                                        DTTYWGrQwqXcc/sw5Xk1Avy6oy12CXu8D3SSCMPfBLJWRJHuYKrUMRKUcPciNjyf
+                                                                                                        aHdkF4jqlKmt+qy8Q70y17Rni8gNLvZvzdYZPNX/gnJ7eN4qUCaHFV2VQV4ftEKC
+                                                                                                        P67AmBP/03V/Y+1jqLpxM+ZwkjMztr6eaX0=
+                                                                                                        -----END AGE ENCRYPTED FILE-----
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                        dot-ssh =
+                                                                                            {
+                                                                                                mobile =
+                                                                                                    {
+                                                                                                        known-hosts =
+                                                                                                            ''
+                                                                                                                -----BEGIN AGE ENCRYPTED FILE-----
+                                                                                                                YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBVM1M2Q1lrMGFsKzhpRity
+                                                                                                                aCtGOFk4eFFNU2FySm4ySmxXNzdNZkhZWDF3CndSd083OVIrbklhbnA4SkticHpi
+                                                                                                                Zmo5MnJtWDhJK3hHQnB4NEFkWjdVV0UKLS0tIEFBQ2JlcHhWQ3FBbnMvUUxnU0R6
+                                                                                                                WFBXNk56RFhTT1MvdHZDL04vOUNmS0EK0JBmenvRk7MJv7jG1WvvQNTbzbNI+LAA
+                                                                                                                ZijwrZy0p1o=
+                                                                                                                -----END AGE ENCRYPTED FILE-----
+                                                                                                            '' ;
+                                                                                                        identity =
+                                                                                                            ''
+                                                                                                                -----BEGIN AGE ENCRYPTED FILE-----
+                                                                                                                YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBRRGVYK2o4b08xbVVyeTdG
+                                                                                                                MlUvRzdBT3BNZXFOakpyeWxUNG9vdi82cDFVCjhCUEN6Y1JXSGYyUFdSTkgrZ3k0
+                                                                                                                OU1ocWY5K0x1RXlGTGdaeGlaK1I4ejgKLS0tIDJ3ZDVRY09uUlFNVCszZHY4QnlR
+                                                                                                                M2V0QkFLbWhSNDZydWcwWmFqR2R1cmMKUd2lqqyTzDjqRWJhzHmxeBfQkOmSEQBr
+                                                                                                                CWZ91o3rAWE0bxtKy+HDN29zWWic40zKmLFbq4mA7q5/DsGKF43Oc8UCMrWTjKCC
+                                                                                                                3FiThVID6bEiHzjVrnoCVPdrnSQ9BWPpQ0oTOkmNsdKzxirMVmvUChGKdGMqgRc+
+                                                                                                                ePVDP9NBYvd0ay58yH29rk8C45skLXc1q0gieLRVG2p+77QpBY3tggZRrfl6/EPN
+                                                                                                                9HUdFQQdozRcSobgaasxZ6LnUkp4OHUKKc5DfXPOPaGQ8MlaVrv7+sFKeSiT1Kd3
+                                                                                                                Mpv3maHXGCb8ZvmIUL91ljYgSBMlHqVGsw7zxdaR86c8l9SbFzg0YyY7yuMqX0U7
+                                                                                                                DvcLTuTeYHExeiD41GhxndR7I2y/wPh2n6iS12xysOMZtZxWhS8rhrjuOkMrX6i/
+                                                                                                                FMIH6DSp4vkhVT98DSpZbr7FXfZOunzdzFEM7kZ4lZdRVcGFea4iyB6PMyyLHGcl
+                                                                                                                U866razTT2SG2O+iTqsh7TU9lNvFyno4sT85LwHrL1bBAC6iSqOQPA/hhR4rNRV1
+                                                                                                                7dfMMN0mXCrtF5g=
+t                                                                                                                           -----END AGE ENCRYPTED FILE-----
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            } ;
+                                                                                       github =
+                                                                                            {
+                                                                                                token =
+                                                                                                    ''
+                                                                                                        -----BEGIN AGE ENCRYPTED FILE-----
+                                                                                                        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBCMlZwRUo5cUFiL1Y2Ty9O
+                                                                                                        UHJUTzg1ZGhMWUdWaEZuZkN0OUp0clQxMjBjCnpTWDIzUnEvNTVKVnNZT1ZZVFBJ
+                                                                                                        R2RyaVFSU0d6cFpaL1lwY1ozNG10RmMKLS0tIHdLRGlwakp0NE02cXJVS1dwRW0z
+                                                                                                        KzJNQVpIMWJBaGkzN2VwVWNJWi84M0UKhuUlJyN/lAMMlBS2pojYfqUAPnuya23s
+                                                                                                        ZNvePOpZZlh4S6JkabzHG3j2vliE3FIe6zDLkfHp7Z+/5BLSP0n5ilBwiqHR
+                                                                                                        -----END AGE ENCRYPTED FILE-----
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    } ;
+                                                                                ip = "192.168.2.234" ;
                                                                                 in
                                                                                     ''
                                                                                         OUT="$1"
@@ -1110,9 +1198,23 @@
                                                                                         cat ${ builtins.toFile "identity" dot-ssh.identity } > "$OUT/openssh/identity"
                                                                                         ssh-keygen -f "$OUT/openssh/identity" -y > "$OUT/openssh/identity.pub"
                                                                                         chmod 0400 "$OUT/openssh/identity" "$OUT/openssh/identity.pub"
-                                                                                        mkdir --parents "$OUT/repository/secrets/dot-gunpg"
+                                                                                        mkdir --parents "$OUT/repository/secrets/ciphertext/dot-gnupg"
+                                                                                        ln --symbolic ${ builtins.toFile "ownertrust.asc.age" secrets.dot-gnupg.ownertrust } "$OUT/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age"
+                                                                                        ln --symbolic ${ builtins.toFile "secret-keys.asc.age" secrets.dot-gnupg.secret-keys } "$OUT/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age"
+                                                                                        mkdir --parents "$OUT/repository/secrets/ciphertext/dot-ssh/mobile"
+                                                                                        ln --symbolic ${ builtins.toFile "identity.asc.age" secrets.dot-gnupg.user-keys } "$OUT/repository/secrets/ciphertext/dot-ssh/mobile/identity.asc.age"
+                                                                                        ln --symbolic ${ builtins.toFile "user-keys.asc.age" secrets.dot-gnupg.user-keys } "$OUT/repository/secrets/ciphertext/dot-ssh/mobile/user-keys.asc.age"
+                                                                                        mkdir --parents "$OUT/repository/secrets/ciphertext/github"
                                                                                         mkdir --parents "$OUT/repository/secrets/dot-ssh"
                                                                                         mkdir --parents "$OUT/repository/secrets/github"
+                                                                                        mkdir --parents "$OUT/repository/secrets/plaintext/dot-gnupg"
+                                                                                        age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/dot-gnupg/ownertrust.asc" "$OUT/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age"
+                                                                                        age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/dot-gnupg/secret-keys.asc" "$OUT/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age"
+                                                                                        mkdir --parents "$OUT/repository/secrets/ciphertext/dot-ssh/mobile"
+                                                                                        age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/dot-ssh/mobile/identity.asc" "$OUT/repository/secrets/ciphertext/dot-ssh/mobile/identity.asc.age"
+                                                                                        age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/dot-ssh/mobile/user-keyd.asc" "$OUT/repository/secrets/ciphertext/dot-ssh/mobile/user-keys.asc.age"
+                                                                                        mkdir --parents "$OUT/repository/secrets/plaintext/github"
+                                                                                        age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/github/token.asc" "$OUT/repository/secrets/ciphertext/github/token.asc.age"
                                                                                     '' ;
                                                                         }
                                                             )
