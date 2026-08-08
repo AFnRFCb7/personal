@@ -434,7 +434,7 @@
                                                                                                                                                                                 ln --symbolic "$CONFIG" /gc-root/config
                                                                                                                                                                                 git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $CONFIG/config"
                                                                                                                                                                                 ping -c 1 192.168.2.234
-                                                                                                                                                                                # ssh-keyscan 192.168.2.234
+                                                                                                                                                                                ssh-keyscan 192.168.2.234
                                                                                                                                                                              '' ;
                                                                                                                                                                     }
                                                                                                                                                             )
