@@ -433,8 +433,6 @@
                                                                                                                                                                                 CONFIG="$( "$RESOURCES"/resources/'["production","dot-ssh","config","github"]' )" || exit 172
                                                                                                                                                                                 ln --symbolic "$CONFIG" /gc-root/config
                                                                                                                                                                                 git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $CONFIG/config"
-                                                                                                                                                                                ping -c 1 192.168.2.234 >&2
-                                                                                                                                                                                ssh-keyscan 192.168.2.234 >&2
                                                                                                                                                                              '' ;
                                                                                                                                                                     }
                                                                                                                                                             )
@@ -984,8 +982,8 @@
                                                                 {
                                                                     ssh =
                                                                         {
-                                                                            identity = "${ shared }/dot-ssh/identity" ;
-                                                                            known-hosts = "${ shared }/dot-ssh/known-hosts" ;
+                                                                            identity = "${ shared }/secrets/plaintext/dot-ssh/identity" ;
+                                                                            known-hosts = "${ shared }/secrets/plaintext/dot-ssh/known-hosts" ;
                                                                         } ;
                                                                 } ;
                                                             wifi = { } ;
