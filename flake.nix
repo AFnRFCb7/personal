@@ -1189,10 +1189,8 @@ t                                                                               
                                                                                 in
                                                                                     ''
                                                                                         OUT="$1"
-                                                                                        echo AAAAAAA >&2
                                                                                         mkdir --parents  "$OUT"
-#                                                                                        echo AAAAAB >&2
-#                                                                                        echo ${ ip } > "$OUT/ip"
+                                                                                        echo ${ ip } > "$OUT/ip"
 #                                                                                        echo BBBBBBBBBB >&2
 #                                                                                        mkdir --parents "$OUT/age"
 #                                                                                        cat ${ builtins.toFile "identity" age } > "$OUT/age/identity"
