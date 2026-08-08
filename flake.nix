@@ -447,7 +447,7 @@
                                                                                                                                                         if [[ -f "/home/checker/resources/mounts/0000000000000002/known-hosts" ]] && [[ -f "/home/checker/resources/mounts/0000000000000003/identity" ]]
                                                                                                                                                         then
                                                                                                                                                             chmod 0600 "/home/checker/resources/mounts/0000000000000002/known-hosts"
-                                                                                                                                                            timeout 10s ssh -i "/home/checker/resources/mounts/0000000000000003/identity" -o StrictHostKeyChecking=no -o UserKnownHostsFile=/home/checker/resources/mounts/0000000000000002/known-hosts git@192.168.2.234
+                                                                                                                                                            time timeout 10s ssh -i "/home/checker/resources/mounts/0000000000000003/identity" -o StrictHostKeyChecking=no -o UserKnownHostsFile=/home/checker/resources/mounts/0000000000000002/known-hosts git@192.168.2.234
                                                                                                                                                             cat /home/checker/resources/mounts/0000000000000002/known-hosts
                                                                                                                                                             # git fetch origin "${ config.personal.secrets.branch }"
                                                                                                                                                             # git checkout "${ config.personal.secrets.branch }"
@@ -1448,7 +1448,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                ac09ebc7302124a40a16382aa30fb363f018a5af465e0148bb2b821264ed9a10caa17abffd3df483eeb34c8d278f68cf6eb927ab6293d0957880ee92fd5b516c
+                                                                                133980c9b451afbcb3f32bb464b8858bce4623825b0aa2654621b583a2f09f62ba4be2c58bdf2bac04c77ba33d3b7ed96d315a23e1799d1674b544325d498273
                                                                             '' ;
                                                                         text = ''check-resources-directory'' ;
                                                                     }
