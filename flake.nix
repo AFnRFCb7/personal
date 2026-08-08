@@ -1044,7 +1044,7 @@
                                                     users.users.git =
                                                         {
                                                             isNormalUser = true ;
-                                                            openssh.authorizedKeys = { keyFiles = [ "${ shared }/dot-ssh/identity.pub" ] ; } ;
+                                                            openssh.authorizedKeys = { keyFiles = [ "${ shared }/openssh/identity.pub" ] ; } ;
                                                         } ;
                                                     virtualisation.vlans = [ 1 2 ] ;
                                                 } ;
