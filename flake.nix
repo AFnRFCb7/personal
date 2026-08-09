@@ -435,8 +435,8 @@
                                                                                                                                                                                 git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $CONFIG/config"
                                                                                                                                                                                 # echo >&2
                                                                                                                                                                                 # cat "$CONFIG/config" >&2
-                                                                                                                                                                                echo >&2
-                                                                                                                                                                                cat "/home/checker/resources/mounts/0000000000000002/known-hosts.asc" >&2
+                                                                                                                                                                                $ echo >&2
+                                                                                                                                                                                # cat "/home/checker/resources/mounts/0000000000000002/known-hosts.asc" >&2
                                                                                                                                                                                 # echo >&2
                                                                                                                                                                                 # cat "/home/checker/resources/mounts/0000000000000003/identity.asc" >&2
                                                                                                                                                                                 # echo >&2
@@ -446,9 +446,11 @@
                                                                                                                                                                                 # echo >&2
                                                                                                                                                                                 # cat "$CONFIG/config" >&2
                                                                                                                                                                                 echo "+++++++++ +++++++++ " >&2
-                                                                                                                                                                                ssh-keyscan 192.168.2.234 >&2
+                                                                                                                                                                                TEMP="$( mktemp )" || exit 113
+                                                                                                                                                                                ssh-keyscan 192.168.2.234 >"$TEMP"
+                                                                                                                                                                                diff "/home/checker/resources/mounts/0000000000000002/known-hosts.asc" "$TEMP" >&3
                                                                                                                                                                                 # echo >&2
-                                                                                                                                                                                # time timeout 10s ${ pkgs.openssh }/bin/ssh -F "$CONFIG/config" github.com echo alpha
+                                                                                                                                                                                time timeout 10s ${ pkgs.openssh }/bin/ssh -F "$CONFIG/config" github.com echo alpha
                                                                                                                                                                              '' ;
                                                                                                                                                                     }
                                                                                                                                                             )
