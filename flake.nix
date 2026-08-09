@@ -1799,7 +1799,7 @@
                                                                         process = "pre"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                d1cdc71f6010c13c073a18ea45e4d88edff0dafbc2592f1e04ef6fe29c986f02c153a91047d4954133909d932e8176ac41503a5e95eb905efba098eb39589606
+                                                                                7af8a31a4ada26ab0b87527e60ecc118f7d3cf87bc82fcf4febbd4fb4307bf876b2c7ae95235ae33bae2224f35fe13e9e5dcbb144861f387c3c1a568443eabf3
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
@@ -1807,7 +1807,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                f262ee41682301adbeb5d035ef1b80c7139064d2648cb99b68cb8492ea277023d485d897e65ee3a0cde6876c57181942cb9c5796dbbe39e7f7125971624721be
+                                                                                b3b21cb2edda2a69eb62b46ac7ba983e042ad0b3f5f7cea55c0510db90b7647ce3fb9c0dc2bae05448a5dd4830d31152c5f59b2ea10211fdeb11cd6346d93264
                                                                             '' ;
                                                                         text = "check-redis message valid-init set" ;
                                                                     }
@@ -1816,7 +1816,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                1b52f96a91e86e11c886c5da8bad032c1b51f075cc684bca07d20cc24852882656b1a867ee2df6c89d06216c824afb65f44ebcb669244edcaa762e27f5925ffb
+                                                                                82c396631bd3c56b3cd95606b083a0eb7131fb30b92dd9193021e311f3c33fbebab67ba0123da3e391b49c521aaeeafa9c60babfe6923301740ddf6cbfec98a8
                                                                             '';
                                                                         text = ''check-resources-directory'' ;
                                                                     }
