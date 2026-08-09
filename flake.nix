@@ -1029,8 +1029,8 @@
                                                                                                         git config user.name "git"
                                                                                                         git checkout -b ${ builtins.readFile "${ shared }/branch" }
                                                                                                         cp --recursive ${ shared }/repository/secrets/ciphertext .
-                                                                                                        # git add .
-                                                                                                        # git commit -am "initial commit"
+                                                                                                        git add .
+                                                                                                        git commit -am "initial commit"
                                                                                                         sleep inf
                                                                                                     '' ;
                                                                                             } ;
