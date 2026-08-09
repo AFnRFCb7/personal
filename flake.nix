@@ -983,8 +983,8 @@
                                                                 {
                                                                     ssh =
                                                                         {
-                                                                            identity = "${ shared }/repository/secrets/plaintext/dot-ssh/identity.asc" ;
-                                                                            known-hosts = "${ shared }/repository/secrets/dot-ssh/plaintext/known-hosts.asc" ;
+                                                                            identity = "${ shared }/dot-ssh/identity.asc" ;
+                                                                            known-hosts = "${ shared }/known-hosts.asc" ;
                                                                         } ;
                                                                 } ;
                                                             wifi = { } ;
