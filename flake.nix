@@ -246,10 +246,10 @@
                                                                                                                                                                                         ln --symbolic "$IDENTITY" /gc-root/identity
                                                                                                                                                                                         cat > config <<EOF
                                                                                                                                                                                         Host github.com
-                                                                                                                                                                                            HostName ${ config.personal.secrets.host }
+                                                                                                                                                                                            HostName
                                                                                                                                                                                             User git
                                                                                                                                                                                             IdentityFile $IDENTITY/identity.asc
-                                                                                                                                                                                            UserKnownHostsFile $KNOWN_HOSTS/known-hosts.asc
+                                                                                                                                                                                            UserKnownHostsFile $KNOWN_HOSTS/WTF
                                                                                                                                                                                             StrictHostKeyChecking no
                                                                                                                                                                                         EOF
                                                                                                                                                                                         chmod 0400 config
@@ -450,7 +450,7 @@
                                                                                                                                                                                 ssh-keyscan 192.168.2.234 > "$TEMP"
                                                                                                                                                                                 diff "/home/checker/resources/mounts/0000000000000002/known-hosts.asc" "$TEMP" >&2
                                                                                                                                                                                 # echo >&2
-                                                                                                                                                                                time timeout 10s ${ pkgs.openssh }/bin/ssh -F "$CONFIG/config" github.com echo alpha
+                                                                                                                                                                                # time timeout 10s ${ pkgs.openssh }/bin/ssh -F "$CONFIG/config" github.com echo alpha
                                                                                                                                                                              '' ;
                                                                                                                                                                     }
                                                                                                                                                             )
