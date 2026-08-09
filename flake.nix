@@ -1192,7 +1192,7 @@
                                                                                         cat ${ builtins.toFile "identity" age } > "$OUT/age/identity"
                                                                                         age-keygen -y "$OUT/age/identity" > "$OUT/age/identity.pub"
                                                                                         mkdir --parents "$OUT/age"
-                                                                                        mkdir --parents "$OUT/openssh"
+                                                                                        mkdir --parents "$OUT/dot-ssh"
                                                                                         cat ${ builtins.toFile "known-hosts" dot-ssh.known-hosts } > "$OUT/dot-ssh/known-hosts"
                                                                                         cat ${ builtins.toFile "identity" dot-ssh.identity } > "$OUT/dot-ssh/identity"
                                                                                         chmod 0400 "$OUT/openssh/identity"
