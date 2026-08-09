@@ -1044,7 +1044,7 @@
                                                     users.users.git =
                                                         {
                                                             isNormalUser = true ;
-                                                            openssh.authorizedKeys = { keyFiles = [ "${ shared }/dot-ssh/identity.pub" ] ; } ;
+                                                            openssh.authorizedKeys = { keyFiles = [ "${ shared }/dot-ssh/identity.pub.asc" ] ; } ;
                                                         } ;
                                                     virtualisation.vlans = [ 1 2 ] ;
                                                 } ;
@@ -1198,9 +1198,9 @@
                                                                                         mkdir --parents "$OUT/dot-ssh"
                                                                                         cat ${ builtins.toFile "known-hosts" dot-ssh.known-hosts } > "$OUT/dot-ssh/known-hosts.asc"
                                                                                         cat ${ builtins.toFile "identity" dot-ssh.identity } > "$OUT/dot-ssh/identity.asc"
-                                                                                        chmod 0400 "$OUT/dot-ssh/identity"
-                                                                                        ssh-keygen -f "$OUT/dot-ssh/identity" -y > "$OUT/dot-ssh/identity.pub"
-                                                                                        chmod 0400 "$OUT/dot-ssh/identity.pub"
+                                                                                        chmod 0400 "$OUT/dot-ssh/identity.asc"
+                                                                                        ssh-keygen -f "$OUT/dot-ssh/identity.asc" -y > "$OUT/dot-ssh/identity.pub.asc"
+                                                                                        chmod 0400 "$OUT/dot-ssh/identity.pub.asc"
                                                                                         mkdir --parents "$OUT/repository/secrets/ciphertext/dot-gnupg"
                                                                                         ln --symbolic ${ builtins.toFile "ownertrust.asc.age" secrets.dot-gnupg.ownertrust } "$OUT/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age"
                                                                                         ln --symbolic ${ builtins.toFile "secret-keys.asc.age" secrets.dot-gnupg.secret-keys } "$OUT/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age"
