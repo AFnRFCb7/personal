@@ -1027,7 +1027,7 @@
                                                                                                         git init
                                                                                                         git config user.email "git@git"
                                                                                                         git config user.name "git"
-                                                                                                        git checkout -b main
+                                                                                                        git checkout -b ${ builtins.readFile "${ shared }/branch" }
                                                                                                         # cp --recursive ${ shared }/secrets/ciphertext .
                                                                                                         # git add .
                                                                                                         # git commit -am "initial commit"
@@ -1182,11 +1182,13 @@
                                                                                                     '' ;
                                                                                             } ;
                                                                                     } ;
+                                                                                branch = "main" ;
                                                                                 ip = "192.168.2.234" ;
                                                                                 in
                                                                                     ''
                                                                                         OUT="$1"
                                                                                         mkdir --parents  "$OUT"
+                                                                                        echo ${ branch } > "$OUT/branch"
                                                                                         echo ${ ip } > "$OUT/ip"
                                                                                         mkdir --parents "$OUT/age"
                                                                                         cat ${ builtins.toFile "identity" age } > "$OUT/age/identity"
