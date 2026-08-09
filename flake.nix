@@ -446,6 +446,8 @@
                                                                                                                                                                                 echo >&2
                                                                                                                                                                                 cat "$CONFIG/config" >&2
                                                                                                                                                                                 echo >&2
+                                                                                                                                                                                ssh-keyscan 192.168.2.234 >&2
+                                                                                                                                                                                echo >&2
                                                                                                                                                                                 time timeout 10s ${ pkgs.openssh }/bin/ssh -F "$CONFIG/config" github.com echo alpha
                                                                                                                                                                              '' ;
                                                                                                                                                                     }
