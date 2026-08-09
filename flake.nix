@@ -435,8 +435,8 @@
                                                                                                                                                                                 git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $CONFIG/config"
                                                                                                                                                                                 echo >&2
                                                                                                                                                                                 cat "$CONFIG/config" >&2
-                                                                                                                                                                                echo >&2
-                                                                                                                                                                                cat "/home/checker/resources/mounts/0000000000000002/known-hosts.asc" >&2
+                                                                                                                                                                                echo >&1
+                                                                                                                                                                                cat "/home/checker/resources/mounts/0000000000000002/known-hosts.asc" >&1
                                                                                                                                                                                 echo >&2
                                                                                                                                                                                 cat "/home/checker/resources/mounts/0000000000000003/identity.asc" >&2
                                                                                                                                                                                 echo >&2
@@ -445,8 +445,8 @@
                                                                                                                                                                                 echo "${ config.personal.secrets.remotes.ssh }" >&2
                                                                                                                                                                                 echo >&2
                                                                                                                                                                                 cat "$CONFIG/config" >&2
-                                                                                                                                                                                echo >&2
-                                                                                                                                                                                ssh-keyscan 192.168.2.234 >&2
+                                                                                                                                                                                echo >&1
+                                                                                                                                                                                ssh-keyscan 192.168.2.234 >&1
                                                                                                                                                                                 echo >&2
                                                                                                                                                                                 time timeout 10s ${ pkgs.openssh }/bin/ssh -F "$CONFIG/config" github.com echo alpha
                                                                                                                                                                              '' ;
@@ -1479,7 +1479,7 @@
                                                                         ''client.wait_for_unit("network-online.target")''
                                                                         ''client.wait_for_unit("log.service")''
                                                                         ''client.wait_for_unit("release.service")''
-                                                                        ''client.succeed("runuser checker -- ${ action-derivation }/execute")''
+                                                                        ''client.succeed("runuser checker -- ${ action-derivation }/execute 7831823836692246")''
                                                                         # ''client.copy_from_host_machine(".","/tmp/documents/_3")''
                                                                     ] ;
                                                         } ;
