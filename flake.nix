@@ -379,8 +379,8 @@
                                                                                                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                                                                                 text =
                                                                                                                                                                                     ''
-                                                                                                                                                                                        cat ${ config.personal.temporary.ssh.identity } > "identity"
-                                                                                                                                                                                        chmod 0400 "identity"
+                                                                                                                                                                                        cat ${ config.personal.temporary.ssh.identity } > "identity.asc"
+                                                                                                                                                                                        chmod 0400 "identity.asc"
                                                                                                                                                                                     '' ;
                                                                                                                                                                             }
                                                                                                                                                                     )
@@ -442,7 +442,6 @@
                                                                                                                                                                                 echo >&2
                                                                                                                                                                                 ping -c 1 192.168.2.234 >&2
                                                                                                                                                                                 echo >&2
-
                                                                                                                                                                                 echo "${ config.personal.secrets.remotes.ssh }" >&2
                                                                                                                                                                                 echo >&2
                                                                                                                                                                                 cat "$CONFIG/config" >&2
