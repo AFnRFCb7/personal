@@ -333,7 +333,7 @@
                                                                                                                                                                                 text =
                                                                                                                                                                                     ''
                                                                                                                                                                                         cat ${ config.personal.secrets.known-hosts } > "known-hosts.asc"
-                                                                                                                                                                                        chmod 0400 "known-hosts.ascq"
+                                                                                                                                                                                        chmod 0400 "known-hosts.asc"
                                                                                                                                                                                     '' ;
                                                                                                                                                                             }
                                                                                                                                                                     )
