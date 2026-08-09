@@ -983,8 +983,8 @@
                                                                 {
                                                                     ssh =
                                                                         {
-                                                                            identity = "${ shared }/repository/secrets/plaintext/dot-ssh/identity.asc" ;
-                                                                            known-hosts = "${ shared }/repository/secrets/plaintext/dot-ssh/known-hosts.asc" ;
+                                                                            identity = "${ shared }/repository/dot-ssh/identity.asc" ;
+                                                                            known-hosts = "${ shared }/repository/dot-ssh/known-hosts.asc" ;
                                                                         } ;
                                                                 } ;
                                                             wifi = { } ;
@@ -1196,8 +1196,8 @@
                                                                                         age-keygen -y "$OUT/age/identity" > "$OUT/age/identity.pub"
                                                                                         mkdir --parents "$OUT/age"
                                                                                         mkdir --parents "$OUT/dot-ssh"
-                                                                                        cat ${ builtins.toFile "known-hosts" dot-ssh.known-hosts } > "$OUT/dot-ssh/known-hosts"
-                                                                                        cat ${ builtins.toFile "identity" dot-ssh.identity } > "$OUT/dot-ssh/identity"
+                                                                                        cat ${ builtins.toFile "known-hosts" dot-ssh.known-hosts } > "$OUT/dot-ssh/known-hosts.asc"
+                                                                                        cat ${ builtins.toFile "identity" dot-ssh.identity } > "$OUT/dot-ssh/identity.asc"
                                                                                         chmod 0400 "$OUT/dot-ssh/identity"
                                                                                         ssh-keygen -f "$OUT/dot-ssh/identity" -y > "$OUT/dot-ssh/identity.pub"
                                                                                         chmod 0400 "$OUT/dot-ssh/identity.pub"
