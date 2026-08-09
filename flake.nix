@@ -353,7 +353,7 @@
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
                                                                                                                                         } ;
-                                                                                                                                targets = [ "known-hosts" ] ;
+                                                                                                                                targets = [ "known-hosts.asc" ] ;
                                                                                                                                 temporary = false ;
                                                                                                                             } ;
                                                                                                                 } ;
@@ -400,7 +400,7 @@
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
                                                                                                                                         } ;
-                                                                                                                                targets = [ "identity" ] ;
+                                                                                                                                targets = [ "identity.asc" ] ;
                                                                                                                                 temporary = false ;
                                                                                                                             } ;
                                                                                                                 } ;
