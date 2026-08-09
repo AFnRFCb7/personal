@@ -445,6 +445,8 @@
                                                                                                                                                                                 echo "${ config.personal.secrets.remotes.ssh }" >&2
                                                                                                                                                                                 echo >&2
                                                                                                                                                                                 cat "$CONFIG/config" >&2
+                                                                                                                                                                                echo >&2
+                                                                                                                                                                                time timeout 10s ${ pkgs.openssh }/bin/ssh -F "$CONFIG/config" echo alpha
                                                                                                                                                                              '' ;
                                                                                                                                                                     }
                                                                                                                                                             )
