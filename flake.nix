@@ -971,6 +971,7 @@
                                                             password = "chester" ;
                                                             secrets =
                                                                 {
+                                                                    branch = builtins.readFile "${ shared }/branch" ;
                                                                     host = builtins.readFile "${ shared }/ip" ;
                                                                     known-hosts = "${ shared }/dot-ssh/known-hosts" ;
                                                                     remotes =
