@@ -332,8 +332,8 @@
                                                                                                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                                                                                 text =
                                                                                                                                                                                     ''
-                                                                                                                                                                                        cat ${ config.personal.secrets.known-hosts } > "known-hosts"
-                                                                                                                                                                                        chmod 0400 "known-hosts"
+                                                                                                                                                                                        cat ${ config.personal.secrets.known-hosts } > "known-hosts.asc"
+                                                                                                                                                                                        chmod 0400 "known-hosts.ascq"
                                                                                                                                                                                     '' ;
                                                                                                                                                                             }
                                                                                                                                                                     )
