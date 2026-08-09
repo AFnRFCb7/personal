@@ -1189,8 +1189,8 @@
                                                                                     ''
                                                                                         OUT="$1"
                                                                                         mkdir --parents  "$OUT"
-                                                                                        echo ${ branch } > "$OUT/branch"
-                                                                                        echo ${ ip } > "$OUT/ip"
+                                                                                        echo -en ${ branch } > "$OUT/branch"
+                                                                                        echo -en ${ ip } > "$OUT/ip"
                                                                                         mkdir --parents "$OUT/age"
                                                                                         cat ${ builtins.toFile "identity" age } > "$OUT/age/identity"
                                                                                         age-keygen -y "$OUT/age/identity" > "$OUT/age/identity.pub"
