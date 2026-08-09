@@ -1030,7 +1030,7 @@
                                                                                                         git checkout -b main
                                                                                                         cp --recursive ${ shared }/secrets/ciphertext .
                                                                                                         git add .
-                                                                                                        git commit -am "initial commit"
+                                                                                                        # git commit -am "initial commit"
                                                                                                         sleep inf
                                                                                                     '' ;
                                                                                             } ;
