@@ -445,7 +445,7 @@
                                                                                                                                                                                 # echo "${ config.personal.secrets.remotes.ssh }" >&2
                                                                                                                                                                                 # echo >&2
                                                                                                                                                                                 # cat "$CONFIG/config" >&2
-                                                                                                                                                                                echo "+++++++++ +++++++++ ">&2
+                                                                                                                                                                                echo "+++++++++ +++++++++ " >&2
                                                                                                                                                                                 ssh-keyscan 192.168.2.234 >&2
                                                                                                                                                                                 # echo >&2
                                                                                                                                                                                 # time timeout 10s ${ pkgs.openssh }/bin/ssh -F "$CONFIG/config" github.com echo alpha
@@ -1087,10 +1087,10 @@
                                                                                         known-hosts =
                                                                                             ''
                                                                                                 # ${ ip }:22 SSH-2.0-OpenSSH_9.9
-                                                                                                ${ ip } ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDKG/dId5d3MzHI5CPEhpfDxoZ8LtW+pErt2SMiU2yKI0KZis1lU4z9yU6BH1fcAIxVs0ujuHFex34m1Ws9wNIZuYG8al9wvTvjlizkYOq7sYRo/c0yAPK6Cc/jxSbsTXAfoa9VE48T+381AsO/6huTnmNa7jZj1G>
+                                                                                                ${ ip } ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCrTrG0R5UiY/LuWfcI4HshSblmijfuibIrtOKSnY0hN7oqWStbGsAeplsHxemmkSic/4zANs9u82TPbwP8hNlOFRUCxYVktybHW3mF/wlVqqBLVPWObzwYAIaQitZV0c4vuablbJcJQT7KaCxVcDD1JuTeA6j6K3llu5eflysbhYPKPFPtxDiAZ3wkeFAO6RHmHC8NbrsDymo4XCg+MiteK4fSr0gn5MMtHKzDf1/xVZQ3UlpKw9s9uQglY2KtFg1wOk4mTx5gFnoizzKCWthq65k2VNSqwQQT7/l93mgkf1JocOQQVqo+rCG9MU/vwjyyPL0sKXwLanos5UeWvQL6qJBHGTLAA7FNay+qtG+014isPyjbjloG2O3u2CKrRqaIv0x1OHGj9k/Lisrv2ur3SLewADBmcTMR6DE2378j75mfetrO1qD1Rh0JuKIZ8GkP3QGJzUN3LS6rTtoZo+LfO5Jyj4iNqR37HaWmgBrWgSQVSJfBbjLLHKiepiUTmkZDrjPZOxKfqbx1mD7lQHZDA3vPUcjTkaz5f7ZMr7KLwChqv17Eseek+z0hH3UfzbK9Mcq+P6jYtKzp5vDyJlD18DTxYfbf6cpv2R1JxNGyPHlyOJphsCXXAaXuPBVC6j2uM/mmEHsISJvUu6uALxiSw4fVyLv5mWfR4DiW/bxKpw==
                                                                                                 # ${ ip }:22 SSH-2.0-OpenSSH_9.9
                                                                                                 # ${ ip }:22 SSH-2.0-OpenSSH_9.9
-                                                                                                ${ ip } ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIASR4QS2EQma9WH8HO0H029ve4jIJMvjGEq+enZKHN8d
+                                                                                                ${ ip } ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHsmZW90R0rSW2DqAFXeS+ZtfmmqWBXET72O0uyr/i51
                                                                                                 # ${ ip }:22 SSH-2.0-OpenSSH_9.9
                                                                                                 # ${ ip }:22 SSH-2.0-OpenSSH_9.9
                                                                                             '' ;
