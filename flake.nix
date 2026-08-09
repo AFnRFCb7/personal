@@ -1589,7 +1589,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                176c1dee8f5a13908ce0a88b652f0cc2c2c5b370297e23b69882443223d35cacabb218c8395f1ef47b2016ca0f10e789679e0132583ec1f3672139698928158f
+                                                                                235aa9106ef1d2ef95f7c3b958597663b65b466ff9921ae230ac63cdaee52a539e955dbe4ef35bead8a16ad824d7966463ae0ddd3cf5fa5a904ab2197fedcdfe
                                                                             '' ;
                                                                         text = "check-redis message valid-init set" ;
                                                                     }
@@ -1598,7 +1598,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                a55abb675fec2a6f3c5abe0ed6fb858b70a145f7509b870878806922f226d3f2f471c253f6d5bd3e1fa693b7a58746b852a072f750a8399a5b411e9dae5fd579
+                                                                                bc738e78ec4840bb6bd866d0da47aea9fdce70ead53e1351130ead78f1e423d10e99a92825e2c082decccd9f6b4767211da81d44935d173ca814c97b7993bfe6
                                                                             '' ;
                                                                         text = ''check-resources-directory'' ;
                                                                     }
