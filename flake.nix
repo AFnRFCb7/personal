@@ -435,7 +435,7 @@
                                                                                                                                                                                 git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $CONFIG/config"
                                                                                                                                                                                 # echo >&2
                                                                                                                                                                                 # cat "$CONFIG/config" >&2
-                                                                                                                                                                                $ echo >&2
+                                                                                                                                                                                # echo >&2
                                                                                                                                                                                 # cat "/home/checker/resources/mounts/0000000000000002/known-hosts.asc" >&2
                                                                                                                                                                                 # echo >&2
                                                                                                                                                                                 # cat "/home/checker/resources/mounts/0000000000000003/identity.asc" >&2
