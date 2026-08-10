@@ -1991,7 +1991,7 @@
                                                                         process = "pre"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                0eeadcccd537f840fcb7b47277723d0a836588a95431bd483a7a124b1b273714d4dd7cc751339ee017be4687e4ce1a66c0fedbcaa54d3a37be66255d62955db8
+                                                                                b37bf3bcfb3259642376c26b9c471bb0029c94cbed363b3fb188893c6144a0a334bdfbaa1fdc1afac929c8a37cb847fbddb2708c902accbea78b9bf9fd9d5597
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
