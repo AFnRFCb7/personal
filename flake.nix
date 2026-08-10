@@ -1023,13 +1023,13 @@
                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        mkdir --parents /home/git/secrets
-                                                                                                        cd /home/git/secrets
+                                                                                                        mkdir --parents /home/git/AFnRFCb7/9ebf9ebc.git
+                                                                                                        cd /home/git/AFnRFCb7/9ebf9ebc.git
                                                                                                         git init
                                                                                                         git config user.email "git@git"
                                                                                                         git config user.name "git"
                                                                                                         git checkout -b ${ builtins.readFile "${ shared }/branch" }
-                                                                                                        cp --recursive ${ shared }/repository/secrets/ciphertext .
+                                                                                                        cp --recursive ${ shared }/repository/secrets/ciphertext/* .
                                                                                                         git add .
                                                                                                         git commit -am "initial commit"
                                                                                                         sleep inf
