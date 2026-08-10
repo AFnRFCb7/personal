@@ -898,7 +898,7 @@
                                                                     {
                                                                         email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
                                                                         host = lib.mkOption { default = "github.com" ; type = lib.types.str ; } ;
-                                                                        known-hosts = lib.mkOption { type = lib.types.path ; } ;
+                                                                        known-hosts = lib.mkOption { type = lib.types.nullOr lib.types.path ; } ;
                                                                         name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
                                                                         organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                         remotes =
