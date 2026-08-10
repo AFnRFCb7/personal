@@ -477,7 +477,7 @@
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         pwd >&2
-                                                                                                                                                        find -maxdepth 1 . >&2
+                                                                                                                                                        find . -maxdepth 1 >&2
                                                                                                                                                         git push origin HEAD 2>&1
                                                                                                                                                     '' ;
                                                                                                                                             } ;
