@@ -1983,7 +1983,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                4d2848684f1f1fa4cc83311a596b72a1314bf59a7b95c006a47ec39a52df87429a777be45e183da1e68197f7d115f08e7cc5a903c099880b13508b7fb19aeb13
+                                                                                23b89e281cb255d1509fab9983a2534b5d47aebc41fc7cf91d133f24dfd82cd1f2543447111fac16c140efeab7298127b6bafce7e346f9246213eeaec1ab5d8a
                                                                             '';
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
