@@ -82,7 +82,7 @@
                                                                                         chmod 0400 "known-hosts.asc"
                                                                                     '' ;
                                                                         }
-                                                                        config.personal.secrets.known-hosts ;                                                            {
+                                                                        config.personal.secrets.known-hosts ;
                                                             } ;
                                                     } ;
                                             } ;
