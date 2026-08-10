@@ -433,24 +433,6 @@
                                                                                                                                                                                 CONFIG="$( "$RESOURCES"/resources/'["production","dot-ssh","config","github"]' )" || exit 172
                                                                                                                                                                                 ln --symbolic "$CONFIG" /gc-root/config
                                                                                                                                                                                 git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $CONFIG/config"
-                                                                                                                                                                                # echo >&2
-                                                                                                                                                                                # cat "$CONFIG/config" >&2
-                                                                                                                                                                                # echo >&2
-                                                                                                                                                                                # cat "/home/checker/resources/mounts/0000000000000002/known-hosts.asc" >&2
-                                                                                                                                                                                # echo >&2
-                                                                                                                                                                                # cat "/home/checker/resources/mounts/0000000000000003/identity.asc" >&2
-                                                                                                                                                                                # echo >&2
-                                                                                                                                                                                # ping -c 1 192.168.2.234 >&2
-                                                                                                                                                                                # echo >&2
-                                                                                                                                                                                # echo "${ config.personal.secrets.remotes.ssh }" >&2
-                                                                                                                                                                                # echo >&2
-                                                                                                                                                                                # cat "$CONFIG/config" >&2
-                                                                                                                                                                                # echo "+++++++++ +++++++++ " >&2
-                                                                                                                                                                                # TEMP="$( mktemp )" || exit 113
-                                                                                                                                                                                # ssh-keyscan 192.168.2.234 > "$TEMP"
-                                                                                                                                                                                # diff "/home/checker/resources/mounts/0000000000000002/known-hosts.asc" "$TEMP" >&2
-                                                                                                                                                                                # echo >&2
-                                                                                                                                                                                # time timeout 10s ${ pkgs.openssh }/bin/ssh -F "$CONFIG/config" github.com echo alpha
                                                                                                                                                                              '' ;
                                                                                                                                                                     }
                                                                                                                                                             )
@@ -463,7 +445,7 @@
                                                                                                                                                         git config user.name "${ config.personal.secrets.name }"
                                                                                                                                                         git remote add origin "${ config.personal.secrets.remotes.ssh }"
                                                                                                                                                         git fetch origin "${ config.personal.secrets.branch }" 2>&1
-                                                                                                                                                        # git checkout "${ config.personal.secrets.branch }" 2>&1
+                                                                                                                                                        git checkout "${ config.personal.secrets.branch }" 2>&1
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                 } ;
