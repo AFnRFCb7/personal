@@ -339,10 +339,16 @@
                                                                                                                                                                         pkgs.writeShellApplication
                                                                                                                                                                             {
                                                                                                                                                                                 name = "known-hosts" ;
-                                                                                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.openssh ] ;
                                                                                                                                                                                 text =
                                                                                                                                                                                     _visitor.implementation
                                                                                                                                                                                         {
+                                                                                                                                                                                            null =
+                                                                                                                                                                                                path : value :
+                                                                                                                                                                                                    ''
+                                                                                                                                                                                                        ssh-keyscan ${ config.personal.secrets.host } > "known-hosts.asc"
+                                                                                                                                                                                                        chmod 0400 "known-hosts.asc"
+                                                                                                                                                                                                    '' ;
                                                                                                                                                                                             path =
                                                                                                                                                                                                 path : value :
                                                                                                                                                                                                     ''
