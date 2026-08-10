@@ -1043,6 +1043,7 @@
                                                         {
                                                             isNormalUser = true ;
                                                             openssh.authorizedKeys = { keyFiles = [ "${ shared }/dot-ssh/identity.pub.asc" ] ; } ;
+                                                            packages = [ pkgs.git ] ;
                                                         } ;
                                                     virtualisation.vlans = [ 1 2 ] ;
                                                 } ;
