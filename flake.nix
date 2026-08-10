@@ -72,17 +72,7 @@
                                                     {
                                                         secrets =
                                                             {
-                                                                known-hosts =
-                                                                    visitor
-                                                                        {
-                                                                            path =
-                                                                                path : value :
-                                                                                    ''
-                                                                                        cat ${ config.personal.secrets.known-hosts } > "known-hosts.asc"
-                                                                                        chmod 0400 "known-hosts.asc"
-                                                                                    '' ;
-                                                                        }
-                                                                        config.personal.secrets.known-hosts ;
+
                                                             } ;
                                                     } ;
                                             } ;
@@ -350,7 +340,17 @@
                                                                                                                                                                             {
                                                                                                                                                                                 name = "known-hosts" ;
                                                                                                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                                                                                                text = parameters.personal.secrets.known-hosts ;
+                                                                                                                                                                                text =
+                                                                                                                                                                                    _visitor
+                                                                                                                                                                                        {
+                                                                                                                                                                                            path =
+                                                                                                                                                                                                path : value :
+                                                                                                                                                                                                    ''
+                                                                                                                                                                                                        cat ${ config.personal.secrets.known-hosts } > "known-hosts.asc"
+                                                                                                                                                                                                        chmod 0400 "known-hosts.asc"
+                                                                                                                                                                                                    '' ;
+                                                                                                                                                                                        }
+                                                                                                                                                                                        config.personal.secrets.known-hosts ;
                                                                                                                                                                             }
                                                                                                                                                                     )
                                                                                                                                                                 ] ;
