@@ -341,7 +341,7 @@
                                                                                                                                                                                 name = "known-hosts" ;
                                                                                                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                                                                                 text =
-                                                                                                                                                                                    _visitor
+                                                                                                                                                                                    _visitor.implementation
                                                                                                                                                                                         {
                                                                                                                                                                                             path =
                                                                                                                                                                                                 path : value :
