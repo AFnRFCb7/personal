@@ -2018,7 +2018,7 @@
                                                                         process = "pre"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                b37bf3bcfb3259642376c26b9c471bb0029c94cbed363b3fb188893c6144a0a334bdfbaa1fdc1afac929c8a37cb847fbddb2708c902accbea78b9bf9fd9d5597
+                                                                                528aa1ff3827265fef3d206c0055bdebbde1d6114ce749c2f52fed85ccf376bec2c0cdcc5ee06aec0733b6bdebcdbf21c5c60cd1c9343750d66dfa236fdf80a8
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
