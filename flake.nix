@@ -66,6 +66,26 @@
                                                         ] ;
                                                     src = ./. ;
                                                 } ;
+                                        parameters =
+                                            {
+                                                personal =
+                                                    {
+                                                        secrets =
+                                                            {
+                                                                known-hosts =
+                                                                    visitor
+                                                                        {
+                                                                            path =
+                                                                                path : value :
+                                                                                    ''
+                                                                                        cat ${ config.personal.secrets.known-hosts } > "known-hosts.asc"
+                                                                                        chmod 0400 "known-hosts.asc"
+                                                                                    '' ;
+                                                                        }
+                                                                        config.personal.secrets.known-hosts ;                                                            {
+                                                            } ;
+                                                    } ;
+                                            } ;
                                         password-less-core =
                                             derivation : target :
                                                 pkgs.writeShellApplication
@@ -330,17 +350,7 @@
                                                                                                                                                                             {
                                                                                                                                                                                 name = "known-hosts" ;
                                                                                                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                                                                                                text =
-                                                                                                                                                                                    visitor
-                                                                                                                                                                                        {
-                                                                                                                                                                                            path =
-                                                                                                                                                                                                path : value :
-                                                                                                                                                                                                    ''
-                                                                                                                                                                                                        cat ${ config.personal.secrets.known-hosts } > "known-hosts.asc"
-                                                                                                                                                                                                        chmod 0400 "known-hosts.asc"
-                                                                                                                                                                                                    '' ;
-                                                                                                                                                                                        }
-                                                                                                                                                                                        config.personal.secrets.known-hosts ;
+                                                                                                                                                                                text = parameters.personal.secrets.known-hosts ;
                                                                                                                                                                             }
                                                                                                                                                                     )
                                                                                                                                                                 ] ;
