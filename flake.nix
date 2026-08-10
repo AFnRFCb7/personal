@@ -458,8 +458,6 @@
                                                                                                                                                 targetPkgs = { pkgs , ... } : [ pkgs.coreutils pkgs.findutils pkgs.git ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
-                                                                                                                                                        pwd >&2
-                                                                                                                                                        find . -maxdepth 1 >&2
                                                                                                                                                         git push origin HEAD 2>&1
                                                                                                                                                     '' ;
                                                                                                                                             } ;
@@ -2032,8 +2030,8 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                1d76f964cbd8c741eb8d8f9ef6df8f0c98a0cdb797505ec1aaafc4638fdbed7835f24f00763868844021ec375be64be5e263fc20ee2235653d2663e8164770f7
-                                                                            '';
+                                                                                1c8c8a57a2af1c80b97e1afe4f09318883de11232bcff44cc75844928ab5d53e15423b47f11c2d179dc64e9a58b36696a0419ac6cc527ed485e3f471d63db6a7
+                                                                            '' ;
                                                                         text = ''check-resources-directory'' ;
                                                                     }
                                                                     { kludge = true ; process = "post" ; text = "sleep 56s" ; }
@@ -2046,6 +2044,7 @@
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
                                                                     {
+                                                                        ### FINDME
                                                                         process = "post"  ;
                                                                         standard-output =
                                                                             ''
