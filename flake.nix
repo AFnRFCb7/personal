@@ -346,9 +346,6 @@
                                                                                                                                                                                             null =
                                                                                                                                                                                                 path : value :
                                                                                                                                                                                                     ''
-                                                                                                                                                                                                        echo ${ config.personal.secrets.host } >&2
-                                                                                                                                                                                                        sleep 10
-                                                                                                                                                                                                        ssh-keyscan ${ config.personal.secrets.host } >&2
                                                                                                                                                                                                         ssh-keyscan ${ config.personal.secrets.host } > "known-hosts.asc"
                                                                                                                                                                                                         chmod 0400 "known-hosts.asc"
                                                                                                                                                                                                     '' ;
@@ -1484,6 +1481,7 @@
                                                             tests =
                                                                 action-derivation :
                                                                     [
+                                                                        ''github.wait_for_unit("network-online.target")''
                                                                         ''client.wait_for_unit("network-online.target")''
                                                                         ''client.wait_for_unit("log.service")''
                                                                         ''client.wait_for_unit("release.service")''
@@ -1702,6 +1700,7 @@
                                                             tests =
                                                                 action-derivation :
                                                                     [
+                                                                        ''github.wait_for_unit("network-online.target")''
                                                                         ''client.wait_for_unit("network-online.target")''
                                                                         ''client.wait_for_unit("log.service")''
                                                                         ''client.wait_for_unit("release.service")''
