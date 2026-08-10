@@ -259,7 +259,7 @@
                                                                                                                                                                                             HostName ${ config.personal.secrets.host }
                                                                                                                                                                                             User git
                                                                                                                                                                                             IdentityFile $IDENTITY/identity.asc
-                                                                                                                                                                                            UserKnownHostsFile $KNOWN_HOSTS/WTF
+                                                                                                                                                                                            UserKnownHostsFile $KNOWN_HOSTS/known-hosts.asc
                                                                                                                                                                                             StrictHostKeyChecking no
                                                                                                                                                                                         EOF
                                                                                                                                                                                         chmod 0400 config
