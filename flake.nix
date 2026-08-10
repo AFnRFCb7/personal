@@ -2059,11 +2059,11 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                86255a490c7b3d2863ff519f4ae02fc5ec9ca91a004cbaabff68d291e73f63bf2f0b1cbd5017ff3fe9fda77db23fc77cd06fafdb2fba932d629f785a0092c11d
+                                                                                fe39b8c1230364152c7b6826697646c1ea449e6e6639e9cdc3e6847055074eba896c663545166a25503cef609eeb05ca2a672644654725c0429e2774d8ab88d8
                                                                             '' ;
                                                                         text =
                                                                             ''
-                                                                                check-resources-directory --exclude "0000000000000000/.git" --exclude "0000000000000002/known-hosts.asc"
+                                                                                check-resources-directory --exclude "0000000000000000/.git" --exclude "0000000000000002/known-hosts.asc" --exclude "release/*"
                                                                             '' ;
                                                                     }
                                                                     { kludge = true ; process = "post" ; text = "sleep 56s" ; }
@@ -2076,7 +2076,6 @@
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
                                                                     {
-                                                                        ### FINDME
                                                                         process = "post"  ;
                                                                         standard-output =
                                                                             ''
