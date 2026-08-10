@@ -978,10 +978,6 @@
                                                                     branch = builtins.readFile "${ shared }/branch" ;
                                                                     host = builtins.readFile "${ shared }/ip" ;
                                                                     known-hosts = "${ shared }/dot-ssh/known-hosts.asc" ;
-                                                                    remotes =
-                                                                        {
-                                                                            ssh = "${ builtins.readFile "${ shared }/ip" }:secrets" ;
-                                                                        } ;
                                                                 } ;
                                                             temporary =
                                                                 {
