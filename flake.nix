@@ -343,7 +343,7 @@
                                                                                                                                                                                 text =
                                                                                                                                                                                     _visitor.implementation
                                                                                                                                                                                         {
-                                                                                                                                                                                            path =
+                                                                                                                                                                                            string =
                                                                                                                                                                                                 path : value :
                                                                                                                                                                                                     ''
                                                                                                                                                                                                         cat ${ config.personal.secrets.known-hosts } > "known-hosts.asc"
