@@ -352,7 +352,7 @@
                                                                                                                                                                                             path =
                                                                                                                                                                                                 path : value :
                                                                                                                                                                                                     ''
-                                                                                                                                                                                                        cat ${ config.personal.secrets.known-hosts } > "known-hosts.asc"
+                                                                                                                                                                                                        cat ${ value } > "known-hosts.asc"
                                                                                                                                                                                                         chmod 0400 "known-hosts.asc"
                                                                                                                                                                                                     '' ;
                                                                                                                                                                                         }
@@ -920,7 +920,7 @@
                                                                     {
                                                                         email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
                                                                         host = lib.mkOption { default = "github.com" ; type = lib.types.str ; } ;
-                                                                        known-hosts = lib.mkOption { type = lib.types.nullOr lib.types.path ; } ;
+                                                                        known-hosts = lib.mkOption { default = null ; type = lib.types.nullOr lib.types.path ; } ;
                                                                         name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
                                                                         organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                         remotes =
@@ -995,7 +995,6 @@
                                                                 {
                                                                     branch = builtins.readFile "${ shared }/branch" ;
                                                                     host = builtins.readFile "${ shared }/ip" ;
-                                                                    known-hosts = "${ shared }/dot-ssh/known-hosts.asc" ;
                                                                 } ;
                                                             temporary =
                                                                 {
