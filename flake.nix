@@ -473,10 +473,12 @@
                                                                                                                                     action =
                                                                                                                                         ignore :
                                                                                                                                             {
-                                                                                                                                                targetPkgs = { pkgs , ... } : [ pkgs.git ] ;
+                                                                                                                                                targetPkgs = { pkgs , ... } : [ pkgs.coreutils pkgs.findutils pkgs.git ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
-                                                                                                                                                        git push origin HEAD
+                                                                                                                                                        pwd >&2
+                                                                                                                                                        find -maxdepth 1 . >&2
+                                                                                                                                                        git push origin HEAD 2>&1
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                 } ;
