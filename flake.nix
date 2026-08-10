@@ -325,7 +325,7 @@
                                                                                                                     github =
                                                                                                                         ignore :
                                                                                                                             {
-                                                                                                                                error = 168 ;
+                                                                                                                                error = 195 ;
                                                                                                                                 init =
                                                                                                                                     ignore :
                                                                                                                                         {
@@ -346,6 +346,7 @@
                                                                                                                                                                                             null =
                                                                                                                                                                                                 path : value :
                                                                                                                                                                                                     ''
+                                                                                                                                                                                                        echo ${ config.personal.secrets.host } >&2
                                                                                                                                                                                                         ssh-keyscan ${ config.personal.secrets.host } > "known-hosts.asc"
                                                                                                                                                                                                         chmod 0400 "known-hosts.asc"
                                                                                                                                                                                                     '' ;
