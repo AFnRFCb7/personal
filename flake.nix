@@ -1358,7 +1358,10 @@
                                                                             ''
                                                                                 fccbfa6eed4d7a7baef0da409208820195513a6f5d5d0e713bb2833f9b49c02deaca54103248682621539886add27f1fc281b3691bbe7aa4c75d2a1272249a7c
                                                                             '';
-                                                                        text = ''check-resources-directory'' ;
+                                                                        text =
+                                                                            ''
+                                                                                check-resources-directory --exclude "0000000000000001/known-hosts.asc"
+                                                                            '' ;
                                                                     }
                                                                     { kludge = true ; process = "post" ; text = "sleep 56s" ; }
                                                                     {
@@ -1583,7 +1586,10 @@
                                                                             ''
                                                                                 3c190d24e80ce5b4e5415c545d960cb51842d36732c84f4eda2ca9d11039f26d50495523a92285be8cc0f4d6e022fdb42cc76ba97391ddfc07643301f0e2af30
                                                                             '' ;
-                                                                        text = ''check-resources-directory'' ;
+                                                                        text =
+                                                                            ''
+                                                                                check-resources-directory --exclude "0000000000000000/known-hosts.asc"
+                                                                            '' ;
                                                                     }
                                                                     { kludge = true ; process = "post" ; text = "sleep 56s" ; }
                                                                     {
@@ -2032,7 +2038,10 @@
                                                                             ''
                                                                                 86255a490c7b3d2863ff519f4ae02fc5ec9ca91a004cbaabff68d291e73f63bf2f0b1cbd5017ff3fe9fda77db23fc77cd06fafdb2fba932d629f785a0092c11d
                                                                             '' ;
-                                                                        text = ''check-resources-directory'' ;
+                                                                        text =
+                                                                            ''
+                                                                                check-resources-directory --exclude "0000000000000000/.git" --exclude "0000000000000002/known-hosts.asc"
+                                                                            '' ;
                                                                     }
                                                                     { kludge = true ; process = "post" ; text = "sleep 56s" ; }
                                                                     {
