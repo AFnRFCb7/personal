@@ -2068,6 +2068,16 @@
                                                                     }
                                                                     { kludge = true ; process = "post" ; text = "sleep 56s" ; }
                                                                     {
+                                                                        kludge = true ;
+                                                                        process = "post" ;
+                                                                        text =
+                                                                            ''
+                                                                            find ~/resources | sort
+                                                                            echo "$$"
+                                                                            sleep 10s
+                                                                            '' ;
+                                                                    }
+                                                                    {
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
@@ -2082,16 +2092,6 @@
                                                                                 WRONG 98ce68ad0eb0a01eef2078b5d07808a1ecef9c50c81096be69e73f0f8e43d94b34d9b6395f921a47e26d43098fed9528bf4fbb24455870a6951002e43b6bec33
                                                                             '' ;
                                                                         text = "check-log" ;
-                                                                    }
-                                                                    {
-                                                                        kludge = true ;
-                                                                        process = "post" ;
-                                                                        text =
-                                                                            ''
-                                                                            find ~/resources | sort
-                                                                            echo "$$"
-                                                                            sleep 10s
-                                                                            '' ;
                                                                     }
                                                                     {
                                                                         process = "post" ;
