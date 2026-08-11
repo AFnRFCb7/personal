@@ -2015,6 +2015,7 @@
                                                                             '';
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
+                                                                    { kludge = true ; process = "pre" ; text = "sleep 10s" ;}
                                                                     {
                                                                         process = "pre"  ;
                                                                         standard-output =
