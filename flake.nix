@@ -1332,7 +1332,7 @@
                                                                                 echo -en "$RESOURCE"
                                                                             '' ;
                                                                     }
-                                                                    {f
+                                                                    {
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
