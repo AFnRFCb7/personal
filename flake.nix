@@ -1341,20 +1341,10 @@
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
                                                                     {
-                                                                        kludge = true ;
-                                                                        process = "pre" ;
-                                                                        text =
-                                                                            ''
-                                                                                find ~/resources | sort
-                                                                                echo "$$"
-                                                                                sleep 10
-                                                                            '' ;
-                                                                    }
-                                                                    {
                                                                         process = "pre"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                W 0eeadcccd537f840fcb7b47277723d0a836588a95431bd483a7a124b1b273714d4dd7cc751339ee017be4687e4ce1a66c0fedbcaa54d3a37be66255d62955db8
+                                                                                0eeadcccd537f840fcb7b47277723d0a836588a95431bd483a7a124b1b273714d4dd7cc751339ee017be4687e4ce1a66c0fedbcaa54d3a37be66255d62955db8
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
@@ -1362,7 +1352,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                W 67e07cbe631c9789bec66860033533edecd7614fa8d3a6b88f18a81365ee54f46e74431743db22940363103b7c0ba573604a7ee426340672399eb312cd691318
+                                                                                67e07cbe631c9789bec66860033533edecd7614fa8d3a6b88f18a81365ee54f46e74431743db22940363103b7c0ba573604a7ee426340672399eb312cd691318
                                                                             '' ;
                                                                         text = "check-redis message valid-init set" ;
                                                                     }
@@ -1370,7 +1360,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                W 45c80bb7f92f2311861742c0190813f702aa98fa3ad9a84c652f3e23ef330b19af8e58e6f10840c9442c611db4d3015da21a34c4f65230d37fea9e6264f6fd63
+                                                                                45c80bb7f92f2311861742c0190813f702aa98fa3ad9a84c652f3e23ef330b19af8e58e6f10840c9442c611db4d3015da21a34c4f65230d37fea9e6264f6fd63
                                                                             '' ;
                                                                         text = "check-redis message valid-init set" ;
                                                                     }
@@ -1378,7 +1368,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                W 6a8b0a64c20ee69fe5f85d2f1a1fd10fe962fc7d433bf72c189aa246dcb3e0bdc0069a709e7985b5b23942f743c42f2f639699ff95fbbf94313ea6b2aefd029f
+                                                                                6a8b0a64c20ee69fe5f85d2f1a1fd10fe962fc7d433bf72c189aa246dcb3e0bdc0069a709e7985b5b23942f743c42f2f639699ff95fbbf94313ea6b2aefd029f
                                                                             '' ;
                                                                         text = "check-redis message valid-init set" ;
                                                                     }
