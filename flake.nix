@@ -1386,6 +1386,14 @@
                                                                     }
                                                                     { kludge = true ; process = "post" ; text = "sleep 56s" ; }
                                                                     {
+                                                                        kludge = true ;
+                                                                        process = "post" ;
+                                                                        text =
+                                                                            ''
+                                                                                find ~/.gc-roots -type l -exec readlink -f {} \;
+                                                                            '' ;
+                                                                    }
+                                                                    {
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
