@@ -1805,7 +1805,15 @@
                                                                             '';
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
-                                                                    { kludge = true ; process = "pre" ; text = "sleep 10s" ; }
+                                                                    {
+                                                                        kludge = true ;
+                                                                        process = "pre" ;
+                                                                        text =
+                                                                            ''
+                                                                                find ~/resources | sort
+                                                                                sleep 10s
+                                                                             '' ;
+                                                                     }
                                                                     {
                                                                         process = "pre"  ;
                                                                         standard-output =
@@ -2015,7 +2023,17 @@
                                                                             '';
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
-                                                                    { kludge = true ; process = "pre" ; text = "sleep 10s" ;}
+                                                                    {
+                                                                        document = true ;
+                                                                        kludge = true ;
+                                                                        process = "pre" ;
+                                                                        standard-ouput = "6b68641f-54dc-40bc-bc02-44b074c2b024" ;
+                                                                        text =
+                                                                            ''
+                                                                                find ~/resources | sort
+                                                                                sleep 10s
+                                                                            '' ;
+                                                                    }
                                                                     {
                                                                         process = "pre"  ;
                                                                         standard-output =
@@ -2077,7 +2095,15 @@
                                                                             '';
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
-                                                                    { kludge = true ; process = "post" ; text = "sleep 10s" ; }
+                                                                    {
+                                                                        kludge = true ;
+                                                                        process = "post" ;
+                                                                        text =
+                                                                            ''
+                                                                                find ~/resources | sort
+                                                                                sleep 10s
+                                                                            '' ;
+                                                                    }
                                                                     {
                                                                         process = "post"  ;
                                                                         standard-output =
