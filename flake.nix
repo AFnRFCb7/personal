@@ -1811,7 +1811,7 @@
                                                                             ''
                                                                                 W 7af8a31a4ada26ab0b87527e60ecc118f7d3cf87bc82fcf4febbd4fb4307bf876b2c7ae95235ae33bae2224f35fe13e9e5dcbb144861f387c3c1a568443eabf3
                                                                             '' ;
-                                                                        text = "check-log" ;
+                                                                        text = "sleep 10s && check-log" ;
                                                                     }
                                                                     {
                                                                         process = "pre" ;
@@ -2081,7 +2081,7 @@
                                                                             ''
                                                                                 W 98ce68ad0eb0a01eef2078b5d07808a1ecef9c50c81096be69e73f0f8e43d94b34d9b6395f921a47e26d43098fed9528bf4fbb24455870a6951002e43b6bec33
                                                                             '' ;
-                                                                        text = "check-log" ;
+                                                                        text = "sleep 10s && check-log" ;
                                                                     }
                                                                     {
                                                                         process = "post" ;
