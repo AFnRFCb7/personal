@@ -2096,14 +2096,14 @@
                                                                                 echo "$$" >&2
                                                                                 journalctl -u release.service >&2
                                                                                 echo 1723258852938545 2345272426739264 >&2
-                                                                                find /tmp -name "*.out" | sort | while read -r OUT
-                                                                                do
-                                                                                    echo 1723258852938545 2615756318139589 >&2
-                                                                                    echo >&2
-                                                                                    echo FILE "$OUT" >&2
-                                                                                    cat "$OUT" >&2
-                                                                                    echo 1723258852938545 7144547128769879 >&2
-                                                                                done
+#                                                                                find /tmp -name "*.out" | sort | while read -r OUT
+#                                                                                do
+#                                                                                    echo 1723258852938545 2615756318139589 >&2
+#                                                                                    echo >&2
+#                                                                                    echo FILE "$OUT" >&2
+#                                                                                    cat "$OUT" >&2
+#                                                                                    echo 1723258852938545 7144547128769879 >&2
+#                                                                                done
                                                                                 echo 1723258852938545 5164474758432275 >&2
                                                                                 sleep 10s
                                                                             '' ;
