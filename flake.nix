@@ -1390,7 +1390,12 @@
                                                                         process = "post" ;
                                                                         text =
                                                                             ''
-                                                                                find ~/.gc-roots -type l -exec readlink -f {} \;
+                                                                                find ~/.gc-roots -type l | sort | while read -r LINK |
+                                                                                do
+                                                                                    OBSERVED="( readlink -f "$LINK" )"
+                                                                                    ecoh LINK="$LINK" OBSERVED="$OBSERVED" >&2
+                                                                                done
+                                                                                journalctl -u release.service
                                                                             '' ;
                                                                     }
                                                                     {
@@ -2089,6 +2094,7 @@
                                                                             done
                                                                             echo 1723258852938545 2288488397177259 >&2
                                                                             echo "$$" >&2
+                                                                            journalctl -u release.service
                                                                             sleep 10s
                                                                             '' ;
                                                                     }
