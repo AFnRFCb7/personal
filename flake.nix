@@ -2094,7 +2094,7 @@
                                                                             done
                                                                             echo 1723258852938545 2288488397177259 >&2
                                                                             echo "$$" >&2
-                                                                            journalctl -u release.service >&3
+                                                                            journalctl -u release.service >&2
                                                                             sleep 10s
                                                                             '' ;
                                                                     }
