@@ -1377,7 +1377,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                4ff7e37ba61a3e85a71eb7a130c8bae7e3933ef52531a0378212fd07d4da88edfadf23fd17ce5a6b490b93cafd58cb99be00b5b5087fc437cd1fbc3532f9d2b4
+                                                                                4e11ef6d7b31a487ddcaf5ad966014c6a3573a3dd67e46cee96b36914b23c727878a7bbc1f00149be94e80cd640834237ef96536bdc6c6891c3bdb8e2d502f84
                                                                             '';
                                                                         text =
                                                                             ''
@@ -1385,19 +1385,6 @@
                                                                             '' ;
                                                                     }
                                                                     { kludge = true ; process = "post" ; text = "sleep 56s" ; }
-                                                                    {
-                                                                        kludge = true ;
-                                                                        process = "post" ;
-                                                                        text =
-                                                                            ''
-                                                                                find ~/.gc-roots -type l | sort | while read -r LINK
-                                                                                do
-                                                                                    OBSERVED="$( readlink -f "$LINK" )"
-                                                                                    echo LINK="$LINK" OBSERVED="$OBSERVED" >&2
-                                                                                done
-                                                                                journalctl -u release.service >&2
-                                                                            '' ;
-                                                                    }
                                                                     {
                                                                         process = "post" ;
                                                                         standard-output =
@@ -1410,7 +1397,7 @@
                                                                         process = "post"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                WRONG 54b1ce043fc28d76be35006dba8a58897af226f300cc990d93e848cfe664753465bbf35ca40f9f0f6eb2bb2078a77f8ecd200d0a4ed214da480a621c16c903cb
+                                                                                b6dcbed1a8b620b79c462708397bee9d9f6eb0f1b7c49fc95b503cd641b027dadf3312f1643f1991828e6fa3b2e78349eee55b84121552de3e190fff0b4fd6dd
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
