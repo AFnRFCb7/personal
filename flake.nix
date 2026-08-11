@@ -2082,7 +2082,11 @@
                                                                             ''
                                                                             find ~/resources | sort >&2
                                                                             echo 1723258852938545 6613771369332274 >&2
-                                                                            find ~/.gc-roots -type l -exec readlink --canonicalize {} \; | sort >&2
+                                                                            find ~/.gc-roots -type l | sort | while read -r LINK
+                                                                            do
+                                                                                OBSERVED="$( readlink --canonicalize "$LINK" )"
+                                                                                echo LINK+"$LINK" OBSERVED="$OBSERVED" >&2
+                                                                            done
                                                                             echo 1723258852938545 2288488397177259 >&2
                                                                             echo "$$" >&2
                                                                             sleep 10s
