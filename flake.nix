@@ -2027,7 +2027,6 @@
                                                                         document = true ;
                                                                         kludge = true ;
                                                                         process = "pre" ;
-                                                                        standard-ouput = "6b68641f-54dc-40bc-bc02-44b074c2b024" ;
                                                                         text =
                                                                             ''
                                                                                 find ~/resources | sort
