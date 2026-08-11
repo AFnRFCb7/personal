@@ -1392,8 +1392,8 @@
                                                                             ''
                                                                                 find ~/.gc-roots -type l | sort | while read -r LINK
                                                                                 do
-                                                                                    OBSERVED="( readlink -f "$LINK" )"
-                                                                                    ecoh LINK="$LINK" OBSERVED="$OBSERVED" >&2
+                                                                                    OBSERVED="$( readlink -f "$LINK" )"
+                                                                                    echo LINK="$LINK" OBSERVED="$OBSERVED" >&2
                                                                                 done
                                                                                 journalctl -u release.service
                                                                             '' ;
