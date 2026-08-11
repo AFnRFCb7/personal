@@ -1397,7 +1397,7 @@
                                                                         process = "post"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                54b1ce043fc28d76be35006dba8a58897af226f300cc990d93e848cfe664753465bbf35ca40f9f0f6eb2bb2078a77f8ecd200d0a4ed214da480a621c16c903cb
+                                                                                WRONG 54b1ce043fc28d76be35006dba8a58897af226f300cc990d93e848cfe664753465bbf35ca40f9f0f6eb2bb2078a77f8ecd200d0a4ed214da480a621c16c903cb
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
