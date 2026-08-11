@@ -1341,6 +1341,16 @@
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
                                                                     {
+                                                                        kludge = true ;
+                                                                        process = "pre" ;
+                                                                        text =
+                                                                            ''
+                                                                                find ~/resources | sort
+                                                                                echo "$$"
+                                                                                sleep 10
+                                                                            '' ;
+                                                                    }
+                                                                    {
                                                                         process = "pre"  ;
                                                                         standard-output =
                                                                             ''
@@ -1811,6 +1821,7 @@
                                                                         text =
                                                                             ''
                                                                                 find ~/resources | sort
+                                                                                echo "$$"
                                                                                 sleep 10s
                                                                              '' ;
                                                                      }
@@ -2030,6 +2041,7 @@
                                                                         text =
                                                                             ''
                                                                                 find ~/resources | sort
+                                                                                echo "$$"
                                                                                 sleep 10s
                                                                             '' ;
                                                                     }
@@ -2100,6 +2112,7 @@
                                                                         text =
                                                                             ''
                                                                                 find ~/resources | sort
+                                                                                echo "$$"
                                                                                 sleep 10s
                                                                             '' ;
                                                                     }
