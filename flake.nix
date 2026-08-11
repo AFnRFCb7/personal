@@ -2072,7 +2072,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                9cdeb1eeab3d0a2e3a023281b4f59523e4620777557f391552a148547c5d2992e0d617dd5351a00e6a0fccf40d5c45048d4f6879d6885f1377957bdaf32c845c
+                                                                                2146ce7794ef7d774e718f89654d930bfd24e429f1381b9b100d4d44e27ec8d8e3d73cc10477b12d5479fc5f471eb07caa9dd47c28921e188a4f7f24aba60b41
                                                                             '' ;
                                                                         text =
                                                                             ''
@@ -2081,32 +2081,10 @@
                                                                     }
                                                                     { kludge = true ; process = "post" ; text = "sleep 56s" ; }
                                                                     {
-                                                                        kludge = true ;
-                                                                        process = "post" ;
-                                                                        text =
-                                                                            ''
-                                                                                find ~/resources | sort >&2
-                                                                                find ~/.gc-roots -type l | sort | while read -r LINK
-                                                                                do
-                                                                                    OBSERVED="$( readlink --canonicalize "$LINK" )"
-                                                                                    echo LINK+"$LINK" OBSERVED="$OBSERVED" >&2
-                                                                                done
-                                                                                echo "$$" >&2
-                                                                                journalctl -u release.service >&2
-#                                                                                find /tmp -name "*.out" | sort | while read -r OUT
-#                                                                                do
-#                                                                                    echo >&2
-#                                                                                    echo FILE "$OUT" >&2
-#                                                                                    cat "$OUT" >&2
-#                                                                                done
-                                                                                sleep 10s
-                                                                            '' ;
-                                                                    }
-                                                                    {
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
-                                                                                WRONG cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e
+                                                                                cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e
                                                                             '';
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
@@ -2114,7 +2092,7 @@
                                                                         process = "post"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                WRONG 98ce68ad0eb0a01eef2078b5d07808a1ecef9c50c81096be69e73f0f8e43d94b34d9b6395f921a47e26d43098fed9528bf4fbb24455870a6951002e43b6bec33
+                                                                                4cc2ffdb7ea182e618ae0c184ae6abbde4971780aba6b67645297fc59c9b12bf5080b67b3391b060578abae8a6286b3603575815392f8cad06e5249fd2979c67
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
@@ -2122,7 +2100,7 @@
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
-                                                                                4da9e3339b48613167f63a29d2bade2d276c111f4550a1f9c7f105683bb591bf92bf2e9f9ab6c6710266ce57ca2dc4101c0a47e626e9be116bbd7507d3b839a7
+                                                                                5be6a14d8ae4466fe84578282d8b38d71a23f07b0864f6606f6843001792e7dfaf60c15362fb0f6d42f8e9efbd9ccc606cdc42d6203bb0a8b9c90602cacceebb
                                                                             '' ;
                                                                         text = "check-redis message valid-release set" ;
                                                                     }
@@ -2139,6 +2117,14 @@
                                                                         standard-output =
                                                                             ''
                                                                                 ba8fd424b3c4e20ce2745f988c95a1117c165a0ae9ade33e9398a6e2074d987c8667b7bc1389847f475eddc039a7c5e995d7f4b80ebd6a32552648dde868c3cf
+                                                                            '' ;
+                                                                        text = "check-redis message valid-release set" ;
+                                                                    }
+                                                                    {
+                                                                        process = "post" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                TWO ba8fd424b3c4e20ce2745f988c95a1117c165a0ae9ade33e9398a6e2074d987c8667b7bc1389847f475eddc039a7c5e995d7f4b80ebd6a32552648dde868c3cf
                                                                             '' ;
                                                                         text = "check-redis message valid-release set" ;
                                                                     }
