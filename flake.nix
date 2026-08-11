@@ -1377,7 +1377,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                308c437c66316f60eba1e9a05320b8d18485dcc49417b479e220af1bcbf30b47345f1c8749bbecef0e4abfbcee19dd01fce9bd9e909c43f502d10e1e78e3c56a
+                                                                                4ff7e37ba61a3e85a71eb7a130c8bae7e3933ef52531a0378212fd07d4da88edfadf23fd17ce5a6b490b93cafd58cb99be00b5b5087fc437cd1fbc3532f9d2b4
                                                                             '';
                                                                         text =
                                                                             ''
@@ -1397,7 +1397,7 @@
                                                                         process = "post"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                98ce68ad0eb0a01eef2078b5d07808a1ecef9c50c81096be69e73f0f8e43d94b34d9b6395f921a47e26d43098fed9528bf4fbb24455870a6951002e43b6bec33
+                                                                                54b1ce043fc28d76be35006dba8a58897af226f300cc990d93e848cfe664753465bbf35ca40f9f0f6eb2bb2078a77f8ecd200d0a4ed214da480a621c16c903cb
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
