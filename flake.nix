@@ -2095,6 +2095,12 @@
                                                                                 echo 1723258852938545 2288488397177259 >&2
                                                                                 echo "$$" >&2
                                                                                 journalctl -u release.service >&2
+                                                                                find /tmp -name *.out -| sort | while read -r OUT
+                                                                                do
+                                                                                    echo >&2
+                                                                                    echo FILE "$OUT" >&2
+                                                                                    cat "$OUT" >&2
+                                                                                done
                                                                                 sleep 10s
                                                                             '' ;
                                                                     }
