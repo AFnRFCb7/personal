@@ -2085,20 +2085,17 @@
                                                                         process = "post" ;
                                                                         text =
                                                                             ''
-                                                                            find ~/resources | sort >&2
-                                                                            echo 1723258852938545 6613771369332274 >&2
-                                                                            find ~/.gc-roots -type l | sort | while read -r LINK
-                                                                            do
-                                                                                OBSERVED="$( readlink --canonicalize "$LINK" )"
-                                                                                echo LINK+"$LINK" OBSERVED="$OBSERVED" >&2
-                                                                            done
-                                                                            echo 1723258852938545 2288488397177259 >&2
-                                                                            echo "$$" >&2
-                                                                            NOW1="( date )" || exit 180
-                                                                            journalctl -u release.service >&2
-                                                                            echo 1723258852938545 8535235831526485 >&2
-                                                                            journalctl -u release.service --since "$NOW1" >&2
-                                                                            sleep 10s
+                                                                                find ~/resources | sort >&2
+                                                                                echo 1723258852938545 6613771369332274 >&2
+                                                                                find ~/.gc-roots -type l | sort | while read -r LINK
+                                                                                do
+                                                                                    OBSERVED="$( readlink --canonicalize "$LINK" )"
+                                                                                    echo LINK+"$LINK" OBSERVED="$OBSERVED" >&2
+                                                                                done
+                                                                                echo 1723258852938545 2288488397177259 >&2
+                                                                                echo "$$" >&2
+                                                                                journalctl -u release.service >&2
+                                                                                sleep 10s
                                                                             '' ;
                                                                     }
                                                                     {
