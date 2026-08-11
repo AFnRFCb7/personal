@@ -2073,6 +2073,9 @@
                                                                         text =
                                                                             ''
                                                                             find ~/resources | sort
+                                                                            echo 1723258852938545 6613771369332274 >&2
+                                                                            find ~/.gc-roots | sort
+                                                                            echo 1723258852938545 2288488397177259 >&2
                                                                             echo "$$"
                                                                             sleep 10s
                                                                             '' ;
