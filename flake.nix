@@ -2071,15 +2071,25 @@
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
-                                                                                cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e
+                                                                                WRONG cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e
                                                                             '';
                                                                         text = ''check-gc-roots-directory'' ;
+                                                                    }
+                                                                    {
+                                                                        kludge = true ;
+                                                                        process = "post" ;
+                                                                        text =
+                                                                            ''
+                                                                            find ~/resources | sort
+                                                                            echo "$$"
+                                                                            sleep 10s
+                                                                            '' ;
                                                                     }
                                                                     {
                                                                         process = "post"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                W 98ce68ad0eb0a01eef2078b5d07808a1ecef9c50c81096be69e73f0f8e43d94b34d9b6395f921a47e26d43098fed9528bf4fbb24455870a6951002e43b6bec33
+                                                                                WRONG 98ce68ad0eb0a01eef2078b5d07808a1ecef9c50c81096be69e73f0f8e43d94b34d9b6395f921a47e26d43098fed9528bf4fbb24455870a6951002e43b6bec33
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
