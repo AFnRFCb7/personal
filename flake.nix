@@ -2297,7 +2297,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                2146ce7794ef7d774e718f89654d930bfd24e429f1381b9b100d4d44e27ec8d8e3d73cc10477b12d5479fc5f471eb07caa9dd47c28921e188a4f7f24aba60b41
+                                                                                04e94a6fe9750cf7a0441541c86d3727ca8f72951a31810df3b01aaa769f7ed088d7b45a526ec3398bee0532c9f31a30a9a8b747c3548b5bc3ebed7efba108bd
                                                                             '' ;
                                                                         text =
                                                                             ''
@@ -2314,7 +2314,7 @@
                                                                     {
                                                                         reads = false ;
                                                                         process = "pre" ;
-                                                                        standard-output = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                        standard-output = "/home/checker/resources/mounts/0000000000000001" ;
                                                                         text =
                                                                             ''
                                                                                 # shellcheck disable=SC2288,SC2034,SC2153
@@ -2326,7 +2326,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                23b89e281cb255d1509fab9983a2534b5d47aebc41fc7cf91d133f24dfd82cd1f2543447111fac16c140efeab7298127b6bafce7e346f9246213eeaec1ab5d8a
+                                                                                48b6369ca5caeb8e1c18ec5c9d0c2eeba61a3589cab056b9f0da53e18e8e35463164d30408377ff60ddacaf468f1ec811a11f300a8be9be97f2e0bcb806d51c3
                                                                             '';
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
@@ -2334,7 +2334,7 @@
                                                                         process = "pre"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                528aa1ff3827265fef3d206c0055bdebbde1d6114ce749c2f52fed85ccf376bec2c0cdcc5ee06aec0733b6bdebcdbf21c5c60cd1c9343750d66dfa236fdf80a8
+                                                                                WRONG e41c88c7b29e9c930d2899abb01787e49626d3d6752558efaac70eb26a654ce48609f72bc815f24ea1350c335234a8e4fdb86c33909f9bc296a2ca7503491bec
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
@@ -2342,7 +2342,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                4b6cc13edd83326c51dc77b708e4b53eae946a06f4e45157e8610f1c837f16dd49df5ec8a5d27a5cc5225bacbdd3b1c543786684ee7d2c3e478c4f5192362577
+                                                                                WRONG 7fab129b65bc834f7bbece94da6843524b688850162684ac321c050274af1995963572548f29bc99d2be0a5e21f0058e9a8c4f2f2869b125b95e0bbfb97c6fb4
                                                                             '' ;
                                                                         text = "check-redis message valid-init set" ;
                                                                     }
@@ -2350,7 +2350,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                8be929f798ea79f0ee2dccaa0fd7386f1536c0727a33103bcb542c613174e4da49a18d81f0402c83c1424a821d48489aa891949fb3c6780c80f8b27f8c72514e
+                                                                                WRONG 7fab129b65bc834f7bbece94da6843524b688850162684ac321c050274af1995963572548f29bc99d2be0a5e21f0058e9a8c4f2f2869b125b95e0bbfb97c6fb4
                                                                             '' ;
                                                                         text = "check-redis message valid-init set" ;
                                                                     }
@@ -2358,7 +2358,15 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                88b2656076cc7bc77a3ee158aeb4044ba263b1fb2792026a00c4a5b0bb5d8ada793c8c3edd14cbde7f214c79992e96e286d6a48bc17515893d78c987d6d77c53
+                                                                                WRONG 655c0985d0c3f6e4078a017052230e009ea76d41a54fd53c3e87555b3d098a5a6982cef0be56ac0f0e38e174849dfff63b470a1c8ee67bbd2d5118840a724be4
+                                                                            '' ;
+                                                                        text = "check-redis message valid-init set" ;
+                                                                    }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                WRONG 655c0985d0c3f6e4078a017052230e009ea76d41a54fd53c3e87555b3d098a5a6982cef0be56ac0f0e38e174849dfff63b470a1c8ee67bbd2d5118840a724be4
                                                                             '' ;
                                                                         text = "check-redis message valid-init set" ;
                                                                     }
