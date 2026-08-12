@@ -2643,7 +2643,7 @@
                                                                         status = 166 ;
                                                                         text =
                                                                             ''
-                                                                                check-resource timeout --signal 140 10s "$RESOURCES"/resources/'["production","repository","secrets"]'
+                                                                                check-resource "$RESOURCES"/resources/'["production","repository","secrets"]'
                                                                             '' ;
                                                                     }
                                                                     {
