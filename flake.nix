@@ -2087,15 +2087,7 @@
 #                                                                        process = "post" ;
 #                                                                        standard-output =
 #                                                                            ''
-#                                                                                5be6a14d8ae4466fe84578282d8b38d71a23f07b0864f6606f6843001792e7dfaf60c15362fb0f6d42f8e9efbd9ccc606cdc42d6203bb0a8b9c90602cacceebb
-#                                                                            '' ;
-#                                                                        text = "check-redis message valid-release set" ;
-#                                                                    }
-#                                                                    {
-#                                                                        process = "post" ;
-#                                                                        standard-output =
-#                                                                            ''
-#                                                                                28f1bfdb71bf4bc287ed21563cc420406cc35a210877142b90663ca8ea0c04a9ce64b7819b1d1cc36bfcacdfaa4936a89afcdd0cdf14088be5ff11b501ae1430
+#                                                                                a3630365ddf577e5346ec7308712778d31c4a7899795ac31bcdba710f29cc914690f72f97691988e73521426c5e4091fa2e713e3ed53bff0ab56b8bb6859f4e9
 #                                                                            '' ;
 #                                                                        text = "check-redis message valid-release set" ;
 #                                                                    }
@@ -2104,6 +2096,14 @@
 #                                                                        standard-output =
 #                                                                            ''
 #                                                                                ba8fd424b3c4e20ce2745f988c95a1117c165a0ae9ade33e9398a6e2074d987c8667b7bc1389847f475eddc039a7c5e995d7f4b80ebd6a32552648dde868c3cf
+#                                                                            '' ;
+#                                                                        text = "check-redis message valid-release set" ;
+#                                                                    }
+#                                                                    {
+#                                                                        process = "post" ;
+#                                                                        standard-output =
+#                                                                            ''
+#                                                                                4da9e3339b48613167f63a29d2bade2d276c111f4550a1f9c7f105683bb591bf92bf2e9f9ab6c6710266ce57ca2dc4101c0a47e626e9be116bbd7507d3b839a7
 #                                                                            '' ;
 #                                                                        text = "check-redis message valid-release set" ;
 #                                                                    }
