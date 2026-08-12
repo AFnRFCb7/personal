@@ -2392,7 +2392,7 @@
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
-                                                                                28f1bfdb71bf4bc287ed21563cc420406cc35a210877142b90663ca8ea0c04a9ce64b7819b1d1cc36bfcacdfaa4936a89afcdd0cdf14088be5ff11b501ae1430
+                                                                                ba8fd424b3c4e20ce2745f988c95a1117c165a0ae9ade33e9398a6e2074d987c8667b7bc1389847f475eddc039a7c5e995d7f4b80ebd6a32552648dde868c3cf
                                                                             '' ;
                                                                         text = "check-redis message valid-release set" ;
                                                                     }
@@ -2400,7 +2400,7 @@
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
-                                                                                ba8fd424b3c4e20ce2745f988c95a1117c165a0ae9ade33e9398a6e2074d987c8667b7bc1389847f475eddc039a7c5e995d7f4b80ebd6a32552648dde868c3cf
+                                                                                4da9e3339b48613167f63a29d2bade2d276c111f4550a1f9c7f105683bb591bf92bf2e9f9ab6c6710266ce57ca2dc4101c0a47e626e9be116bbd7507d3b839a7
                                                                             '' ;
                                                                         text = "check-redis message valid-release set" ;
                                                                     }
@@ -2417,7 +2417,7 @@
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
-                                                                                WRONG ec99c7a5829357c61bb8cb89673693455b0e1871fee43754b250b7ed4b656a2589beab4e2f78c3b983b9f77da9ebe434bce8559357fdce32b2db7d769d001f0f
+                                                                                ec99c7a5829357c61bb8cb89673693455b0e1871fee43754b250b7ed4b656a2589beab4e2f78c3b983b9f77da9ebe434bce8559357fdce32b2db7d769d001f0f
                                                                             '';
                                                                         text = ''check-resources-directory --exclude .git'' ;
                                                                     }
