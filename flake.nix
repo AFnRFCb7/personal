@@ -2254,6 +2254,76 @@
                                                                         process = "pre" ;
                                                                         text =
                                                                             ''
+                                                                                check-executable "$RESOURCES"/resources/'["production","dot-ssh","identity"]'
+                                                                            '' ;
+                                                                    }
+                                                                    {
+                                                                        reads = false ;
+                                                                        process = "pre" ;
+                                                                        standard-output = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                        text =
+                                                                            ''
+                                                                                # shellcheck disable=SC2288,SC2034,SC2153
+                                                                                RESOURCE="$( "$RESOURCES"/resources/'["production","dot-ssh","identity"]' )" || exit 183
+                                                                                echo -en "$RESOURCE"
+                                                                            '' ;
+                                                                    }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                23b89e281cb255d1509fab9983a2534b5d47aebc41fc7cf91d133f24dfd82cd1f2543447111fac16c140efeab7298127b6bafce7e346f9246213eeaec1ab5d8a
+                                                                            '';
+                                                                        text = ''check-gc-roots-directory'' ;
+                                                                    }
+                                                                    {
+                                                                        process = "pre"  ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                528aa1ff3827265fef3d206c0055bdebbde1d6114ce749c2f52fed85ccf376bec2c0cdcc5ee06aec0733b6bdebcdbf21c5c60cd1c9343750d66dfa236fdf80a8
+                                                                            '' ;
+                                                                        text = "check-log" ;
+                                                                    }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                964c18695855de7b8343042780dfa464fbb9ef6aec4aa4f9242f05f6feb144b7df9b4d3e572f718cc1adacd66f789258798a686a055fc60ae7b2bfc331c956b6
+                                                                            '' ;
+                                                                        text = "check-redis message valid-init set" ;
+                                                                    }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                4b6cc13edd83326c51dc77b708e4b53eae946a06f4e45157e8610f1c837f16dd49df5ec8a5d27a5cc5225bacbdd3b1c543786684ee7d2c3e478c4f5192362577
+                                                                            '' ;
+                                                                        text = "check-redis message valid-init set" ;
+                                                                    }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                8be929f798ea79f0ee2dccaa0fd7386f1536c0727a33103bcb542c613174e4da49a18d81f0402c83c1424a821d48489aa891949fb3c6780c80f8b27f8c72514e
+                                                                            '' ;
+                                                                        text = "check-redis message valid-init set" ;
+                                                                    }
+                                                                    { process = "pre" ; text = "check-redis" ; }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                2146ce7794ef7d774e718f89654d930bfd24e429f1381b9b100d4d44e27ec8d8e3d73cc10477b12d5479fc5f471eb07caa9dd47c28921e188a4f7f24aba60b41
+                                                                            '' ;
+                                                                        text =
+                                                                            ''
+                                                                                check-resources-directory --exclude "0000000000000000/.git" --exclude "0000000000000002/known-hosts.asc" --exclude "release/*"
+                                                                            '' ;
+                                                                    }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        text =
+                                                                            ''
                                                                                 check-executable "$RESOURCES"/resources/'["production","repository","secrets"]'
                                                                             '' ;
                                                                     }
@@ -2283,14 +2353,6 @@
                                                                                 528aa1ff3827265fef3d206c0055bdebbde1d6114ce749c2f52fed85ccf376bec2c0cdcc5ee06aec0733b6bdebcdbf21c5c60cd1c9343750d66dfa236fdf80a8
                                                                             '' ;
                                                                         text = "check-log" ;
-                                                                    }
-                                                                    {
-                                                                        process = "pre" ;
-                                                                        standard-output =
-                                                                            ''
-                                                                                964c18695855de7b8343042780dfa464fbb9ef6aec4aa4f9242f05f6feb144b7df9b4d3e572f718cc1adacd66f789258798a686a055fc60ae7b2bfc331c956b6
-                                                                            '' ;
-                                                                        text = "check-redis message valid-init set" ;
                                                                     }
                                                                     {
                                                                         process = "pre" ;
