@@ -2280,7 +2280,7 @@
                                                                         process = "pre"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                WRONG 7af8a31a4ada26ab0b87527e60ecc118f7d3cf87bc82fcf4febbd4fb4307bf876b2c7ae95235ae33bae2224f35fe13e9e5dcbb144861f387c3c1a568443eabf3
+                                                                                7af8a31a4ada26ab0b87527e60ecc118f7d3cf87bc82fcf4febbd4fb4307bf876b2c7ae95235ae33bae2224f35fe13e9e5dcbb144861f387c3c1a568443eabf3
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
@@ -2288,7 +2288,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                WRONG b3b21cb2edda2a69eb62b46ac7ba983e042ad0b3f5f7cea55c0510db90b7647ce3fb9c0dc2bae05448a5dd4830d31152c5f59b2ea10211fdeb11cd6346d93264
+                                                                                b3b21cb2edda2a69eb62b46ac7ba983e042ad0b3f5f7cea55c0510db90b7647ce3fb9c0dc2bae05448a5dd4830d31152c5f59b2ea10211fdeb11cd6346d93264
                                                                             '' ;
                                                                         text = "check-redis message valid-init set" ;
                                                                     }
@@ -2359,14 +2359,6 @@
                                                                         standard-output =
                                                                             ''
                                                                                 655c0985d0c3f6e4078a017052230e009ea76d41a54fd53c3e87555b3d098a5a6982cef0be56ac0f0e38e174849dfff63b470a1c8ee67bbd2d5118840a724be4
-                                                                            '' ;
-                                                                        text = "check-redis message valid-init set" ;
-                                                                    }
-                                                                    {
-                                                                        process = "pre" ;
-                                                                        standard-output =
-                                                                            ''
-                                                                                WRONG2 655c0985d0c3f6e4078a017052230e009ea76d41a54fd53c3e87555b3d098a5a6982cef0be56ac0f0e38e174849dfff63b470a1c8ee67bbd2d5118840a724be4
                                                                             '' ;
                                                                         text = "check-redis message valid-init set" ;
                                                                     }
