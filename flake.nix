@@ -2384,7 +2384,7 @@
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
-                                                                                5be6a14d8ae4466fe84578282d8b38d71a23f07b0864f6606f6843001792e7dfaf60c15362fb0f6d42f8e9efbd9ccc606cdc42d6203bb0a8b9c90602cacceebb
+                                                                                a3630365ddf577e5346ec7308712778d31c4a7899795ac31bcdba710f29cc914690f72f97691988e73521426c5e4091fa2e713e3ed53bff0ab56b8bb6859f4e9
                                                                             '' ;
                                                                         text = "check-redis message valid-release set" ;
                                                                     }
@@ -2409,14 +2409,6 @@
                                                                         standard-output =
                                                                             ''
                                                                                 3f9e929cf44d1c3ad9e6411a7f0be82aa3721fa7d21c05cb730db9353f2b71ada185ba48e51a84b726c6972351ef6b2548ca1df513eddc92fac1b9e4e378b36c
-                                                                            '' ;
-                                                                        text = "check-redis message valid-release set" ;
-                                                                    }
-                                                                    {
-                                                                        process = "post" ;
-                                                                        standard-output =
-                                                                            ''
-                                                                                ff3a3712a218da90b48334f828ea39d83340ec51b69511619cc725480d83c5aa9b36fc81de32c20e31053fb93d04ada2eb21a55cbe25af0fbc9586171c2e93e7
                                                                             '' ;
                                                                         text = "check-redis message valid-release set" ;
                                                                     }
