@@ -2601,7 +2601,7 @@
                                                                                 check-resources-directory --exclude "0000000000000000/.git" --exclude "0000000000000002/known-hosts.asc" --exclude "release/*"
                                                                             '' ;
                                                                     }
-                                                                    { process = "pre" ; text = "chmod 0777 /home/checker/resources/mounts/0000000000000000" ; }
+                                                                    { process = "pre" ; text = "chmod 0777 /home/checker/resources/mounts/0000000000000000/identity.asc" ; }
                                                                     {
                                                                         process = "pre" ;
                                                                         standard-output =
@@ -2614,7 +2614,7 @@
                                                                         process = "pre"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                WRONG 7af8a31a4ada26ab0b87527e60ecc118f7d3cf87bc82fcf4febbd4fb4307bf876b2c7ae95235ae33bae2224f35fe13e9e5dcbb144861f387c3c1a568443eabf3
+                                                                                b7a9336ed3a424b5d4d59d9b20d0bbc33217207b584db6b758fddb9a70b99e7c8c9f8387ef318a6b2039e62f09a3a2592bf5c76d6947a6ea1d107b924d7461f4
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
