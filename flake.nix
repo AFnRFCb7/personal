@@ -2103,7 +2103,7 @@
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
-                                                                                4da9e3339b48613167f63a29d2bade2d276c111f4550a1f9c7f105683bb591bf92bf2e9f9ab6c6710266ce57ca2dc4101c0a47e626e9be116bbd7507d3b839a7
+                                                                                ba8fd424b3c4e20ce2745f988c95a1117c165a0ae9ade33e9398a6e2074d987c8667b7bc1389847f475eddc039a7c5e995d7f4b80ebd6a32552648dde868c3cf
                                                                             '' ;
                                                                         text = "check-redis message valid-release set" ;
                                                                     }
