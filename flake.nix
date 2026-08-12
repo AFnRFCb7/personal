@@ -2560,6 +2560,7 @@
                                                                         standard-output = "/home/checker/resources/mounts/0000000000000000" ;
                                                                         text =
                                                                             ''
+                                                                                export EXPERIMENTAL=false
                                                                                 # shellcheck disable=SC2288,SC2034,SC2153
                                                                                 RESOURCE="$( "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' )" || exit 183
                                                                                 echo -en "$RESOURCE"
