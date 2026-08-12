@@ -2644,7 +2644,7 @@
                                                                         status = 166 ;
                                                                         text =
                                                                             ''
-                                                                                EXPERIMENTAL=false check-resource "$RESOURCES"/resources/'["production","repository","secrets"]'
+                                                                                EXPERIMENTAL=true check-resource "$RESOURCES"/resources/'["production","repository","secrets"]'
                                                                             '' ;
                                                                     }
                                                                     {
