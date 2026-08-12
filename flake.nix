@@ -2623,7 +2623,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                WRONG 38b0ccb8eb731ebe8c58a6a863af522318fcf3b3439717e4a29890f6e828f74267b353dc133730ea1ce38063067f67a0283f08940f864ebaad0b39416c1e7907
+                                                                                6fa44f6c67e3bb665b1d09d559b6a4d023a42c3f175770aa8e2c6d9dbd00a213264908bc519ccecfe6f3adfc81d7cb25232b4e22e4e21fa90c2d77b9cfbc2a62
                                                                             '' ;
                                                                         text =
                                                                             ''
@@ -2640,9 +2640,8 @@
                                                                     {
                                                                         reads = false ;
                                                                         process = "pre" ;
-                                                                        standard-error = "WRONG" ;
                                                                         standard-output = "/home/checker/resources/mounts/0000000000000001" ;
-                                                                        status = 99 ;
+                                                                        status = 124 ;
                                                                         text =
                                                                             ''
                                                                                 # shellcheck disable=SC2288,SC2034,SC2153
@@ -2654,7 +2653,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                WRONGG3defdced7e7bdf575a71f0e23acd0dc7c12728571f054b420b9fce63168d50c903b80644262730f6f43de7b793a6067a1e95e80d72d73eb1735881488dca434e
+                                                                                3defdced7e7bdf575a71f0e23acd0dc7c12728571f054b420b9fce63168d50c903b80644262730f6f43de7b793a6067a1e95e80d72d73eb1735881488dca434e
                                                                             '';
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
@@ -2662,7 +2661,7 @@
                                                                         process = "pre"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                WRONG 32b2d6fafeeda8db5240785f1fa4e69c084e79e394e590dd316de490c7eaa13ab0cc99dbb52ba7f3556bd88c4f88eff0a83352b19250d0479f61e9bf74fa9537
+                                                                                WRONG_847b56a587af0fee4c31d77508798d83d2fefb3d452ac4ba0c244dc98d0945ac93a4184a3170dbd71297d5cf475941a668b05dd5bb6a6944d9120f73ff74d49d
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
