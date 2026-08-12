@@ -2641,7 +2641,7 @@
                                                                         reads = false ;
                                                                         process = "pre" ;
                                                                         # standard-output = "/home/checker/resources/mounts/0000000000000001" ;
-                                                                        status = 124 ;
+                                                                        status = 166 ;
                                                                         text =
                                                                             ''
                                                                                 # shellcheck disable=SC2288,SC2034,SC2153
@@ -2657,7 +2657,6 @@
                                                                             '';
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
-                                                                    { kludge = true ; process = "pre" ; text = ''cat /tmp/DEBUG-148'' ; }
                                                                     {
                                                                         process = "pre"  ;
                                                                         standard-output =
