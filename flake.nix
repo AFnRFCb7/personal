@@ -2657,7 +2657,7 @@
                                                                             '';
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
-                                                                    { kludge = true ; process = "pre" ; text = "cat /tmp/ " ; }
+                                                                    { kludge = true ; process = "pre" ; text = "cat /tmp/DEBUG" ; }
                                                                     {
                                                                         process = "pre"  ;
                                                                         standard-output =
