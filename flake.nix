@@ -2326,7 +2326,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e
+                                                                                3defdced7e7bdf575a71f0e23acd0dc7c12728571f054b420b9fce63168d50c903b80644262730f6f43de7b793a6067a1e95e80d72d73eb1735881488dca434e
                                                                             '';
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
@@ -2334,7 +2334,7 @@
                                                                         process = "pre"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                WRONG e41c88c7b29e9c930d2899abb01787e49626d3d6752558efaac70eb26a654ce48609f72bc815f24ea1350c335234a8e4fdb86c33909f9bc296a2ca7503491bec
+                                                                                32b2d6fafeeda8db5240785f1fa4e69c084e79e394e590dd316de490c7eaa13ab0cc99dbb52ba7f3556bd88c4f88eff0a83352b19250d0479f61e9bf74fa9537
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
@@ -2350,30 +2350,19 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                6afe856670a08cce79d2f0704035abdf81ab444ab994dbffdf67d6a6310a324a126df2e487efb8b5a0292d1a73e087dbaf4e24a27482bceda3ebc85784a3e58a
-                                                                            '' ;
-                                                                        text = "check-redis message valid-init set" ;
-                                                                    }
-                                                                    {
-                                                                        process = "pre" ;
-                                                                        standard-output =
-                                                                            ''
                                                                                 655c0985d0c3f6e4078a017052230e009ea76d41a54fd53c3e87555b3d098a5a6982cef0be56ac0f0e38e174849dfff63b470a1c8ee67bbd2d5118840a724be4
                                                                             '' ;
                                                                         text = "check-redis message valid-init set" ;
                                                                     }
-                                                                    { process = "pre" ; text = "check-redis" ; }
                                                                     {
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
                                                                                 2146ce7794ef7d774e718f89654d930bfd24e429f1381b9b100d4d44e27ec8d8e3d73cc10477b12d5479fc5f471eb07caa9dd47c28921e188a4f7f24aba60b41
                                                                             '' ;
-                                                                        text =
-                                                                            ''
-                                                                                check-resources-directory --exclude "0000000000000000/.git" --exclude "0000000000000002/known-hosts.asc" --exclude "release/*"
-                                                                            '' ;
+                                                                        text = "check-redis message valid-init set" ;
                                                                     }
+                                                                    { process = "pre" ; text = "check-redis" ; }
                                                                     { kludge = true ; process = "post" ; text = "sleep 56s" ; }
                                                                     {
                                                                         process = "post" ;
@@ -2438,7 +2427,7 @@
                                                                             ''
                                                                                 ec99c7a5829357c61bb8cb89673693455b0e1871fee43754b250b7ed4b656a2589beab4e2f78c3b983b9f77da9ebe434bce8559357fdce32b2db7d769d001f0f
                                                                             '';
-                                                                        text = ''check-resources-directory'' ;
+                                                                        text = ''check-resources-directory --exclude .git'' ;
                                                                     }
                                                                     {
                                                                         process = "post" ;
