@@ -2627,7 +2627,7 @@
                                                                             '' ;
                                                                         text =
                                                                             ''
-                                                                                check-resources-directory --exclude "0000000000000000/.git" --exclude "0000000000000002/known-hosts.asc" --exclude "release/*"
+                                                                                check-resources-directory --exclude "0000000000000002/known-hosts.asc" --exclude "release/*"
                                                                             '' ;
                                                                     }
                                                                     {
