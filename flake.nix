@@ -2644,7 +2644,7 @@
                                                                         text =
                                                                             ''
                                                                                 # shellcheck disable=SC2288,SC2034,SC2153
-                                                                                RESOURCE="$( "$RESOURCES"/resources/'["production","repository","secrets"]' )" || exit 183
+                                                                                RESOURCE="$( time timeout 10s "$RESOURCES"/resources/'["production","repository","secrets"]' )" || exit 183
                                                                                 echo -en "$RESOURCE"
                                                                             '' ;
                                                                     }
