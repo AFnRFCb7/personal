@@ -2387,7 +2387,7 @@
                                                                         process = "post"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                396d3134685dcedd7bfc11c851b232eef9ae65ce19d63b8feb41e843f4f4f26751f9ac7e1087f9285773db121ee8a38f444dbe2cb420f7b68a974b402d0e6bb3
+                                                                                WRONG 396d3134685dcedd7bfc11c851b232eef9ae65ce19d63b8feb41e843f4f4f26751f9ac7e1087f9285773db121ee8a38f444dbe2cb420f7b68a974b402d0e6bb3
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
@@ -2420,6 +2420,14 @@
                                                                         standard-output =
                                                                             ''
                                                                                 3f9e929cf44d1c3ad9e6411a7f0be82aa3721fa7d21c05cb730db9353f2b71ada185ba48e51a84b726c6972351ef6b2548ca1df513eddc92fac1b9e4e378b36c
+                                                                            '' ;
+                                                                        text = "check-redis message valid-release set" ;
+                                                                    }
+                                                                    {
+                                                                        process = "post" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                WRONG 3f9e929cf44d1c3ad9e6411a7f0be82aa3721fa7d21c05cb730db9353f2b71ada185ba48e51a84b726c6972351ef6b2548ca1df513eddc92fac1b9e4e378b36c
                                                                             '' ;
                                                                         text = "check-redis message valid-release set" ;
                                                                     }
