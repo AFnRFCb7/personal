@@ -2645,14 +2645,14 @@
                                                                         standard-output = "/home/checker/resources/mounts/0000000000000001" ;
                                                                         text =
                                                                             ''
-                                                                                EXPERIMENTAL=true check-resource "$RESOURCES"/resources/'["production","repository","secrets"]'
+                                                                                check-resource "$RESOURCES"/resources/'["production","repository","secrets"]'
                                                                             '' ;
                                                                     }
                                                                     {
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                3defdced7e7bdf575a71f0e23acd0dc7c12728571f054b420b9fce63168d50c903b80644262730f6f43de7b793a6067a1e95e80d72d73eb1735881488dca434e
+                                                                                WRONG 3defdced7e7bdf575a71f0e23acd0dc7c12728571f054b420b9fce63168d50c903b80644262730f6f43de7b793a6067a1e95e80d72d73eb1735881488dca434e
                                                                             '';
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
