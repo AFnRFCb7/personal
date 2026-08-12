@@ -2561,6 +2561,7 @@
                                                                         text =
                                                                             ''
                                                                                 # shellcheck disable=SC2288,SC2034,SC2153
+                                                                                export EXPERIMENTAL=false
                                                                                 RESOURCE="$( "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' )" || exit 183
                                                                                 echo -en "$RESOURCE"
                                                                             '' ;
@@ -2643,7 +2644,7 @@
                                                                         status = 166 ;
                                                                         text =
                                                                             ''
-                                                                                check-resource "$RESOURCES"/resources/'["production","repository","secrets"]'
+                                                                                EXPERIMENTAL=true check-resource "$RESOURCES"/resources/'["production","repository","secrets"]'
                                                                             '' ;
                                                                     }
                                                                     {
