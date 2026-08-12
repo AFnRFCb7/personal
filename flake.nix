@@ -2254,7 +2254,7 @@
                                                                         process = "pre" ;
                                                                         text =
                                                                             ''
-                                                                                check-executable "$RESOURCES"/resources/'["production","dot-ssh","identity"]'
+                                                                                check-executable "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]'
                                                                             '' ;
                                                                     }
                                                                     {
@@ -2264,7 +2264,7 @@
                                                                         text =
                                                                             ''
                                                                                 # shellcheck disable=SC2288,SC2034,SC2153
-                                                                                RESOURCE="$( "$RESOURCES"/resources/'["production","dot-ssh","identity"]' )" || exit 183
+                                                                                RESOURCE="$( "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' )" || exit 183
                                                                                 echo -en "$RESOURCE"
                                                                             '' ;
                                                                     }
