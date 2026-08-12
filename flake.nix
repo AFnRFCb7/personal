@@ -2642,6 +2642,7 @@
                                                                         reads = false ;
                                                                         process = "pre" ;
                                                                         status = 166 ;
+                                                                        standard-output = "/home/checker/resources/mounts/0000000000000001" ;
                                                                         text =
                                                                             ''
                                                                                 EXPERIMENTAL=true check-resource "$RESOURCES"/resources/'["production","repository","secrets"]'
