@@ -2473,7 +2473,7 @@
 #                                                                        ''client.wait_for_unit("network-online.target")''
 #                                                                        ''client.wait_for_unit("log.service")''
 #                                                                        ''client.wait_for_unit("release.service")''
-#                                                                        ''client.succeed("runuser checker -- ${ action-derivation }/execute 5845348478965617")''
+#                                                                        ''client.succeed("runuser checker -- ${ action-derivation }/execute 1421738678355691")''
 #                                                                        # ''client.copy_from_host_machine(".","/tmp/documents/_3")''
 #                                                                    ] ;
 #                                                        } ;
@@ -2640,7 +2640,6 @@
                                                                     {
                                                                         reads = false ;
                                                                         process = "pre" ;
-                                                                        # standard-output = "/home/checker/resources/mounts/0000000000000001" ;
                                                                         status = 166 ;
                                                                         text =
                                                                             ''
@@ -2808,7 +2807,7 @@
                                                                         ''client.wait_for_unit("network-online.target")''
                                                                         ''client.wait_for_unit("log.service")''
                                                                         ''client.wait_for_unit("release.service")''
-                                                                        ''client.succeed("runuser checker -- ${ action-derivation }/execute 5845348478965617")''
+                                                                        ''client.succeed("runuser checker -- ${ action-derivation }/execute 3582828824812391")''
                                                                         # ''client.copy_from_host_machine(".","/tmp/documents/_3")''
                                                                     ] ;
                                                         } ;
