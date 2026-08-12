@@ -2640,12 +2640,10 @@
                                                                     {
                                                                         reads = false ;
                                                                         process = "pre" ;
-                                                                        status = 183 ;
+                                                                        status = 166 ;
                                                                         text =
                                                                             ''
-                                                                                # shellcheck disable=SC2288,SC2034,SC2153
-                                                                                RESOURCE="$( time "$RESOURCES"/resources/'["production","repository","secrets"]' )" || exit 183
-                                                                                echo -en "$RESOURCE"
+                                                                                check-resource "$RESOURCES"/resources/'["production","repository","secrets"]'
                                                                             '' ;
                                                                     }
                                                                     {
