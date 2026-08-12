@@ -1397,7 +1397,7 @@
                                                                         process = "post"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                b6dcbed1a8b620b79c462708397bee9d9f6eb0f1b7c49fc95b503cd641b027dadf3312f1643f1991828e6fa3b2e78349eee55b84121552de3e190fff0b4fd6dd
+                                                                                98ce68ad0eb0a01eef2078b5d07808a1ecef9c50c81096be69e73f0f8e43d94b34d9b6395f921a47e26d43098fed9528bf4fbb24455870a6951002e43b6bec33
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
