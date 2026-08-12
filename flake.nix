@@ -2376,7 +2376,7 @@
                                                                         process = "post"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                ff3a3712a218da90b48334f828ea39d83340ec51b69511619cc725480d83c5aa9b36fc81de32c20e31053fb93d04ada2eb21a55cbe25af0fbc9586171c2e93e7
+                                                                                b0c9cd83b507693e7c65613f0419aa9477e32fd85a16d278a196e985ecb86bbcbf7da518cee000cf1770ff83007444a9598d3bd52b0c6eff34ec5aaa39fb4dbb
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
@@ -2400,7 +2400,7 @@
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
-                                                                                4da9e3339b48613167f63a29d2bade2d276c111f4550a1f9c7f105683bb591bf92bf2e9f9ab6c6710266ce57ca2dc4101c0a47e626e9be116bbd7507d3b839a7
+                                                                                3f9e929cf44d1c3ad9e6411a7f0be82aa3721fa7d21c05cb730db9353f2b71ada185ba48e51a84b726c6972351ef6b2548ca1df513eddc92fac1b9e4e378b36c
                                                                             '' ;
                                                                         text = "check-redis message valid-release set" ;
                                                                     }
@@ -2408,7 +2408,7 @@
                                                                         process = "post" ;
                                                                         standard-output =
                                                                             ''
-                                                                                3f9e929cf44d1c3ad9e6411a7f0be82aa3721fa7d21c05cb730db9353f2b71ada185ba48e51a84b726c6972351ef6b2548ca1df513eddc92fac1b9e4e378b36c
+                                                                                4da9e3339b48613167f63a29d2bade2d276c111f4550a1f9c7f105683bb591bf92bf2e9f9ab6c6710266ce57ca2dc4101c0a47e626e9be116bbd7507d3b839a7
                                                                             '' ;
                                                                         text = "check-redis message valid-release set" ;
                                                                     }
