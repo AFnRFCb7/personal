@@ -2642,7 +2642,7 @@
                                                                         process = "pre" ;
                                                                         standard-error = "WRONG" ;
                                                                         standard-output = "/home/checker/resources/mounts/0000000000000001" ;
-                                                                        status = "99" ;
+                                                                        status = 99 ;
                                                                         text =
                                                                             ''
                                                                                 # shellcheck disable=SC2288,SC2034,SC2153
@@ -2654,7 +2654,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                3defdced7e7bdf575a71f0e23acd0dc7c12728571f054b420b9fce63168d50c903b80644262730f6f43de7b793a6067a1e95e80d72d73eb1735881488dca434e
+                                                                                WRONGG3defdced7e7bdf575a71f0e23acd0dc7c12728571f054b420b9fce63168d50c903b80644262730f6f43de7b793a6067a1e95e80d72d73eb1735881488dca434e
                                                                             '';
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
@@ -2662,7 +2662,7 @@
                                                                         process = "pre"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                32b2d6fafeeda8db5240785f1fa4e69c084e79e394e590dd316de490c7eaa13ab0cc99dbb52ba7f3556bd88c4f88eff0a83352b19250d0479f61e9bf74fa9537
+                                                                                WRONG 32b2d6fafeeda8db5240785f1fa4e69c084e79e394e590dd316de490c7eaa13ab0cc99dbb52ba7f3556bd88c4f88eff0a83352b19250d0479f61e9bf74fa9537
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
@@ -2686,7 +2686,15 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                945522f9b04dfd64b166a788280214860cba646707a8e8250cb689381887735d3ed02c7b8981a4681285c768a685e2f3db6b275c11529e87fb9a0bceedd6824f
+                                                                                WRONG 945522f9b04dfd64b166a788280214860cba646707a8e8250cb689381887735d3ed02c7b8981a4681285c768a685e2f3db6b275c11529e87fb9a0bceedd6824f
+                                                                            '' ;
+                                                                        text = "check-redis message valid-init set" ;
+                                                                    }
+                                                                    {
+                                                                        process = "pre" ;
+                                                                        standard-output =
+                                                                            ''
+                                                                                WRONG2 945522f9b04dfd64b166a788280214860cba646707a8e8250cb689381887735d3ed02c7b8981a4681285c768a685e2f3db6b275c11529e87fb9a0bceedd6824f
                                                                             '' ;
                                                                         text = "check-redis message valid-init set" ;
                                                                     }
