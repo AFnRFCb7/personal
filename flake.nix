@@ -2272,7 +2272,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                23b89e281cb255d1509fab9983a2534b5d47aebc41fc7cf91d133f24dfd82cd1f2543447111fac16c140efeab7298127b6bafce7e346f9246213eeaec1ab5d8a
+                                                                                cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e
                                                                             '';
                                                                         text = ''check-gc-roots-directory'' ;
                                                                     }
@@ -2280,7 +2280,7 @@
                                                                         process = "pre"  ;
                                                                         standard-output =
                                                                             ''
-                                                                                528aa1ff3827265fef3d206c0055bdebbde1d6114ce749c2f52fed85ccf376bec2c0cdcc5ee06aec0733b6bdebcdbf21c5c60cd1c9343750d66dfa236fdf80a8
+                                                                                7af8a31a4ada26ab0b87527e60ecc118f7d3cf87bc82fcf4febbd4fb4307bf876b2c7ae95235ae33bae2224f35fe13e9e5dcbb144861f387c3c1a568443eabf3
                                                                             '' ;
                                                                         text = "check-log" ;
                                                                     }
@@ -2288,23 +2288,7 @@
                                                                         process = "pre" ;
                                                                         standard-output =
                                                                             ''
-                                                                                964c18695855de7b8343042780dfa464fbb9ef6aec4aa4f9242f05f6feb144b7df9b4d3e572f718cc1adacd66f789258798a686a055fc60ae7b2bfc331c956b6
-                                                                            '' ;
-                                                                        text = "check-redis message valid-init set" ;
-                                                                    }
-                                                                    {
-                                                                        process = "pre" ;
-                                                                        standard-output =
-                                                                            ''
-                                                                                4b6cc13edd83326c51dc77b708e4b53eae946a06f4e45157e8610f1c837f16dd49df5ec8a5d27a5cc5225bacbdd3b1c543786684ee7d2c3e478c4f5192362577
-                                                                            '' ;
-                                                                        text = "check-redis message valid-init set" ;
-                                                                    }
-                                                                    {
-                                                                        process = "pre" ;
-                                                                        standard-output =
-                                                                            ''
-                                                                                8be929f798ea79f0ee2dccaa0fd7386f1536c0727a33103bcb542c613174e4da49a18d81f0402c83c1424a821d48489aa891949fb3c6780c80f8b27f8c72514e
+                                                                                b3b21cb2edda2a69eb62b46ac7ba983e042ad0b3f5f7cea55c0510db90b7647ce3fb9c0dc2bae05448a5dd4830d31152c5f59b2ea10211fdeb11cd6346d93264
                                                                             '' ;
                                                                         text = "check-redis message valid-init set" ;
                                                                     }
