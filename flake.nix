@@ -1496,7 +1496,7 @@
                                                                         ''client.wait_for_unit("log.service")''
                                                                         ''client.wait_for_unit("release.service")''
                                                                         ''client.succeed("date > /tmp/shared/04681850-5aa5-4eb4-8f58-d9d0abd53584")''
-                                                                        ''client.copy_from_machine("date","date")''
+                                                                        ''client.copy_from_vm("date","date")''
                                                                         # ''client.copy_from_host("date","/tmp/output.txt")''
                                                                         ''client.succeed("cat /tmp/output.txt")''
                                                                         ''client.fail("true")''
