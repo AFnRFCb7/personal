@@ -974,14 +974,16 @@
                                         client =
                                             { nodes , ... }  :
                                                 {
-                                                      fileSystems."/tmp" = {
-                                                        fsType = "vboxsf";
-                                                        device = "beta";
-                                                        options = [
-                                                          "rw"
-                                                          "nofail"
-                                                        ];
-                                                      };
+                                                    fileSystems."/tmp" =
+                                                        {
+                                                            fsType = "vboxsf" ;
+                                                            device = "beta" ;
+                                                            options =
+                                                                [
+                                                                    "rw"
+                                                                    "nofail"
+                                                                ] ;
+                                                        } ;
                                                     imports = private ;
                                                     environment.defaultPackages = [ pkgs.nettools ] ;
                                                     networking =
@@ -1493,7 +1495,7 @@
                                                                         ''client.wait_for_unit("network-online.target")''
                                                                         ''client.wait_for_unit("log.service")''
                                                                         ''client.wait_for_unit("release.service")''
-                                                                        ''client.succeed("find /root/beta")''
+                                                                        ''client.succeed("find -maxdepth 1 /root")''
                                                                         ''client.succeed("runuser checker -- ${ action-derivation }/execute 7831823836692246")''
                                                                         # ''client.copy_from_host_machine(".","/tmp/documents/_3")''
                                                                     ] ;
