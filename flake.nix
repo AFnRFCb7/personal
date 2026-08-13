@@ -1496,7 +1496,7 @@
                                                                         ''client.wait_for_unit("log.service")''
                                                                         ''client.wait_for_unit("release.service")''
                                                                         ''client.succeed("runuser checker -- ${ action-derivation }/execute 7831823836692246")''
-                                                                        ''client.copy_from_vm("result.yaml","7831823836692246")''
+#                                                                        ''client.copy_from_vm("result.yaml","7831823836692246")''
 #                                                                        ''client.succeed("runuser checker -- ${ action-derivation }/test 7831823836692246")''
                                                                     ] ;
                                                         } ;
