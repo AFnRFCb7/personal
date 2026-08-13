@@ -1496,8 +1496,9 @@
                                                                         ''client.wait_for_unit("log.service")''
                                                                         ''client.wait_for_unit("release.service")''
                                                                         ''client.succeed("date > /tmp/date")''
-                                                                        ''client.copy_from_host("/tmp/date","output.txt")''
-                                                                        ''client.succeed("cat output.txt")''
+                                                                        # ''client.copy_from_host("/tmp/date","output.txt")''
+                                                                        # ''client.succeed("cat output.txt")''
+                                                                        ''client.fail("true")''
                                                                         ''client.succeed("runuser checker -- ${ action-derivation }/execute 7831823836692246")''
                                                                         # ''client.copy_from_host_machine(".","/tmp/documents/_3")''
                                                                     ] ;
