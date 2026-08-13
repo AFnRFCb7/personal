@@ -974,9 +974,9 @@
                                         client =
                                             { nodes , ... }  :
                                                 {
-                                                      fileSystems."/virtualboxshare" = {
+                                                      fileSystems."/tmp" = {
                                                         fsType = "vboxsf";
-                                                        device = "/tmp/shared";
+                                                        device = "/test-beta";
                                                         options = [
                                                           "rw"
                                                           "nofail"
@@ -1259,7 +1259,7 @@
                                                                 [
                                                                     {
                                                                         process = "pre" ;
-                                                                        text = "find /virtualboxshare" ;
+                                                                        text = "find /test-beta" ;
                                                                     }
                                                                     {
                                                                         process = "pre" ;
