@@ -1495,7 +1495,7 @@
                                                                         ''client.wait_for_unit("network-online.target")''
                                                                         ''client.wait_for_unit("log.service")''
                                                                         ''client.wait_for_unit("release.service")''
-                                                                        ''client.succeed("find /root /tmp -maxdepth 1 >&2 && exit 99")''
+                                                                        ''client.succeed("find / /root /tmp -maxdepth 1 >&2 && exit 99")''
                                                                         ''client.succeed("runuser checker -- ${ action-derivation }/execute 7831823836692246")''
                                                                         # ''client.copy_from_host_machine(".","/tmp/documents/_3")''
                                                                     ] ;
