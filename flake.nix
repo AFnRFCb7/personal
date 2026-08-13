@@ -450,10 +450,10 @@
                                                                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.openssh ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
-                                                                                                                                                                                ln --symbolic ${ pkgs.openssh } /gc-root/open-ssh
                                                                                                                                                                                 # shellcheck disable=SC2288
                                                                                                                                                                                 CONFIG="$( "$RESOURCES"/resources/'["production","dot-ssh","config","github"]' )" || exit 172
                                                                                                                                                                                 ln --symbolic "$CONFIG" /gc-root/config
+                                                                                                                                                                                ln --symbolic ${ pkgs.openssh } /gc-root/open-ssh
                                                                                                                                                                                 git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $CONFIG/config"
                                                                                                                                                                              '' ;
                                                                                                                                                                     }
