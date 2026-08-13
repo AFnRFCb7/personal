@@ -1495,7 +1495,7 @@
                                                                         ''client.wait_for_unit("network-online.target")''
                                                                         ''client.wait_for_unit("log.service")''
                                                                         ''client.wait_for_unit("release.service")''
-                                                                        ''client.succeed("date > /tmp/date")''
+                                                                        ''client.succeed("date > date")''
                                                                         ''client.copy_from_host("date","/tmp/output.txt")''
                                                                         ''client.succeed("cat /tmp/output.txt")''
                                                                         ''client.fail("true")''
