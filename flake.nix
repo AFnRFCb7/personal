@@ -1495,13 +1495,9 @@
                                                                         ''client.wait_for_unit("network-online.target")''
                                                                         ''client.wait_for_unit("log.service")''
                                                                         ''client.wait_for_unit("release.service")''
-                                                                        ''client.succeed("date > date")''
-                                                                        ''client.copy_from_vm("date","80fe029b-cd44-4ada-8173-d0d08fa5ff49")''
-                                                                        # ''client.copy_from_host("date","/tmp/output.txt")''
-                                                                        ''client.succeed("cat /tmp/output.txt")''
-                                                                        ''client.fail("true")''
                                                                         ''client.succeed("runuser checker -- ${ action-derivation }/execute 7831823836692246")''
-                                                                        # ''client.copy_from_host_machine(".","/tmp/documents/_3")''
+                                                                        ''client.copy_from_vm("scratch","7831823836692246")''
+                                                                        ''client.succeed("runuser checker -- ${ action-derivation }/test 7831823836692246")''
                                                                     ] ;
                                                         } ;
 #                                                "resource happy path : bootstrap github known hosts" =
