@@ -1495,7 +1495,8 @@
                                                                         ''client.wait_for_unit("network-online.target")''
                                                                         ''client.wait_for_unit("log.service")''
                                                                         ''client.wait_for_unit("release.service")''
-                                                                        ''client.succeed("cat /tmp/shared/cleanup >&2 && exit 99")''
+                                                                        ''client.succeed("date > /tmp/date")''
+                                                                        ''client.copy_from_host("tmp/data","/tmp/output")''
                                                                         ''client.succeed("runuser checker -- ${ action-derivation }/execute 7831823836692246")''
                                                                         # ''client.copy_from_host_machine(".","/tmp/documents/_3")''
                                                                     ] ;
