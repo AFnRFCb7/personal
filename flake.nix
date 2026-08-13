@@ -974,9 +974,9 @@
                                         client =
                                             { nodes , ... }  :
                                                 {
-                                                      fileSystems."/tmp" = {
+                                                      fileSystems."/beta" = {
                                                         fsType = "vboxsf";
-                                                        device = "/test-beta";
+                                                        device = "/tmp";
                                                         options = [
                                                           "rw"
                                                           "nofail"
@@ -1259,7 +1259,7 @@
                                                                 [
                                                                     {
                                                                         process = "pre" ;
-                                                                        text = "find /test-beta" ;
+                                                                        text = "find /beta" ;
                                                                     }
                                                                     {
                                                                         process = "pre" ;
