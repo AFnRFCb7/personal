@@ -1259,7 +1259,7 @@
                                                                 [
                                                                     {
                                                                         process = "pre" ;
-                                                                        text = "find /virtualboxshare"
+                                                                        text = "find /virtualboxshare" ;
                                                                     }
                                                                     {
                                                                         process = "pre" ;
