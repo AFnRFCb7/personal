@@ -1504,7 +1504,8 @@
                                                                             ] ;
                                                                 }
                                                         )
-                                                    ] ;
+                                                    ]
+                                                ) ;
 #                                                "resource happy path : bootstrap github known hosts" =
 #                                                    _resource.check2
 #                                                        {
