@@ -1259,7 +1259,7 @@
                                                         (
                                                             _resource.check2
                                                                 {
-                                                                    gc-roots-directory = "/home/checker/.gc-roots"
+                                                                    gc-roots-directory = "/home/checker/.gc-roots" ;
                                                                     inputs =
                                                                         [
                                                                             {
