@@ -1259,7 +1259,8 @@
                                                         (
                                                             _resource.check2
                                                                 {
-                                                                    actions =
+                                                                    gc-roots-directory = "/home/checker/.gc-roots"
+                                                                    inputs =
                                                                         [
                                                                             {
                                                                                 process = "pre" ;
@@ -1485,8 +1486,7 @@
                                                                                     '';
                                                                                 text = ''check-resources-directory'' ;
                                                                             }
-                                                                        ] ;
-                                                                    gc-roots-directory = "/home/checker/.gc-roots" ;
+                                                                        ] ;;
                                                                     name = "resource happy path : bootstrap github config" ;
                                                                     nodes = { github = github ; client = client ; } ;
                                                                     pkgs = pkgs ;
@@ -1498,9 +1498,9 @@
                                                                                 ''client.wait_for_unit("network-online.target")''
                                                                                 ''client.wait_for_unit("log.service")''
                                                                                 ''client.wait_for_unit("release.service")''
-                                                                                ''client.succeed("runuser checker -- ${ action-derivation }/execute 7831823836692246")''
-        #                                                                        ''client.copy_from_vm("result.yaml","7831823836692246")''
-        #                                                                        ''client.succeed("runuser checker -- ${ action-derivation }/test 7831823836692246")''
+                                                                                ''client.succeed("runuser checker -- ${ action-derivation }/execute")''
+        #                                                                        ''client.copy_from_vm("/scratch/output.json","output.json")''
+        #                                                                        ''client.succeed("runuser checker -- ${ action-derivation }/test")''
                                                                             ] ;
                                                                 }
                                                         )
