@@ -1493,7 +1493,7 @@
 #                                                                                    '';
 #                                                                                text = ''check-resources-directory'' ;
 #                                                                            }
-                                                                        ] ;
+#                                                                       ] ;
                                                                     name = "resource happy path : bootstrap github config" ;
                                                                     nodes = { github = github ; client = client ; } ;
                                                                     pkgs = pkgs ;
