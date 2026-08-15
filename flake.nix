@@ -1499,7 +1499,7 @@
                                                                                 ''client.wait_for_unit("log.service")''
                                                                                 ''client.wait_for_unit("release.service")''
                                                                                 ''client.succeed("runuser checker -- ${ action-derivation }/execute")''
-                                                                                ''client.copy_from_vm("/tmp/scratch/","fac82ca5-317a-4daf-9672-ee1d7ff8e25b")''
+                                                                                ''client.copy_from_vm("/tmp/scratch/","aa674c07-b80a-43c1-a88c-30549a46f737")''
                                                                                 ''client.succeed("runuser checker -- ${ action-derivation }/test")''
                                                                             ] ;
                                                                 }
