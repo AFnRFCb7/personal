@@ -1261,8 +1261,22 @@
                                                                 {
                                                                     gc-roots-directory = "/home/checker/.gc-roots" ;
                                                                     inputs =
-                                                                        [
-                                                                            { process = "pre" ; text = "check-files" ; }
+                                                                        ''
+                                                                            [
+                                                                              {
+                                                                                "kludge": false,
+                                                                                "process": "pre",
+                                                                                "reads": true,
+                                                                                "standard-error": "find: paths must precede expression: `/home/checker/resources/pids'\n",
+                                                                                "standard-output": "",
+                                                                                "status": 1,
+                                                                                "text": "check-files",
+                                                                                "timeout": 60
+                                                                              }
+                                                                            ]
+                                                                        '' ;
+#                                                                        [
+#                                                                            { process = "pre" ; text = "check-files" ; }
 #                                                                            {
 #                                                                                process = "pre"  ;
 #                                                                                standard-output =
