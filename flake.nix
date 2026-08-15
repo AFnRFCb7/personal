@@ -1501,8 +1501,6 @@
                                                                                 ''client.succeed("runuser checker -- ${ action-derivation }/execute")''
                                                                                 ''client.copy_from_vm("/tmp/scratch/","scratch")''
                                                                                 ''client.succeed("runuser checker -- ${ action-derivation }/test")''
-
-                                                                                ")''
                                                                             ] ;
                                                                 }
                                                         )
