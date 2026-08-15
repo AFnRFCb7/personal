@@ -1274,7 +1274,7 @@
                                                                                 "timeout": 60
                                                                               }
                                                                             ]
-                                                                        '' ;
+#                                                                        '' ;
 #                                                                        [
 #                                                                            { process = "pre" ; text = "check-files" ; }
 #                                                                            {
