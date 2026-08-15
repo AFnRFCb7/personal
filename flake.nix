@@ -1267,9 +1267,9 @@
                                                                                 "kludge": false,
                                                                                 "process": "pre",
                                                                                 "reads": true,
-                                                                                "standard-error": "find: paths must precede expression: `/home/checker/resources/pids'\n",
-                                                                                "standard-output": "",
-                                                                                "status": 1,
+                                                                                "standard-error": "",
+                                                                                "standard-output": "{\n  \"cat\": \"[]\",\n  \"name\": \"/home/checker/resources/log.yaml\",\n  \"stat\": \"-rw-r--r--\",\n  \"type\": \"directory\"\n}\n",
+                                                                                "status": 0,
                                                                                 "text": "check-files",
                                                                                 "timeout": 60
                                                                               }
