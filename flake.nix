@@ -1266,7 +1266,7 @@
                                                                               {
                                                                                 "kludge": false,
                                                                                 "process": "pre",
-                                                                                "reads": true,
+                                                                                "reads": false,
                                                                                 "standard-error": "",
                                                                                 "standard-output": "{\n  \"cat\": \"[]\",\n  \"name\": \"/home/checker/resources/log.yaml\",\n  \"stat\": \"-rw-r--r--\",\n  \"type\": \"directory\"\n}\n",
                                                                                 "status": 0,
