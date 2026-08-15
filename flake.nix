@@ -1498,7 +1498,7 @@
                                                                                 ''client.wait_for_unit("network-online.target")''
                                                                                 ''client.wait_for_unit("log.service")''
                                                                                 ''client.wait_for_unit("release.service")''
-                                                                                ''client.succeed("runuser checker -- ${ action-derivation }/execute \"$out\"")''
+                                                                                ''client.succeed("runuser checker -- ${ action-derivation }/execute $out")''
                                                                                 ''client.copy_from_vm("/tmp/scratch/","scratch")''
                                                                                 ''client.succeed("runuser checker -- ${ action-derivation }/test")''
                                                                             ] ;
