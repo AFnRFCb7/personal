@@ -1500,7 +1500,7 @@
                                                                                 ''client.wait_for_unit("release.service")''
                                                                                 ''client.succeed("runuser checker -- ${ action-derivation }/execute")''
                                                                                 ''client.copy_from_vm("/tmp/scratch/","d6155cac-fdd4-47b6-ab92-07976caa5707")''
-                                                                                ''client.succeed("runuser checker -- ${ action-derivation }/test $0")''
+                                                                                ''client.succeed("runuser checker -- ${ action-derivation }/test $$")''
                                                                             ] ;
                                                                 }
                                                         )
