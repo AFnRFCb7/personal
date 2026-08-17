@@ -1272,6 +1272,21 @@
                                                                                 "status": 0,
                                                                                 "text": "check-files",
                                                                                 "timeout": 60
+                                                                              } ,
+                                                                              {
+                                                                                "text" : "check-redis"
+                                                                              } ,
+                                                                              {
+                                                                                "text" : "check-redis"
+                                                                              } ,
+                                                                              {
+                                                                                "text" : "check-redis"
+                                                                              } ,
+                                                                              {
+                                                                                "text" : "check-redis"
+                                                                              } ,
+                                                                              {
+                                                                                "text" : "check-redis"
                                                                               }
                                                                             ]
                                                                         '' ;
