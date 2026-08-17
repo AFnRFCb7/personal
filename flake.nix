@@ -1267,10 +1267,10 @@
                                                                                 "kludge": false,
                                                                                 "process": "pre",
                                                                                 "reads": false,
-                                                                                "standard-error": "4814729212134642",
+                                                                                "standard-error": "",
                                                                                 "standard-output": "{\n  \"cat\": \"[]\",\n  \"name\": \"/home/checker/resources/log.yaml\",\n  \"stat\": \"-rw-r--r--\",\n  \"type\": \"directory\"\n}\n",
                                                                                 "status": 0,
-                                                                                "text": "check-files --uuid 4814729212134642",
+                                                                                "text": "check-files",
                                                                                 "timeout": 60
                                                                               }
                                                                             ]
