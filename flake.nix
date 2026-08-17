@@ -1278,17 +1278,7 @@
                                                                                 "process": "",
                                                                                 "reads": true,
                                                                                 "standard-error": "",
-                                                                                "standard-output": "3\n",
-                                                                                "status": 0,
-                                                                                "text": "check-redis",
-                                                                                "timeout": 60
-                                                                              },
-                                                                              {
-                                                                                "kludge": false,
-                                                                                "process": "",
-                                                                                "reads": true,
-                                                                                "standard-error": "" ,
-                                                                                "standard-output": "3\n",
+                                                                                "standard-output": "{\n  \"type\": \"subscribe\",\n  \"channel\": \"invalid-init\",\n  \"payload\": 1\n}\n",
                                                                                 "status": 0,
                                                                                 "text": "check-redis",
                                                                                 "timeout": 60
@@ -1298,7 +1288,7 @@
                                                                                 "process": "",
                                                                                 "reads": true,
                                                                                 "standard-error": "",
-                                                                                "standard-output": "3\n",
+                                                                                "standard-output": "{\n  \"type\": \"subscribe\",\n  \"channel\": \"invalid-release\",\n  \"payload\": 2\n}\n",
                                                                                 "status": 0,
                                                                                 "text": "check-redis",
                                                                                 "timeout": 60
@@ -1308,7 +1298,17 @@
                                                                                 "process": "",
                                                                                 "reads": true,
                                                                                 "standard-error": "",
-                                                                                "standard-output": "3\n",
+                                                                                "standard-output": "{\n  \"type\": \"subscribe\",\n  \"channel\": \"valid-init\",\n  \"payload\": 3\n}\n",
+                                                                                "status": 0,
+                                                                                "text": "check-redis",
+                                                                                "timeout": 60
+                                                                              },
+                                                                              {
+                                                                                "kludge": false,
+                                                                                "process": "",
+                                                                                "reads": true,
+                                                                                "standard-error": "",
+                                                                                "standard-output": "{\n  \"type\": \"subscribe\",\n  \"channel\": \"valid-release\",\n  \"payload\": 4\n}\n",
                                                                                 "status": 0,
                                                                                 "text": "check-redis",
                                                                                 "timeout": 60
