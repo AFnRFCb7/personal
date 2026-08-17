@@ -1324,7 +1324,7 @@
                                                                                 "timeout": 60
                                                                               },
                                                                               {
-                                                                                "text" : "check-resource --base64 IiRSRVNPVVJDRVMiL3Jlc291cmNlcy8nWyJwcm9kdWN0aW9uIixcImRvdC1zc2hcIixcImlkZW50aXR5XCIsXCJnaXRodWJcIl0nCg=="
+                                                                                "text" : "check-resource --expression "
                                                                               }
                                                                             ]
                                                                         '' ;
