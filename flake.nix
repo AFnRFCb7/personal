@@ -1324,7 +1324,7 @@
                                                                                 "timeout": 60
                                                                               },
                                                                               {
-                                                                                "text" : "check-resource --double-quote $RESOURCES --zero-quote resources --single-quote '["production",\"dot-ssh\",\"identity\",\"github\"]'"
+                                                                                "text" : "check-resource --base64 IiRSRVNPVVJDRVMiL3Jlc291cmNlcy8nWyJwcm9kdWN0aW9uIixcImRvdC1zc2hcIixcImlkZW50aXR5XCIsXCJnaXRodWJcIl0nCg=="
                                                                               }
                                                                             ]
                                                                         '' ;
