@@ -1324,7 +1324,7 @@
                                                                                 "timeout": 60
                                                                               },
                                                                               {
-                                                                                "text" : "check-resource --expression DOUBLE SINGLE DOLLAR DOUBLEDOLLARRESOURCESDOUBLE/resources/SINGLE[DOUBLEproductionDOUBLE,DOUBLEdot-sshDOUBLE,DOUBLEidentityDOUBLE,DOUBLEgithubDOUBLE]SINGLE"
+                                                                                "text" : "check-resource --expression DOUBLE SINGLE DOLLAR 'DOUBLEDOLLARRESOURCESDOUBLE/resources/SINGLE[DOUBLEproductionDOUBLE,DOUBLEdot-sshDOUBLE,DOUBLEidentityDOUBLE,DOUBLEgithubDOUBLE]SINGLE'"
                                                                               }
                                                                             ]
                                                                         '' ;
