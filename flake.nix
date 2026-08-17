@@ -1324,7 +1324,7 @@
                                                                                 "timeout": 60
                                                                               },
                                                                               {
-                                                                                "text" : "check-resource --expression $RESOURCES/resources/'["production",\"dot-ssh\",\"identity\",\"github\"]'"
+                                                                                "text" : "check-resource --double-quote $RESOURCES --zero-quote \resources\ --single-quote '["production",\"dot-ssh\",\"identity\",\"github\"]'"
                                                                               }
                                                                             ]
                                                                         '' ;
