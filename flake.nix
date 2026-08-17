@@ -1322,6 +1322,9 @@
                                                                                 "status": 0,
                                                                                 "text": "check-redis",
                                                                                 "timeout": 60
+                                                                              },
+                                                                              {
+                                                                                "text" : "check-resource"
                                                                               }
                                                                             ]
                                                                         '' ;
