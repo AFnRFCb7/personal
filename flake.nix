@@ -1285,6 +1285,7 @@
                                                                                         "text" = "check-redis" ;
                                                                                 }
                                                                                 {
+                                                                                        "standard-output" = "183" ;
                                                                                         "text" = "check-redis" ;
                                                                                 }
                                                                                 {
