@@ -1326,13 +1326,14 @@
                                                                                         "kludge" = false ;
                                                                                         "process" = "" ;
                                                                                         "reads" = true ;
-                                                                                        "standard-error" = "\"$RESOURCES\"/resources/'[\"production\",\"dot-ssh\",\"identity\",\"github\"]'" ;
+                                                                                        "standard-error" = "" ;
                                                                                         "standard-output" = "" ;
-                                                                                        "status" = 127 ;
-                                                                                        "text" = "check-resource --expression DOUBLE SINGLE DOLLAR 'DOUBLEDOLLARRESOURCESDOUBLE/resources/SINGLE[DOUBLEproductionDOUBLE,DOUBLEdot-sshDOUBLE,DOUBLEidentityDOUBLE,DOUBLEgithubDOUBLE]SINGLE'" ;
+                                                                                        "status" = 119 ;
+                                                                                        "text" = ''check-resource --expression '"$RESOURCES"/resources/'["production","dot-sshDOUBLE,DOUBLEidentityDOUBLE,DOUBLEgithubDOUBLE]SINGLE''' ;
                                                                                         "timeout" = 60 ;
                                                                                 }
                                                                         ] ;
+
 #                                                                        [
 #                                                                            { process = "pre" ; text = "check-files" ; }
 #                                                                            {
