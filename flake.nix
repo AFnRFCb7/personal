@@ -1289,7 +1289,7 @@
                                                                                         "text" = "check-redis" ;
                                                                                 }
                                                                                 {
-                                                                                        "text" = ''check-resource --expression "$RESOURCES"/resources/'[\"production\",\"dot-ssh\",\"identity\",\"github\"]' '' ;
+                                                                                        "text" = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
                                                                                 }
                                                                         ] ;
 
