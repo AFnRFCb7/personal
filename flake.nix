@@ -1263,74 +1263,34 @@
                                                                     inputs =
                                                                         [
                                                                                 {
-                                                                                        "kludge" = false ;
                                                                                         "process" = "pre" ;
                                                                                         "reads" = false ;
-                                                                                        "standard-error" = "" ;
                                                                                         "standard-output" = "{\n  \"cat\": \"\",\n  \"name\": \"/home/checker/resources/check.lock\",\n  \"stat\": \"-rw-r--r--\",\n  \"type\": \"directory\"\n}\n{\n  \"cat\": \"[]\",\n  \"name\": \"/home/checker/resources/log.yaml\",\n  \"stat\": \"-rw-r--r--\",\n  \"type\": \"directory\"\n}\n" ;
-                                                                                        "status" = 0 ;
                                                                                         "text" = "check-files" ;
-                                                                                        "timeout" = 60 ;
                                                                                 }
                                                                                 {
-                                                                                        "kludge" = false ;
-                                                                                        "process" = "" ;
-                                                                                        "reads" = true ;
-                                                                                        "standard-error" = "" ;
                                                                                         "standard-output" = "{\n  \"type\": \"subscribe\",\n  \"channel\": \"invalid-init\",\n  \"payload\": 1\n}\n" ;
-                                                                                        "status" = 0 ;
                                                                                         "text" = "check-redis" ;
-                                                                                        "timeout" = 60 ;
                                                                                 }
                                                                                 {
-                                                                                        "kludge" = false ;
-                                                                                        "process" = "" ;
-                                                                                        "reads" = true ;
-                                                                                        "standard-error" = "" ;
                                                                                         "standard-output" = "{\n  \"type\": \"subscribe\",\n  \"channel\": \"invalid-release\",\n  \"payload\": 2\n}\n" ;
-                                                                                        "status" = 0 ;
                                                                                         "text" = "check-redis" ;
-                                                                                        "timeout" = 60 ;
                                                                                 }
                                                                                 {
-                                                                                        "kludge" = false ;
-                                                                                        "process" = "" ;
-                                                                                        "reads" = true ;
-                                                                                        "standard-error" = "" ;
                                                                                         "standard-output" = "{\n  \"type\": \"subscribe\",\n  \"channel\": \"valid-init\",\n  \"payload\": 3\n}\n" ;
-                                                                                        "status" = 0 ;
                                                                                         "text" = "check-redis" ;
-                                                                                        "timeout" = 60 ;
                                                                                 }
                                                                                 {
-                                                                                        "kludge" = false ;
-                                                                                        "process" = "" ;
-                                                                                        "reads" = true ;
-                                                                                        "standard-error" = "" ;
                                                                                         "standard-output" = "{\n  \"type\": \"subscribe\",\n  \"channel\": \"valid-release\",\n  \"payload\": 4\n}\n" ;
-                                                                                        "status" = 0 ;
                                                                                         "text" = "check-redis" ;
-                                                                                        "timeout" = 60 ;
                                                                                 }
                                                                                 {
-                                                                                        "kludge" = false ;
-                                                                                        "process" = "" ;
-                                                                                        "reads" = true ;
-                                                                                        "standard-error" = "" ;
                                                                                         "standard-output" = "183\n" ;
-                                                                                        "status" = 0 ;
                                                                                         "text" = "check-redis" ;
-                                                                                        "timeout" = 60 ;
                                                                                 }
                                                                                 {
-                                                                                        "kludge" = false ;
-                                                                                        "process" = "" ;
-                                                                                        "reads" = true ;
-                                                                                        "standard-error" = "" ;
-                                                                                        "standard-output" = "" ;
-                                                                                        "status" = 119 ;
-                                                                                        "text" = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
-                                                                                        "timeout" = 60 ;
+                                                                                        "status" = 124 ;
+                                                                                        "text" = "check-resource --expression \"$RESOURCES\"/resources/'[\"production\",\"dot-ssh\",\"identity\",\"github\"]' " ;
                                                                                 }
                                                                         ] ;
 
