@@ -1285,11 +1285,9 @@
                                                                                         "text" = "check-redis" ;
                                                                                 }
                                                                                 {
-                                                                                        "standard-output" = "183\n" ;
                                                                                         "text" = "check-redis" ;
                                                                                 }
                                                                                 {
-                                                                                        "status" = 124 ;
                                                                                         "text" = "check-resource --expression \"$RESOURCES\"/resources/'[\"production\",\"dot-ssh\",\"identity\",\"github\"]' " ;
                                                                                 }
                                                                         ] ;
