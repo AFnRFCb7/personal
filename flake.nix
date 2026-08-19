@@ -1329,10 +1329,7 @@
                                                                                         "standard-error" = "" ;
                                                                                         "standard-output" = "" ;
                                                                                         "status" = 119 ;
-                                                                                        "text" =
-                                                                                            ''
-                                                                                                check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]'
-                                                                                            '' ;
+                                                                                        "text" = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
                                                                                         "timeout" = 60 ;
                                                                                 }
                                                                         ] ;
