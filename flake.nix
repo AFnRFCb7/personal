@@ -1290,7 +1290,7 @@
                                                                                 }
                                                                                 {
                                                                                         standard-output = "" ;
-                                                                                        text = '' ls "$RESOURCES" '' ;
+                                                                                        text = '' ls "$RESOURCES/resources" '' ;
                                                                                 }
                                                                         ] ;
 
