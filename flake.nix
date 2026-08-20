@@ -1290,7 +1290,7 @@
                                                                                 }
                                                                                 {
                                                                                         standard-output = "" ;
-                                                                                        text = '' echo "$RESOURCES" '' ;
+                                                                                        text = '' ls "$RESOURCES" '' ;
                                                                                 }
                                                                         ] ;
 
