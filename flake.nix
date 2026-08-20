@@ -1290,7 +1290,7 @@
                                                                                 }
                                                                                 {
                                                                                         standard-output = "" ;
-                                                                                        text = '' check-resource --expression "\$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
+                                                                                        text = '' check-resource --expression $RESOURCES/resources/'["production","dot-ssh","identity","github"]' '' ;
                                                                                 }
                                                                         ] ;
 
