@@ -1290,7 +1290,7 @@
                                                                                 }
                                                                                 {
                                                                                         standard-output = "" ;
-                                                                                        text = '' ls "$RESOURCES/resources" '' ;
+                                                                                        text = '' ls "$RESOURCES/resources/'[\"production\",\"dot-ssh\",\"identity\",\"github\"]'" '' ;
                                                                                 }
                                                                         ] ;
 
