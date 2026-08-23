@@ -1300,9 +1300,13 @@
                                                                                         text =
                                                                                             ''
                                                                                                 TARGET="$( readlink --canonicalize "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' )" || exit 168
+
                                                                                                 echo TARGET="$TARGET" >&2
+
                                                                                                 "$TARGET"
+
                                                                                                 STATUS="$?"
+
                                                                                                 echo STATUS="$STATUS" >&2
                                                                                             '' ;
                                                                                 }
