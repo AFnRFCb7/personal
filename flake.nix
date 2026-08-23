@@ -1296,21 +1296,114 @@
                                                                                 {
                                                                                         process = "pre" ;
                                                                                         standard-output = "" ;
-                                                                                        # text = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
                                                                                         text =
                                                                                             ''
-                                                                                                TARGET="$( readlink --canonicalize "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' )" || exit 168
+                                                                                                export PATH="/nix/store/f8bb29v1w8mhkkxc15xan6mxvbkcbg3s-coreutils-9.5/bin:/nix/store/0lgw02xh80qnvbrhwjjvw0vp6384sgjs-findutils-4.10.0/bin:/nix/store/ka2xxzrj7p2ba7qj7j3qiwdlmbjc6j32-flock-0.4.0/bin:/nix/store/nw2lnn0jwp2w5xmwr93h2a99dz4d2n7w-gnused-4.9/bin:/nix/store/0q85yfxd70aq8iv4n43hqcmh2dbyb80z-jq-1.7.1-bin/bin:/nix/store/h6csl535zlrpk4zy9msag6xrv1kz1g8z-log/bin:/nix/store/7wplfg5hrvwvi0cr2nrkcilzrjpwpa53-init/bin:$PATH"
 
-                                                                                                echo TARGET="$TARGET" >&2
+                                                                                                mkdir --parents /home/checker/resources
+                                                                                                exec 168> /home/checker/resources/check.lock
+                                                                                                flock -s 168
 
-                                                                                                cat "$TARGET" >&2
+                                                                                                mkdir --parents /home/checker/.gc-roots
+                                                                                                exec 157> /home/checker/resources/clean.lock
+                                                                                                flock -s 157
 
-                                                                                                # "$TARGET"
+                                                                                                INPUT_FILE="$(mktemp --suffix ".json")" || exit 199
+                                                                                                export INPUT_FILE
+                                                                                                export TEMPORARY=false
 
-                                                                                                # STATUS="$?"
+                                                                                                export IS_NIX_FLAKE_CHECK=true
 
-                                                                                                # echo STATUS="$STATUS" >&2
+                                                                                                if [[ "$IS_NIX_FLAKE_CHECK" == "true" ]]; then
+                                                                                                    if [[ -t 0 ]]; then
+                                                                                                        STANDARD_INPUT="$(cat)" || exit 103
+                                                                                                        ORIGINATOR_PID="$(ps -o ppid= -p "$PPID" | tr -d '[:space:]')" || exit 184
+
+                                                                                                        jq \
+                                                                                                            --null-input \
+                                                                                                            --argjson ORIGINATOR_PID "$ORIGINATOR_PID" \
+                                                                                                            --arg STANDARD_INPUT "$STANDARD_INPUT" \
+                                                                                                            --argjson TEMPORARY "$TEMPORARY" \
+                                                                                                            --args \
+                                                                                                            '{
+                                                                                                                "WTF": "2128979479613286",
+                                                                                                                "arguments": $ARGS.positional,
+                                                                                                                "inputs": {
+                                                                                                                    "standard": $STANDARD_INPUT
+                                                                                                                },
+                                                                                                                "originator-pid": $ORIGINATOR_PID,
+                                                                                                                "temporary": $TEMPORARY
+                                                                                                            }' -- "$@" > "$INPUT_FILE"
+                                                                                                    else
+                                                                                                        PENULTIMATE_PID="$(ps -o ppid= -p "$PPID" | tr -d '[:space:]')" || exit 192
+                                                                                                        ULTIMATE_PID="$(ps -o ppid= -p "$PENULTIMATE_PID" | tr -d '[:space:]')" || exit 125
+                                                                                                        ORIGINATOR_PID="$(ps -o ppid= -p "$ULTIMATE_PID" | tr -d '[:space:]')" || exit 125
+
+                                                                                                        jq \
+                                                                                                            --null-input \
+                                                                                                            --argjson ORIGINATOR_PID "$ORIGINATOR_PID" \
+                                                                                                            --argjson TEMPORARY "$TEMPORARY" \
+                                                                                                            --args \
+                                                                                                            '{
+                                                                                                                "arguments": $ARGS.positional,
+                                                                                                                "inputs": {},
+                                                                                                                "originator-pid": $ORIGINATOR_PID,
+                                                                                                                "temporary": $TEMPORARY
+                                                                                                            }' -- "$@" > "$INPUT_FILE"
+                                                                                                    fi
+                                                                                                else
+                                                                                                    if [[ -p /dev/stdin || -f /dev/stdin ]]; then
+                                                                                                        STANDARD_INPUT="$(cat)" || exit 103
+                                                                                                        ORIGINATOR_PID="$(ps -o ppid= -p "$PPID" | tr -d '[:space:]')" || exit 184
+
+                                                                                                        jq \
+                                                                                                            --null-input \
+                                                                                                            --argjson ORIGINATOR_PID "$ORIGINATOR_PID" \
+                                                                                                            --arg STANDARD_INPUT "$STANDARD_INPUT" \
+                                                                                                            --argjson TEMPORARY "$TEMPORARY" \
+                                                                                                            --args \
+                                                                                                            '{
+                                                                                                                "WTF": "2128979479613286",
+                                                                                                                "arguments": $ARGS.positional,
+                                                                                                                "inputs": {
+                                                                                                                    "standard": $STANDARD_INPUT
+                                                                                                                },
+                                                                                                                "originator-pid": $ORIGINATOR_PID,
+                                                                                                                "temporary": $TEMPORARY
+                                                                                                            }' -- "$@" > "$INPUT_FILE"
+                                                                                                    else
+                                                                                                        ORIGINATOR_PID="$(ps -o ppid= -p "$$" | tr -d '[:space:]')" || exit 112
+
+                                                                                                        jq \
+                                                                                                            --null-input \
+                                                                                                            --argjson ORIGINATOR_PID "$ORIGINATOR_PID" \
+                                                                                                            --argjson TEMPORARY "$TEMPORARY" \
+                                                                                                            --args \
+                                                                                                            '{
+                                                                                                                "WTF": "5482197652155478",
+                                                                                                                "arguments": $ARGS.positional,
+                                                                                                                "inputs": {},
+                                                                                                                "originator-pid": $ORIGINATOR_PID,
+                                                                                                                "temporary": $TEMPORARY
+                                                                                                            }' -- "$@" > "$INPUT_FILE"
+                                                                                                    fi
+                                                                                                fi
                                                                                             '' ;
+                                                                                        # text = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
+#                                                                                        text =
+#                                                                                            ''
+#                                                                                                TARGET="$( readlink --canonicalize "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' )" || exit 168
+#
+#                                                                                                echo TARGET="$TARGET" >&2
+#
+#                                                                                                cat "$TARGET" >&2
+#
+#                                                                                                # "$TARGET"
+#
+#                                                                                                # STATUS="$?"
+#
+#                                                                                                # echo STATUS="$STATUS" >&2
+#                                                                                            '' ;
                                                                                 }
                                                                         ] ;
 
