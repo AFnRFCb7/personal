@@ -1295,7 +1295,7 @@
                                                                                 }
                                                                                 {
                                                                                         process = "pre" ;
-                                                                                        standard-output = "" ;
+                                                                                        standard-output = "/home/checker/resources/mounts/0000000000000000" ;
                                                                                         text = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
 #                                                                                        text =
 #                                                                                            ''
