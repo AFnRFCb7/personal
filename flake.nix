@@ -1308,7 +1308,7 @@
                                                                                                 exec 168> /home/checker/resources/check.lock
                                                                                                 if timeout 5s flock -s 168
                                                                                                 then
-                                                                                                    if "$?" == 124 then exit 188
+                                                                                                    if [[ "$?" == 124 ]] then exit 188
                                                                                                 else
                                                                                                     exit "$?"
                                                                                                 fi
