@@ -1312,7 +1312,7 @@
                                                                                                 export INPUT_FILE
                                                                                                 export TEMPORARY=false
 
-                                                                                                export IS_NIX_FLAKE_CHECK=true
+                                                                                                export IS_NIX_FLAKE_CHECK=false
 
                                                                                                 if [[ "$IS_NIX_FLAKE_CHECK" == "true" ]]; then
                                                                                                     if [[ -t 0 ]]; then
