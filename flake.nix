@@ -1297,20 +1297,22 @@
                                                                                         process = "pre" ;
                                                                                         standard-output = "/home/checker/resources/mounts/0000000000000000" ;
                                                                                         text = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
-#                                                                                        text =
-#                                                                                            ''
-#                                                                                                TARGET="$( readlink --canonicalize "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' )" || exit 168
-#
-#                                                                                                echo TARGET="$TARGET" >&2
-#
-#                                                                                                cat "$TARGET" >&2
-#
-#                                                                                                # "$TARGET"
-#
-#                                                                                                # STATUS="$?"
-#
-#                                                                                                # echo STATUS="$STATUS" >&2
-#                                                                                            '' ;
+                                                                                }
+                                                                                {
+                                                                                        process = "pre" ;
+                                                                                        reads = false ;
+                                                                                        standard-output = "{\n  \"cat\": \"\",\n  \"name\": \"/home/checker/resources/check.lock\",\n  \"stat\": \"-rw-r--r--\",\n  \"type\": \"directory\"\n}\n{\n  \"cat\": \"[]\",\n  \"name\": \"/home/checker/resources/log.yaml\",\n  \"stat\": \"-rw-r--r--\",\n  \"type\": \"directory\"\n}\n" ;
+                                                                                        text = "check-files" ;
+                                                                                }
+                                                                                {
+                                                                                        process = "pre" ;
+                                                                                        standard-output = "{\n  \"type\": \"subscribe\",\n  \"channel\": \"invalid-init\",\n  \"payload\": 1\n}\n" ;
+                                                                                        text = "check-redis" ;
+                                                                                }
+                                                                                {
+                                                                                        process = "pre" ;
+                                                                                        standard-output = "183" ;
+                                                                                        text = "check-redis" ;
                                                                                 }
                                                                         ] ;
 
