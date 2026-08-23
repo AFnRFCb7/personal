@@ -1298,19 +1298,19 @@
                                                                                         standard-output = "" ;
                                                                                         text =
                                                                                             ''
-#                                                                                                export PATH="/nix/store/f8bb29v1w8mhkkxc15xan6mxvbkcbg3s-coreutils-9.5/bin:/nix/store/0lgw02xh80qnvbrhwjjvw0vp6384sgjs-findutils-4.10.0/bin:/nix/store/ka2xxzrj7p2ba7qj7j3qiwdlmbjc6j32-flock-0.4.0/bin:/nix/store/nw2lnn0jwp2w5xmwr93h2a99dz4d2n7w-gnused-4.9/bin:/nix/store/0q85yfxd70aq8iv4n43hqcmh2dbyb80z-jq-1.7.1-bin/bin:/nix/store/h6csl535zlrpk4zy9msag6xrv1kz1g8z-log/bin:/nix/store/7wplfg5hrvwvi0cr2nrkcilzrjpwpa53-init/bin:$PATH"
-#
-#                                                                                                mkdir --parents /home/checker/resources
-#                                                                                                exec 168> /home/checker/resources/check.lock
-#                                                                                                flock -s 168
-#
-#                                                                                                mkdir --parents /home/checker/.gc-roots
-#                                                                                                exec 157> /home/checker/resources/clean.lock
-#                                                                                                flock -s 157
-#
-#                                                                                                INPUT_FILE="$(mktemp --suffix ".json")" || exit 199
-#                                                                                                export INPUT_FILE
-#                                                                                                export TEMPORARY=false
+                                                                                                export PATH="/nix/store/f8bb29v1w8mhkkxc15xan6mxvbkcbg3s-coreutils-9.5/bin:/nix/store/0lgw02xh80qnvbrhwjjvw0vp6384sgjs-findutils-4.10.0/bin:/nix/store/ka2xxzrj7p2ba7qj7j3qiwdlmbjc6j32-flock-0.4.0/bin:/nix/store/nw2lnn0jwp2w5xmwr93h2a99dz4d2n7w-gnused-4.9/bin:/nix/store/0q85yfxd70aq8iv4n43hqcmh2dbyb80z-jq-1.7.1-bin/bin:/nix/store/h6csl535zlrpk4zy9msag6xrv1kz1g8z-log/bin:/nix/store/7wplfg5hrvwvi0cr2nrkcilzrjpwpa53-init/bin:$PATH"
+
+                                                                                                mkdir --parents /home/checker/resources
+                                                                                                exec 168> /home/checker/resources/check.lock
+                                                                                                flock -s 168
+
+                                                                                                mkdir --parents /home/checker/.gc-roots
+                                                                                                exec 157> /home/checker/resources/clean.lock
+                                                                                                flock -s 157
+
+                                                                                                INPUT_FILE="$(mktemp --suffix ".json")" || exit 199
+                                                                                                export INPUT_FILE
+                                                                                                export TEMPORARY=false
 #
 #                                                                                                if [[ "$IS_NIX_FLAKE_CHECK" == "true" ]]; then
 #                                                                                                    if [[ -t 0 ]]; then
