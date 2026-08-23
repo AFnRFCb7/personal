@@ -1269,26 +1269,32 @@
                                                                                         text = "check-files" ;
                                                                                 }
                                                                                 {
+                                                                                        process = "pre" ;
                                                                                         standard-output = "{\n  \"type\": \"subscribe\",\n  \"channel\": \"invalid-init\",\n  \"payload\": 1\n}\n" ;
                                                                                         text = "check-redis" ;
                                                                                 }
                                                                                 {
+                                                                                        process = "pre" ;
                                                                                         standard-output = "{\n  \"type\": \"subscribe\",\n  \"channel\": \"invalid-release\",\n  \"payload\": 2\n}\n" ;
                                                                                         text = "check-redis" ;
                                                                                 }
                                                                                 {
+                                                                                        process = "pre" ;
                                                                                         standard-output = "{\n  \"type\": \"subscribe\",\n  \"channel\": \"valid-init\",\n  \"payload\": 3\n}\n" ;
                                                                                         text = "check-redis" ;
                                                                                 }
                                                                                 {
+                                                                                        process = "pre" ;
                                                                                         standard-output = "{\n  \"type\": \"subscribe\",\n  \"channel\": \"valid-release\",\n  \"payload\": 4\n}\n" ;
                                                                                         text = "check-redis" ;
                                                                                 }
                                                                                 {
+                                                                                        process = "pre" ;
                                                                                         standard-output = "183" ;
                                                                                         text = "check-redis" ;
                                                                                 }
                                                                                 {
+                                                                                        process = "pre" ;
                                                                                         standard-output = "" ;
                                                                                         text = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
                                                                                 }
