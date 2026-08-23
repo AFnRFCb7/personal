@@ -27,6 +27,7 @@
                                         log-channel = "log" ;
                                         mkDerivation = pkgs.stdenv.mkDerivation ;
                                         jq = pkgs.jq ;
+                                        pstree = pkgs.pstree ;
                                         redis = pkgs.redis ;
                                         valid-init-channel = "valid-init" ;
                                         valid-release-channel = "valid-release" ;
