@@ -1296,7 +1296,7 @@
                                                                                 {
                                                                                         process = "pre" ;
                                                                                         standard-output = "" ;
-                                                                                        text = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
+                                                                                        text = '' stat "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
                                                                                 }
                                                                         ] ;
 
