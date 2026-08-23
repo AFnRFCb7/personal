@@ -1297,7 +1297,12 @@
                                                                                         process = "pre" ;
                                                                                         standard-output = "" ;
                                                                                         # text = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
-                                                                                        text = '' readlink --canonicalize "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
+                                                                                        text =
+                                                                                            ''
+                                                                                                TARGET="$( readlink --canonicalize "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' )"
+                                                                                                "$TARGET"
+                                                                                                echo STATUS="$?"
+                                                                                            '' ;
                                                                                 }
                                                                         ] ;
 
