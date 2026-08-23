@@ -1306,18 +1306,7 @@
 
                                                                                                 mkdir --parents /home/checker/resources
                                                                                                 exec 168> /home/checker/resources/check.lock
-                                                                                                if timeout 5s flock -s 168
-                                                                                                then
-                                                                                                    STATUS="$?"
-                                                                                                    if [[ "$STATUS" == 124 ]]
-                                                                                                    then
-                                                                                                        exit 188
-                                                                                                    else
-                                                                                                        exit "$STATUS"
-                                                                                                    fi
-                                                                                                else
-                                                                                                    exit 0
-                                                                                                fi
+#                                                                                                flock -s 168
 #
 #                                                                                                mkdir --parents /home/checker/.gc-roots
 #                                                                                                exec 157> /home/checker/resources/clean.lock
