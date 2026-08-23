@@ -1303,11 +1303,13 @@
 
                                                                                                 echo TARGET="$TARGET" >&2
 
-                                                                                                "$TARGET"
+                                                                                                cat "$TARGET" >&2
 
-                                                                                                STATUS="$?"
+                                                                                                # "$TARGET"
 
-                                                                                                echo STATUS="$STATUS" >&2
+                                                                                                # STATUS="$?"
+
+                                                                                                # echo STATUS="$STATUS" >&2
                                                                                             '' ;
                                                                                 }
                                                                         ] ;
