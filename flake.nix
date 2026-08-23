@@ -1299,9 +1299,11 @@
                                                                                         # text = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
                                                                                         text =
                                                                                             ''
-                                                                                                TARGET="$( readlink --canonicalize "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' )"
+                                                                                                TARGET="$( readlink --canonicalize "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' )" || exit 168
+                                                                                                echo TARGET="$TARGET" >&2
                                                                                                 "$TARGET"
-                                                                                                echo STATUS="$?"
+                                                                                                STATUS="$?"
+                                                                                                echo STATUS="$STATUS" >&2
                                                                                             '' ;
                                                                                 }
                                                                         ] ;
