@@ -1316,10 +1316,6 @@
                                                                                         standard-output = "183" ;
                                                                                         text = "check-redis" ;
                                                                                 }
-                                                                                {
-                                                                                        process = "pre" ;
-                                                                                        text = "journalctl -u release.service" ;
-                                                                                }
                                                                         ] ;
 
 #                                                                        [
