@@ -1296,7 +1296,8 @@
                                                                                 {
                                                                                         process = "pre" ;
                                                                                         standard-output = "" ;
-                                                                                        text = '' stat "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
+                                                                                        # text = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
+                                                                                        text = '' readlink --canonicalize "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
                                                                                 }
                                                                         ] ;
 
