@@ -1315,6 +1315,7 @@
                                                                                         text = "check-redis" ;
                                                                                 }
                                                                                 {
+                                                                                        process = "pre" ;
                                                                                         text = "journalctl -u release.service" ;
                                                                                 }
                                                                         ] ;
