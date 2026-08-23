@@ -1306,7 +1306,7 @@
 
                                                                                                 mkdir --parents /home/checker/resources
                                                                                                 exec 168> /home/checker/resources/check.lock
-                                                                                                flock -s 168
+                                                                                                flock -w 5 -s 168
 #
 #                                                                                                mkdir --parents /home/checker/.gc-roots
 #                                                                                                exec 157> /home/checker/resources/clean.lock
