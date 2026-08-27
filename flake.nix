@@ -1337,9 +1337,18 @@
 #                                                                                        text = "check-files" ;
 #                                                                                }
                                                                                 {
-                                                                                        process = "pre" ;
+                                                                                    process = "post" ;
+                                                                                    text = "journalctl -u release.service" ;
+                                                                                }
+                                                                                {
+                                                                                        process = "post" ;
                                                                                         standard-output = "{\n  \"type\": \"message\",\n  \"channel\": \"valid-release\",\n  \"payload\": {\n    \"index\": \"0000000000000000\",\n    \"inputs\": {},\n    \"seed\": [\n      {\n        \"path\": [\n          0\n        ],\n        \"type\": \"string\",\n        \"value\": \"production\"\n      },\n      {\n        \"path\": [\n          1\n        ],\n        \"type\": \"string\",\n        \"value\": \"dot-ssh\"\n      },\n      {\n        \"path\": [\n          2\n        ],\n        \"type\": \"string\",\n        \"value\": \"identity\"\n      },\n      {\n        \"path\": [\n          3\n        ],\n        \"type\": \"string\",\n        \"value\": \"github\"\n      }\n    ],\n    \"standard-output\": \"\",\n    \"targets\": [\n      \"identity.asc\"\n    ],\n    \"text\": \"identity\",\n    \"temporary\": false\n  }\n}\n" ;
                                                                                         text = ''check-redis --exclude'' ;
+                                                                                }
+                                                                                {
+                                                                                        process = "post" ;
+                                                                                        standard-output = "183" ;
+                                                                                        text = "check-redis" ;
                                                                                 }
                                                                         ] ;
 
