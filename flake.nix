@@ -1253,7 +1253,7 @@
                                                         ] ;
                                                     src = ./. ;
                                                 } ;
-                                            standard =
+                                            tests =
                                                 {
                                                     happy =
                                                         {
