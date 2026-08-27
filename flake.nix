@@ -1350,6 +1350,10 @@
                                                                                         standard-output = "183" ;
                                                                                         text = "check-redis" ;
                                                                                 }
+                                                                                {
+                                                                                        process = "post" ;
+                                                                                        text = ''"$RESOURCES"/clean.sh'' ;
+                                                                                }
                                                                         ] ;
 
 #                                                                        [
