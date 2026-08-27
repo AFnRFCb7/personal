@@ -1330,10 +1330,10 @@
                                                                                         standard-output = "183" ;
                                                                                         text = "check-redis" ;
                                                                                 }
-                                                                                {
-                                                                                    process = "post" ;
-                                                                                    text = "sleep 10s" ;
-                                                                                }
+#                                                                                {
+#                                                                                        process = "post" ;
+#                                                                                        text = "sleep 10s" ;
+#                                                                                }
                                                                                 {
                                                                                         process = "post" ;
                                                                                         reads = false ;
