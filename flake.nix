@@ -1408,7 +1408,7 @@
                                                                                             {
                                                                                                     process = "post" ;
                                                                                                     reads = false ;
-                                                                                                    standard-output = cleaned ;
+                                                                                                    standard-output = cleaned-files ;
                                                                                                     text = "check-files" ;
                                                                                             }
                                                                                             {
