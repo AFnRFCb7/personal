@@ -1266,7 +1266,7 @@
                                                                                 {
                                                                                         process = "pre" ;
                                                                                         reads = false ;
-                                                                                        standard-output = "{\n  \"cat\": \"\",\n  \"name\": \"/home/checker/resources/check.lock\",\n  \"stat\": \"-rw-r--r--\",\n  \"type\": \"directory\"\n}\n{\n  \"cat\": \"[]\",\n  \"name\": \"/home/checker/resources/log.yaml\",\n  \"stat\": \"-rw-r--r--\",\n  \"type\": \"directory\"\n}\n" ;
+                                                                                        standard-output = "{\n  \"cat\": \"[]\",\n  \"name\": \"/home/checker/resources/log.yaml\",\n  \"stat\": \"-rw-r--r--\",\n  \"type\": \"directory\"\n}\n" ;
                                                                                         text = "check-files" ;
                                                                                 }
                                                                                 {
