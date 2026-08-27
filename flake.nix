@@ -1386,7 +1386,27 @@
                                                                                                     index :
                                                                                                         {
                                                                                                                 process = "post" ;
-                                                                                                                standard-output = "{\n  \"type\": \"message\",\n  \"channel\": \"valid-release\",\n  \"payload\": {\n    \"index\": \"${ index }\",\n    \"standard-output\": \"\",\n    \"status\": \"0\"\n  }\n}\n" ;
+                                                                                                                standard-output =
+                                                                                                                    let
+                                                                                                                        derivation =
+                                                                                                                            pkgs.runCommand
+                                                                                                                                "standard-output.json"
+                                                                                                                                { nativeBuildInputs = [ pkgs.jq ] ; }
+                                                                                                                                ''
+                                                                                                                                    jq \
+                                                                                                                                        --null-input \
+                                                                                                                                        '{
+                                                                                                                                            "type" : "message" ,
+                                                                                                                                            "channel" : "valid-release" ,
+                                                                                                                                            "payload" :
+                                                                                                                                                {
+                                                                                                                                                    "index": "${ index }" ,
+                                                                                                                                                    "standard-output": "",
+                                                                                                                                                    "status": "0"
+                                                                                                                                                }
+                                                                                                                                        }' > $out ;
+                                                                                                                                '' ;
+                                                                                                                        in builtins.readFile derivation ;
                                                                                                                 text = ''check-redis --exclude'' ;
                                                                                                         } ;
                                                                                                 in builtins.map mapper release
