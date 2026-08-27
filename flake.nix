@@ -1337,7 +1337,7 @@
                                                                                                     seed :
                                                                                                         {
                                                                                                             process = "pre" ;
-                                                                                                            standard-output = "{\n  \"type\": \"message\",\n  \"channel\": \"valid-init\",\n  \"payload\": {\n    \"arguments\": [],\n    \"index\": \"0000000000000000\",\n    \"inputs\": {},\n    \"seed\": ${ builtins.toJSON seed }\n    \"temporary\": false\n  }\n}\n" ;
+                                                                                                            standard-output = "{\n  \"type\": \"message\",\n  \"channel\": \"valid-init\",\n  \"payload\": {\n    \"arguments\": [],\n    \"index\": \"0000000000000000\",\n    \"inputs\": {},\n    \"seed\": ${ builtins.toJSON seed },\n    \"temporary\": false\n  }\n}\n" ;
                                                                                                             text = ''check-redis --exclude'' ;
                                                                                                         } ;
                                                                                                 in
