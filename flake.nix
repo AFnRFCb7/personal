@@ -1334,10 +1334,19 @@
                                                                                         (
                                                                                             let
                                                                                                 mapper =
-                                                                                                    seed :
+                                                                                                    init :
                                                                                                         {
                                                                                                             process = "pre" ;
-                                                                                                            standard-output = "{\n  \"type\": \"message\",\n  \"channel\": \"valid-init\",\n  \"payload\": {\n    \"arguments\": [],\n    \"index\": \"0000000000000000\",\n    \"inputs\": {},\n    \"seed\": ${ builtins.toJSON seed },\n    \"temporary\": false\n  }\n}\n" ;
+                                                                                                            standard-output =
+                                                                                                                let
+                                                                                                                    derivation =
+                                                                                                                        pkgs.runCommand
+                                                                                                                            "init.json"
+                                                                                                                            { nativeBuildInputs = [ pkgs.jq ] ; }
+                                                                                                                            ''
+                                                                                                                                jq --null-input '${ builtins.toJSON init }' > $out
+                                                                                                                            '' ;
+                                                                                                                    in builtins.readFile derivation ;
                                                                                                             text = ''check-redis --exclude'' ;
                                                                                                         } ;
                                                                                                 in
@@ -1466,12 +1475,15 @@
                                                                     files = "{\n  \"name\": \"/home/checker/resources\",\n  \"stat\": \"drwxr-xr-x\",\n  \"type\": \"directory\"\n}\n{\n  \"name\": \"/home/checker/resources/canonical\",\n  \"stat\": \"drwxr-xr-x\",\n  \"type\": \"directory\"\n}\n{\n  \"name\": \"/home/checker/resources/canonical/6d6aa4a9f7504a8ae0dbc19fb4dc54d048b781b07f92ac0753f6f980954e66b3bea86219302c9e0bfb727301efae2766812ed8cf13af98fc0c592342f7fc0a6b\",\n  \"stat\": \"lrwxrwxrwx\",\n  \"type\": \"directory\"\n}\n{\n  \"cat\": \"\",\n  \"name\": \"/home/checker/resources/clean.lock\",\n  \"stat\": \"-rw-r--r--\",\n  \"type\": \"regular file\"\n}\n{\n  \"name\": \"/home/checker/resources/flags\",\n  \"stat\": \"drwxr-xr-x\",\n  \"type\": \"directory\"\n}\n{\n  \"cat\": \"- channel: valid-init\\n  payload:\\n    arguments: []\\n    index: \\\"0000000000000000\\\"\\n    inputs: {}\\n    seed:\\n      - path:\\n          - 0\\n        type: string\\n        value: production\\n      - path:\\n          - 1\\n        type: string\\n        value: dot-ssh\\n      - path:\\n          - 2\\n        type: string\\n        value: identity\\n      - path:\\n          - 3\\n        type: string\\n        value: github\\n    standard-output: \\\"\\\"\\n    targets:\\n      - identity.asc\\n    text: identity\\n    temporary: false\\n  type: message\",\n  \"name\": \"/home/checker/resources/log.yaml\",\n  \"stat\": \"-rw-r--r--\",\n  \"type\": \"regular file\"\n}\n{\n  \"name\": \"/home/checker/resources/mounts\",\n  \"stat\": \"drwxr-xr-x\",\n  \"type\": \"directory\"\n}\n{\n  \"name\": \"/home/checker/resources/mounts/0000000000000000\",\n  \"stat\": \"drwxr-xr-x\",\n  \"type\": \"directory\"\n}\n{\n  \"cat\": \"-----BEGIN OPENSSH PRIVATE KEY-----\\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW\\nQyNTUxOQAAACAGm0ovS05RJfJeIFvzVLXKF2a9Efg9v6cDPI/frIAiGQAAAJCG8xbBhvMW\\nwQAAAAtzc2gtZWQyNTUxOQAAACAGm0ovS05RJfJeIFvzVLXKF2a9Efg9v6cDPI/frIAiGQ\\nAAAEA15sr1k2IFWcFRf5WAwSvj05E1I0hZNPuBo2pcIPRifAabSi9LTlEl8l4gW/NUtcoX\\nZr0R+D2/pwM8j9+sgCIZAAAAC2Vtb3J5QG5peG9zAQI=\\n-----END OPENSSH PRIVATE KEY-----\",\n  \"name\": \"/home/checker/resources/mounts/0000000000000000/identity.asc\",\n  \"stat\": \"-r--------\",\n  \"type\": \"regular file\"\n}\n{\n  \"name\": \"/home/checker/resources/release\",\n  \"stat\": \"drwxr-xr-x\",\n  \"type\": \"directory\"\n}\n{\n  \"name\": \"/home/checker/resources/release/0000000000000000\",\n  \"stat\": \"lrwxrwxrwx\",\n  \"type\": \"symbolic link\"\n}\n{\n  \"cat\": \"1\",\n  \"name\": \"/home/checker/resources/sequential\",\n  \"stat\": \"-rw-r--r--\",\n  \"type\": \"regular file\"\n}\n" ;
                                                                     init =
                                                                         [
-                                                                            [
-                                                                                { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                { path = [ 2 ] ; type = "string" ; value = "identity" ; }
-                                                                                { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                            ]
+                                                                            {
+                                                                                seed =
+                                                                                    [
+                                                                                        { path = [ 0 ] ; type = "string" ; value = "production" ; }
+                                                                                        { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+                                                                                        { path = [ 2 ] ; type = "string" ; value = "identity" ; }
+                                                                                        { path = [ 3 ] ; type = "string" ; value = "github" ; }
+                                                                                    ] ;
+                                                                            }
                                                                         ] ;
                                                                     release = [ "0000000000000000" ] ;
                                                                 }
