@@ -1447,7 +1447,7 @@
                                                                     init =
                                                                         [
                                                                             [
-                                                                                { path = [ 0 ] ; type = "string" ; value = "productionc" ; }
+                                                                                { path = [ 0 ] ; type = "string" ; value = "production" ; }
                                                                                 { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
                                                                                 { path = [ 2 ] ; type = "string" ; value = "identity" ; }
                                                                                 { path = [ 3 ] ; type = "string" ; value = "github" ; }
