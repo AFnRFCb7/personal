@@ -1253,10 +1253,201 @@
                                                         ] ;
                                                     src = ./. ;
                                                 } ;
+                                            standard =
+                                                {
+                                                    happy =
+                                                        {
+                                                            command ,
+                                                            files ,
+                                                            init ,
+                                                            release
+                                                        } :
+                                                            let
+                                                                cleaned-files = "{\n  \"name\": \"/home/checker/resources\",\n  \"stat\": \"drwxr-xr-x\",\n  \"type\": \"directory\"\n}\n" ;
+                                                                empty-files = "{\n  \"name\": \"/home/checker/resources\",\n  \"stat\": \"drwxr-xr-x\",\n  \"type\": \"directory\"\n}\n{\n  \"cat\": \"[]\",\n  \"name\": \"/home/checker/resources/log.yaml\",\n  \"stat\": \"-rw-r--r--\",\n  \"type\": \"regular file\"\n}\n" ;
+                                                                subscribe =
+                                                                    {
+                                                                        invalid-init = "{\n  \"type\": \"subscribe\",\n  \"channel\": \"invalid-init\",\n  \"payload\": 1\n}\n" ;
+                                                                        invalid-release = "{\n  \"type\": \"subscribe\",\n  \"channel\": \"invalid-release\",\n  \"payload\": 2\n}\n" ;
+                                                                        valid-init = "{\n  \"type\": \"subscribe\",\n  \"channel\": \"valid-init\",\n  \"payload\": 3\n}\n" ;
+                                                                        valid-release = "{\n  \"type\": \"subscribe\",\n  \"channel\": \"valid-release\",\n  \"payload\": 4\n}\n" ;
+                                                                    } ;
+                                                                in
+                                                                    _resource.check2
+                                                                        {
+                                                                            gc-roots-directory = "/home/checker/.gc-roots" ;
+                                                                            inputs =
+                                                                                builtins.concatLists
+                                                                                    [
+                                                                                        [
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    text = "force-sync" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    reads = false ;
+                                                                                                    standard-output = empty-files ;
+                                                                                                    text = "check-files" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    standard-output = subscribe.invalid-init ;
+                                                                                                    text = "check-redis" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    standard-output = subscribe.invalid-release ;
+                                                                                                    text = "check-redis" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    standard-output = subscribe.valid-init ;
+                                                                                                    text = "check-redis" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    standard-output = subscribe.valid-release ;
+                                                                                                    text = "check-redis" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    standard-output = "183" ;
+                                                                                                    text = "check-redis" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    standard-output = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                                                    text = command ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    text = "force-sync" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    reads = false ;
+                                                                                                    standard-output = files ;
+                                                                                                    text = "check-files" ;
+                                                                                            }
+                                                                                        ]
+                                                                                        (
+                                                                                            let
+                                                                                                mapper =
+                                                                                                    seed :
+                                                                                                        {
+                                                                                                            process = "pre" ;
+                                                                                                            standard-output = "{\n  \"type\": \"message\",\n  \"channel\": \"valid-init\",\n  \"payload\": {\n    \"arguments\": [],\n    \"index\": \"0000000000000000\",\n    \"inputs\": {},\n    \"seed\": ${ seed }\n    \"temporary\": false\n  }\n}\n" ;
+                                                                                                            text = ''check-redis --exclude'' ;
+                                                                                                        } ;
+                                                                                                in
+                                                                                                builtins.genList mapper init
+                                                                                        )
+                                                                                        [
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    standard-output = "183" ;
+                                                                                                    text = "check-redis" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "mid" ;
+                                                                                                    standard-output = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                                                    text = '' ${ command } '' ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    text = "force-sync" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    reads = false ;
+                                                                                                    standard-output = files ;
+                                                                                                    text = "check-files" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    standard-output = "183" ;
+                                                                                                    text = "check-redis" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "post" ;
+                                                                                                    text = "force-sync" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "post" ;
+                                                                                                    reads = false ;
+                                                                                                    standard-output = empty-files ;
+                                                                                                    text = "check-files" ;
+                                                                                            }
+                                                                                        ]
+                                                                                        (
+                                                                                            let
+                                                                                                mapper =
+                                                                                                    index :
+                                                                                                        {
+                                                                                                                process = "post" ;
+                                                                                                                standard-output = "{\n  \"type\": \"message\",\n  \"channel\": \"valid-release\",\n  \"payload\": {\n    \"index\": \"${ index }\",\n    \"standard-output\": \"\",\n    \"status\": \"0\"\n  }\n}\n" ;
+                                                                                                                text = ''check-redis --exclude'' ;
+                                                                                                        } ;
+                                                                                                in builtins.map mapper release
+                                                                                        )
+                                                                                        [
+                                                                                            {
+                                                                                                    process = "post" ;
+                                                                                                    standard-output = "183" ;
+                                                                                                    text = "check-redis" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "post" ;
+                                                                                                    text = ''"$RESOURCES"/clean.sh'' ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "post" ;
+                                                                                                    text = "force-sync" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "post" ;
+                                                                                                    reads = false ;
+                                                                                                    standard-output = cleaned ;
+                                                                                                    text = "check-files" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "post" ;
+                                                                                                    standard-output = "183" ;
+                                                                                                    text = "check-redis" ;
+                                                                                            }
+                                                                                        ]
+                                                                                    ] ;
+                                                                            name = "resource happy path : ${ command }" ;
+                                                                            nodes = { github = github ; client = client ; } ;
+                                                                            pkgs = pkgs ;
+                                                                            resources-directory = "/home/checker/resources" ;
+                                                                            tests =
+                                                                                action-derivation :
+                                                                                    [
+                                                                                        ''github.wait_for_unit("network-online.target")''
+                                                                                        ''client.wait_for_unit("network-online.target")''
+                                                                                        ''client.wait_for_unit("log.service")''
+                                                                                        ''client.wait_for_unit("release.service")''
+                                                                                        ''client.succeed("runuser checker -- ${ action-derivation }/execute")''
+                                                                                        ''client.copy_from_vm("/tmp/scratch/","scratch")''
+                                                                                        ''client.succeed("runuser checker -- ${ action-derivation }/test")''
+                                                                                    ] ;
+                                                                        } ;
+                                                } ;
                                         in
                                             builtins.listToAttrs
                                                 (
                                                     [
+                                                        (
+                                                            tests.happy
+                                                                {
+                                                                    command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
+                                                                    files = "{\n  \"name\": \"/home/checker/resources\",\n  \"stat\": \"drwxr-xr-x\",\n  \"type\": \"directory\"\n}\n{\n  \"name\": \"/home/checker/resources/canonical\",\n  \"stat\": \"drwxr-xr-x\",\n  \"type\": \"directory\"\n}\n{\n  \"name\": \"/home/checker/resources/canonical/6d6aa4a9f7504a8ae0dbc19fb4dc54d048b781b07f92ac0753f6f980954e66b3bea86219302c9e0bfb727301efae2766812ed8cf13af98fc0c592342f7fc0a6b\",\n  \"stat\": \"lrwxrwxrwx\",\n  \"type\": \"directory\"\n}\n{\n  \"cat\": \"\",\n  \"name\": \"/home/checker/resources/clean.lock\",\n  \"stat\": \"-rw-r--r--\",\n  \"type\": \"regular file\"\n}\n{\n  \"name\": \"/home/checker/resources/flags\",\n  \"stat\": \"drwxr-xr-x\",\n  \"type\": \"directory\"\n}\n{\n  \"cat\": \"- channel: valid-init\\n  payload:\\n    arguments: []\\n    index: \\\"0000000000000000\\\"\\n    inputs: {}\\n    seed:\\n      - path:\\n          - 0\\n        type: string\\n        value: production\\n      - path:\\n          - 1\\n        type: string\\n        value: dot-ssh\\n      - path:\\n          - 2\\n        type: string\\n        value: identity\\n      - path:\\n          - 3\\n        type: string\\n        value: github\\n    standard-output: \\\"\\\"\\n    targets:\\n      - identity.asc\\n    text: identity\\n    temporary: false\\n  type: message\",\n  \"name\": \"/home/checker/resources/log.yaml\",\n  \"stat\": \"-rw-r--r--\",\n  \"type\": \"regular file\"\n}\n{\n  \"name\": \"/home/checker/resources/mounts\",\n  \"stat\": \"drwxr-xr-x\",\n  \"type\": \"directory\"\n}\n{\n  \"name\": \"/home/checker/resources/mounts/0000000000000000\",\n  \"stat\": \"drwxr-xr-x\",\n  \"type\": \"directory\"\n}\n{\n  \"cat\": \"-----BEGIN OPENSSH PRIVATE KEY-----\\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW\\nQyNTUxOQAAACAGm0ovS05RJfJeIFvzVLXKF2a9Efg9v6cDPI/frIAiGQAAAJCG8xbBhvMW\\nwQAAAAtzc2gtZWQyNTUxOQAAACAGm0ovS05RJfJeIFvzVLXKF2a9Efg9v6cDPI/frIAiGQ\\nAAAEA15sr1k2IFWcFRf5WAwSvj05E1I0hZNPuBo2pcIPRifAabSi9LTlEl8l4gW/NUtcoX\\nZr0R+D2/pwM8j9+sgCIZAAAAC2Vtb3J5QG5peG9zAQI=\\n-----END OPENSSH PRIVATE KEY-----\",\n  \"name\": \"/home/checker/resources/mounts/0000000000000000/identity.asc\",\n  \"stat\": \"-r--------\",\n  \"type\": \"regular file\"\n}\n{\n  \"name\": \"/home/checker/resources/release\",\n  \"stat\": \"drwxr-xr-x\",\n  \"type\": \"directory\"\n}\n{\n  \"name\": \"/home/checker/resources/release/0000000000000000\",\n  \"stat\": \"lrwxrwxrwx\",\n  \"type\": \"symbolic link\"\n}\n{\n  \"cat\": \"1\",\n  \"name\": \"/home/checker/resources/sequential\",\n  \"stat\": \"-rw-r--r--\",\n  \"type\": \"regular file\"\n}\n" ;
+                                                                    init = [ ''[\n      {\n        \"path\": [\n          0\n        ],\n        \"type\": \"string\",\n        \"value\": \"production\"'' ] ;
+                                                                    release = [ "0000000000000000" ] ;
+                                                                }
+                                                        )
                                                         (
                                                             _resource.check2
                                                                 {
