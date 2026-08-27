@@ -1341,7 +1341,7 @@
                                                                                                             text = ''check-redis --exclude'' ;
                                                                                                         } ;
                                                                                                 in
-                                                                                                builtins.genList mapper init
+                                                                                                builtins.map mapper init
                                                                                         )
                                                                                         [
                                                                                             {
