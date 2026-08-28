@@ -1704,7 +1704,10 @@
                                                                                 type = "directory" ;
                                                                             }
                                                                             {
-                                                                                cat = "1" ;
+                                                                                cat =
+                                                                                    ''
+                                                                                        1
+                                                                                    '' ;
                                                                                 name = "/home/checker/resources/sequential" ;
                                                                                 stat = "-rw-r--r--" ;
                                                                                 type = "regular file" ;
