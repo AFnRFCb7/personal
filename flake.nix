@@ -1394,7 +1394,7 @@
                                                                                             {
                                                                                                     process = "post" ;
                                                                                                     reads = false ;
-                                                                                                    standard-output = released-files ;
+                                                                                                    standard-output = release-files ;
                                                                                                     text = "check-files" ;
                                                                                             }
                                                                                         ]
