@@ -1331,7 +1331,7 @@
                                                                                                     process = "pre" ;
                                                                                                     reads = false ;
                                                                                                     standard-output = files.empty ;
-                                                                                                    text = "check-files" ;
+                                                                                                    text = "check-files --delete true" ;
                                                                                             }
                                                                                             {
                                                                                                     process = "pre" ;
@@ -1371,7 +1371,7 @@
                                                                                                     process = "pre" ;
                                                                                                     reads = false ;
                                                                                                     standard-output = files.init ;
-                                                                                                    text = "check-files" ;
+                                                                                                    text = "check-files --delete false" ;
                                                                                             }
                                                                                         ]
                                                                                         (
@@ -1422,7 +1422,7 @@
                                                                                                     process = "pre" ;
                                                                                                     reads = false ;
                                                                                                     standard-output = files.init ;
-                                                                                                    text = "check-files" ;
+                                                                                                    text = "check-files --delete true" ;
                                                                                             }
                                                                                             {
                                                                                                     process = "pre" ;
@@ -1437,7 +1437,7 @@
                                                                                                     process = "post" ;
                                                                                                     reads = false ;
                                                                                                     standard-output = files.release ;
-                                                                                                    text = "check-files" ;
+                                                                                                    text = "check-files --delete true" ;
                                                                                             }
                                                                                         ]
                                                                                         (
