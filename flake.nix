@@ -1265,18 +1265,23 @@
                                                         } :
                                                             let
                                                                 files =
-                                                                    {
-                                                                        init =
-                                                                            let
-                                                                                derivation =
-                                                                                    pkgs.runCommand
-                                                                                        "init.json"
-                                                                                        { nativeBuildInputs = [ pkgs.jq ] ; }
-                                                                                        ''
-                                                                                            jq --null-input --sort-keys '${ builtins.toJSON init-files }' > $out
-                                                                                        '' ;
+                                                                    let
+                                                                        json =
+                                                                            json :
+                                                                                let
+                                                                                    derivation =
+                                                                                        pkgs.runCommand
+                                                                                            "init.json"
+                                                                                            { nativeBuildInputs = [ pkgs.jq ] ; }
+                                                                                            ''
+                                                                                                jq --null-input --sort-keys '${ builtins.toJSON json }' > $out
+                                                                                            '' ;
                                                                                     in builtins.readFile derivation ;
-                                                                    } ;
+                                                                        in
+                                                                            {
+                                                                                init = json init-files ;
+                                                                                release = json release-files ;
+                                                                            } ;
                                                                 cleaned-files = "[\n  {\n    \"name\": \"/home/checker/resources\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  }\n]\n" ;
                                                                 empty-files =  "[\n  {\n    \"name\": \"/home/checker/resources\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  },\n  {\n    \"cat\": \"[]\",\n    \"name\": \"/home/checker/resources/log.yaml\",\n    \"stat\": \"-rw-r--r--\",\n    \"type\": \"regular file\"\n  }\n]\n" ;
                                                                 subscribe =
@@ -1614,7 +1619,97 @@
                                                                             }
                                                                         ]  ;
                                                                     release = [ "0000000000000000" ] ;
-                                                                    release-files = "[\n  {\n    \"name\": \"/home/checker/resources\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  },\n  {\n    \"cat\": \"\",\n    \"name\": \"/home/checker/resources/0000000000000000.lock\",\n    \"stat\": \"-rw-r--r--\",\n    \"type\": \"regular file\"\n  },\n  {\n    \"name\": \"/home/checker/resources/canonical\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  },\n  {\n    \"name\": \"/home/checker/resources/canonical/6d6aa4a9f7504a8ae0dbc19fb4dc54d048b781b07f92ac0753f6f980954e66b3bea86219302c9e0bfb727301efae2766812ed8cf13af98fc0c592342f7fc0a6b\",\n    \"stat\": \"lrwxrwxrwx\",\n    \"type\": \"symbolic link\"\n  },\n  {\n    \"cat\": \"\",\n    \"name\": \"/home/checker/resources/clean.lock\",\n    \"stat\": \"-rw-r--r--\",\n    \"type\": \"regular file\"\n  },\n  {\n    \"name\": \"/home/checker/resources/flags\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  },\n  {\n    \"cat\": \"- channel: valid-init\\n  payload:\\n    arguments: []\\n    index: \\\"0000000000000000\\\"\\n    inputs: {}\\n    seed:\\n      - path:\\n          - 0\\n        type: string\\n        value: production\\n      - path:\\n          - 1\\n        type: string\\n        value: dot-ssh\\n      - path:\\n          - 2\\n        type: string\\n        value: identity\\n      - path:\\n          - 3\\n        type: string\\n        value: github\\n    standard-output: \\\"\\\"\\n    targets:\\n      - identity.asc\\n    temporary: false\\n    text: identity\\n  type: message\\n- channel: valid-release\\n  payload:\\n    index: \\\"0000000000000000\\\"\\n    standard-output: \\\"\\\"\\n    status: \\\"0\\\"\\n  type: message\",\n    \"name\": \"/home/checker/resources/log.yaml\",\n    \"stat\": \"-rw-r--r--\",\n    \"type\": \"regular file\"\n  },\n  {\n    \"name\": \"/home/checker/resources/mounts\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  },\n  {\n    \"name\": \"/home/checker/resources/release\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  },\n  {\n    \"cat\": \"1\",\n    \"name\": \"/home/checker/resources/sequential\",\n    \"stat\": \"-rw-r--r--\",\n    \"type\": \"regular file\"\n  }\n]\n" ;                                                                }
+                                                                    release-files =
+                                                                        [
+                                                                           {
+                                                                                name = "/home/checker/resources" ;
+                                                                                stat = "drwxr-xr-x" ;
+                                                                                type = "directory" ;
+                                                                            }
+                                                                            {
+                                                                                cat = "" ;
+                                                                                name = "/home/checker/resources/0000000000000000.lock" ;
+                                                                                stat = "-rw-r--r--" ;
+                                                                                type = "regular file" ;
+                                                                            }
+                                                                            {
+                                                                                name = "/home/checker/resources/canonical" ;
+                                                                                stat = "drwxr-xr-x" ;
+                                                                                type = "directory" ;
+                                                                            }
+                                                                            {
+                                                                                name = "/home/checker/resources/canonical/6d6aa4a9f7504a8ae0dbc19fb4dc54d048b781b07f92ac0753f6f980954e66b3bea86219302c9e0bfb727301efae2766812ed8cf13af98fc0c592342f7fc0a6b" ;
+                                                                                stat = "lrwxrwxrwx" ;
+                                                                                type = "symbolic link" ;
+                                                                            }
+                                                                            {
+                                                                                cat = "" ;
+                                                                                name = "/home/checker/resources/clean.lock" ;
+                                                                                stat = "-rw-r--r--" ;
+                                                                                type = "regular file" ;
+                                                                            }
+                                                                            {
+                                                                                name = "/home/checker/resources/flags" ;
+                                                                                stat = "drwxr-xr-x" ;
+                                                                                type = "directory" ;
+                                                                            }
+                                                                            {
+                                                                                cat =
+                                                                                    ''- channel: valid-init
+                                                                                        payload:
+                                                                                        arguments: []
+                                                                                        index: "0000000000000000"
+                                                                                        inputs: {}
+                                                                                        seed:
+                                                                                          - path:
+                                                                                              - 0
+                                                                                            type: string
+                                                                                            value: production
+                                                                                          - path:
+                                                                                              - 1
+                                                                                            type: string
+                                                                                            value: dot-ssh
+                                                                                          - path:
+                                                                                              - 2
+                                                                                            type: string
+                                                                                            value: identity
+                                                                                          - path:
+                                                                                              - 3
+                                                                                            type: string
+                                                                                            value: github
+                                                                                        standard-output: ""
+                                                                                        targets:
+                                                                                          - identity.asc
+                                                                                        temporary: false
+                                                                                        text: identity
+                                                                                        type: message
+                                                                                        - channel: valid-release
+                                                                                        payload:
+                                                                                        index: "0000000000000000"
+                                                                                        standard-output: ""
+                                                                                        status: "0"
+                                                                                        type: message'' ;
+                                                                                name = "/home/checker/resources/log.yaml" ;
+                                                                                stat = "-rw-r--r--" ;
+                                                                                type = "regular file" ;
+                                                                            }
+                                                                            {
+                                                                                name = "/home/checker/resources/mounts" ;
+                                                                                stat = "drwxr-xr-x" ;
+                                                                                type = "directory" ;
+                                                                            }
+                                                                            {
+                                                                                name = "/home/checker/resources/release" ;
+                                                                                stat = "drwxr-xr-x" ;
+                                                                                type = "directory" ;
+                                                                            }
+                                                                            {
+                                                                                cat = "1" ;
+                                                                                name = "/home/checker/resources/sequential" ;
+                                                                                stat = "-rw-r--r--" ;
+                                                                                type = "regular file" ;
+                                                                            }
+                                                                        ] ;
                                                         )
 #                                                        (
 #                                                            _resource.check2
