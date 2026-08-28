@@ -1269,7 +1269,7 @@
                                                                         init =
                                                                             let
                                                                                 derivation =
-                                                                                    pkgs.runtimeCommand
+                                                                                    pkgs.runCommand
                                                                                         "init.json"
                                                                                         { nativeBuildInputs = [ pkgs.jq ] ; }
                                                                                         ''
