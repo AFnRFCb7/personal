@@ -1820,7 +1820,7 @@
                                                                             {
                                                                                 name = "/home/checker/resources/release/0000000000000000" ;
                                                                                 stat = "lrwxrwxrwx" ;
-                                                                                target = "/nix/store/d7np0ikc4kzrpbgaz73shn504f26isyy-release/bin/release" ;
+                                                                                target = "/nix/store/s5w50p4m7xm69d06jbsvrgvghc0pid4m-release/bin/release" ;
                                                                                 type = "symbolic link" ;
                                                                             }
                                                                             {
