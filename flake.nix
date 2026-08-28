@@ -1553,7 +1553,7 @@
                                                                             {
                                                                                 name = "/home/checker/resources/canonical/6d6aa4a9f7504a8ae0dbc19fb4dc54d048b781b07f92ac0753f6f980954e66b3bea86219302c9e0bfb727301efae2766812ed8cf13af98fc0c592342f7fc0a6b" ;
                                                                                 stat = "lrwxrwxrwx" ;
-                                                                                type = "directory" ;
+                                                                                type = "symbolic link" ;
                                                                             }
                                                                             {
                                                                                 cat = "" ;
