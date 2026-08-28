@@ -1273,7 +1273,7 @@
                                                                                         "init.json"
                                                                                         { nativeBuildInputs = [ pkgs.jq ] ; }
                                                                                         ''
-                                                                                            jq --null-input --sort-keys '${ builtins.toJSON input-files }' > $out
+                                                                                            jq --null-input --sort-keys '${ builtins.toJSON init-files }' > $out
                                                                                         '' ;
                                                                                     in builtins.readFile derivation ;
                                                                     } ;
@@ -1341,7 +1341,7 @@
                                                                                             {
                                                                                                     process = "pre" ;
                                                                                                     reads = false ;
-                                                                                                    standard-output = init-files ;
+                                                                                                    standard-output = files.init ;
                                                                                                     text = "check-files" ;
                                                                                             }
                                                                                         ]
@@ -1392,7 +1392,7 @@
                                                                                             {
                                                                                                     process = "pre" ;
                                                                                                     reads = false ;
-                                                                                                    standard-output = init-files ;
+                                                                                                    standard-output = files.init ;
                                                                                                     text = "check-files" ;
                                                                                             }
                                                                                             {
