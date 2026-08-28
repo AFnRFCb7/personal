@@ -1552,7 +1552,7 @@
                                                                                 type = "directory" ;
                                                                             }
                                                                             {
-                                                                                name = "/home/checker/resources/canonical/6d6aa4a9f7504a8ae0dbc19fb4dc54d048b781b07f92ac0753f6f980954e66b3bea86219302c9e0bfb727301efae2766812ed8cf13af98fc0c592342f7fc0a6b" ;
+                                                                                name = "/home/checker/resources/canonical/68b45fb93af883c4bf2105f8f5bd94c87499ffa9d180bf1a458dcfd02101a2cf86f81c5a14be784f294710e431125505407f79be96f6f38f292f8bfb81556880" ;
                                                                                 stat = "lrwxrwxrwx" ;
                                                                                 type = "symbolic link" ;
                                                                             }
@@ -1631,7 +1631,7 @@
                                                                                 type = "regular file" ;
                                                                             }
                                                                         ]  ;
-                                                                    non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
+                                                                    non-deterministic-regular-files = [ ] ;
                                                                     release = [ "0000000000000000" ] ;
                                                                     release-files =
                                                                         [
