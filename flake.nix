@@ -1344,7 +1344,7 @@
                                                                                                                             "init.json"
                                                                                                                             { nativeBuildInputs = [ pkgs.jq ] ; }
                                                                                                                             ''
-                                                                                                                                PAYLOAD="$( jq --null-input '${ builtins.toJSON init } + { "arguments" : [ ] , "inputs" : { } , "standard-output" : "" , "temporary" : false }' )" || exit 151
+                                                                                                                                PAYLOAD="$( jq --null-input --sort-keys '${ builtins.toJSON init } + { "arguments" : [ ] , "inputs" : { } , "standard-output" : "" , "temporary" : false }' )" || exit 151
                                                                                                                                 jq \
                                                                                                                                     --null-input \
                                                                                                                                     --argjson PAYLOAD "$PAYLOAD" \
