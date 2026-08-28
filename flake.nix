@@ -1353,7 +1353,7 @@
                                                                                                                                             {
                                                                                                                                                 ${ builtins.toJSON init }
                                                                                                                                             }
-                                                                                                                                    } + { "arguments" : [ ] , "inputs" : { } , "standard-output" : "" , "temporary" : false }' > $out
+                                                                                                                                    } + { "payload" : { "arguments" : [ ] , "inputs" : { } , "standard-output" : "" , "temporary" : false } }' > $out
                                                                                                                             '' ;
                                                                                                                     in builtins.readFile derivation ;
                                                                                                             text = ''check-redis --exclude'' ;
