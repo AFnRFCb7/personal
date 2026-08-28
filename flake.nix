@@ -1279,6 +1279,30 @@
                                                                                     in builtins.readFile derivation ;
                                                                         in
                                                                             {
+                                                                                cleaned =
+                                                                                    json
+                                                                                        [
+                                                                                            {
+                                                                                                name = "/home/checker/resources" ;
+                                                                                                stat = "drwxr-xr-x" ;
+                                                                                                type = "directory" ;
+                                                                                            }
+                                                                                        ] ;
+                                                                                empty =
+                                                                                    json
+                                                                                        [
+                                                                                            {
+                                                                                                name = "/home/checker/resources" ;
+                                                                                                stat = "drwxr-xr-x" ;
+                                                                                                type = "directory" ;
+                                                                                            }
+                                                                                            {
+                                                                                                log = [ ] ;
+                                                                                                name = "/home/checker/resources/log.yaml" ;
+                                                                                                stat = "drwxr-xr-x" ;
+                                                                                                type = "log file" ;
+                                                                                            }
+                                                                                        ] ;
                                                                                 init = json init-files ;
                                                                                 release = json release-files ;
                                                                             } ;
@@ -1306,7 +1330,7 @@
                                                                                             {
                                                                                                     process = "pre" ;
                                                                                                     reads = false ;
-                                                                                                    standard-output = empty-files ;
+                                                                                                    standard-output = files.empty ;
                                                                                                     text = "check-files" ;
                                                                                             }
                                                                                             {
