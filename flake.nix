@@ -1344,7 +1344,16 @@
                                                                                                                             "init.json"
                                                                                                                             { nativeBuildInputs = [ pkgs.jq ] ; }
                                                                                                                             ''
-                                                                                                                                jq --null-input '${ builtins.toJSON init }' > $out
+                                                                                                                                jq \
+                                                                                                                                    --null-input \
+                                                                                                                                    '{
+                                                                                                                                        "type" : "message" ,
+                                                                                                                                        "channel" : "valid-init" ,
+                                                                                                                                        "payload" :
+                                                                                                                                            {
+                                                                                                                                                ${ builtins.toJSON init }
+                                                                                                                                            }
+                                                                                                                                    } + { "arguments" : [ ] , "inputs" : { } , "standard-output" : "" , "temporary" : false }' > $out
                                                                                                                             '' ;
                                                                                                                     in builtins.readFile derivation ;
                                                                                                             text = ''check-redis --exclude'' ;
@@ -1476,6 +1485,7 @@
                                                                     init =
                                                                         [
                                                                             {
+                                                                                index = "0000000000000000" ;
                                                                                 seed =
                                                                                     [
                                                                                         { path = [ 0 ] ; type = "string" ; value = "production" ; }
@@ -1483,6 +1493,8 @@
                                                                                         { path = [ 2 ] ; type = "string" ; value = "identity" ; }
                                                                                         { path = [ 3 ] ; type = "string" ; value = "github" ; }
                                                                                     ] ;
+                                                                                targets = [ "identity.asc" ] ;
+                                                                                text = "identity" ;
                                                                             }
                                                                         ] ;
                                                                     release = [ "0000000000000000" ] ;
