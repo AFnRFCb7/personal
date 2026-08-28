@@ -1614,7 +1614,8 @@
                                                                                         wQAAAAtzc2gtZWQyNTUxOQAAACAGm0ovS05RJfJeIFvzVLXKF2a9Efg9v6cDPI/frIAiGQ
                                                                                         AAAEA15sr1k2IFWcFRf5WAwSvj05E1I0hZNPuBo2pcIPRifAabSi9LTlEl8l4gW/NUtcoX
                                                                                         Zr0R+D2/pwM8j9+sgCIZAAAAC2Vtb3J5QG5peG9zAQI=
-                                                                                        -----END OPENSSH PRIVATE KEY-----'' ;
+                                                                                        -----END OPENSSH PRIVATE KEY-----
+                                                                                    '' ;
                                                                                 name = "/home/checker/resources/mounts/0000000000000000/identity.asc" ;
                                                                                 stat = "-r--------" ;
                                                                                 type = "regular file" ;
@@ -1630,7 +1631,10 @@
                                                                                 type = "symbolic link" ;
                                                                             }
                                                                             {
-                                                                                cat = "1" ;
+                                                                                cat =
+                                                                                    ''
+                                                                                        1
+                                                                                    '' ;
                                                                                 name = "/home/checker/resources/sequential" ;
                                                                                 stat = "-rw-r--r--" ;
                                                                                 type = "regular file" ;
