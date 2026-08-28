@@ -1264,7 +1264,7 @@
                                                             released-files
                                                         } :
                                                             let
-                                                                cleaned-files = "{\n  \"name\": \"/home/checker/resources\",\n  \"stat\": \"drwxr-xr-x\",\n  \"type\": \"directory\"\n}\n" ;
+                                                                cleaned-files =  "[\n  {\n    \"name\": \"/home/checker/resources\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  },\n  {\n    \"cat\": \"[]\",\n    \"name\": \"/home/checker/resources/log.yaml\",\n    \"stat\": \"-rw-r--r--\",\n    \"type\": \"regular file\"\n  }\n]\n" ;
                                                                 empty-files = "{\n  \"name\": \"/home/checker/resources\",\n  \"stat\": \"drwxr-xr-x\",\n  \"type\": \"directory\"\n}\n{\n  \"cat\": \"[]\",\n  \"name\": \"/home/checker/resources/log.yaml\",\n  \"stat\": \"-rw-r--r--\",\n  \"type\": \"regular file\"\n}\n" ;
                                                                 subscribe =
                                                                     {
