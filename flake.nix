@@ -1412,7 +1412,7 @@
                                                                                             {
                                                                                                     process = "post" ;
                                                                                                     reads = false ;
-                                                                                                    standard-output = release-files ;
+                                                                                                    standard-output = files.release ;
                                                                                                     text = "check-files" ;
                                                                                             }
                                                                                         ]
