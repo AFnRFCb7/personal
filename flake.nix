@@ -1260,6 +1260,7 @@
                                                             command ,
                                                             init ,
                                                             init-files ,
+                                                            non-deterministic-regular-files ,
                                                             release ,
                                                             release-files
                                                         } :
@@ -1371,7 +1372,7 @@
                                                                                                     process = "pre" ;
                                                                                                     reads = false ;
                                                                                                     standard-output = files.init ;
-                                                                                                    text = "check-files --delete false" ;
+                                                                                                    text = "check-files --delete false ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) ) }" ;
                                                                                             }
                                                                                         ]
                                                                                         (
@@ -1422,7 +1423,7 @@
                                                                                                     process = "pre" ;
                                                                                                     reads = false ;
                                                                                                     standard-output = files.init ;
-                                                                                                    text = "check-files --delete true" ;
+                                                                                                    text = "check-files --delete true ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) ) }" ;
                                                                                             }
                                                                                             {
                                                                                                     process = "pre" ;
@@ -1630,6 +1631,7 @@
                                                                                 type = "regular file" ;
                                                                             }
                                                                         ]  ;
+                                                                    non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
                                                                     release = [ "0000000000000000" ] ;
                                                                     release-files =
                                                                         [
@@ -1826,6 +1828,7 @@
                                                                                 type = "regular file" ;
                                                                             }
                                                                         ]  ;
+                                                                    non-deterministic-regular-files = [ ] ;
                                                                     release = [ "0000000000000000" ] ;
                                                                     release-files =
                                                                         [
