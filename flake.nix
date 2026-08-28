@@ -1620,7 +1620,7 @@
                                                                             {
                                                                                 name = "/home/checker/resources/release/0000000000000000" ;
                                                                                 stat = "lrwxrwxrwx" ;
-                                                                                target = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                                target = "/nix/store/d7np0ikc4kzrpbgaz73shn504f26isyy-release/bin/release" ;
                                                                                 type = "symbolic link" ;
                                                                             }
                                                                             {
@@ -1820,7 +1820,7 @@
                                                                             {
                                                                                 name = "/home/checker/resources/release/0000000000000000" ;
                                                                                 stat = "lrwxrwxrwx" ;
-                                                                                target = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                                target = "/nix/store/d7np0ikc4kzrpbgaz73shn504f26isyy-release/bin/release" ;
                                                                                 type = "symbolic link" ;
                                                                             }
                                                                             {
