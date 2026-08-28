@@ -1710,6 +1710,7 @@
                                                                                 type = "regular file" ;
                                                                             }
                                                                         ] ;
+                                                                }
                                                         )
 #                                                        (
 #                                                            _resource.check2
