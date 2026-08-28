@@ -1675,7 +1675,7 @@
                                                                                 log =
                                                                                     [
                                                                                         {
-                                                                                            channel = "valid-init" ;
+                                                                                            channel = "valid-release" ;
                                                                                             payload =
                                                                                                 {
                                                                                                     arguments = [ ] ;
