@@ -1570,7 +1570,7 @@
                                                                                 log =
                                                                                     [
                                                                                         {
-                                                                                            channel = "valid-init"
+                                                                                            channel = "valid-init" ;
                                                                                             payload =
                                                                                                 {
                                                                                                     arguments = [ ] ;
