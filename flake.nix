@@ -1299,7 +1299,7 @@
                                                                                             {
                                                                                                 log = [ ] ;
                                                                                                 name = "/home/checker/resources/log.yaml" ;
-                                                                                                stat = "drwxr-xr-x" ;
+                                                                                                stat = "-rw-r--r--" ;
                                                                                                 type = "log file" ;
                                                                                             }
                                                                                         ] ;
