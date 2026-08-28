@@ -1631,7 +1631,7 @@
                                                                                 type = "regular file" ;
                                                                             }
                                                                         ]  ;
-                                                                    non-deterministic-regular-files = [ ] ;
+                                                                    non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
                                                                     release = [ "0000000000000000" ] ;
                                                                     release-files =
                                                                         [
