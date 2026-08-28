@@ -1349,11 +1349,8 @@
                                                                                                                                     '{
                                                                                                                                         "type" : "message" ,
                                                                                                                                         "channel" : "valid-init" ,
-                                                                                                                                        "payload" :
-                                                                                                                                            {
-                                                                                                                                                ${ builtins.toJSON init }
-                                                                                                                                            }
-                                                                                                                                    } ' > $out
+                                                                                                                                        "payload" : ${ builtins.toJSON init }
+                                                                                                                                    } + { "payload" : { "arguments" : [ ] , "inputs" : { } , "standard-output" : "" , "temporary" : false } }' > $out
                                                                                                                             '' ;
                                                                                                                     in builtins.readFile derivation ;
                                                                                                             text = ''check-redis --exclude'' ;
