@@ -1344,13 +1344,15 @@
                                                                                                                             "init.json"
                                                                                                                             { nativeBuildInputs = [ pkgs.jq ] ; }
                                                                                                                             ''
+                                                                                                                                PAYLOAD="$( jq --null-input '${ builtins.toJSON init } + { "arguments" : [ ] , "inputs" : { } , "standard-output" : "" , "temporary" : false }' )" || exit 151
                                                                                                                                 jq \
                                                                                                                                     --null-input \
+                                                                                                                                    --argjson PAYLOAD "$PAYLOAD" \
                                                                                                                                     '{
                                                                                                                                         "type" : "message" ,
                                                                                                                                         "channel" : "valid-init" ,
-                                                                                                                                        "payload" : ${ builtins.toJSON init }
-                                                                                                                                    } + { "payload" : { "arguments" : [ ] , "inputs" : { } , "standard-output" : "" , "temporary" : false } }' > $out
+                                                                                                                                        "payload" : $PAYLOAD
+                                                                                                                                    }' > $out
                                                                                                                             '' ;
                                                                                                                     in builtins.readFile derivation ;
                                                                                                             text = ''check-redis --exclude'' ;
