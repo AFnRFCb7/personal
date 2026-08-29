@@ -1230,10 +1230,14 @@
                                                                                         chmod 0400 "$OUT/dot-ssh/identity.asc"
                                                                                         ssh-keygen -f "$OUT/dot-ssh/identity.asc" -y > "$OUT/dot-ssh/identity.pub.asc"
                                                                                         chmod 0400 "$OUT/dot-ssh/identity.pub.asc"
+                                                                                        mkdir --parents "$OUT/hashes/production/dot-ssh/config"
+                                                                                        echo -n "68b45fb93af883c4bf2105f8f5bd94c87499ffa9d180bf1a458dcfd02101a2cf86f81c5a14be784f294710e431125505407f79be96f6f38f292f8bfb81556880" > "$OUT/hashes/production/dot-ssh/config/github"
                                                                                         mkdir --parents "$OUT/hashes/production/dot-ssh/known-hosts"
                                                                                         echo -n "68b45fb93af883c4bf2105f8f5bd94c87499ffa9d180bf1a458dcfd02101a2cf86f81c5a14be784f294710e431125505407f79be96f6f38f292f8bfb81556880" > "$OUT/hashes/production/dot-ssh/known-hosts/github"
                                                                                         mkdir --parents "$OUT/hashes/production/dot-ssh/identity"
                                                                                         echo -n "6d6aa4a9f7504a8ae0dbc19fb4dc54d048b781b07f92ac0753f6f980954e66b3bea86219302c9e0bfb727301efae2766812ed8cf13af98fc0c592342f7fc0a6b" > "$OUT/hashes/production/dot-ssh/identity/github"
+                                                                                        mkdir --parents "$OUT/releases/production/config/known-hosts"
+                                                                                        echo -n "/nix/store/hc4888hcs670ldpy8myrh7vvz3hamzb4-release/bin/release" > "$OUT/releases/production/dot-ssh/config/github"
                                                                                         mkdir --parents "$OUT/releases/production/dot-ssh/known-hosts"
                                                                                         echo -n "/nix/store/hc4888hcs670ldpy8myrh7vvz3hamzb4-release/bin/release" > "$OUT/releases/production/dot-ssh/known-hosts/github"
                                                                                         mkdir --parents "$OUT/releases/production/dot-ssh/identity"
@@ -1560,7 +1564,7 @@
                                                                                 type = "directory" ;
                                                                             }
                                                                             {
-                                                                                name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/dot-ssh/known-hosts/github" }" ;
+                                                                                name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/dot-ssh/config/github" }" ;
                                                                                 stat = "lrwxrwxrwx" ;
                                                                                 target = "/home/checker/resources/mounts/0000000000000000" ;
                                                                                 type = "symbolic link" ;
@@ -1568,13 +1572,13 @@
                                                                             {
                                                                                 name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/dot-ssh/known-hosts/github" }" ;
                                                                                 stat = "lrwxrwxrwx" ;
-                                                                                target = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                                target = "/home/checker/resources/mounts/0000000000000001" ;
                                                                                 type = "symbolic link" ;
                                                                             }
                                                                             {
                                                                                 name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/dot-ssh/known-hosts/github" }" ;
                                                                                 stat = "lrwxrwxrwx" ;
-                                                                                target = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                                target = "/home/checker/resources/mounts/0000000000000002" ;
                                                                                 type = "symbolic link" ;
                                                                             }
                                                                             {
@@ -1670,6 +1674,7 @@
                                                                                 type = "directory" ;
                                                                             }
                                                                             {
+                                                                                cat = "WTF" ;
                                                                                 name = "/home/checker/resources/mounts/0000000000000000/config.asc" ;
                                                                                 stat = "-r--------" ;
                                                                                 type = "regular file" ;
@@ -1682,7 +1687,7 @@
                                                                             {
                                                                                 name = "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ;
                                                                                 stat = "-r--------" ;
-                                                                                type = "regular file" ;
+                                                                                type = "non-deterministic regular file" ;
                                                                             }
                                                                             {
                                                                                 name = "/home/checker/resources/mounts/0000000000000002" ;
@@ -1690,9 +1695,10 @@
                                                                                 type = "directory" ;
                                                                             }
                                                                             {
+                                                                                cat = builtins.readFile "${ shared }/dot-ssh/identity.asc" ;
                                                                                 name = "/home/checker/resources/mounts/0000000000000002/identity.asc" ;
                                                                                 stat = "-r--------" ;
-                                                                                type = "non-deterministic regular file" ;
+                                                                                type = "regular file" ;
                                                                             }
                                                                             {
                                                                                 name = "/home/checker/resources/release" ;
@@ -1702,19 +1708,19 @@
                                                                             {
                                                                                 name = "/home/checker/resources/release/0000000000000000" ;
                                                                                 stat = "lrwxrwxrwx" ;
-                                                                                target = builtins.readFile "${ shared }/releases/production/dot-ssh/known-hosts/github" ;
+                                                                                target = builtins.readFile "${ shared }/releases/production/dot-ssh/config/github" ;
                                                                                 type = "symbolic link" ;
                                                                             }
                                                                             {
-                                                                                name = "/home/checker/resources/release/0000000000000000" ;
+                                                                                name = "/home/checker/resources/release/0000000000000001" ;
                                                                                 stat = "lrwxrwxrwx" ;
                                                                                 target = builtins.readFile "${ shared }/releases/production/dot-ssh/known-hosts/github" ;
                                                                                 type = "symbolic link" ;
                                                                             }
                                                                             {
-                                                                                name = "/home/checker/resources/release/0000000000000000" ;
+                                                                                name = "/home/checker/resources/release/0000000000000002" ;
                                                                                 stat = "lrwxrwxrwx" ;
-                                                                                target = builtins.readFile "${ shared }/releases/production/dot-ssh/known-hosts/github" ;
+                                                                                target = builtins.readFile "${ shared }/releases/production/dot-ssh/identity/github" ;
                                                                                 type = "symbolic link" ;
                                                                             }
                                                                             {
