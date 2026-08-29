@@ -1802,7 +1802,7 @@
                                                                                 type = "directory" ;
                                                                             }
                                                                             {
-                                                                                cat = builtins.readFile "${ shared }/dot-ssh/identity.pub.asc" ;
+                                                                                cat = builtins.readFile "${ shared }/dot-ssh/identity.asc" ;
 #                                                                                    ''
 #                                                                                        -----BEGIN OPENSSH PRIVATE KEY-----
 #                                                                                        b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
