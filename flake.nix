@@ -243,16 +243,13 @@
                                                                                                                                                                     (
                                                                                                                                                                         pkgs.writeShellApplication
                                                                                                                                                                             {
-                                                                                                                                                                                name = "config" ;
+                                                                                                                                                                                name = "dot-ssh-configure" ;
                                                                                                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                                                                                 text =
                                                                                                                                                                                     ''
-                                                                                                                                                                                        if true ; then echo 4424371314254471 > config.asc && chmod 0400 config.asc && exit 0 ; fi
                                                                                                                                                                                         # shellcheck disable=SC2288
                                                                                                                                                                                         KNOWN_HOSTS="$( "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]' )" || exit 106
                                                                                                                                                                                         ln --symbolic "$KNOWN_HOSTS" /gc-root/known-hosts
-                                                                                                                                                                                        # KLUDGE FOR TESTING
-                                                                                                                                                                                        sleep 1s
                                                                                                                                                                                         # shellcheck disable=SC2288
                                                                                                                                                                                         IDENTITY="$( "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' )" || exit 133
                                                                                                                                                                                         ln --symbolic "$IDENTITY" /gc-root/identity
@@ -269,7 +266,7 @@
                                                                                                                                                                             }
                                                                                                                                                                     )
                                                                                                                                                                 ] ;
-                                                                                                                                                        text = "config" ;
+                                                                                                                                                        text = "dot-ssh-configure" ;
                                                                                                                                                     } ;
                                                                                                                                             recovery =
                                                                                                                                                 {
@@ -1540,18 +1537,6 @@
                                                                     init =
                                                                         [
                                                                             {
-                                                                                index = "0000000000000002" ;
-                                                                                seed =
-                                                                                    [
-                                                                                        { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                        { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                        { path = [ 2 ] ; type = "string" ; value = "identity" ; }
-                                                                                        { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                    ] ;
-                                                                                targets = [ "identity.asc" ] ;
-                                                                                text = "identity" ;
-                                                                            }
-                                                                            {
                                                                                 index = "0000000000000001" ;
                                                                                 seed =
                                                                                     [
@@ -1564,6 +1549,18 @@
                                                                                 text = "known-hosts" ;
                                                                             }
                                                                             {
+                                                                                index = "0000000000000002" ;
+                                                                                seed =
+                                                                                    [
+                                                                                        { path = [ 0 ] ; type = "string" ; value = "production" ; }
+                                                                                        { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+                                                                                        { path = [ 2 ] ; type = "string" ; value = "identity" ; }
+                                                                                        { path = [ 3 ] ; type = "string" ; value = "github" ; }
+                                                                                    ] ;
+                                                                                targets = [ "identity.asc" ] ;
+                                                                                text = "identity" ;
+                                                                            }
+                                                                            {
                                                                                 index = "0000000000000000" ;
                                                                                 seed =
                                                                                     [
@@ -1573,7 +1570,7 @@
                                                                                         { path = [ 3 ] ; type = "string" ; value = "github" ; }
                                                                                     ] ;
                                                                                 targets = [ "config.asc" ] ;
-                                                                                text = "config" ;
+                                                                                text = "dot-ssh-configure" ;
                                                                             }
                                                                         ] ;
                                                                     init-files =
