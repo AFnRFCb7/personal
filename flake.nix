@@ -230,7 +230,7 @@
                                                                                                                     github =
                                                                                                                         ignore :
                                                                                                                             {
-                                                                                                                                error = 101 ;
+                                                                                                                                error = 195 ;
                                                                                                                                 init =
                                                                                                                                     ignore :
                                                                                                                                         {
