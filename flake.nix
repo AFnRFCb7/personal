@@ -1242,6 +1242,8 @@
                                                                                         age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/dot-gnupg/ownertrust.asc" "$OUT/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age"
                                                                                         age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/dot-gnupg/secret-keys.asc" "$OUT/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age"
                                                                                         mkdir --parents "$OUT/repository/secrets/plaintext/dot-ssh/mobile"
+
+                                                                                        mkdir --parents "$OUT/repository/secrets/plaintext/dot-ssh/mobile"
                                                                                         age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/dot-ssh/mobile/user-keyd.asc" "$OUT/repository/secrets/ciphertext/dot-ssh/mobile/known-hosts.asc.age"
                                                                                         cat "$OUT/repository/secrets/ciphertext/dot-ssh/mobile/identity.asc.age" >&2
                                                                                         age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/dot-ssh/mobile/identity.asc" "$OUT/repository/secrets/ciphertext/dot-ssh/mobile/identity.asc.age"
@@ -1670,7 +1672,16 @@
                                                                                 type = "directory" ;
                                                                             }
                                                                             {
-                                                                                cat = builtins.readFile "${ shared }/secrets/plaintext/dot-ssh/github/identity" ;
+                                                                                cat =
+                                                                                    ''
+                                                                                        -----BEGIN OPENSSH PRIVATE KEY-----
+                                                                                        b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+                                                                                        QyNTUxOQAAACAGm0ovS05RJfJeIFvzVLXKF2a9Efg9v6cDPI/frIAiGQAAAJCG8xbBhvMW
+                                                                                        wQAAAAtzc2gtZWQyNTUxOQAAACAGm0ovS05RJfJeIFvzVLXKF2a9Efg9v6cDPI/frIAiGQ
+                                                                                        AAAEA15sr1k2IFWcFRf5WAwSvj05E1I0hZNPuBo2pcIPRifAabSi9LTlEl8l4gW/NUtcoX
+                                                                                        Zr0R+D2/pwM8j9+sgCIZAAAAC2Vtb3J5QG5peG9zAQI=
+                                                                                        -----END OPENSSH PRIVATE KEY-----
+                                                                                    '' ;
                                                                                 name = "/home/checker/resources/mounts/0000000000000002/identity.asc" ;
                                                                                 stat = "-r--------" ;
                                                                                 type = "regular file" ;
