@@ -268,7 +268,7 @@
                                                                                                                                                                             }
                                                                                                                                                                     )
                                                                                                                                                                 ] ;
-                                                                                                                                                        text = "config.asc" ;
+                                                                                                                                                        text = "config" ;
                                                                                                                                                     } ;
                                                                                                                                             recovery =
                                                                                                                                                 {
