@@ -1532,7 +1532,6 @@
                                                                         [
                                                                             {
                                                                                 index = "0000000000000000" ;
-                                                                                index = "0000000000000000" ;
                                                                                 seed =
                                                                                     [
                                                                                         { path = [ 0 ] ; type = "string" ; value = "production" ; }
