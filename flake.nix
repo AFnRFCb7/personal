@@ -247,6 +247,7 @@
                                                                                                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                                                                                 text =
                                                                                                                                                                                     ''
+                                                                                                                                                                                        if true ; then touch config.asc && chmod 0400 config.asc && exit 0 ; fi
                                                                                                                                                                                         # shellcheck disable=SC2288
                                                                                                                                                                                         KNOWN_HOSTS="$( "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]' )" || exit 106
                                                                                                                                                                                         ln --symbolic "$KNOWN_HOSTS" /gc-root/known-hosts
