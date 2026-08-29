@@ -255,7 +255,7 @@
                                                                                                                                                                                         # shellcheck disable=SC2288
                                                                                                                                                                                         IDENTITY="$( "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' )"
                                                                                                                                                                                         ln --symbolic "$IDENTITY" /gc-root/identity
-                                                                                                                                                                                        cat > config <<EOF
+                                                                                                                                                                                        cat > config.asc <<EOF
                                                                                                                                                                                         Host github.com
                                                                                                                                                                                             HostName ${ config.personal.secrets.host }
                                                                                                                                                                                             User git
@@ -263,7 +263,7 @@
                                                                                                                                                                                             UserKnownHostsFile $KNOWN_HOSTS/known-hosts.asc
                                                                                                                                                                                             StrictHostKeyChecking no
                                                                                                                                                                                         EOF
-                                                                                                                                                                                        chmod 0400 config
+                                                                                                                                                                                        chmod 0400 config.asc
                                                                                                                                                                                     '' ;
                                                                                                                                                                             }
                                                                                                                                                                     )
