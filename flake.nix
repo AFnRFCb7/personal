@@ -1237,7 +1237,7 @@
                                                                                         mkdir --parents "$OUT/hashes/production/dot-ssh/known-hosts"
                                                                                         echo -n "6d6aa4a9f7504a8ae0dbc19fb4dc54d048b781b07f92ac0753f6f980954e66b3bea86219302c9e0bfb727301efae2766812ed8cf13af98fc0c592342f7fc0a6b" > "$OUT/hashes/production/dot-ssh/known-hosts/github"
                                                                                         mkdir --parents "$OUT/releases/production/dot-ssh/known-hosts"
-                                                                                        echo -n "/nix/store/s5w50p4m7xm69d06jbsvrgvghc0pid4m-release/bin/release"" > "$OUT/releases/production/dot-ssh/known-hosts/github"
+                                                                                        echo -n "/nix/store/s5w50p4m7xm69d06jbsvrgvghc0pid4m-release/bin/release" > "$OUT/releases/production/dot-ssh/known-hosts/github"
                                                                                         mkdir --parents "$OUT/repository/secrets/ciphertext/dot-gnupg"
                                                                                         ln --symbolic ${ builtins.toFile "ownertrust.asc.age" secrets.dot-gnupg.ownertrust } "$OUT/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age"
                                                                                         ln --symbolic ${ builtins.toFile "secret-keys.asc.age" secrets.dot-gnupg.secret-keys } "$OUT/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age"
@@ -1819,7 +1819,7 @@
                                                                             {
                                                                                 name = "/home/checker/resources/release/0000000000000000" ;
                                                                                 stat = "lrwxrwxrwx" ;
-                                                                                target = builtins.readFile "${ shared }/releases/production/dot-ssh/known-hosts/github" ;
+                                                                                target = builtins.readFile "${ shared }/releases/production/dot-ssh/identity/github" ;
                                                                                 type = "symbolic link" ;
                                                                             }
                                                                             {
