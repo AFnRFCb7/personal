@@ -1662,12 +1662,6 @@
                                                                                 type = "directory" ;
                                                                             }
                                                                             {
-                                                                                name = "/home/checker/resources/canonical/68b45fb93af883c4bf2105f8f5bd94c87499ffa9d180bf1a458dcfd02101a2cf86f81c5a14be784f294710e431125505407f79be96f6f38f292f8bfb81556880" ;
-                                                                                stat = "lrwxrwxrwx" ;
-                                                                                target = "/home/checker/resources/mounts/0000000000000000" ;
-                                                                                type = "symbolic link" ;
-                                                                            }
-                                                                            {
                                                                                 cat = "" ;
                                                                                 name = "/home/checker/resources/clean.lock" ;
                                                                                 stat = "-rw-r--r--" ;
