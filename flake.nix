@@ -1539,6 +1539,30 @@
                                                                     init =
                                                                         [
                                                                             {
+                                                                                index = "0000000000000002" ;
+                                                                                seed =
+                                                                                    [
+                                                                                        { path = [ 0 ] ; type = "string" ; value = "production" ; }
+                                                                                        { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+                                                                                        { path = [ 2 ] ; type = "string" ; value = "identity" ; }
+                                                                                        { path = [ 3 ] ; type = "string" ; value = "github" ; }
+                                                                                    ] ;
+                                                                                targets = [ "identity.asc" ] ;
+                                                                                text = "identity" ;
+                                                                            }
+                                                                            {
+                                                                                index = "0000000000000001" ;
+                                                                                seed =
+                                                                                    [
+                                                                                        { path = [ 0 ] ; type = "string" ; value = "production" ; }
+                                                                                        { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+                                                                                        { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
+                                                                                        { path = [ 3 ] ; type = "string" ; value = "github" ; }
+                                                                                    ] ;
+                                                                                targets = [ "known-hosts.asc" ] ;
+                                                                                text = "known-hosts" ;
+                                                                            }
+                                                                            {
                                                                                 index = "0000000000000000" ;
                                                                                 seed =
                                                                                     [
