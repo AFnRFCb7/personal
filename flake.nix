@@ -1813,7 +1813,7 @@
                                                                                             channel = "valid-release" ;
                                                                                             payload =
                                                                                                 {
-                                                                                                    index = "0000000000000001" ;
+                                                                                                    index = "0000000000000000" ;
                                                                                                     standard-output = "" ;
                                                                                                     status = "0" ;
                                                                                                 } ;
@@ -1833,7 +1833,7 @@
                                                                                             channel = "valid-release" ;
                                                                                             payload =
                                                                                                 {
-                                                                                                    index = "0000000000000000" ;
+                                                                                                    index = "0000000000000001" ;
                                                                                                     standard-output = "" ;
                                                                                                     status = "0" ;
                                                                                                 } ;
