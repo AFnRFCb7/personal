@@ -2441,7 +2441,7 @@
                                                                                 type = "symbolic link" ;
                                                                             }
                                                                             {
-                                                                                name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/repository/secrets" }" ;
+                                                                                name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/repository/secrets" }" ;
                                                                                 stat = "lrwxrwxrwx" ;
                                                                                 target = "/home/checker/resources/mounts/0000000000000000" ;
                                                                                 type = "symbolic link" ;
