@@ -431,7 +431,7 @@
                                                                                                             secrets =
                                                                                                                 ignore :
                                                                                                                     {
-                                                                                                                        error = 166 ;
+                                                                                                                        error = 143 ;
                                                                                                                         init =
                                                                                                                             ignore :
                                                                                                                                 {
@@ -454,6 +454,7 @@
                                                                                                                                                                                 CONFIG="$( "$RESOURCES"/resources/'["production","dot-ssh","config","github"]' )" || exit 172
                                                                                                                                                                                 git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $CONFIG/config.asc"
                                                                                                                                                                                 ln --symbolic "$CONFIG" /gc-root/config
+                                                                                                                                                                                ls -lah "$CONFIG" >&2
                                                                                                                                                                              '' ;
                                                                                                                                                                     }
                                                                                                                                                             )
