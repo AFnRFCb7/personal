@@ -2368,14 +2368,14 @@
                                                                                     ''
                                                                                         git init 2>&1
                                                                                         configure-ssh
-                                                                                        git config user.email "${ config.personal.secrets.email }"
-                                                                                        git config user.name "${ config.personal.secrets.name }"
-                                                                                        git remote add origin "${ config.personal.secrets.remotes.ssh }"
-                                                                                        git fetch origin "${ config.personal.secrets.branch }" 2>&1
-                                                                                        git checkout "${ config.personal.secrets.branch }" 2>&1
+                                                                                        git config user.email "Checker Checks"
+                                                                                        git config user.name "checker@checks"
+                                                                                        git remote add origin "wtf"
+                                                                                        git fetch origin "wtf" 2>&1
+                                                                                        git checkout "wtf" 2>&1
                                                                                     '' ;
                                                                             }
-                                                                        ] ; ###FINDMEB
+                                                                        ] ;
                                                                     init-files =
                                                                         [
                                                                             {
