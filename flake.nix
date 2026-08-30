@@ -315,7 +315,7 @@
                                                                                                                                                             } ;
                                                                                                                                                 } ;
                                                                                                                                         } ;
-                                                                                                                                targets = [ "config" ] ;
+                                                                                                                                targets = [ "config.asc" ] ;
                                                                                                                                 temporary = false ;
                                                                                                                             } ;
                                                                                                                 } ;
