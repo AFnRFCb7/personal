@@ -1764,7 +1764,7 @@
                                                                             }
                                                                         ]  ;
                                                                     non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" ] ;
-                                                                    release = [ "0000000000000001" "0000000000000002" "0000000000000000" ] ;
+                                                                    release = [ "0000000000000000" "0000000000000001" "0000000000000002" ] ;
                                                                     release-files =
                                                                         [
                                                                            {
@@ -1823,7 +1823,7 @@
                                                                                             channel = "valid-release" ;
                                                                                             payload =
                                                                                                 {
-                                                                                                    index = "0000000000000002" ;
+                                                                                                    index = "0000000000000001" ;
                                                                                                     standard-output = "" ;
                                                                                                     status = "0" ;
                                                                                                 } ;
@@ -1833,7 +1833,7 @@
                                                                                             channel = "valid-release" ;
                                                                                             payload =
                                                                                                 {
-                                                                                                    index = "0000000000000001" ;
+                                                                                                    index = "0000000000000002" ;
                                                                                                     standard-output = "" ;
                                                                                                     status = "0" ;
                                                                                                 } ;
