@@ -1595,6 +1595,38 @@
                                                                     init-files =
                                                                         [
                                                                             {
+                                                                                name = "/home/checker/.gc-roots" ;
+                                                                                stat = "drwxr-xr-x" ;
+                                                                                type = "directory" ;
+                                                                            }
+                                                                            {
+                                                                                name = "/home/checker/.gc-roots/0000000000000000" ;
+                                                                                stat = "drwxr-xr-x" ;
+                                                                                type = "directory" ;
+                                                                            }
+                                                                            {
+                                                                                name = "/home/checker/.gc-roots/0000000000000000/identity" ;
+                                                                                stat = "drwxr-xr-x" ;
+                                                                                target = "/home/checker/resources/mounts/0000000000000002" ;
+                                                                                type = "symbolic link" ;
+                                                                            }
+                                                                            {
+                                                                                name = "/home/checker/.gc-roots/0000000000000000/known-hosts" ;
+                                                                                stat = "drwxr-xr-x" ;
+                                                                                target = "/home/checker/resources/mounts/0000000000000001" ;
+                                                                                type = "symbolic link" ;
+                                                                            }
+                                                                            {
+                                                                                name = "/home/checker/.gc-roots/0000000000000001" ;
+                                                                                stat = "drwxr-xr-x" ;
+                                                                                type = "directory" ;
+                                                                            }
+                                                                            {
+                                                                                name = "/home/checker/.gc-roots/0000000000000002" ;
+                                                                                stat = "drwxr-xr-x" ;
+                                                                                type = "directory" ;
+                                                                            }
+                                                                            {
                                                                                 name = "/home/checker/resources" ;
                                                                                 stat = "drwxr-xr-x" ;
                                                                                 type = "directory" ;
