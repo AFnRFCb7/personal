@@ -315,7 +315,7 @@
                                                                                                                                                             } ;
                                                                                                                                                 } ;
                                                                                                                                         } ;
-                                                                                                                                targets = [ "config" ] ;
+                                                                                                                                targets = [ "config.asc" ] ;
                                                                                                                                 temporary = false ;
                                                                                                                             } ;
                                                                                                                 } ;
@@ -1615,6 +1615,12 @@
                                                                                 type = "directory" ;
                                                                             }
                                                                             {
+                                                                                cat = "" ;
+                                                                                name = "/home/checker/resources/flags/0000000000000000" ;
+                                                                                stat = "-rw-r--r--" ;
+                                                                                type = "regular file" ;
+                                                                            }
+                                                                            {
                                                                                 log =
                                                                                     [
                                                                                         {
@@ -1676,7 +1682,7 @@
                                                                                                     standard-output = "" ;
                                                                                                     targets = [ "config.asc" ] ;
                                                                                                     temporary = false ;
-                                                                                                    text = "config" ;
+                                                                                                    text = "dot-ssh-configure" ;
                                                                                                 } ;
                                                                                             type = "message" ;
                                                                                         }
@@ -1697,7 +1703,15 @@
                                                                             }
                                                                             {
                                                                                 cat = "WTF" ;
-                                                                                name = "/home/checker/resources/mounts/0000000000000000/config.asc" ;
+                                                                                name =
+                                                                                    ''
+                                                                                        Host github.com
+                                                                                            HostName 192.168.2.234
+                                                                                            User git
+                                                                                            IdentityFile /home/checker/resources/mounts/0000000000000002/identity.asc
+                                                                                            UserKnownHostsFile /home/checker/resources/mounts/0000000000000001/known-hosts.asc
+                                                                                            StrictHostKeyChecking no
+                                                                                    '' ;
                                                                                 stat = "-r--------" ;
                                                                                 type = "regular file" ;
                                                                             }
@@ -1707,7 +1721,7 @@
                                                                                 type = "directory" ;
                                                                             }
                                                                             {
-                                                                                name = "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ;
+                                                                                name = "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" ;
                                                                                 stat = "-r--------" ;
                                                                                 type = "non-deterministic regular file" ;
                                                                             }
