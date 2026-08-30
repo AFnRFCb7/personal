@@ -1232,7 +1232,7 @@
                                                                                         OUT="$1"
                                                                                         mkdir --parents  "$OUT"
                                                                                         mkdir --parents "$OUT/artifacts/production/dot-ssh/config/github"
-                                                                                        ln --symbolic ${ artifacts.github 0 } "$OUT/artifacts/production/config/github/config.asc"
+                                                                                        ln --symbolic ${ artifacts.github 0 } "$OUT/artifacts/production/dot-ssh/config/github/config.asc"
                                                                                         echo -en ${ branch } > "$OUT/branch"
                                                                                         echo -en ${ ip } > "$OUT/ip"
                                                                                         mkdir --parents "$OUT/age"
