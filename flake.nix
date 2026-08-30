@@ -469,7 +469,7 @@
                                                                                                                                                         git checkout "${ config.personal.secrets.branch }" 2>&1
                                                                                                                                                     '' ;
                                                                                                                                             } ;
-                                                                                                                                } ;
+                                                                                                                                } ; ###FINDMEA
                                                                                                                         release =
                                                                                                                             ignore :
                                                                                                                                 {
@@ -2246,334 +2246,360 @@
                                                                         ] ;
                                                                 }
                                                         )
-                                                        (
-                                                            tests.happy
-                                                                {
-                                                                    command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","config","github"]'   '' ;
-                                                                    init =
-                                                                        [
-                                                                            {
-                                                                                index = "0000000000000001" ;
-                                                                                seed =
-                                                                                    [
-                                                                                        { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                        { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                        { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
-                                                                                        { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                    ] ;
-                                                                                targets = [ "known-hosts.asc" ] ;
-                                                                                text = "known-hosts" ;
-                                                                            }
-                                                                            {
-                                                                                index = "0000000000000002" ;
-                                                                                seed =
-                                                                                    [
-                                                                                        { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                        { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                        { path = [ 2 ] ; type = "string" ; value = "identity" ; }
-                                                                                        { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                    ] ;
-                                                                                targets = [ "identity.asc" ] ;
-                                                                                text = "identity" ;
-                                                                            }
-                                                                            {
-                                                                                index = "0000000000000000" ;
-                                                                                seed =
-                                                                                    [
-                                                                                        { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                        { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                        { path = [ 2 ] ; type = "string" ; value = "config" ; }
-                                                                                        { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                    ] ;
-                                                                                targets = [ "config.asc" ] ;
-                                                                                text = "dot-ssh-configure" ;
-                                                                            }
-                                                                        ] ;
-                                                                    init-files =
-                                                                        [
-                                                                            {
-                                                                                name = "/home/checker/resources" ;
-                                                                                stat = "drwxr-xr-x" ;
-                                                                                type = "directory" ;
-                                                                            }
-                                                                            {
-                                                                                name = "/home/checker/resources/canonical" ;
-                                                                                stat = "drwxr-xr-x" ;
-                                                                                type = "directory" ;
-                                                                            }
-                                                                            {
-                                                                                name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/dot-ssh/config/github" }" ;
-                                                                                stat = "lrwxrwxrwx" ;
-                                                                                target = "/home/checker/resources/mounts/0000000000000000" ;
-                                                                                type = "symbolic link" ;
-                                                                            }
-                                                                            {
-                                                                                name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/dot-ssh/known-hosts/github" }" ;
-                                                                                stat = "lrwxrwxrwx" ;
-                                                                                target = "/home/checker/resources/mounts/0000000000000001" ;
-                                                                                type = "symbolic link" ;
-                                                                            }
-                                                                            {
-                                                                                name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/dot-ssh/identity/github" }" ;
-                                                                                stat = "lrwxrwxrwx" ;
-                                                                                target = "/home/checker/resources/mounts/0000000000000002" ;
-                                                                                type = "symbolic link" ;
-                                                                            }
-                                                                            {
-                                                                                cat = "" ;
-                                                                                name = "/home/checker/resources/clean.lock" ;
-                                                                                stat = "-rw-r--r--" ;
-                                                                                type = "regular file" ;
-                                                                            }
-                                                                            {
-                                                                                name = "/home/checker/resources/flags" ;
-                                                                                stat = "drwxr-xr-x" ;
-                                                                                type = "directory" ;
-                                                                            }
-                                                                            {
-                                                                                log =
-                                                                                    [
-                                                                                        {
-                                                                                            channel = "valid-init" ;
-                                                                                            payload =
-                                                                                                {
-                                                                                                    arguments = [ ] ;
-                                                                                                    index = "0000000000000001" ;
-                                                                                                    inputs = { } ;
-                                                                                                    seed =
-                                                                                                        [
-                                                                                                            { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                            { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                                            { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
-                                                                                                            { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                                        ] ;
-                                                                                                    standard-output = "" ;
-                                                                                                    targets = [ "known-hosts.asc" ] ;
-                                                                                                    temporary = false ;
-                                                                                                    text = "known-hosts" ;
-                                                                                                } ;
-                                                                                            type = "message" ;
-                                                                                        }
-                                                                                        {
-                                                                                            channel = "valid-init" ;
-                                                                                            payload =
-                                                                                                {
-                                                                                                    arguments = [ ] ;
-                                                                                                    index = "0000000000000002" ;
-                                                                                                    inputs = { } ;
-                                                                                                    seed =
-                                                                                                        [
-                                                                                                            { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                            { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                                            { path = [ 2 ] ; type = "string" ; value = "identity" ; }
-                                                                                                            { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                                        ] ;
-                                                                                                    standard-output = "" ;
-                                                                                                    targets = [ "identity.asc" ] ;
-                                                                                                    temporary = false ;
-                                                                                                    text = "identity" ;
-                                                                                                } ;
-                                                                                            type = "message" ;
-                                                                                        }
-                                                                                        {
-                                                                                            channel = "valid-init" ;
-                                                                                            payload =
-                                                                                                {
-                                                                                                    arguments = [ ] ;
-                                                                                                    index = "0000000000000000" ;
-                                                                                                    inputs = { } ;
-                                                                                                    seed =
-                                                                                                        [
-                                                                                                            { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                            { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                                            { path = [ 2 ] ; type = "string" ; value = "config" ; }
-                                                                                                            { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                                        ] ;
-                                                                                                    standard-output = "" ;
-                                                                                                    targets = [ "config.asc" ] ;
-                                                                                                    temporary = false ;
-                                                                                                    text = "dot-ssh-configure" ;
-                                                                                                } ;
-                                                                                            type = "message" ;
-                                                                                        }
-                                                                                    ] ;
-                                                                                name = "/home/checker/resources/log.yaml" ;
-                                                                                stat = "-rw-r--r--" ;
-                                                                                type = "log file" ;
-                                                                            }
-                                                                            {
-                                                                                name = "/home/checker/resources/mounts" ;
-                                                                                stat = "drwxr-xr-x" ;
-                                                                                type = "directory" ;
-                                                                            }
-                                                                            {
-                                                                                name = "/home/checker/resources/mounts/0000000000000000" ;
-                                                                                stat = "drwxr-xr-x" ;
-                                                                                type = "directory" ;
-                                                                            }
-                                                                            {
-                                                                                cat = builtins.readFile "${ shared }/artifacts/production/dot-ssh/config/github/config.asc" ;
-                                                                                name = "/home/checker/resources/mounts/0000000000000000/config.asc" ;
-                                                                                stat = "-r--------" ;
-                                                                                type = "regular file" ;
-                                                                            }
-                                                                            {
-                                                                                name = "/home/checker/resources/mounts/0000000000000001" ;
-                                                                                stat = "drwxr-xr-x" ;
-                                                                                type = "directory" ;
-                                                                            }
-                                                                            {
-                                                                                name = "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" ;
-                                                                                stat = "-r--------" ;
-                                                                                type = "non-deterministic regular file" ;
-                                                                            }
-                                                                            {
-                                                                                name = "/home/checker/resources/mounts/0000000000000002" ;
-                                                                                stat = "drwxr-xr-x" ;
-                                                                                type = "directory" ;
-                                                                            }
-                                                                            {
-                                                                                cat = builtins.readFile "${ shared }/dot-ssh/identity.asc" ;
-                                                                                name = "/home/checker/resources/mounts/0000000000000002/identity.asc" ;
-                                                                                stat = "-r--------" ;
-                                                                                type = "regular file" ;
-                                                                            }
-                                                                            {
-                                                                                name = "/home/checker/resources/release" ;
-                                                                                stat = "drwxr-xr-x" ;
-                                                                                type = "directory" ;
-                                                                            }
-                                                                            {
-                                                                                name = "/home/checker/resources/release/0000000000000000" ;
-                                                                                stat = "lrwxrwxrwx" ;
-                                                                                target = builtins.readFile "${ shared }/releases/production/dot-ssh/config/github" ;
-                                                                                type = "symbolic link" ;
-                                                                            }
-                                                                            {
-                                                                                name = "/home/checker/resources/release/0000000000000001" ;
-                                                                                stat = "lrwxrwxrwx" ;
-                                                                                target = builtins.readFile "${ shared }/releases/production/dot-ssh/known-hosts/github" ;
-                                                                                type = "symbolic link" ;
-                                                                            }
-                                                                            {
-                                                                                name = "/home/checker/resources/release/0000000000000002" ;
-                                                                                stat = "lrwxrwxrwx" ;
-                                                                                target = builtins.readFile "${ shared }/releases/production/dot-ssh/identity/github" ;
-                                                                                type = "symbolic link" ;
-                                                                            }
-                                                                            {
-                                                                                cat =
-                                                                                    ''
-                                                                                        3
-                                                                                    '' ;
-                                                                                name = "/home/checker/resources/sequential" ;
-                                                                                stat = "-rw-r--r--" ;
-                                                                                type = "regular file" ;
-                                                                            }
-                                                                        ]  ;
-                                                                    non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" ] ;
-                                                                    release = [ "0000000000000000" "0000000000000001" "0000000000000002" ] ;
-                                                                    release-files =
-                                                                        [
-                                                                           {
-                                                                                name = "/home/checker/resources" ;
-                                                                                stat = "drwxr-xr-x" ;
-                                                                                type = "directory" ;
-                                                                            }
-                                                                            {
-                                                                                cat = "" ;
-                                                                                name = "/home/checker/resources/0000000000000000.lock" ;
-                                                                                stat = "-rw-r--r--" ;
-                                                                                type = "regular file" ;
-                                                                            }
-                                                                            {
-                                                                                cat = "" ;
-                                                                                name = "/home/checker/resources/0000000000000001.lock" ;
-                                                                                stat = "-rw-r--r--" ;
-                                                                                type = "regular file" ;
-                                                                            }
-                                                                            {
-                                                                                cat = "" ;
-                                                                                name = "/home/checker/resources/0000000000000002.lock" ;
-                                                                                stat = "-rw-r--r--" ;
-                                                                                type = "regular file" ;
-                                                                            }
-                                                                            {
-                                                                                name = "/home/checker/resources/canonical" ;
-                                                                                stat = "drwxr-xr-x" ;
-                                                                                type = "directory" ;
-                                                                            }
-                                                                            {
-                                                                                cat = "" ;
-                                                                                name = "/home/checker/resources/clean.lock" ;
-                                                                                stat = "-rw-r--r--" ;
-                                                                                type = "regular file" ;
-                                                                            }
-                                                                            {
-                                                                                name = "/home/checker/resources/flags" ;
-                                                                                stat = "drwxr-xr-x" ;
-                                                                                type = "directory" ;
-                                                                            }
-                                                                            {
-                                                                                log =
-                                                                                    [
-                                                                                        {
-                                                                                            channel = "valid-release" ;
-                                                                                            payload =
-                                                                                                {
-                                                                                                    index = "0000000000000000" ;
-                                                                                                    standard-output = "" ;
-                                                                                                    status = "0" ;
-                                                                                                } ;
-                                                                                            type = "message" ;
-                                                                                        }
-                                                                                        {
-                                                                                            channel = "valid-release" ;
-                                                                                            payload =
-                                                                                                {
-                                                                                                    index = "0000000000000001" ;
-                                                                                                    standard-output = "" ;
-                                                                                                    status = "0" ;
-                                                                                                } ;
-                                                                                            type = "message" ;
-                                                                                        }
-                                                                                        {
-                                                                                            channel = "valid-release" ;
-                                                                                            payload =
-                                                                                                {
-                                                                                                    index = "0000000000000002" ;
-                                                                                                    standard-output = "" ;
-                                                                                                    status = "0" ;
-                                                                                                } ;
-                                                                                            type = "message" ;
-                                                                                        }
-                                                                                    ] ;
-                                                                                name = "/home/checker/resources/log.yaml" ;
-                                                                                stat = "-rw-r--r--" ;
-                                                                                type = "log file" ;
-                                                                            }
-                                                                            {
-                                                                                name = "/home/checker/resources/mounts" ;
-                                                                                stat = "drwxr-xr-x" ;
-                                                                                type = "directory" ;
-                                                                            }
-                                                                            {
-                                                                                name = "/home/checker/resources/release" ;
-                                                                                stat = "drwxr-xr-x" ;
-                                                                                type = "directory" ;
-                                                                            }
-                                                                            {
-                                                                                cat =
-                                                                                    ''
-                                                                                        3
-                                                                                    '' ;
-                                                                                name = "/home/checker/resources/sequential" ;
-                                                                                stat = "-rw-r--r--" ;
-                                                                                type = "regular file" ;
-                                                                            }
-                                                                        ] ;
-                                                                }
-                                                        )
+#                                                        (
+#                                                            tests.happy
+#                                                                {
+#                                                                    command = '' check-resource --expression "$RESOURCES"/resources/'["production","repository","secrets"]' '' ;
+#                                                                    init =
+#                                                                        [
+#                                                                            {
+#                                                                                index = "0000000000000002" ;
+#                                                                                seed =
+#                                                                                    [
+#                                                                                        { path = [ 0 ] ; type = "string" ; value = "production" ; }
+#                                                                                        { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+#                                                                                        { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
+#                                                                                        { path = [ 3 ] ; type = "string" ; value = "github" ; }
+#                                                                                    ] ;
+#                                                                                targets = [ "known-hosts.asc" ] ;
+#                                                                                text = "known-hosts" ;
+#                                                                            }
+#                                                                            {
+#                                                                                index = "0000000000000003" ;
+#                                                                                seed =
+#                                                                                    [
+#                                                                                        { path = [ 0 ] ; type = "string" ; value = "production" ; }
+#                                                                                        { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+#                                                                                        { path = [ 2 ] ; type = "string" ; value = "identity" ; }
+#                                                                                        { path = [ 3 ] ; type = "string" ; value = "github" ; }
+#                                                                                    ] ;
+#                                                                                targets = [ "identity.asc" ] ;
+#                                                                                text = "identity" ;
+#                                                                            }
+#                                                                            {
+#                                                                                index = "0000000000000001" ;
+#                                                                                seed =
+#                                                                                    [
+#                                                                                        { path = [ 0 ] ; type = "string" ; value = "production" ; }
+#                                                                                        { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+#                                                                                        { path = [ 2 ] ; type = "string" ; value = "config" ; }
+#                                                                                        { path = [ 3 ] ; type = "string" ; value = "github" ; }
+#                                                                                    ] ;
+#                                                                                targets = [ "config.asc" ] ;
+#                                                                                text = "dot-ssh-configure" ;
+#                                                                            }
+#                                                                            {
+#                                                                                index = "0000000000000000" ;
+#                                                                                seed =
+#                                                                                    [
+#                                                                                        { path = [ 0 ] ; type = "string" ; value = "production" ; }
+#                                                                                        { path = [ 1 ] ; type = "string" ; value = "repository" ; }
+#                                                                                        { path = [ 2 ] ; type = "string" ; value = "secrets" ; }
+#                                                                                    ] ;
+#                                                                                targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
+#                                                                                text =
+#                                                                                    ''
+#                                                                                        git init 2>&1
+#                                                                                        configure-ssh
+#                                                                                        git config user.email "${ config.personal.secrets.email }"
+#                                                                                        git config user.name "${ config.personal.secrets.name }"
+#                                                                                        git remote add origin "${ config.personal.secrets.remotes.ssh }"
+#                                                                                        git fetch origin "${ config.personal.secrets.branch }" 2>&1
+#                                                                                        git checkout "${ config.personal.secrets.branch }" 2>&1
+#                                                                                    '' ;
+#                                                                            }
+#                                                                        ] ; ###FINDMEB
+#                                                                    init-files =
+#                                                                        [
+#                                                                            {
+#                                                                                name = "/home/checker/resources" ;
+#                                                                                stat = "drwxr-xr-x" ;
+#                                                                                type = "directory" ;
+#                                                                            }
+#                                                                            {
+#                                                                                name = "/home/checker/resources/canonical" ;
+#                                                                                stat = "drwxr-xr-x" ;
+#                                                                                type = "directory" ;
+#                                                                            }
+#                                                                            {
+#                                                                                name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/dot-ssh/config/github" }" ;
+#                                                                                stat = "lrwxrwxrwx" ;
+#                                                                                target = "/home/checker/resources/mounts/0000000000000001" ;
+#                                                                                type = "symbolic link" ;
+#                                                                            }
+#                                                                            {
+#                                                                                name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/dot-ssh/known-hosts/github" }" ;
+#                                                                                stat = "lrwxrwxrwx" ;
+#                                                                                target = "/home/checker/resources/mounts/0000000000000002" ;
+#                                                                                type = "symbolic link" ;
+#                                                                            }
+#                                                                            {
+#                                                                                name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/dot-ssh/identity/github" }" ;
+#                                                                                stat = "lrwxrwxrwx" ;
+#                                                                                target = "/home/checker/resources/mounts/0000000000000003" ;
+#                                                                                type = "symbolic link" ;
+#                                                                            }
+#                                                                            {
+#                                                                                name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/repository/secrets" }" ;
+#                                                                                stat = "lrwxrwxrwx" ;
+#                                                                                target = "/home/checker/resources/mounts/0000000000000000" ;
+#                                                                                type = "symbolic link" ;
+#                                                                            }
+#                                                                            {
+#                                                                                cat = "" ;
+#                                                                                name = "/home/checker/resources/clean.lock" ;
+#                                                                                stat = "-rw-r--r--" ;
+#                                                                                type = "regular file" ;
+#                                                                            }
+#                                                                            {
+#                                                                                name = "/home/checker/resources/flags" ;
+#                                                                                stat = "drwxr-xr-x" ;
+#                                                                                type = "directory" ;
+#                                                                            }
+#                                                                            {
+#                                                                                log =
+#                                                                                    [
+#                                                                                        {
+#                                                                                            channel = "valid-init" ;
+#                                                                                            payload =
+#                                                                                                {
+#                                                                                                    arguments = [ ] ;
+#                                                                                                    index = "0000000000000001" ;
+#                                                                                                    inputs = { } ;
+#                                                                                                    seed =
+#                                                                                                        [
+#                                                                                                            { path = [ 0 ] ; type = "string" ; value = "production" ; }
+#                                                                                                            { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+#                                                                                                            { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
+#                                                                                                            { path = [ 3 ] ; type = "string" ; value = "github" ; }
+#                                                                                                        ] ;
+#                                                                                                    standard-output = "" ;
+#                                                                                                    targets = [ "known-hosts.asc" ] ;
+#                                                                                                    temporary = false ;
+#                                                                                                    text = "known-hosts" ;
+#                                                                                                } ;
+#                                                                                            type = "message" ;
+#                                                                                        }
+#                                                                                        {
+#                                                                                            channel = "valid-init" ;
+#                                                                                            payload =
+#                                                                                                {
+#                                                                                                    arguments = [ ] ;
+#                                                                                                    index = "0000000000000002" ;
+#                                                                                                    inputs = { } ;
+#                                                                                                    seed =
+#                                                                                                        [
+#                                                                                                            { path = [ 0 ] ; type = "string" ; value = "production" ; }
+#                                                                                                            { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+#                                                                                                            { path = [ 2 ] ; type = "string" ; value = "identity" ; }
+#                                                                                                            { path = [ 3 ] ; type = "string" ; value = "github" ; }
+#                                                                                                        ] ;
+#                                                                                                    standard-output = "" ;
+#                                                                                                    targets = [ "identity.asc" ] ;
+#                                                                                                    temporary = false ;
+#                                                                                                    text = "identity" ;
+#                                                                                                } ;
+#                                                                                            type = "message" ;
+#                                                                                        }
+#                                                                                        {
+#                                                                                            channel = "valid-init" ;
+#                                                                                            payload =
+#                                                                                                {
+#                                                                                                    arguments = [ ] ;
+#                                                                                                    index = "0000000000000000" ;
+#                                                                                                    inputs = { } ;
+#                                                                                                    seed =
+#                                                                                                        [
+#                                                                                                            { path = [ 0 ] ; type = "string" ; value = "production" ; }
+#                                                                                                            { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+#                                                                                                            { path = [ 2 ] ; type = "string" ; value = "config" ; }
+#                                                                                                            { path = [ 3 ] ; type = "string" ; value = "github" ; }
+#                                                                                                        ] ;
+#                                                                                                    standard-output = "" ;
+#                                                                                                    targets = [ "config.asc" ] ;
+#                                                                                                    temporary = false ;
+#                                                                                                    text = "dot-ssh-configure" ;
+#                                                                                                } ;
+#                                                                                            type = "message" ;
+#                                                                                        }
+#                                                                                    ] ;
+#                                                                                name = "/home/checker/resources/log.yaml" ;
+#                                                                                stat = "-rw-r--r--" ;
+#                                                                                type = "log file" ;
+#                                                                            }
+#                                                                            {
+#                                                                                name = "/home/checker/resources/mounts" ;
+#                                                                                stat = "drwxr-xr-x" ;
+#                                                                                type = "directory" ;
+#                                                                            }
+#                                                                            {
+#                                                                                name = "/home/checker/resources/mounts/0000000000000000" ;
+#                                                                                stat = "drwxr-xr-x" ;
+#                                                                                type = "directory" ;
+#                                                                            }
+#                                                                            {
+#                                                                                cat = builtins.readFile "${ shared }/artifacts/production/dot-ssh/config/github/config.asc" ;
+#                                                                                name = "/home/checker/resources/mounts/0000000000000000/config.asc" ;
+#                                                                                stat = "-r--------" ;
+#                                                                                type = "regular file" ;
+#                                                                            }
+#                                                                            {
+#                                                                                name = "/home/checker/resources/mounts/0000000000000001" ;
+#                                                                                stat = "drwxr-xr-x" ;
+#                                                                                type = "directory" ;
+#                                                                            }
+#                                                                            {
+#                                                                                name = "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" ;
+#                                                                                stat = "-r--------" ;
+#                                                                                type = "non-deterministic regular file" ;
+#                                                                            }
+#                                                                            {
+#                                                                                name = "/home/checker/resources/mounts/0000000000000002" ;
+#                                                                                stat = "drwxr-xr-x" ;
+#                                                                                type = "directory" ;
+#                                                                            }
+#                                                                            {
+#                                                                                cat = builtins.readFile "${ shared }/dot-ssh/identity.asc" ;
+#                                                                                name = "/home/checker/resources/mounts/0000000000000002/identity.asc" ;
+#                                                                                stat = "-r--------" ;
+#                                                                                type = "regular file" ;
+#                                                                            }
+#                                                                            {
+#                                                                                name = "/home/checker/resources/release" ;
+#                                                                                stat = "drwxr-xr-x" ;
+#                                                                                type = "directory" ;
+#                                                                            }
+#                                                                            {
+#                                                                                name = "/home/checker/resources/release/0000000000000000" ;
+#                                                                                stat = "lrwxrwxrwx" ;
+#                                                                                target = builtins.readFile "${ shared }/releases/production/dot-ssh/config/github" ;
+#                                                                                type = "symbolic link" ;
+#                                                                            }
+#                                                                            {
+#                                                                                name = "/home/checker/resources/release/0000000000000001" ;
+#                                                                                stat = "lrwxrwxrwx" ;
+#                                                                                target = builtins.readFile "${ shared }/releases/production/dot-ssh/known-hosts/github" ;
+#                                                                                type = "symbolic link" ;
+#                                                                            }
+#                                                                            {
+#                                                                                name = "/home/checker/resources/release/0000000000000002" ;
+#                                                                                stat = "lrwxrwxrwx" ;
+#                                                                                target = builtins.readFile "${ shared }/releases/production/dot-ssh/identity/github" ;
+#                                                                                type = "symbolic link" ;
+#                                                                            }
+#                                                                            {
+#                                                                                cat =
+#                                                                                    ''
+#                                                                                        3
+#                                                                                    '' ;
+#                                                                                name = "/home/checker/resources/sequential" ;
+#                                                                                stat = "-rw-r--r--" ;
+#                                                                                type = "regular file" ;
+#                                                                            }
+#                                                                        ]  ;
+#                                                                    non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" ] ;
+#                                                                    release = [ "0000000000000000" "0000000000000001" "0000000000000002" ] ;
+#                                                                    release-files =
+#                                                                        [
+#                                                                           {
+#                                                                                name = "/home/checker/resources" ;
+#                                                                                stat = "drwxr-xr-x" ;
+#                                                                                type = "directory" ;
+#                                                                            }
+#                                                                            {
+#                                                                                cat = "" ;
+#                                                                                name = "/home/checker/resources/0000000000000000.lock" ;
+#                                                                                stat = "-rw-r--r--" ;
+#                                                                                type = "regular file" ;
+#                                                                            }
+#                                                                            {
+#                                                                                cat = "" ;
+#                                                                                name = "/home/checker/resources/0000000000000001.lock" ;
+#                                                                                stat = "-rw-r--r--" ;
+#                                                                                type = "regular file" ;
+#                                                                            }
+#                                                                            {
+#                                                                                cat = "" ;
+#                                                                                name = "/home/checker/resources/0000000000000002.lock" ;
+#                                                                                stat = "-rw-r--r--" ;
+#                                                                                type = "regular file" ;
+#                                                                            }
+#                                                                            {
+#                                                                                name = "/home/checker/resources/canonical" ;
+#                                                                                stat = "drwxr-xr-x" ;
+#                                                                                type = "directory" ;
+#                                                                            }
+#                                                                            {
+#                                                                                cat = "" ;
+#                                                                                name = "/home/checker/resources/clean.lock" ;
+#                                                                                stat = "-rw-r--r--" ;
+#                                                                                type = "regular file" ;
+#                                                                            }
+#                                                                            {
+#                                                                                name = "/home/checker/resources/flags" ;
+#                                                                                stat = "drwxr-xr-x" ;
+#                                                                                type = "directory" ;
+#                                                                            }
+#                                                                            {
+#                                                                                log =
+#                                                                                    [
+#                                                                                        {
+#                                                                                            channel = "valid-release" ;
+#                                                                                            payload =
+#                                                                                                {
+#                                                                                                    index = "0000000000000000" ;
+#                                                                                                    standard-output = "" ;
+#                                                                                                    status = "0" ;
+#                                                                                                } ;
+#                                                                                            type = "message" ;
+#                                                                                        }
+#                                                                                        {
+#                                                                                            channel = "valid-release" ;
+#                                                                                            payload =
+#                                                                                                {
+#                                                                                                    index = "0000000000000001" ;
+#                                                                                                    standard-output = "" ;
+#                                                                                                    status = "0" ;
+#                                                                                                } ;
+#                                                                                            type = "message" ;
+#                                                                                        }
+#                                                                                        {
+#                                                                                            channel = "valid-release" ;
+#                                                                                            payload =
+#                                                                                                {
+#                                                                                                    index = "0000000000000002" ;
+#                                                                                                    standard-output = "" ;
+#                                                                                                    status = "0" ;
+#                                                                                                } ;
+#                                                                                            type = "message" ;
+#                                                                                        }
+#                                                                                    ] ;
+#                                                                                name = "/home/checker/resources/log.yaml" ;
+#                                                                                stat = "-rw-r--r--" ;
+#                                                                                type = "log file" ;
+#                                                                            }
+#                                                                            {
+#                                                                                name = "/home/checker/resources/mounts" ;
+#                                                                                stat = "drwxr-xr-x" ;
+#                                                                                type = "directory" ;
+#                                                                            }
+#                                                                            {
+#                                                                                name = "/home/checker/resources/release" ;
+#                                                                                stat = "drwxr-xr-x" ;
+#                                                                                type = "directory" ;
+#                                                                            }
+#                                                                            {
+#                                                                                cat =
+#                                                                                    ''
+#                                                                                        3
+#                                                                                    '' ;
+#                                                                                name = "/home/checker/resources/sequential" ;
+#                                                                                stat = "-rw-r--r--" ;
+#                                                                                type = "regular file" ;
+#                                                                            }
+#                                                                        ] ;
+#                                                                }
+#                                                        )
                                                     ]
                                                 ) ;
                                     implementation = implementation ;
