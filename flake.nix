@@ -1210,6 +1210,19 @@
                                                                                                     '' ;
                                                                                             } ;
                                                                                     } ;
+                                                                                tokens =
+                                                                                    {
+                                                                                        github =
+                                                                                            index :
+                                                                                                ''
+                                                                                                    Host github.com
+                                                                                                        HostName 192.168.2.234
+                                                                                                        User git
+                                                                                                        IdentityFile /home/checker/resources/mounts/${ pkgs.lib.fixedWidthString 16 "0" ( builtins.toString ( index + 2 ) ) }/identity.asc
+                                                                                                        UserKnownHostsFile /home/checker/resources/mounts/${ pkgs.lib.fixedWidthString 16 "0" ( builtins.toString ( index + 1 ) ) }/known-hosts.asc
+                                                                                                        StrictHostKeyChecking no
+                                                                                                '' ;
+                                                                                    } ;
                                                                                 branch = "main" ;
                                                                                 ip = "192.168.2.234" ;
                                                                                 in
@@ -1257,6 +1270,8 @@
                                                                                         age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/dot-ssh/mobile/identity.asc" "$OUT/repository/secrets/ciphertext/dot-ssh/mobile/identity.asc.age"
                                                                                         mkdir --parents "$OUT/repository/secrets/plaintext/github"
                                                                                         age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/github/token.asc" "$OUT/repository/secrets/ciphertext/github/token.asc.age"
+                                                                                        mkdir --parents "$OUT/secrets/production/dot-ssh/config/github"
+                                                                                        echo
                                                                                     '' ;
                                                                         }
                                                             )
