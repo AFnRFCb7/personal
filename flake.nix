@@ -449,25 +449,39 @@
                                                                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.openssh ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
+                                                                                                                                                                                echo 1723258852938545 5883868915275762 >&2
                                                                                                                                                                                 ln --symbolic ${ pkgs.openssh } /gc-root/open-ssh
+                                                                                                                                                                                echo 1723258852938545 4366816852658919 >&2
                                                                                                                                                                                 # shellcheck disable=SC2288
                                                                                                                                                                                 CONFIG="$( "$RESOURCES"/resources/'["production","dot-ssh","config","github"]' )" || exit 172
+                                                                                                                                                                                echo 1723258852938545 7744879763442619 >&2
                                                                                                                                                                                 git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $CONFIG/config.asc"
+                                                                                                                                                                                echo 1723258852938545 7744879763442619 >&2
                                                                                                                                                                                 ln --symbolic "$CONFIG" /gc-root/config
+                                                                                                                                                                                echo 1723258852938545 8342754468293721 >&2
                                                                                                                                                                                 ls -lah "$CONFIG" >&2
+                                                                                                                                                                                echo 1723258852938545 3878765118231494 >&2
                                                                                                                                                                              '' ;
                                                                                                                                                                     }
                                                                                                                                                             )
                                                                                                                                                         ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
+                                                                                                                                                        echo 1723258852938545 7432683261818691 >&2
                                                                                                                                                         git init 2>&1
+                                                                                                                                                        echo 1723258852938545 8176626536581835 >&2
                                                                                                                                                         configure-ssh
+                                                                                                                                                        echo 1723258852938545 6215986532449243 >&2
                                                                                                                                                         git config user.email "${ config.personal.secrets.email }"
+                                                                                                                                                        echo 1723258852938545 2339327885765746 >&2
                                                                                                                                                         git config user.name "${ config.personal.secrets.name }"
+                                                                                                                                                        echo 1723258852938545 8869685729557327 >&2
                                                                                                                                                         git remote add origin "${ config.personal.secrets.remotes.ssh }"
+                                                                                                                                                        echo 1723258852938545 7824472395868866 >&2
                                                                                                                                                         git fetch origin "${ config.personal.secrets.branch }" 2>&1
+                                                                                                                                                        echo 1723258852938545 3629527591488318 >&2
                                                                                                                                                         git checkout "${ config.personal.secrets.branch }" 2>&1
+                                                                                                                                                        echo 1723258852938545 6379957832748872 >&2
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                 } ; ###FINDMEA
