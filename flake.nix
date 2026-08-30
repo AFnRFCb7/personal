@@ -1606,13 +1606,13 @@
                                                                             }
                                                                             {
                                                                                 name = "/home/checker/.gc-roots/0000000000000000/identity" ;
-                                                                                stat = "drwxr-xr-x" ;
+                                                                                stat = "lrwxrwxrwx" ;
                                                                                 target = "/home/checker/resources/mounts/0000000000000002" ;
                                                                                 type = "symbolic link" ;
                                                                             }
                                                                             {
                                                                                 name = "/home/checker/.gc-roots/0000000000000000/known-hosts" ;
-                                                                                stat = "drwxr-xr-x" ;
+                                                                                stat = "lrwxrwxrwx" ;
                                                                                 target = "/home/checker/resources/mounts/0000000000000001" ;
                                                                                 type = "symbolic link" ;
                                                                             }
