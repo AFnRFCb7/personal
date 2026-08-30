@@ -1931,6 +1931,16 @@
                                                                     init-files =
                                                                         [
                                                                             {
+                                                                                name = "/home/checker/gc-roots" ;
+                                                                                stat = "drwxr-xr-x" ;
+                                                                                type = "directory" ;
+                                                                            }
+                                                                            {
+                                                                                name = "/home/checker/gc-roots/0000000000000000" ;
+                                                                                stat = "drwxr-xr-x" ;
+                                                                                type = "directory" ;
+                                                                            }
+                                                                            {
                                                                                 name = "/home/checker/resources" ;
                                                                                 stat = "drwxr-xr-x" ;
                                                                                 type = "directory" ;
@@ -2114,6 +2124,16 @@
                                                                         ] ;
                                                                     init-files =
                                                                         [
+                                                                            {
+                                                                                name = "/home/checker/gc-roots" ;
+                                                                                stat = "drwxr-xr-x" ;
+                                                                                type = "directory" ;
+                                                                            }
+                                                                            {
+                                                                                name = "/home/checker/gc-roots/0000000000000000" ;
+                                                                                stat = "drwxr-xr-x" ;
+                                                                                type = "directory" ;
+                                                                            }
                                                                             {
                                                                                 name = "/home/checker/resources" ;
                                                                                 stat = "drwxr-xr-x" ;
