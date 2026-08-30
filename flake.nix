@@ -1707,7 +1707,7 @@
                                                                                 type = "directory" ;
                                                                             }
                                                                             {
-                                                                                name = "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ;
+                                                                                name = "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" ;
                                                                                 stat = "-r--------" ;
                                                                                 type = "non-deterministic regular file" ;
                                                                             }
