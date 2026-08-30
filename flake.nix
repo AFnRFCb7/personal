@@ -1093,6 +1093,22 @@
                                                                                     ''
                                                                                         AGE-SECRET-KEY-19MLHEMP493FLEL20MCNQJMAT2K5HS8G2A95NGM5APUGAJLV9AP2Q3YA5A5
                                                                                     '' ;
+                                                                                artifacts =
+                                                                                    {
+                                                                                        github =
+                                                                                            index :
+                                                                                                builtins.toFile
+                                                                                                    "config.asc"
+                                                                                                    ''
+                                                                                                        Host github.com
+                                                                                                            HostName ${ ip }
+                                                                                                            User git
+                                                                                                            IdentityFile /home/checker/resources/mounts/${ pkgs.lib.fixedWidthString 16 "0" ( builtins.toString ( index + 2 ) ) }/identity.asc
+                                                                                                            UserKnownHostsFile /home/checker/resources/mounts/${ pkgs.lib.fixedWidthString 16 "0" ( builtins.toString ( index + 1 ) ) }/known-hosts.asc
+                                                                                                            StrictHostKeyChecking no
+                                                                                                    '' ;
+                                                                                    } ;
+                                                                                branch = "main" ;
                                                                                 dot-ssh =
                                                                                     {
                                                                                         known-hosts =
@@ -1116,6 +1132,7 @@
                                                                                                 -----END OPENSSH PRIVATE KEY-----
                                                                                             '' ;
                                                                                     } ;
+                                                                                ip = "192.168.2.234" ;
                                                                                 secrets =
                                                                                     {
                                                                                         dot-gnupg =
@@ -1210,25 +1227,12 @@
                                                                                                     '' ;
                                                                                             } ;
                                                                                     } ;
-                                                                                tokens =
-                                                                                    {
-                                                                                        github =
-                                                                                            index :
-                                                                                                ''
-                                                                                                    Host github.com
-                                                                                                        HostName 192.168.2.234
-                                                                                                        User git
-                                                                                                        IdentityFile /home/checker/resources/mounts/${ pkgs.lib.fixedWidthString 16 "0" ( builtins.toString ( index + 2 ) ) }/identity.asc
-                                                                                                        UserKnownHostsFile /home/checker/resources/mounts/${ pkgs.lib.fixedWidthString 16 "0" ( builtins.toString ( index + 1 ) ) }/known-hosts.asc
-                                                                                                        StrictHostKeyChecking no
-                                                                                                '' ;
-                                                                                    } ;
-                                                                                branch = "main" ;
-                                                                                ip = "192.168.2.234" ;
                                                                                 in
                                                                                     ''
                                                                                         OUT="$1"
                                                                                         mkdir --parents  "$OUT"
+                                                                                        mkdir --parents "$OUT/artifacts/production/dot-ssh/config/github"
+                                                                                        ln --symbolic ${ artifacts 0 } "$OUT/artifacts/production/config/github/config.asc"
                                                                                         echo -en ${ branch } > "$OUT/branch"
                                                                                         echo -en ${ ip } > "$OUT/ip"
                                                                                         mkdir --parents "$OUT/age"
@@ -1270,8 +1274,6 @@
                                                                                         age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/dot-ssh/mobile/identity.asc" "$OUT/repository/secrets/ciphertext/dot-ssh/mobile/identity.asc.age"
                                                                                         mkdir --parents "$OUT/repository/secrets/plaintext/github"
                                                                                         age --decrypt --identity "$OUT/age/identity" --output "$OUT/repository/secrets/plaintext/github/token.asc" "$OUT/repository/secrets/ciphertext/github/token.asc.age"
-                                                                                        mkdir --parents "$OUT/secrets/production/dot-ssh/config/github"
-                                                                                        echo
                                                                                     '' ;
                                                                         }
                                                             )
@@ -1711,15 +1713,7 @@
                                                                                 type = "directory" ;
                                                                             }
                                                                             {
-                                                                                cat =
-                                                                                    ''
-                                                                                        Host github.com
-                                                                                            HostName 192.168.2.234
-                                                                                            User git
-                                                                                            IdentityFile /home/checker/resources/mounts/0000000000000002/identity.asc
-                                                                                            UserKnownHostsFile /home/checker/resources/mounts/0000000000000001/known-hosts.asc
-                                                                                            StrictHostKeyChecking no
-                                                                                    '' ;
+                                                                                cat = builtins.readFile "${ shared }/artifacts/production/dot-ssh/config/github/config.asc" ;
                                                                                 name = "/home/checker/resources/mounts/0000000000000000/config.asc" ;
                                                                                 stat = "-r--------" ;
                                                                                 type = "regular file" ;
