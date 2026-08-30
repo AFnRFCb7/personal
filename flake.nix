@@ -1615,12 +1615,6 @@
                                                                                 type = "directory" ;
                                                                             }
                                                                             {
-                                                                                cat = "" ;
-                                                                                name = "/home/checker/resources/flags/0000000000000000" ;
-                                                                                stat = "-rw-r--r--" ;
-                                                                                type = "regular file" ;
-                                                                            }
-                                                                            {
                                                                                 log =
                                                                                     [
                                                                                         {
@@ -1702,8 +1696,7 @@
                                                                                 type = "directory" ;
                                                                             }
                                                                             {
-                                                                                cat = "WTF" ;
-                                                                                name =
+                                                                                cat =
                                                                                     ''
                                                                                         Host github.com
                                                                                             HostName 192.168.2.234
@@ -1712,6 +1705,7 @@
                                                                                             UserKnownHostsFile /home/checker/resources/mounts/0000000000000001/known-hosts.asc
                                                                                             StrictHostKeyChecking no
                                                                                     '' ;
+                                                                                name = "/home/checker/resources/mounts/0000000000000000/config.asc" ;
                                                                                 stat = "-r--------" ;
                                                                                 type = "regular file" ;
                                                                             }
