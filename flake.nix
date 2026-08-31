@@ -1580,6 +1580,7 @@
                                                                                 "/home/checker/resources/mounts/0000000000000001"
                                                                                 "/home/checker/resources/mounts/0000000000000002"
                                                                                 "/home/checker/resources/release/0000000000000001"
+                                                                                "/home/checker/resources/release/0000000000000002"
                                                                             ] ;
                                                                         init =
                                                                             [
@@ -1797,12 +1798,6 @@
                                                                                     name = "/home/checker/resources/release/0000000000000000" ;
                                                                                     stat = "lrwxrwxrwx" ;
                                                                                     target = builtins.readFile "${ shared }/releases/production/dot-ssh/config/github" ;
-                                                                                    type = "symbolic link" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/release/0000000000000002" ;
-                                                                                    stat = "lrwxrwxrwx" ;
-                                                                                    target = builtins.readFile "${ shared }/releases/production/dot-ssh/identity/github" ;
                                                                                     type = "symbolic link" ;
                                                                                 }
                                                                                 {
