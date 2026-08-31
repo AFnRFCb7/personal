@@ -449,7 +449,7 @@
                                                                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.openssh ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
-                                                                                                                                                                                echo 1723258852938545 3964982351572968 >&2
+                                                                                                                                                                                echo 1723258852938545 4729716484611816 >&2
                                                                                                                                                                                 ln --symbolic ${ pkgs.openssh } /gc-root/open-ssh
                                                                                                                                                                                 echo 1723258852938545 4366816852658919 >&2
                                                                                                                                                                                 # shellcheck disable=SC2288
