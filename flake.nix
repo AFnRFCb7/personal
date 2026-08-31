@@ -1575,7 +1575,7 @@
                                                                 tests.happy
                                                                     {
                                                                         command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","config","github"]' '' ;
-                                                                        exclusions = [ ] ;
+                                                                        exclusions = [ "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" "/home/checker/resources/mounts/0000000000000002/identity.asc" ] ;
                                                                         init =
                                                                             [
                                                                                 {
@@ -1770,31 +1770,14 @@
                                                                                     type = "directory" ;
                                                                                 }
                                                                                 {
-                                                                                    cat = builtins.readFile "${ shared }/artifacts/production/dot-ssh/config/github/config.asc" ;
-                                                                                    name = "/home/checker/resources/mounts/0000000000000000/config.asc" ;
-                                                                                    stat = "-r--------" ;
-                                                                                    type = "regular file" ;
-                                                                                }
-                                                                                {
                                                                                     name = "/home/checker/resources/mounts/0000000000000001" ;
                                                                                     stat = "drwxr-xr-x" ;
                                                                                     type = "directory" ;
                                                                                 }
                                                                                 {
-                                                                                    name = "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" ;
-                                                                                    stat = "-r--------" ;
-                                                                                    type = "non-deterministic regular file" ;
-                                                                                }
-                                                                                {
                                                                                     name = "/home/checker/resources/mounts/0000000000000002" ;
                                                                                     stat = "drwxr-xr-x" ;
                                                                                     type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    cat = builtins.readFile "${ shared }/dot-ssh/identity.asc" ;
-                                                                                    name = "/home/checker/resources/mounts/0000000000000002/identity.asc" ;
-                                                                                    stat = "-r--------" ;
-                                                                                    type = "regular file" ;
                                                                                 }
                                                                                 {
                                                                                     name = "/home/checker/resources/release" ;
