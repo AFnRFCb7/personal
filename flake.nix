@@ -1575,7 +1575,12 @@
                                                                 tests.happy
                                                                     {
                                                                         command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","config","github"]' '' ;
-                                                                        exclusions = [ "/home/checker/resources/mounts/0000000000000001" "/home/checker/resources/mounts/0000000000000002" ] ;
+                                                                        exclusions =
+                                                                            [
+                                                                                "/home/checker/resources/mounts/0000000000000001"
+                                                                                "/home/checker/resources/mounts/0000000000000002"
+                                                                                "/home/checker/resources/release/0000000000000001"
+                                                                            ] ;
                                                                         init =
                                                                             [
                                                                                 {
@@ -1792,12 +1797,6 @@
                                                                                     name = "/home/checker/resources/release/0000000000000000" ;
                                                                                     stat = "lrwxrwxrwx" ;
                                                                                     target = builtins.readFile "${ shared }/releases/production/dot-ssh/config/github" ;
-                                                                                    type = "symbolic link" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/release/0000000000000001" ;
-                                                                                    stat = "lrwxrwxrwx" ;
-                                                                                    target = builtins.readFile "${ shared }/releases/production/dot-ssh/known-hosts/github" ;
                                                                                     type = "symbolic link" ;
                                                                                 }
                                                                                 {
