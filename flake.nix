@@ -1308,6 +1308,7 @@
                                                             init ,
                                                             init-files ,
                                                             non-deterministic-regular-files ,
+                                                            order ,
                                                             release ,
                                                             release-files
                                                         } :
@@ -1548,6 +1549,7 @@
                                                                                     ] ;
                                                                             name = "resource happy path : ${ command }" ;
                                                                             nodes = { github = github ; client = client ; } ;
+                                                                            order = order ;
                                                                             pkgs = pkgs ;
                                                                             resources-directory = "/home/checker/resources" ;
                                                                             tests =
@@ -1826,6 +1828,7 @@
                                                                             }
                                                                         ]  ;
                                                                     non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" ] ;
+                                                                    order = 10 ;
                                                                     release = [ "0000000000000000" "0000000000000001" "0000000000000002" ] ;
                                                                     release-files =
                                                                         [
@@ -2058,6 +2061,7 @@
                                                                             }
                                                                         ]  ;
                                                                     non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
+                                                                    order = 0 ;
                                                                     release = [ "0000000000000000" ] ;
                                                                     release-files =
                                                                         [
@@ -2259,6 +2263,7 @@
                                                                             }
                                                                         ]  ;
                                                                     non-deterministic-regular-files = [ ] ;
+                                                                    order = 0 ;
                                                                     release = [ "0000000000000000" ] ;
                                                                     release-files =
                                                                         [
