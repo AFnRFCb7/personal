@@ -1770,6 +1770,20 @@
                                                                                     type = "directory" ;
                                                                                 }
                                                                                 {
+                                                                                    cat =
+                                                                                        ''
+                                                                                            Host github.com
+                                                                                                HostName 192.168.2.234
+                                                                                                User git
+                                                                                                IdentityFile /home/checker/resources/mounts/0000000000000002/identity.asc
+                                                                                                UserKnownHostsFile /home/checker/resources/mounts/0000000000000001/known-hosts.asc
+                                                                                                StrictHostKeyChecking no
+                                                                                        '' ;
+                                                                                    name = "/home/checker/resources/mounts/0000000000000000/config.asc" ;
+                                                                                    stat = "-r--------" ;
+                                                                                    type = "regular file" ;
+                                                                                }
+                                                                                {
                                                                                     name = "/home/checker/resources/mounts/0000000000000001" ;
                                                                                     stat = "drwxr-xr-x" ;
                                                                                     type = "directory" ;
