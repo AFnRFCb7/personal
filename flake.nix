@@ -449,7 +449,7 @@
                                                                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.openssh ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
-                                                                                                                                                                                echo 1723258852938545 4729716484611816 >&2
+                                                                                                                                                                                echo 1723258852938545 1586575358671523 >&2
                                                                                                                                                                                 ln --symbolic ${ pkgs.openssh } /gc-root/open-ssh
                                                                                                                                                                                 echo 1723258852938545 4366816852658919 >&2
                                                                                                                                                                                 # shellcheck disable=SC2288
@@ -467,7 +467,7 @@
                                                                                                                                                         ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
-                                                                                                                                                        echo 1723258852938545 7432683261818691 >&2
+                                                                                                                                                        echo 1723258852938545 36574783846464161 >&2
                                                                                                                                                         git init 2>&1
                                                                                                                                                         echo 1723258852938545 8176626536581835 >&2
                                                                                                                                                         configure-ssh
@@ -1304,6 +1304,7 @@
                                                     happy =
                                                         {
                                                             command ,
+                                                            exclusions ,
                                                             init ,
                                                             init-files ,
                                                             non-deterministic-regular-files ,
@@ -1418,7 +1419,7 @@
                                                                                                     process = "pre" ;
                                                                                                     reads = false ;
                                                                                                     standard-output = files.init ;
-                                                                                                    text = "check-files --delete false ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }" ;
+                                                                                                    text = "check-files --delete false ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }" ;
                                                                                             }
                                                                                         ]
                                                                                         (
@@ -1469,7 +1470,7 @@
                                                                                                     process = "pre" ;
                                                                                                     reads = false ;
                                                                                                     standard-output = files.init ;
-                                                                                                    text = "check-files --delete true ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }" ;
+                                                                                                    text = "check-files --delete true ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }" ;
                                                                                             }
                                                                                             {
                                                                                                     process = "pre" ;
@@ -1570,6 +1571,7 @@
                                                             tests.happy
                                                                 {
                                                                     command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","config","github"]' '' ;
+                                                                    exclusions = [ ] ;
                                                                     init =
                                                                         [
                                                                             {
@@ -1935,6 +1937,7 @@
                                                             tests.happy
                                                                 {
                                                                     command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]' '' ;
+                                                                    exclusions = [ ] ;
                                                                     init =
                                                                         [
                                                                             {
@@ -2134,6 +2137,7 @@
                                                             tests.happy
                                                                 {
                                                                     command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
+                                                                    exclusions = [ ] ;
                                                                     init =
                                                                         [
                                                                             {
@@ -2334,6 +2338,7 @@
                                                             tests.happy
                                                                 {
                                                                     command = '' check-resource --expression "$RESOURCES"/resources/'["production","repository","secrets"]' '' ;
+                                                                    exclusions = [ ".git" ] ;
                                                                     init =
                                                                         [
                                                                             {
