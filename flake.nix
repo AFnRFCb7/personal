@@ -2337,7 +2337,7 @@
                                                         (
                                                             tests.happy
                                                                 {
-                                                                    command = '' check-resource --expression "$RESOURCES"/resources/'["production","repository","secrets"]' '' ;
+                                                                    command = '' check-resource --expression "$RESOURCES"/resources/'["production","repository","secrets"]'    '' ;
                                                                     exclusions = [ ".git" ] ;
                                                                     init =
                                                                         [
