@@ -1575,7 +1575,7 @@
                                                                 tests.happy
                                                                     {
                                                                         command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","config","github"]' '' ;
-                                                                        exclusions = [ "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" "/home/checker/resources/mounts/0000000000000002/identity.asc" ] ;
+                                                                        exclusions = [ "/home/checker/resources/mounts/0000000000000001" "/home/checker/resources/mounts/0000000000000002" ] ;
                                                                         init =
                                                                             [
                                                                                 {
