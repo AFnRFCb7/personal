@@ -1784,16 +1784,6 @@
                                                                                     type = "regular file" ;
                                                                                 }
                                                                                 {
-                                                                                    name = "/home/checker/resources/mounts/0000000000000001" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/mounts/0000000000000002" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
                                                                                     name = "/home/checker/resources/release" ;
                                                                                     stat = "drwxr-xr-x" ;
                                                                                     type = "directory" ;
