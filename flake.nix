@@ -1471,7 +1471,7 @@
                                                                                                     process = "pre" ;
                                                                                                     reads = false ;
                                                                                                     standard-output = files.init ;
-                                                                                                    text = "check-files --delete true ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) exclusions ) }" ;
+                                                                                                    text = "check-files --delete true ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }" ;
                                                                                             }
                                                                                             {
                                                                                                     process = "pre" ;
