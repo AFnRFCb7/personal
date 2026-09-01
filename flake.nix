@@ -2036,12 +2036,6 @@
                                                                                     type = "directory" ;
                                                                                 }
                                                                                 {
-                                                                                    cat = "" ;
-                                                                                    name = "/home/checker/resources/clean.lock" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "regular file" ;
-                                                                                }
-                                                                                {
                                                                                     name = "/home/checker/resources/flags" ;
                                                                                     stat = "drwxr-xr-x" ;
                                                                                     type = "directory" ;
@@ -2230,12 +2224,6 @@
                                                                                     name = "/home/checker/resources/canonical" ;
                                                                                     stat = "drwxr-xr-x" ;
                                                                                     type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    cat = "" ;
-                                                                                    name = "/home/checker/resources/clean.lock" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "regular file" ;
                                                                                 }
                                                                                 {
                                                                                     name = "/home/checker/resources/flags" ;
@@ -2552,12 +2540,6 @@
                                                                                     name = "/home/checker/resources/canonical" ;
                                                                                     stat = "drwxr-xr-x" ;
                                                                                     type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    cat = "" ;
-                                                                                    name = "/home/checker/resources/clean.lock" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "regular file" ;
                                                                                 }
                                                                                 {
                                                                                     name = "/home/checker/resources/flags" ;
