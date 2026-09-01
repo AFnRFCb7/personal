@@ -1351,16 +1351,6 @@
                                                                                                 stat = "-rw-r--r--" ;
                                                                                                 type = "log file" ;
                                                                                             }
-                                                                                            {
-                                                                                                name = "/home/checker/resources" ;
-                                                                                                stat = "drwxr-xr-x" ;
-                                                                                                type = "directory" ;
-                                                                                            }
-                                                                                            {
-                                                                                                name = "/home/checker/resources/canonical" ;
-                                                                                                stat = "drwxr-xr-x" ;
-                                                                                                type = "directory" ;
-                                                                                            }
                                                                                         ] ;
                                                                                 init =
                                                                                     json
