@@ -1905,171 +1905,6 @@
                                                             (
                                                                 tests.happy
                                                                     {
-                                                                        command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]' '' ;
-                                                                        exclusions = [ ] ;
-                                                                        init =
-                                                                            [
-                                                                                {
-                                                                                    index = "0000000000000000" ;
-                                                                                    seed =
-                                                                                        [
-                                                                                            { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                            { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                            { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
-                                                                                            { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                        ] ;
-                                                                                    targets = [ "known-hosts.asc" ] ;
-                                                                                    text = "known-hosts" ;
-                                                                                }
-                                                                            ] ;
-                                                                        init-files =
-                                                                            [
-                                                                                {
-                                                                                    name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/dot-ssh/known-hosts/github" }" ;
-                                                                                    stat = "lrwxrwxrwx" ;
-                                                                                    target = "/home/checker/resources/mounts/0000000000000000" ;
-                                                                                    type = "symbolic link" ;
-                                                                                }
-                                                                                {
-                                                                                    cat = "" ;
-                                                                                    name = "/home/checker/resources/clean.lock" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "regular file" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/flags" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    log =
-                                                                                        [
-                                                                                            {
-                                                                                                channel = "valid-init" ;
-                                                                                                payload =
-                                                                                                    {
-                                                                                                        arguments = [ ] ;
-                                                                                                        index = "0000000000000000" ;
-                                                                                                        inputs = { } ;
-                                                                                                        seed =
-                                                                                                            [
-                                                                                                                { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                                { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                                                { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
-                                                                                                                { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                                            ] ;
-                                                                                                        standard-output = "" ;
-                                                                                                        targets = [ "known-hosts.asc" ] ;
-                                                                                                        temporary = false ;
-                                                                                                        text = "known-hosts" ;
-                                                                                                    } ;
-                                                                                                type = "message" ;
-                                                                                            }
-                                                                                        ] ;
-                                                                                    name = "/home/checker/resources/log.yaml" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "log file" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/mounts" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/mounts/0000000000000000" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ;
-                                                                                    stat = "-r--------" ;
-                                                                                    type = "non-deterministic regular file" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/release" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/release/0000000000000000" ;
-                                                                                    stat = "lrwxrwxrwx" ;
-                                                                                    target = builtins.readFile "${ shared }/releases/production/dot-ssh/known-hosts/github" ;
-                                                                                    type = "symbolic link" ;
-                                                                                }
-                                                                                {
-                                                                                    cat =
-                                                                                        ''
-                                                                                            1
-                                                                                        '' ;
-                                                                                    name = "/home/checker/resources/sequential" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "regular file" ;
-                                                                                }
-                                                                            ]  ;
-                                                                        non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
-                                                                        order = 0 ;
-                                                                        release = [ "0000000000000000" ] ;
-                                                                        release-files = ###
-
-                                                                            [
-                                                                               {
-                                                                                    name = "/home/checker/resources" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/canonical" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/flags" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    log =
-                                                                                        [
-                                                                                            {
-                                                                                                channel = "valid-release" ;
-                                                                                                payload =
-                                                                                                    {
-                                                                                                        index = "0000000000000000" ;
-                                                                                                        standard-output = "" ;
-                                                                                                        status = "0" ;
-                                                                                                    } ;
-                                                                                                type = "message" ;
-                                                                                            }
-                                                                                        ] ;
-                                                                                    name = "/home/checker/resources/log.yaml" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "log file" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/mounts" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/release" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    cat =
-                                                                                        ''
-                                                                                            1
-                                                                                        '' ;
-                                                                                    name = "/home/checker/resources/sequential" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "regular file" ;
-                                                                                }
-                                                                            ] ;
-                                                                    }
-                                                            )
-                                                            (
-                                                                tests.happy
-                                                                    {
                                                                         command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
                                                                         exclusions = [ ] ;
                                                                         init =
@@ -2176,6 +2011,171 @@
                                                                         order = 0 ;
                                                                         release = [ "0000000000000000" ] ;
                                                                         release-files = ### FINDME B
+                                                                            [
+                                                                               {
+                                                                                    name = "/home/checker/resources" ;
+                                                                                    stat = "drwxr-xr-x" ;
+                                                                                    type = "directory" ;
+                                                                                }
+                                                                                {
+                                                                                    name = "/home/checker/resources/canonical" ;
+                                                                                    stat = "drwxr-xr-x" ;
+                                                                                    type = "directory" ;
+                                                                                }
+                                                                                {
+                                                                                    name = "/home/checker/resources/flags" ;
+                                                                                    stat = "drwxr-xr-x" ;
+                                                                                    type = "directory" ;
+                                                                                }
+                                                                                {
+                                                                                    log =
+                                                                                        [
+                                                                                            {
+                                                                                                channel = "valid-release" ;
+                                                                                                payload =
+                                                                                                    {
+                                                                                                        index = "0000000000000000" ;
+                                                                                                        standard-output = "" ;
+                                                                                                        status = "0" ;
+                                                                                                    } ;
+                                                                                                type = "message" ;
+                                                                                            }
+                                                                                        ] ;
+                                                                                    name = "/home/checker/resources/log.yaml" ;
+                                                                                    stat = "-rw-r--r--" ;
+                                                                                    type = "log file" ;
+                                                                                }
+                                                                                {
+                                                                                    name = "/home/checker/resources/mounts" ;
+                                                                                    stat = "drwxr-xr-x" ;
+                                                                                    type = "directory" ;
+                                                                                }
+                                                                                {
+                                                                                    name = "/home/checker/resources/release" ;
+                                                                                    stat = "drwxr-xr-x" ;
+                                                                                    type = "directory" ;
+                                                                                }
+                                                                                {
+                                                                                    cat =
+                                                                                        ''
+                                                                                            1
+                                                                                        '' ;
+                                                                                    name = "/home/checker/resources/sequential" ;
+                                                                                    stat = "-rw-r--r--" ;
+                                                                                    type = "regular file" ;
+                                                                                }
+                                                                            ] ;
+                                                                    }
+                                                            )
+                                                            (
+                                                                tests.happy
+                                                                    {
+                                                                        command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]' '' ;
+                                                                        exclusions = [ ] ;
+                                                                        init =
+                                                                            [
+                                                                                {
+                                                                                    index = "0000000000000000" ;
+                                                                                    seed =
+                                                                                        [
+                                                                                            { path = [ 0 ] ; type = "string" ; value = "production" ; }
+                                                                                            { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+                                                                                            { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
+                                                                                            { path = [ 3 ] ; type = "string" ; value = "github" ; }
+                                                                                        ] ;
+                                                                                    targets = [ "known-hosts.asc" ] ;
+                                                                                    text = "known-hosts" ;
+                                                                                }
+                                                                            ] ;
+                                                                        init-files =
+                                                                            [
+                                                                                {
+                                                                                    name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/dot-ssh/known-hosts/github" }" ;
+                                                                                    stat = "lrwxrwxrwx" ;
+                                                                                    target = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                                    type = "symbolic link" ;
+                                                                                }
+                                                                                {
+                                                                                    cat = "" ;
+                                                                                    name = "/home/checker/resources/clean.lock" ;
+                                                                                    stat = "-rw-r--r--" ;
+                                                                                    type = "regular file" ;
+                                                                                }
+                                                                                {
+                                                                                    name = "/home/checker/resources/flags" ;
+                                                                                    stat = "drwxr-xr-x" ;
+                                                                                    type = "directory" ;
+                                                                                }
+                                                                                {
+                                                                                    log =
+                                                                                        [
+                                                                                            {
+                                                                                                channel = "valid-init" ;
+                                                                                                payload =
+                                                                                                    {
+                                                                                                        arguments = [ ] ;
+                                                                                                        index = "0000000000000000" ;
+                                                                                                        inputs = { } ;
+                                                                                                        seed =
+                                                                                                            [
+                                                                                                                { path = [ 0 ] ; type = "string" ; value = "production" ; }
+                                                                                                                { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+                                                                                                                { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
+                                                                                                                { path = [ 3 ] ; type = "string" ; value = "github" ; }
+                                                                                                            ] ;
+                                                                                                        standard-output = "" ;
+                                                                                                        targets = [ "known-hosts.asc" ] ;
+                                                                                                        temporary = false ;
+                                                                                                        text = "known-hosts" ;
+                                                                                                    } ;
+                                                                                                type = "message" ;
+                                                                                            }
+                                                                                        ] ;
+                                                                                    name = "/home/checker/resources/log.yaml" ;
+                                                                                    stat = "-rw-r--r--" ;
+                                                                                    type = "log file" ;
+                                                                                }
+                                                                                {
+                                                                                    name = "/home/checker/resources/mounts" ;
+                                                                                    stat = "drwxr-xr-x" ;
+                                                                                    type = "directory" ;
+                                                                                }
+                                                                                {
+                                                                                    name = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                                    stat = "drwxr-xr-x" ;
+                                                                                    type = "directory" ;
+                                                                                }
+                                                                                {
+                                                                                    name = "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ;
+                                                                                    stat = "-r--------" ;
+                                                                                    type = "non-deterministic regular file" ;
+                                                                                }
+                                                                                {
+                                                                                    name = "/home/checker/resources/release" ;
+                                                                                    stat = "drwxr-xr-x" ;
+                                                                                    type = "directory" ;
+                                                                                }
+                                                                                {
+                                                                                    name = "/home/checker/resources/release/0000000000000000" ;
+                                                                                    stat = "lrwxrwxrwx" ;
+                                                                                    target = builtins.readFile "${ shared }/releases/production/dot-ssh/known-hosts/github" ;
+                                                                                    type = "symbolic link" ;
+                                                                                }
+                                                                                {
+                                                                                    cat =
+                                                                                        ''
+                                                                                            1
+                                                                                        '' ;
+                                                                                    name = "/home/checker/resources/sequential" ;
+                                                                                    stat = "-rw-r--r--" ;
+                                                                                    type = "regular file" ;
+                                                                                }
+                                                                            ]  ;
+                                                                        non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
+                                                                        order = 0 ;
+                                                                        release = [ "0000000000000000" ] ;
+                                                                        release-files = ###
+
                                                                             [
                                                                                {
                                                                                     name = "/home/checker/resources" ;
