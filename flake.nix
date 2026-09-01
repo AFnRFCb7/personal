@@ -1577,15 +1577,20 @@
                                                                         command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","config","github"]' '' ;
                                                                         exclusions =
                                                                             [
+                                                                                "/home/checker/.gc-roots/0000000000000001"
+                                                                                "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/dot-ssh/config/github" }"
+                                                                                "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/dot-ssh/known-hosts/github" }"
+                                                                                "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/dot-ssh/identity/github" }"
                                                                                 "/home/checker/resources/mounts/0000000000000001"
                                                                                 "/home/checker/resources/mounts/0000000000000002"
-                                                                                "/home/checker/resources/release/0000000000000001"
+                                                                                "/home/checker/resources/mounts/0000000000000003"
                                                                                 "/home/checker/resources/release/0000000000000002"
+                                                                                "/home/checker/resources/release/0000000000000003"
                                                                             ] ;
                                                                         init =
                                                                             [
                                                                                 {
-                                                                                    index = "0000000000000001" ;
+                                                                                    index = "0000000000000002" ;
                                                                                     seed =
                                                                                         [
                                                                                             { path = [ 0 ] ; type = "string" ; value = "production" ; }
@@ -1597,7 +1602,7 @@
                                                                                     text = "known-hosts" ;
                                                                                 }
                                                                                 {
-                                                                                    index = "0000000000000002" ;
+                                                                                    index = "0000000000000003" ;
                                                                                     seed =
                                                                                         [
                                                                                             { path = [ 0 ] ; type = "string" ; value = "production" ; }
@@ -1609,7 +1614,7 @@
                                                                                     text = "identity" ;
                                                                                 }
                                                                                 {
-                                                                                    index = "0000000000000000" ;
+                                                                                    index = "0000000000000001" ;
                                                                                     seed =
                                                                                         [
                                                                                             { path = [ 0 ] ; type = "string" ; value = "production" ; }
@@ -1619,6 +1624,15 @@
                                                                                         ] ;
                                                                                     targets = [ "config.asc" ] ;
                                                                                     text = "dot-ssh-configure" ;
+                                                                                }
+                                                                                {
+                                                                                    index = "0000000000000000" ;
+                                                                                    seed =
+                                                                                        [
+                                                                                            { path = [ 0 ] ; type = "string" ; value = "production" ; }
+                                                                                            { path = [ 1 ] ; type = "string" ; value = "repository" ; }
+                                                                                            { path = [ 2 ] ; type = "string" ; value = "secrets" ; }
+                                                                                        ] ;
                                                                                 }
                                                                             ] ;
                                                                         init-files =
@@ -1634,24 +1648,18 @@
                                                                                     type = "directory" ;
                                                                                 }
                                                                                 {
-                                                                                    name = "/home/checker/.gc-roots/0000000000000000/identity" ;
-                                                                                    stat = "lrwxrwxrwx" ;
-                                                                                    target = "/home/checker/resources/mounts/0000000000000002" ;
-                                                                                    type = "symbolic link" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/.gc-roots/0000000000000000/known-hosts" ;
+                                                                                    name = "/home/checker/.gc-roots/0000000000000000/config" ;
                                                                                     stat = "lrwxrwxrwx" ;
                                                                                     target = "/home/checker/resources/mounts/0000000000000001" ;
                                                                                     type = "symbolic link" ;
                                                                                 }
                                                                                 {
-                                                                                    name = "/home/checker/.gc-roots/0000000000000001" ;
+                                                                                    name = "/home/checker/.gc-roots/0000000000000002" ;
                                                                                     stat = "drwxr-xr-x" ;
                                                                                     type = "directory" ;
                                                                                 }
                                                                                 {
-                                                                                    name = "/home/checker/.gc-roots/0000000000000002" ;
+                                                                                    name = "/home/checker/.gc-roots/0000000000000003" ;
                                                                                     stat = "drwxr-xr-x" ;
                                                                                     type = "directory" ;
                                                                                 }
@@ -1664,6 +1672,12 @@
                                                                                     name = "/home/checker/resources/canonical" ;
                                                                                     stat = "drwxr-xr-x" ;
                                                                                     type = "directory" ;
+                                                                                }
+                                                                                {
+                                                                                    name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/repository/secrets" }" ;
+                                                                                    stat = "lrwxrwxrwx" ;
+                                                                                    target = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                                    type = "symbolic link" ;
                                                                                 }
                                                                                 {
                                                                                     name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/dot-ssh/config/github" }" ;
