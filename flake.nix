@@ -1465,7 +1465,7 @@
                                                                                                     standard-output = files.init ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            check-files --delete false --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }
+                                                                                                            check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }
                                                                                                         '' ;
                                                                                             }
                                                                                         ]
@@ -1519,7 +1519,7 @@
                                                                                                     standard-output = files.init ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            check-files --delete true --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }
+                                                                                                            check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }
                                                                                                         '' ;
                                                                                             }
                                                                                             {
@@ -1700,11 +1700,6 @@
                                                                                     stat = "lrwxrwxrwx" ;
                                                                                     target = "/home/checker/resources/mounts/0000000000000000" ;
                                                                                     type = "symbolic link" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/flags" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
                                                                                 }
                                                                                 {
                                                                                     log =
@@ -1931,11 +1926,6 @@
                                                                                     type = "symbolic link" ;
                                                                                 }
                                                                                 {
-                                                                                    name = "/home/checker/resources/flags" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
                                                                                     log =
                                                                                         [
                                                                                             {
@@ -2088,11 +2078,6 @@
                                                                                     stat = "lrwxrwxrwx" ;
                                                                                     target = "/home/checker/resources/mounts/0000000000000000" ;
                                                                                     type = "symbolic link" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/flags" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
                                                                                 }
                                                                                 {
                                                                                     log =
