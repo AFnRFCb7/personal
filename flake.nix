@@ -1619,7 +1619,7 @@
                                         in
                                             builtins.listToAttrs
                                                 (
-                                                    builtins.sort ( a : b : if a.order == b.oder then a.name < b.name else a.order < b. order )
+                                                    builtins.sort ( a : b : if a.order == b.order then a.name < b.name else a.order < b. order )
                                                         [
                                                             (
                                                                 tests.happy
