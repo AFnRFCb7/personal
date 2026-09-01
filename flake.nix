@@ -1367,7 +1367,21 @@
                                                                                                     ]
                                                                                                 ]
                                                                                         ) ;
-                                                                                release = json release-files ;
+                                                                                release =
+                                                                                    json
+                                                                                        (
+                                                                                            builtins.concatLists
+                                                                                                [
+                                                                                                    release-files
+                                                                                                    [
+                                                                                                        {
+                                                                                                            name = "/home/checker/.gc-roots" ;
+                                                                                                            stat = "drwxr-xr-x" ;
+                                                                                                            type = "directory" ;
+                                                                                                        }
+                                                                                                    ]
+                                                                                                ]
+                                                                                        ) ;
                                                                             } ;
                                                                 cleaned-files = "[\n  {\n    \"name\": \"/home/checker/.gc-roots\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  },\n  {\n    \"name\": \"/home/checker/resources\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  }\n]\n" ;
                                                                 empty-files =  "[\n  {\n    \"name\": \"/home/checker/resources\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  },\n  {\n    \"cat\": \"[]\",\n    \"name\": \"/home/checker/resources/log.yaml\",\n    \"stat\": \"-rw-r--r--\",\n    \"type\": \"regular file\"\n  }\n]\n" ;
