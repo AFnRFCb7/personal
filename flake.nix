@@ -1352,7 +1352,21 @@
                                                                                                 type = "log file" ;
                                                                                             }
                                                                                         ] ;
-                                                                                init = json init-files ;
+                                                                                init =
+                                                                                    json
+                                                                                        (
+                                                                                            builtins.concatLists
+                                                                                                [
+                                                                                                    init-files
+                                                                                                    [
+                                                                                                        {
+                                                                                                            name = "/home/checker/.gc-roots" ;
+                                                                                                            stat = "drwxr-xr-x" ;
+                                                                                                            type = "directory" ;
+                                                                                                        }
+                                                                                                    ]
+                                                                                                ]
+                                                                                        ) ;
                                                                                 release = json release-files ;
                                                                             } ;
                                                                 cleaned-files = "[\n  {\n    \"name\": \"/home/checker/.gc-roots\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  },\n  {\n    \"name\": \"/home/checker/resources\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  }\n]\n" ;
@@ -1636,11 +1650,6 @@
                                                                         init-files =
                                                                             [
                                                                                 {
-                                                                                    name = "/home/checker/.gc-roots" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
                                                                                     name = "/home/checker/.gc-roots/0000000000000000" ;
                                                                                     stat = "drwxr-xr-x" ;
                                                                                     type = "directory" ;
@@ -1805,11 +1814,6 @@
                                                                         release = [ "0000000000000000" "0000000000000001" "0000000000000002" ] ;
                                                                         release-files = ###FINDME B
                                                                             [
-                                                                                {
-                                                                                    name = "/home/checker/.gc-roots" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
                                                                                 {
                                                                                     name = "/home/checker/resources" ;
                                                                                     stat = "drwxr-xr-x" ;
@@ -2014,11 +2018,6 @@
                                                                         release = [ "0000000000000000" ] ;
                                                                         release-files = ### FINDME B
                                                                             [
-                                                                                {
-                                                                                    name = "/home/checker/.gc-roots" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
                                                                                {
                                                                                     name = "/home/checker/resources" ;
                                                                                     stat = "drwxr-xr-x" ;
@@ -2204,11 +2203,6 @@
                                                                         release = [ "0000000000000000" ] ;
                                                                         release-files = ### FINDME B
                                                                             [
-                                                                                {
-                                                                                    name = "/home/checker/.gc-roots" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
                                                                                {
                                                                                     name = "/home/checker/resources" ;
                                                                                     stat = "drwxr-xr-x" ;
