@@ -1803,7 +1803,7 @@
                                                                         non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" ] ;
                                                                         order = 10 ;
                                                                         release = [ "0000000000000000" "0000000000000001" "0000000000000002" ] ;
-                                                                        release-files =
+                                                                        release-files = ###FINDME B
                                                                             [
                                                                                 {
                                                                                     name = "/home/checker/.gc-roots" ;
@@ -1819,12 +1819,6 @@
                                                                                     name = "/home/checker/resources/canonical" ;
                                                                                     stat = "drwxr-xr-x" ;
                                                                                     type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    cat = "" ;
-                                                                                    name = "/home/checker/resources/clean.lock" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "regular file" ;
                                                                                 }
                                                                                 {
                                                                                     name = "/home/checker/resources/flags" ;
