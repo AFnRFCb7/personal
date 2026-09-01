@@ -1351,6 +1351,16 @@
                                                                                                 stat = "-rw-r--r--" ;
                                                                                                 type = "log file" ;
                                                                                             }
+                                                                                            {
+                                                                                                name = "/home/checker/resources" ;
+                                                                                                stat = "drwxr-xr-x" ;
+                                                                                                type = "directory" ;
+                                                                                            }
+                                                                                            {
+                                                                                                name = "/home/checker/resources/canonical" ;
+                                                                                                stat = "drwxr-xr-x" ;
+                                                                                                type = "directory" ;
+                                                                                            }
                                                                                         ] ;
                                                                                 init =
                                                                                     json
@@ -1681,16 +1691,6 @@
                                                                                     type = "symbolic link" ;
                                                                                 }
                                                                                 {
-                                                                                    name = "/home/checker/resources" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/canonical" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
                                                                                     name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/dot-ssh/config/github" }" ;
                                                                                     stat = "lrwxrwxrwx" ;
                                                                                     target = "/home/checker/resources/mounts/0000000000000000" ;
@@ -1926,16 +1926,6 @@
                                                                         init-files =
                                                                             [
                                                                                 {
-                                                                                    name = "/home/checker/resources" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/canonical" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
                                                                                     name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/dot-ssh/known-hosts/github" }" ;
                                                                                     stat = "lrwxrwxrwx" ;
                                                                                     target = "/home/checker/resources/mounts/0000000000000000" ;
@@ -2020,7 +2010,8 @@
                                                                         non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
                                                                         order = 0 ;
                                                                         release = [ "0000000000000000" ] ;
-                                                                        release-files = ### FINDME B
+                                                                        release-files = ###
+
                                                                             [
                                                                                {
                                                                                     name = "/home/checker/resources" ;
@@ -2099,16 +2090,6 @@
                                                                             ] ;
                                                                         init-files =
                                                                             [
-                                                                                {
-                                                                                    name = "/home/checker/resources" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/canonical" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
                                                                                 {
                                                                                     name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/dot-ssh/identity/github" }" ;
                                                                                     stat = "lrwxrwxrwx" ;
