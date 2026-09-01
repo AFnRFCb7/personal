@@ -1488,7 +1488,7 @@
                                                                                                     standard-output = files.release ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            check-files --exclude "/home/checker/resources/*.lock" --delete true
+                                                                                                            check-files --exclusion "/home/checker/resources/*.lock" --delete true
                                                                                                         '' ; ###FINDME A
                                                                                             }
                                                                                         ]
