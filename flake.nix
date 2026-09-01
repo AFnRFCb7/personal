@@ -1905,7 +1905,7 @@
                                                             (
                                                                 tests.happy
                                                                     {
-                                                                        command = ''WTF check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]' '' ;
+                                                                        command = ''check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]' '' ;
                                                                         exclusions = [ ] ;
                                                                         init =
                                                                             [
