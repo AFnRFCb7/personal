@@ -1997,11 +1997,6 @@
                                                                                     type = "directory" ;
                                                                                 }
                                                                                 {
-                                                                                    name = "/home/checker/resources/flags" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
                                                                                     log =
                                                                                         [
                                                                                             {
