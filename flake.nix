@@ -2525,18 +2525,6 @@
                                                                                     type = "directory" ;
                                                                                 }
                                                                                 {
-                                                                                    cat = "" ;
-                                                                                    name = "/home/checker/resources/0000000000000001.lock" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "regular file" ;
-                                                                                }
-                                                                                {
-                                                                                    cat = "" ;
-                                                                                    name = "/home/checker/resources/0000000000000002.lock" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "regular file" ;
-                                                                                }
-                                                                                {
                                                                                     name = "/home/checker/resources/canonical" ;
                                                                                     stat = "drwxr-xr-x" ;
                                                                                     type = "directory" ;
