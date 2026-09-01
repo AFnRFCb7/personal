@@ -2118,7 +2118,6 @@
                                                                         order = 0 ;
                                                                         release = [ "0000000000000000" ] ;
                                                                         release-files = ### FINDME B
-
                                                                             [
                                                                                {
                                                                                     name = "/home/checker/resources" ;
@@ -2127,11 +2126,6 @@
                                                                                 }
                                                                                 {
                                                                                     name = "/home/checker/resources/canonical" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/flags" ;
                                                                                     stat = "drwxr-xr-x" ;
                                                                                     type = "directory" ;
                                                                                 }
