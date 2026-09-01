@@ -1624,7 +1624,7 @@
                                                             (
                                                                 tests.happy
                                                                     {
-                                                                        command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","config","github"]' '' ;
+                                                                        command = ''WTF check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","config","github"]' '' ;
                                                                         exclusions =
                                                                             [
                                                                                 "/home/checker/.gc-roots/0000000000000001"
@@ -1905,7 +1905,7 @@
                                                             (
                                                                 tests.happy
                                                                     {
-                                                                        command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]' '' ;
+                                                                        command = ''WTF check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]' '' ;
                                                                         exclusions = [ ] ;
                                                                         init =
                                                                             [
@@ -2070,7 +2070,7 @@
                                                             (
                                                                 tests.happy
                                                                     {
-                                                                        command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
+                                                                        command = ''WTF check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
                                                                         exclusions = [ ] ;
                                                                         init =
                                                                             [
