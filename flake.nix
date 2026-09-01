@@ -1486,7 +1486,10 @@
                                                                                                     process = "post" ;
                                                                                                     reads = false ;
                                                                                                     standard-output = files.release ;
-                                                                                                    text = "check-files --delete true" ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            check-files --exclude "/home/checker/resources/*.lock" --delete true
+                                                                                                        '' ; ###FINDME A
                                                                                             }
                                                                                         ]
                                                                                         (
@@ -1582,6 +1585,10 @@
                                                                         command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","config","github"]' '' ;
                                                                         exclusions =
                                                                             [
+                                                                                "/home/checker/.gc-roots/0000000000000001"
+                                                                                "/home/checker/.gc-roots/0000000000000002"
+                                                                                "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/dot-ssh/identity/github" }"
+                                                                                "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/dot-ssh/known-hosts/github" }"
                                                                                 "/home/checker/resources/mounts/0000000000000001"
                                                                                 "/home/checker/resources/mounts/0000000000000002"
                                                                                 "/home/checker/resources/release/0000000000000001"
@@ -1651,16 +1658,6 @@
                                                                                     type = "symbolic link" ;
                                                                                 }
                                                                                 {
-                                                                                    name = "/home/checker/.gc-roots/0000000000000001" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/.gc-roots/0000000000000002" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
                                                                                     name = "/home/checker/resources" ;
                                                                                     stat = "drwxr-xr-x" ;
                                                                                     type = "directory" ;
@@ -1674,18 +1671,6 @@
                                                                                     name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/dot-ssh/config/github" }" ;
                                                                                     stat = "lrwxrwxrwx" ;
                                                                                     target = "/home/checker/resources/mounts/0000000000000000" ;
-                                                                                    type = "symbolic link" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/dot-ssh/known-hosts/github" }" ;
-                                                                                    stat = "lrwxrwxrwx" ;
-                                                                                    target = "/home/checker/resources/mounts/0000000000000001" ;
-                                                                                    type = "symbolic link" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/dot-ssh/identity/github" }" ;
-                                                                                    stat = "lrwxrwxrwx" ;
-                                                                                    target = "/home/checker/resources/mounts/0000000000000002" ;
                                                                                     type = "symbolic link" ;
                                                                                 }
                                                                                 {
@@ -1829,24 +1814,6 @@
                                                                                     name = "/home/checker/resources" ;
                                                                                     stat = "drwxr-xr-x" ;
                                                                                     type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    cat = "" ;
-                                                                                    name = "/home/checker/resources/0000000000000000.lock" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "regular file" ;
-                                                                                }
-                                                                                {
-                                                                                    cat = "" ;
-                                                                                    name = "/home/checker/resources/0000000000000001.lock" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "regular file" ;
-                                                                                }
-                                                                                {
-                                                                                    cat = "" ;
-                                                                                    name = "/home/checker/resources/0000000000000002.lock" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "regular file" ;
                                                                                 }
                                                                                 {
                                                                                     name = "/home/checker/resources/canonical" ;
@@ -2051,7 +2018,7 @@
                                                                         non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
                                                                         order = 0 ;
                                                                         release = [ "0000000000000000" ] ;
-                                                                        release-files =
+                                                                        release-files = ### FINDME B
                                                                             [
                                                                                 {
                                                                                     name = "/home/checker/.gc-roots" ;
@@ -2062,12 +2029,6 @@
                                                                                     name = "/home/checker/resources" ;
                                                                                     stat = "drwxr-xr-x" ;
                                                                                     type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    cat = "" ;
-                                                                                    name = "/home/checker/resources/0000000000000000.lock" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "regular file" ;
                                                                                 }
                                                                                 {
                                                                                     name = "/home/checker/resources/canonical" ;
@@ -2253,7 +2214,7 @@
                                                                         non-deterministic-regular-files = [ ] ;
                                                                         order = 0 ;
                                                                         release = [ "0000000000000000" ] ;
-                                                                        release-files =
+                                                                        release-files = ### FINDME B
                                                                             [
                                                                                 {
                                                                                     name = "/home/checker/.gc-roots" ;
@@ -2264,12 +2225,6 @@
                                                                                     name = "/home/checker/resources" ;
                                                                                     stat = "drwxr-xr-x" ;
                                                                                     type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    cat = "" ;
-                                                                                    name = "/home/checker/resources/0000000000000000.lock" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "regular file" ;
                                                                                 }
                                                                                 {
                                                                                     name = "/home/checker/resources/canonical" ;
@@ -2569,7 +2524,7 @@
                                                                         non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" ] ;
                                                                         order = 100 ;
                                                                         release = [ "0000000000000000" "0000000000000001" "0000000000000002" ] ;
-                                                                        release-files =
+                                                                        release-files = ### FINDME B
                                                                             [
                                                                                 {
                                                                                     name = "/home/checker/.gc-roots" ;
@@ -2580,12 +2535,6 @@
                                                                                     name = "/home/checker/resources" ;
                                                                                     stat = "drwxr-xr-x" ;
                                                                                     type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    cat = "" ;
-                                                                                    name = "/home/checker/resources/0000000000000000.lock" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "regular file" ;
                                                                                 }
                                                                                 {
                                                                                     cat = "" ;
