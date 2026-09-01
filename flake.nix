@@ -2162,7 +2162,7 @@
                                                                         non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
                                                                         order = 0 ;
                                                                         release = [ "0000000000000000" ] ;
-                                                                        release-files = ###
+                                                                        release-files = ### FINDME B
 
                                                                             [
                                                                                {
