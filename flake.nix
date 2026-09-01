@@ -1275,7 +1275,7 @@
                                                                                         mkdir --parents "$OUT/releases/production/dot-ssh/known-hosts"
                                                                                         echo -n "/nix/store/hc4888hcs670ldpy8myrh7vvz3hamzb4-release/bin/release" > "$OUT/releases/production/dot-ssh/known-hosts/github"
                                                                                         mkdir --parents "$OUT/releases/production/dot-ssh/identity"
-                                                                                        echo -n "/nix/store/1a3k5bmfyjf2z6w0mrnnh74zpzv25irf-release/bin/release" > "$OUT/releases/production/dot-ssh/identity/github"
+                                                                                        echo -n "/nix/store/hy4bbw1z17ykv8pl4sqp2n384bfzyicx-release/bin/release" > "$OUT/releases/production/dot-ssh/identity/github"
                                                                                         mkdir --parents "$OUT/repository/secrets/ciphertext/dot-gnupg"
                                                                                         ln --symbolic ${ builtins.toFile "ownertrust.asc.age" secrets.dot-gnupg.ownertrust } "$OUT/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age"
                                                                                         ln --symbolic ${ builtins.toFile "secret-keys.asc.age" secrets.dot-gnupg.secret-keys } "$OUT/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age"
