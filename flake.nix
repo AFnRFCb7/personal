@@ -1463,7 +1463,10 @@
                                                                                                     process = "pre" ;
                                                                                                     reads = false ;
                                                                                                     standard-output = files.init ;
-                                                                                                    text = "check-files --delete false ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }" ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            check-files --delete false --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }
+                                                                                                        '' ;
                                                                                             }
                                                                                         ]
                                                                                         (
@@ -1514,7 +1517,10 @@
                                                                                                     process = "pre" ;
                                                                                                     reads = false ;
                                                                                                     standard-output = files.init ;
-                                                                                                    text = "check-files --delete true ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }" ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            check-files --delete true --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }
+                                                                                                        '' ;
                                                                                             }
                                                                                             {
                                                                                                     process = "pre" ;
@@ -1694,12 +1700,6 @@
                                                                                     stat = "lrwxrwxrwx" ;
                                                                                     target = "/home/checker/resources/mounts/0000000000000000" ;
                                                                                     type = "symbolic link" ;
-                                                                                }
-                                                                                {
-                                                                                    cat = "" ;
-                                                                                    name = "/home/checker/resources/clean.lock" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "regular file" ;
                                                                                 }
                                                                                 {
                                                                                     name = "/home/checker/resources/flags" ;
@@ -1931,12 +1931,6 @@
                                                                                     type = "symbolic link" ;
                                                                                 }
                                                                                 {
-                                                                                    cat = "" ;
-                                                                                    name = "/home/checker/resources/clean.lock" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "regular file" ;
-                                                                                }
-                                                                                {
                                                                                     name = "/home/checker/resources/flags" ;
                                                                                     stat = "drwxr-xr-x" ;
                                                                                     type = "directory" ;
@@ -2094,12 +2088,6 @@
                                                                                     stat = "lrwxrwxrwx" ;
                                                                                     target = "/home/checker/resources/mounts/0000000000000000" ;
                                                                                     type = "symbolic link" ;
-                                                                                }
-                                                                                {
-                                                                                    cat = "" ;
-                                                                                    name = "/home/checker/resources/clean.lock" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "regular file" ;
                                                                                 }
                                                                                 {
                                                                                     name = "/home/checker/resources/flags" ;
