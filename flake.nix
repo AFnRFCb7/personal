@@ -1379,6 +1379,16 @@
                                                                                                             stat = "drwxr-xr-x" ;
                                                                                                             type = "directory" ;
                                                                                                         }
+                                                                                                        {
+                                                                                                            name = "/home/checker/resources/mounts" ;
+                                                                                                            stat = "drwxr-xr-x" ;
+                                                                                                            type = "directory" ;
+                                                                                                        }
+                                                                                                        {
+                                                                                                            name = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                                                            stat = "drwxr-xr-x" ;
+                                                                                                            type = "directory" ;
+                                                                                                        }
                                                                                                     ]
                                                                                                 ]
                                                                                         ) ;
@@ -1773,16 +1783,6 @@
                                                                                     type = "log file" ;
                                                                                 }
                                                                                 {
-                                                                                    name = "/home/checker/resources/mounts" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/mounts/0000000000000000" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
                                                                                     cat =
                                                                                         ''
                                                                                             Host github.com
@@ -1955,16 +1955,6 @@
                                                                                     type = "log file" ;
                                                                                 }
                                                                                 {
-                                                                                    name = "/home/checker/resources/mounts" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/mounts/0000000000000000" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
                                                                                     cat = builtins.readFile "${ shared }/dot-ssh/identity.asc" ;
                                                                                     name = "/home/checker/resources/mounts/0000000000000000/identity.asc" ;
                                                                                     stat = "-r--------" ;
@@ -2107,16 +2097,6 @@
                                                                                     name = "/home/checker/resources/log.yaml" ;
                                                                                     stat = "-rw-r--r--" ;
                                                                                     type = "log file" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/mounts" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/mounts/0000000000000000" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
                                                                                 }
                                                                                 {
                                                                                     name = "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ;
