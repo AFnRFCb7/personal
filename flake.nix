@@ -1271,7 +1271,7 @@
                                                                                         mkdir --parents "$OUT/hashes/production/repository"
                                                                                         echo -n "" > "$OUT/hashes/production/repository/secrets"
                                                                                         mkdir --parents "$OUT/releases/production/dot-ssh/config"
-                                                                                        echo -n "/nix/store/hc4888hcs670ldpy8myrh7vvz3hamzb4-release/bin/release" > "$OUT/releases/production/dot-ssh/config/github"
+                                                                                        echo -n "/nix/store/rxbf4gnalsams334i9a3abf9r68dbsnb-release/bin/release" > "$OUT/releases/production/dot-ssh/config/github"
                                                                                         mkdir --parents "$OUT/releases/production/dot-ssh/identity"
                                                                                         echo -n "/nix/store/hy4bbw1z17ykv8pl4sqp2n384bfzyicx-release/bin/release" > "$OUT/releases/production/dot-ssh/identity/github"
                                                                                         mkdir --parents "$OUT/releases/production/dot-ssh/known-hosts"
