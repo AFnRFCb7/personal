@@ -319,6 +319,53 @@
                                                                                                                                 temporary = false ;
                                                                                                                             } ;
                                                                                                                 } ;
+                                                                                                            identity =
+                                                                                                                {
+                                                                                                                    github =
+                                                                                                                        ignore :
+                                                                                                                            {
+                                                                                                                                error = 195 ;
+                                                                                                                                init =
+                                                                                                                                    ignore :
+                                                                                                                                        {
+                                                                                                                                            action =
+                                                                                                                                                ignore :
+                                                                                                                                                    {
+                                                                                                                                                        targetPkgs =
+                                                                                                                                                            { pkgs , ... } :
+                                                                                                                                                                [
+                                                                                                                                                                    (
+                                                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                                                            {
+                                                                                                                                                                                name = "identity" ;
+                                                                                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                                                                                text =
+                                                                                                                                                                                    ''
+                                                                                                                                                                                        cat ${ config.personal.temporary.ssh.identity } > "identity.asc"
+                                                                                                                                                                                        chmod 0400 "identity.asc"
+                                                                                                                                                                                    '' ;
+                                                                                                                                                                            }
+                                                                                                                                                                    )
+                                                                                                                                                                ] ;
+                                                                                                                                                        text = "identity" ;
+                                                                                                                                                    } ;
+                                                                                                                                        } ;
+                                                                                                                                release =
+                                                                                                                                    ignore :
+                                                                                                                                        {
+                                                                                                                                            action =
+                                                                                                                                                ignore :
+                                                                                                                                                    {
+                                                                                                                                                        targetPkgs = { pkgs , ... } : [ ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                        } ;
+                                                                                                                                targets = [ "identity.asc" ] ;
+                                                                                                                                temporary = false ;
+                                                                                                                            } ;
+                                                                                                                } ;
                                                                                                              known-hosts =
                                                                                                                 {
                                                                                                                     github =
@@ -375,53 +422,6 @@
                                                                                                                                                     } ;
                                                                                                                                         } ;
                                                                                                                                 targets = [ "known-hosts.asc" ] ;
-                                                                                                                                temporary = false ;
-                                                                                                                            } ;
-                                                                                                                } ;
-                                                                                                            identity =
-                                                                                                                {
-                                                                                                                    github =
-                                                                                                                        ignore :
-                                                                                                                            {
-                                                                                                                                error = 140 ;
-                                                                                                                                init =
-                                                                                                                                    ignore :
-                                                                                                                                        {
-                                                                                                                                            action =
-                                                                                                                                                ignore :
-                                                                                                                                                    {
-                                                                                                                                                        targetPkgs =
-                                                                                                                                                            { pkgs , ... } :
-                                                                                                                                                                [
-                                                                                                                                                                    (
-                                                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                                                            {
-                                                                                                                                                                                name = "identity" ;
-                                                                                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                                                                                                text =
-                                                                                                                                                                                    ''
-                                                                                                                                                                                        cat ${ config.personal.temporary.ssh.identity } > "identity.asc"
-                                                                                                                                                                                        chmod 0400 "identity.asc"
-                                                                                                                                                                                    '' ;
-                                                                                                                                                                            }
-                                                                                                                                                                    )
-                                                                                                                                                                ] ;
-                                                                                                                                                        text = "identity" ;
-                                                                                                                                                    } ;
-                                                                                                                                        } ;
-                                                                                                                                release =
-                                                                                                                                    ignore :
-                                                                                                                                        {
-                                                                                                                                            action =
-                                                                                                                                                ignore :
-                                                                                                                                                    {
-                                                                                                                                                        targetPkgs = { pkgs , ... } : [ ] ;
-                                                                                                                                                        text =
-                                                                                                                                                            ''
-                                                                                                                                                            '' ;
-                                                                                                                                                    } ;
-                                                                                                                                        } ;
-                                                                                                                                targets = [ "identity.asc" ] ;
                                                                                                                                 temporary = false ;
                                                                                                                             } ;
                                                                                                                 } ;
@@ -1273,7 +1273,7 @@
                                                                                         mkdir --parents "$OUT/releases/production/dot-ssh/config"
                                                                                         echo -n "/nix/store/rxbf4gnalsams334i9a3abf9r68dbsnb-release/bin/release" > "$OUT/releases/production/dot-ssh/config/github"
                                                                                         mkdir --parents "$OUT/releases/production/dot-ssh/identity"
-                                                                                        echo -n "/nix/store/hy4bbw1z17ykv8pl4sqp2n384bfzyicx-release/bin/release" > "$OUT/releases/production/dot-ssh/identity/github"
+                                                                                        echo -n "/nix/store/rxbf4gnalsams334i9a3abf9r68dbsnb-release/bin/release" > "$OUT/releases/production/dot-ssh/identity/github"
                                                                                         mkdir --parents "$OUT/releases/production/dot-ssh/known-hosts"
                                                                                         echo -n "/nix/store/rxbf4gnalsams334i9a3abf9r68dbsnb-release/bin/release" > "$OUT/releases/production/dot-ssh/known-hosts/github"
                                                                                         mkdir --parents "$OUT/repository/secrets/ciphertext/dot-gnupg"
