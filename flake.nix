@@ -1432,6 +1432,38 @@
                                                                                                             stat = "drwxr-xr-x" ;
                                                                                                             type = "directory" ;
                                                                                                         }
+                                                                                                    ]
+                                                                                                    (
+                                                                                                        let
+                                                                                                            generator =
+                                                                                                                index :
+                                                                                                                    {
+                                                                                                                        log =
+                                                                                                                            [
+                                                                                                                                (
+                                                                                                                                    let
+                                                                                                                                        generator =
+                                                                                                                                            index :
+                                                                                                                                                {
+                                                                                                                                                    channel = "valid-release" ;
+                                                                                                                                                    payload =
+                                                                                                                                                        {
+                                                                                                                                                            index = builtins.fixedWithString "0" ( builtins.toString index ) ;
+                                                                                                                                                            standard-output = "" ;
+                                                                                                                                                            status = "0" ;
+                                                                                                                                                        } ;
+                                                                                                                                                    type = "message" ;
+                                                                                                                                                } ;
+                                                                                                                                        in builtins.genList generator index ;
+                                                                                                                                )
+                                                                                                                            ] ;
+                                                                                                                        name = "/home/checker/resources/log.yaml" ;
+                                                                                                                        stat = "-rw-r--r--" ;
+                                                                                                                        type = "log file" ;
+                                                                                                                    } ;
+                                                                                                            in builtins.genList generator size
+                                                                                                    )
+                                                                                                    [
                                                                                                         {
                                                                                                             name = "/home/checker/resources/mounts" ;
                                                                                                             stat = "drwxr-xr-x" ;
@@ -1843,44 +1875,6 @@
                                                                         release = [ "0000000000000000" "0000000000000001" "0000000000000002" ] ;
                                                                         release-files = ###FINDME B
                                                                             [
-                                                                                {
-                                                                                    log =
-                                                                                        [
-                                                                                            {
-                                                                                                channel = "valid-release" ;
-                                                                                                payload =
-                                                                                                    {
-                                                                                                        index = "0000000000000000" ;
-                                                                                                        standard-output = "" ;
-                                                                                                        status = "0" ;
-                                                                                                    } ;
-                                                                                                type = "message" ;
-                                                                                            }
-                                                                                            {
-                                                                                                channel = "valid-release" ;
-                                                                                                payload =
-                                                                                                    {
-                                                                                                        index = "0000000000000001" ;
-                                                                                                        standard-output = "" ;
-                                                                                                        status = "0" ;
-                                                                                                    } ;
-                                                                                                type = "message" ;
-                                                                                            }
-                                                                                            {
-                                                                                                channel = "valid-release" ;
-                                                                                                payload =
-                                                                                                    {
-                                                                                                        index = "0000000000000002" ;
-                                                                                                        standard-output = "" ;
-                                                                                                        status = "0" ;
-                                                                                                    } ;
-                                                                                                type = "message" ;
-                                                                                            }
-                                                                                        ] ;
-                                                                                    name = "/home/checker/resources/log.yaml" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "log file" ;
-                                                                                }
                                                                             ] ;
                                                                         size = 3 ;
                                                                     }
@@ -1948,24 +1942,6 @@
                                                                         release = [ "0000000000000000" ] ;
                                                                         release-files = ### FINDME B
                                                                             [
-                                                                                {
-                                                                                    log =
-                                                                                        [
-                                                                                            {
-                                                                                                channel = "valid-release" ;
-                                                                                                payload =
-                                                                                                    {
-                                                                                                        index = "0000000000000000" ;
-                                                                                                        standard-output = "" ;
-                                                                                                        status = "0" ;
-                                                                                                    } ;
-                                                                                                type = "message" ;
-                                                                                            }
-                                                                                        ] ;
-                                                                                    name = "/home/checker/resources/log.yaml" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "log file" ;
-                                                                                }
                                                                             ] ;
                                                                         size = 1 ;
                                                                     }
@@ -2032,24 +2008,6 @@
                                                                         release = [ "0000000000000000" ] ;
                                                                         release-files = ### FINDME B
                                                                             [
-                                                                                {
-                                                                                    log =
-                                                                                        [
-                                                                                            {
-                                                                                                channel = "valid-release" ;
-                                                                                                payload =
-                                                                                                    {
-                                                                                                        index = "0000000000000000" ;
-                                                                                                        standard-output = "" ;
-                                                                                                        status = "0" ;
-                                                                                                    } ;
-                                                                                                type = "message" ;
-                                                                                            }
-                                                                                        ] ;
-                                                                                    name = "/home/checker/resources/log.yaml" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "log file" ;
-                                                                                }
                                                                             ] ;
                                                                         size = 1 ;
                                                                     }
