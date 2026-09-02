@@ -1435,23 +1435,17 @@
                                                                                                                 let
                                                                                                                     generator =
                                                                                                                         index :
-                                                                                                                            (
-                                                                                                                                let
-                                                                                                                                    generator =
-                                                                                                                                        index :
-                                                                                                                                            {
-                                                                                                                                                channel = "valid-release" ;
-                                                                                                                                                payload =
-                                                                                                                                                    {
-                                                                                                                                                        index = pkgs.lib.fixedWidthString 16 "0" ( builtins.toString index ) ;
-                                                                                                                                                        standard-output = "" ;
-                                                                                                                                                        status = "0" ;
-                                                                                                                                                    } ;
-                                                                                                                                                type = "message" ;
-                                                                                                                                            } ;
-                                                                                                                                    in builtins.genList generator ( index + 1 )
-                                                                                                                            ) ;
-                                                                                                                    in builtins.genList generator size ;
+                                                                                                                            {
+                                                                                                                                channel = "valid-release" ;
+                                                                                                                                payload =
+                                                                                                                                    {
+                                                                                                                                        index = pkgs.lib.fixedWidthString 16 "0" ( builtins.toString index ) ;
+                                                                                                                                        standard-output = "" ;
+                                                                                                                                        status = "0" ;
+                                                                                                                                    } ;
+                                                                                                                                type = "message" ;
+                                                                                                                            } ;
+                                                                                                                    in builtins.genList generator ( size + 1 ) ;
                                                                                                                 name = "/home/checker/resources/log.yaml" ;
                                                                                                                 stat = "-rw-r--r--" ;
                                                                                                                 type = "log file" ;
