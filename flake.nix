@@ -1262,10 +1262,10 @@
                                                                                         chmod 0400 "$OUT/dot-ssh/identity.asc"
                                                                                         ssh-keygen -f "$OUT/dot-ssh/identity.asc" -y > "$OUT/dot-ssh/identity.pub.asc"
                                                                                         chmod 0400 "$OUT/dot-ssh/identity.pub.asc"
-                                                                                        mkdir --parents "$OUT/hashes/$RESOURCES"
-                                                                                        echo -n "0de3b11f7c8aa1c54b6ebc7e7f3b7150d438ce0be9e3fd9a396983fba8cd116d0f4221c09312f0b426b48697d4ddf1d2c132672c063fdb219563417c4809c447" > "$OUT"/hashes/"$RESOURCES"/'["production","dot-ssh","config","github"]'
-                                                                                        echo -n "68b45fb93af883c4bf2105f8f5bd94c87499ffa9d180bf1a458dcfd02101a2cf86f81c5a14be784f294710e431125505407f79be96f6f38f292f8bfb81556880" > "$OUT"/hashes/"$RESOURCES"/'["production","dot-ssh","identity","github"]'
-                                                                                        echo -n "68b45fb93af883c4bf2105f8f5bd94c87499ffa9d180bf1a458dcfd02101a2cf86f81c5a14be784f294710e431125505407f79be96f6f38f292f8bfb81556880" > "$OUT"/hashes/"$RESOURCES"/'["production","dot-ssh","known-hosts","github"]'
+                                                                                        mkdir --parents "$OUT/hashes"
+                                                                                        echo -n "0de3b11f7c8aa1c54b6ebc7e7f3b7150d438ce0be9e3fd9a396983fba8cd116d0f4221c09312f0b426b48697d4ddf1d2c132672c063fdb219563417c4809c447" > "$OUT"/hashes/'["production","dot-ssh","config","github"]'
+                                                                                        echo -n "68b45fb93af883c4bf2105f8f5bd94c87499ffa9d180bf1a458dcfd02101a2cf86f81c5a14be784f294710e431125505407f79be96f6f38f292f8bfb81556880" > "$OUT"/hashes/'["production","dot-ssh","identity","github"]'
+                                                                                        echo -n "68b45fb93af883c4bf2105f8f5bd94c87499ffa9d180bf1a458dcfd02101a2cf86f81c5a14be784f294710e431125505407f79be96f6f38f292f8bfb81556880" > "$OUT"/hashes/'["production","dot-ssh","known-hosts","github"]'
                                                                                         mkdir --parents "$OUT/hashes/production/dot-ssh/config"
                                                                                         echo -n "0de3b11f7c8aa1c54b6ebc7e7f3b7150d438ce0be9e3fd9a396983fba8cd116d0f4221c09312f0b426b48697d4ddf1d2c132672c063fdb219563417c4809c447" > "$OUT/hashes/production/dot-ssh/config/github"
                                                                                         mkdir --parents "$OUT/hashes/production/dot-ssh/known-hosts"
@@ -1389,7 +1389,7 @@
                                                                                                             type = "directory" ;
                                                                                                         }
                                                                                                         {
-                                                                                                            name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/${ command }" }" ;
+                                                                                                            name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/'${ builtins.baseNameOf command }'" }" ;
                                                                                                             stat = "lrwxrwxrwx" ;
                                                                                                             target = "/home/checker/resources/mounts/0000000000000000" ;
                                                                                                             type = "symbolic link" ;
