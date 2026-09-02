@@ -1446,7 +1446,7 @@
                                                                                                                                                     channel = "valid-release" ;
                                                                                                                                                     payload =
                                                                                                                                                         {
-                                                                                                                                                            index = pkgs.lib.fixedWidthString "0" ( builtins.toString index ) ;
+                                                                                                                                                            index = pkgs.lib.fixedWidthString 16 "0" ( builtins.toString index ) ;
                                                                                                                                                             standard-output = "" ;
                                                                                                                                                             status = "0" ;
                                                                                                                                                         } ;
