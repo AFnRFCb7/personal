@@ -1452,7 +1452,7 @@
                                                                                                                                                         } ;
                                                                                                                                                     type = "message" ;
                                                                                                                                                 } ;
-                                                                                                                                        in builtins.genList generator ( index + 1 ) )
+                                                                                                                                        in builtins.genList generator ( index + 1 )
                                                                                                                                 )
                                                                                                                             ] ;
                                                                                                                         name = "/home/checker/resources/log.yaml" ;
