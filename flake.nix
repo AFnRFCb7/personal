@@ -1430,36 +1430,38 @@
                                                                                                             stat = "drwxr-xr-x" ;
                                                                                                             type = "directory" ;
                                                                                                         }
-                                                                                                    ]
-                                                                                                    (
-                                                                                                        let
-                                                                                                            generator =
-                                                                                                                index :
-                                                                                                                    {
-                                                                                                                        log =
-                                                                                                                            (
-                                                                                                                                let
-                                                                                                                                    generator =
-                                                                                                                                        index :
-                                                                                                                                            {
-                                                                                                                                                channel = "valid-release" ;
-                                                                                                                                                payload =
+                                                                                                        {
+                                                                                                            log =
+                                                                                                                let
+                                                                                                                    generator =
+                                                                                                                        index :
+                                                                                                                            {
+                                                                                                                                log =
+                                                                                                                                    (
+                                                                                                                                        let
+                                                                                                                                            generator =
+                                                                                                                                                index :
                                                                                                                                                     {
-                                                                                                                                                        index = pkgs.lib.fixedWidthString 16 "0" ( builtins.toString index ) ;
-                                                                                                                                                        standard-output = "" ;
-                                                                                                                                                        status = "0" ;
+                                                                                                                                                        channel = "valid-release" ;
+                                                                                                                                                        payload =
+                                                                                                                                                            {
+                                                                                                                                                                index = pkgs.lib.fixedWidthString 16 "0" ( builtins.toString index ) ;
+                                                                                                                                                                standard-output = "" ;
+                                                                                                                                                                status = "0" ;
+                                                                                                                                                            } ;
+                                                                                                                                                        type = "message" ;
                                                                                                                                                     } ;
-                                                                                                                                                type = "message" ;
-                                                                                                                                            } ;
-                                                                                                                                    in builtins.genList generator ( index + 1 )
-                                                                                                                            ) ;
-                                                                                                                        name = "/home/checker/resources/log.yaml" ;
-                                                                                                                        stat = "-rw-r--r--" ;
-                                                                                                                        type = "log file" ;
-                                                                                                                    } ;
-                                                                                                            in builtins.genList generator size
-                                                                                                    )
-                                                                                                    [
+                                                                                                                                            in builtins.genList generator ( index + 1 )
+                                                                                                                                    ) ;
+                                                                                                                                name = "/home/checker/resources/log.yaml" ;
+                                                                                                                                stat = "-rw-r--r--" ;
+                                                                                                                                type = "log file" ;
+                                                                                                                            } ;
+                                                                                                                    in builtins.genList generator size ;
+                                                                                                                name = "/home/checker/resources/log.yaml" ;
+                                                                                                                stat = "" ;
+                                                                                                                type = "log file" ;
+                                                                                                        }
                                                                                                         {
                                                                                                             name = "/home/checker/resources/mounts" ;
                                                                                                             stat = "drwxr-xr-x" ;
