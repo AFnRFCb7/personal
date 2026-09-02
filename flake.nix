@@ -1452,7 +1452,7 @@
                                                                                                                                                         } ;
                                                                                                                                                     type = "message" ;
                                                                                                                                                 } ;
-                                                                                                                                        in builtins.genList generator index
+                                                                                                                                        in builtins.genList generator ( index + 1 ) ;
                                                                                                                                 )
                                                                                                                             ] ;
                                                                                                                         name = "/home/checker/resources/log.yaml" ;
@@ -1998,7 +1998,7 @@
                                                                         non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
                                                                         order = 0 ;
                                                                         release = [ "0000000000000000" ] ;
-                                                                        size = 2 ;
+                                                                        size = 1 ;
                                                                     }
                                                             )
                                                         ]
