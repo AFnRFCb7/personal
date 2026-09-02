@@ -1914,12 +1914,6 @@
                                                                         init-files =
                                                                             [
                                                                                 {
-                                                                                    name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/dot-ssh/identity/github" }" ;
-                                                                                    stat = "lrwxrwxrwx" ;
-                                                                                    target = "/home/checker/resources/mounts/0000000000000000" ;
-                                                                                    type = "symbolic link" ;
-                                                                                }
-                                                                                {
                                                                                     log =
                                                                                         [
                                                                                             {
@@ -2052,12 +2046,6 @@
                                                                             ] ;
                                                                         init-files =
                                                                             [
-                                                                                {
-                                                                                    name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/dot-ssh/known-hosts/github" }" ;
-                                                                                    stat = "lrwxrwxrwx" ;
-                                                                                    target = "/home/checker/resources/mounts/0000000000000000" ;
-                                                                                    type = "symbolic link" ;
-                                                                                }
                                                                                 {
                                                                                     log =
                                                                                         [
