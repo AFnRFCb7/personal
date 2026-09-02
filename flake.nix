@@ -1416,6 +1416,16 @@
                                                                                                             stat = "drwxr-xr-x" ;
                                                                                                             type = "directory" ;
                                                                                                         }
+                                                                                                        {
+                                                                                                            name = "/home/checker/resources/mounts" ;
+                                                                                                            stat = "drwxr-xr-x" ;
+                                                                                                            type = "directory" ;
+                                                                                                        }
+                                                                                                        {
+                                                                                                            name = "/home/checker/resources/release" ;
+                                                                                                            stat = "drwxr-xr-x" ;
+                                                                                                            type = "directory" ;
+                                                                                                        }
                                                                                                     ]
                                                                                                 ]
                                                                                         ) ;
@@ -1862,16 +1872,6 @@
                                                                                     type = "log file" ;
                                                                                 }
                                                                                 {
-                                                                                    name = "/home/checker/resources/mounts" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/release" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
                                                                                     cat =
                                                                                         ''
                                                                                             3
@@ -1980,16 +1980,6 @@
                                                                                     type = "log file" ;
                                                                                 }
                                                                                 {
-                                                                                    name = "/home/checker/resources/mounts" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/release" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
                                                                                     cat =
                                                                                         ''
                                                                                             1
@@ -2095,16 +2085,6 @@
                                                                                     name = "/home/checker/resources/log.yaml" ;
                                                                                     stat = "-rw-r--r--" ;
                                                                                     type = "log file" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/mounts" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/release" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
                                                                                 }
                                                                                 {
                                                                                     cat =
