@@ -1445,7 +1445,7 @@
                                                                                                                                     } ;
                                                                                                                                 type = "message" ;
                                                                                                                             } ;
-                                                                                                                    in builtins.genList generator ( size + 1 ) ;
+                                                                                                                    in builtins.genList generator size ;
                                                                                                                 name = "/home/checker/resources/log.yaml" ;
                                                                                                                 stat = "-rw-r--r--" ;
                                                                                                                 type = "log file" ;
