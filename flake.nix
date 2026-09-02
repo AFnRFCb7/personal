@@ -1301,7 +1301,6 @@
                                                             non-deterministic-regular-files ,
                                                             order ,
                                                             release ,
-                                                            release-files ,
                                                             size
                                                         } :
                                                             let
@@ -1415,7 +1414,6 @@
                                                                                         (
                                                                                             builtins.concatLists
                                                                                                 [
-                                                                                                    release-files
                                                                                                     [
                                                                                                         {
                                                                                                             name = "/home/checker/.gc-roots" ;
@@ -1448,7 +1446,7 @@
                                                                                                                                                     channel = "valid-release" ;
                                                                                                                                                     payload =
                                                                                                                                                         {
-                                                                                                                                                            index = builtins.fixedWithString "0" ( builtins.toString index ) ;
+                                                                                                                                                            index = builtins.fixedWidthString "0" ( builtins.toString index ) ;
                                                                                                                                                             standard-output = "" ;
                                                                                                                                                             status = "0" ;
                                                                                                                                                         } ;
@@ -1873,9 +1871,6 @@
                                                                         non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" ] ;
                                                                         order = 10 ;
                                                                         release = [ "0000000000000000" "0000000000000001" "0000000000000002" ] ;
-                                                                        release-files = ###FINDME B
-                                                                            [
-                                                                            ] ;
                                                                         size = 3 ;
                                                                     }
                                                             )
@@ -1940,9 +1935,6 @@
                                                                         non-deterministic-regular-files = [ ] ;
                                                                         order = 0 ;
                                                                         release = [ "0000000000000000" ] ;
-                                                                        release-files = ### FINDME B
-                                                                            [
-                                                                            ] ;
                                                                         size = 1 ;
                                                                     }
                                                             )
@@ -2006,9 +1998,6 @@
                                                                         non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
                                                                         order = 0 ;
                                                                         release = [ "0000000000000000" ] ;
-                                                                        release-files = ### FINDME B
-                                                                            [
-                                                                            ] ;
                                                                         size = 1 ;
                                                                     }
                                                             )
