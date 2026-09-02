@@ -1389,7 +1389,7 @@
                                                                                                             type = "directory" ;
                                                                                                         }
                                                                                                         {
-                                                                                                            name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/'${ builtins.baseNameOf command }'" }" ;
+                                                                                                            name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/${ builtins.baseNameOf command }" }" ;
                                                                                                             stat = "lrwxrwxrwx" ;
                                                                                                             target = "/home/checker/resources/mounts/0000000000000000" ;
                                                                                                             type = "symbolic link" ;
