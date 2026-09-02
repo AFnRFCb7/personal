@@ -1268,7 +1268,7 @@
                                                                                         echo -n "68b45fb93af883c4bf2105f8f5bd94c87499ffa9d180bf1a458dcfd02101a2cf86f81c5a14be784f294710e431125505407f79be96f6f38f292f8bfb81556880" > "$OUT"/hashes/'["production","dot-ssh","known-hosts","github"]'
                                                                                         echo -n "/nix/store/rxbf4gnalsams334i9a3abf9r68dbsnb-release/bin/release" > "$OUT/release"
                                                                                         mkdir --parents "$OUT/repository/secrets/ciphertext/dot-gnupg"
-                                                                                        ln --symbolic ${ builtins.toFile "ownertrust.asc.age" secrets.dot-gnupg.ownertrust } "$OUT/repository/secrets/ciphertext/dot-gnupg/owertrust.asc.age"
+                                                                                        ln --symbolic ${ builtins.toFile "ownertrust.asc.age" secrets.dot-gnupg.ownertrust } "$OUT/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age"
                                                                                         ln --symbolic ${ builtins.toFile "secret-keys.asc.age" secrets.dot-gnupg.secret-keys } "$OUT/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age"
                                                                                         mkdir --parents "$OUT/repository/secrets/ciphertext/dot-ssh/mobile"
                                                                                         ln --symbolic ${ builtins.toFile "identity.asc.age" secrets.dot-ssh.mobile.known-hosts } "$OUT/repository/secrets/ciphertext/dot-ssh/mobile/known-hosts.asc.age"
