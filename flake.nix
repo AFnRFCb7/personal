@@ -1411,6 +1411,11 @@
                                                                                                             stat = "drwxr-xr-x" ;
                                                                                                             type = "directory" ;
                                                                                                         }
+                                                                                                        {
+                                                                                                            name = "/home/checker/resources/canonical" ;
+                                                                                                            stat = "drwxr-xr-x" ;
+                                                                                                            type = "directory" ;
+                                                                                                        }
                                                                                                     ]
                                                                                                 ]
                                                                                         ) ;
@@ -1819,11 +1824,6 @@
                                                                         release-files = ###FINDME B
                                                                             [
                                                                                 {
-                                                                                    name = "/home/checker/resources/canonical" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
                                                                                     log =
                                                                                         [
                                                                                             {
@@ -1962,11 +1962,6 @@
                                                                         release-files = ### FINDME B
                                                                             [
                                                                                 {
-                                                                                    name = "/home/checker/resources/canonical" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
                                                                                     log =
                                                                                         [
                                                                                             {
@@ -2083,11 +2078,6 @@
                                                                         release = [ "0000000000000000" ] ;
                                                                         release-files = ### FINDME B
                                                                             [
-                                                                                {
-                                                                                    name = "/home/checker/resources/canonical" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
                                                                                 {
                                                                                     log =
                                                                                         [
