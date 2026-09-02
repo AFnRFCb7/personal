@@ -1393,6 +1393,12 @@
                                                                                                             type = "directory" ;
                                                                                                         }
                                                                                                         {
+                                                                                                            name = "/home/checker/resources/release/0000000000000000" ;
+                                                                                                            stat = "lrwxrwxrwx" ;
+                                                                                                            target = builtins.readFile "${ shared }/release" ;
+                                                                                                            type = "symbolic link" ;
+                                                                                                        }
+                                                                                                        {
                                                                                                             cat =
                                                                                                                 ''
                                                                                                                     ${ builtins.toString size }
@@ -1831,12 +1837,6 @@
                                                                                     stat = "-r--------" ;
                                                                                     type = "regular file" ;
                                                                                 }
-                                                                                {
-                                                                                    name = "/home/checker/resources/release/0000000000000000" ;
-                                                                                    stat = "lrwxrwxrwx" ;
-                                                                                    target = builtins.readFile "${ shared }/release" ;
-                                                                                    type = "symbolic link" ;
-                                                                                }
                                                                             ]  ;
                                                                         non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" ] ;
                                                                         order = 10 ;
@@ -1942,12 +1942,6 @@
                                                                                     stat = "-r--------" ;
                                                                                     type = "regular file" ;
                                                                                 }
-                                                                                {
-                                                                                    name = "/home/checker/resources/release/0000000000000000" ;
-                                                                                    stat = "lrwxrwxrwx" ;
-                                                                                    target = builtins.readFile "${ shared }/release" ;
-                                                                                    type = "symbolic link" ;
-                                                                                }
                                                                             ]  ;
                                                                         non-deterministic-regular-files = [ ] ;
                                                                         order = 0 ;
@@ -2031,12 +2025,6 @@
                                                                                     name = "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ;
                                                                                     stat = "-r--------" ;
                                                                                     type = "non-deterministic regular file" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/release/0000000000000000" ;
-                                                                                    stat = "lrwxrwxrwx" ;
-                                                                                    target = builtins.readFile "${ shared }/release" ;
-                                                                                    type = "symbolic link" ;
                                                                                 }
                                                                             ]  ;
                                                                         non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
