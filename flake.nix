@@ -1386,6 +1386,11 @@
                                                                                                             target = "/home/checker/resources/mounts/0000000000000000" ;
                                                                                                             type = "symbolic link" ;
                                                                                                         }
+                                                                                                        {
+                                                                                                            name = "/home/checker/resources/release" ;
+                                                                                                            stat = "drwxr-xr-x" ;
+                                                                                                            type = "directory" ;
+                                                                                                        }
                                                                                                     ]
                                                                                                 ]
                                                                                         ) ;
@@ -1788,11 +1793,6 @@
                                                                                     type = "regular file" ;
                                                                                 }
                                                                                 {
-                                                                                    name = "/home/checker/resources/release" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
                                                                                     name = "/home/checker/resources/release/0000000000000000" ;
                                                                                     stat = "lrwxrwxrwx" ;
                                                                                     target = builtins.readFile "${ shared }/release" ;
@@ -1941,11 +1941,6 @@
                                                                                     type = "regular file" ;
                                                                                 }
                                                                                 {
-                                                                                    name = "/home/checker/resources/release" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
                                                                                     name = "/home/checker/resources/release/0000000000000000" ;
                                                                                     stat = "lrwxrwxrwx" ;
                                                                                     target = builtins.readFile "${ shared }/release" ;
@@ -2071,11 +2066,6 @@
                                                                                     name = "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ;
                                                                                     stat = "-r--------" ;
                                                                                     type = "non-deterministic regular file" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/release" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
                                                                                 }
                                                                                 {
                                                                                     name = "/home/checker/resources/release/0000000000000000" ;
