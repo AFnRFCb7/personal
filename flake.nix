@@ -1301,7 +1301,8 @@
                                                             non-deterministic-regular-files ,
                                                             order ,
                                                             release ,
-                                                            release-files
+                                                            release-files ,
+                                                            size
                                                         } :
                                                             let
                                                                 files =
@@ -1391,6 +1392,15 @@
                                                                                                             stat = "drwxr-xr-x" ;
                                                                                                             type = "directory" ;
                                                                                                         }
+                                                                                                        {
+                                                                                                            cat =
+                                                                                                                ''
+                                                                                                                    ${ builtins.toString size }
+                                                                                                                '' ;
+                                                                                                            name = "/home/checker/resources/sequential" ;
+                                                                                                            stat = "-rw-r--r--" ;
+                                                                                                            type = "regular file" ;
+                                                                                                        }
                                                                                                     ]
                                                                                                 ]
                                                                                         ) ;
@@ -1425,6 +1435,15 @@
                                                                                                             name = "/home/checker/resources/release" ;
                                                                                                             stat = "drwxr-xr-x" ;
                                                                                                             type = "directory" ;
+                                                                                                        }
+                                                                                                        {
+                                                                                                            cat =
+                                                                                                                ''
+                                                                                                                    ${ builtins.toString size }
+                                                                                                                '' ;
+                                                                                                            name = "/home/checker/resources/sequential" ;
+                                                                                                            stat = "-rw-r--r--" ;
+                                                                                                            type = "regular file" ;
                                                                                                         }
                                                                                                     ]
                                                                                                 ]
@@ -1818,15 +1837,6 @@
                                                                                     target = builtins.readFile "${ shared }/release" ;
                                                                                     type = "symbolic link" ;
                                                                                 }
-                                                                                {
-                                                                                    cat =
-                                                                                        ''
-                                                                                            3
-                                                                                        '' ;
-                                                                                    name = "/home/checker/resources/sequential" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "regular file" ;
-                                                                                }
                                                                             ]  ;
                                                                         non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" ] ;
                                                                         order = 10 ;
@@ -1871,16 +1881,8 @@
                                                                                     stat = "-rw-r--r--" ;
                                                                                     type = "log file" ;
                                                                                 }
-                                                                                {
-                                                                                    cat =
-                                                                                        ''
-                                                                                            3
-                                                                                        '' ;
-                                                                                    name = "/home/checker/resources/sequential" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "regular file" ;
-                                                                                }
                                                                             ] ;
+                                                                        size = 3 ;
                                                                     }
                                                             )
                                                             (
@@ -1946,15 +1948,6 @@
                                                                                     target = builtins.readFile "${ shared }/release" ;
                                                                                     type = "symbolic link" ;
                                                                                 }
-                                                                                {
-                                                                                    cat =
-                                                                                        ''
-                                                                                            1
-                                                                                        '' ;
-                                                                                    name = "/home/checker/resources/sequential" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "regular file" ;
-                                                                                }
                                                                             ]  ;
                                                                         non-deterministic-regular-files = [ ] ;
                                                                         order = 0 ;
@@ -1979,16 +1972,8 @@
                                                                                     stat = "-rw-r--r--" ;
                                                                                     type = "log file" ;
                                                                                 }
-                                                                                {
-                                                                                    cat =
-                                                                                        ''
-                                                                                            1
-                                                                                        '' ;
-                                                                                    name = "/home/checker/resources/sequential" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "regular file" ;
-                                                                                }
                                                                             ] ;
+                                                                        size = 1 ;
                                                                     }
                                                             )
                                                             (
@@ -2053,15 +2038,6 @@
                                                                                     target = builtins.readFile "${ shared }/release" ;
                                                                                     type = "symbolic link" ;
                                                                                 }
-                                                                                {
-                                                                                    cat =
-                                                                                        ''
-                                                                                            1
-                                                                                        '' ;
-                                                                                    name = "/home/checker/resources/sequential" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "regular file" ;
-                                                                                }
                                                                             ]  ;
                                                                         non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
                                                                         order = 0 ;
@@ -2086,16 +2062,8 @@
                                                                                     stat = "-rw-r--r--" ;
                                                                                     type = "log file" ;
                                                                                 }
-                                                                                {
-                                                                                    cat =
-                                                                                        ''
-                                                                                            1
-                                                                                        '' ;
-                                                                                    name = "/home/checker/resources/sequential" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "regular file" ;
-                                                                                }
                                                                             ] ;
+                                                                        size = 1 ;
                                                                     }
                                                             )
                                                         ]
