@@ -1642,8 +1642,8 @@
                                                                             [
                                                                                 "/home/checker/.gc-roots/0000000000000001"
                                                                                 "/home/checker/.gc-roots/0000000000000002"
-                                                                                "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/dot-ssh/identity/github" }"
-                                                                                "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/production/dot-ssh/known-hosts/github" }"
+                                                                                ''/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/'["production","dot-ssh","identity","github"]'" }''
+                                                                                ''/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/'["production","dot-ssh","known-hosts","github"]'" }''
                                                                                 "/home/checker/resources/mounts/0000000000000001"
                                                                                 "/home/checker/resources/mounts/0000000000000002"
                                                                                 "/home/checker/resources/release/0000000000000001"
