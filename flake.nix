@@ -1850,7 +1850,7 @@
                                                                         non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" ] ;
                                                                         order = 10 ;
                                                                         release = [ "0000000000000000" "0000000000000001" "0000000000000002" ] ;
-                                                                        release-script = builtins.readFile "${ shared }/release/'["production","dot-ssh","config","github"]'" ;
+                                                                        release-script = builtins.readFile "${ shared }/release/'[\"production\",\"dot-ssh\",\"config\",\"github\"]" ;
                                                                         size = 3 ;
                                                                     }
                                                             )
@@ -1915,7 +1915,7 @@
                                                                         non-deterministic-regular-files = [ ] ;
                                                                         order = 0 ;
                                                                         release = [ "0000000000000000" ] ;
-                                                                        release-script = builtins.readFile "${ shared }/release/'["production","dot-ssh","identity","github"]'" ;
+                                                                        release-script = builtins.readFile "${ shared }/release/'[\"production\",\"dot-ssh\",\"identity\",\"github\"]'" ;
                                                                         size = 1 ;
                                                                     }
                                                             )
@@ -1979,7 +1979,7 @@
                                                                         non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
                                                                         order = 0 ;
                                                                         release = [ "0000000000000000" ] ;
-                                                                        release-script = builtins.readFile "${ shared }/release/'["production","dot-ssh","known-hosts","github"]'" ;
+                                                                        release-script = builtins.readFile "${ shared }/release/'[\"production\",\"dot-ssh\",\"known-hosts\",\"github\"]'" ;
                                                                         size = 1 ;
                                                                     }
                                                             )
@@ -2242,7 +2242,7 @@
                                                                         non-deterministic-regular-files = [ ] ;
                                                                         order = 100 ;
                                                                         release = [ "0000000000000000" "0000000000000001" "0000000000000002" "0000000000000003" ] ;
-                                                                        release-script = builtins.readFile "${ shared }/release/'["production","repository","secrets"]'" ;
+                                                                        release-script = builtins.readFile "${ shared }/release/'[\"production\",\"repository\",\"secrets\"]'" ;
                                                                         size = 4 ;
                                                                     }
                                                             )
