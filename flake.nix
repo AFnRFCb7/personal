@@ -1252,8 +1252,11 @@
                                                                                         echo -n "6d6aa4a9f7504a8ae0dbc19fb4dc54d048b781b07f92ac0753f6f980954e66b3bea86219302c9e0bfb727301efae2766812ed8cf13af98fc0c592342f7fc0a6b" > "$OUT"/hashes/'["production","dot-ssh","identity","github"]'
                                                                                         echo -n "68b45fb93af883c4bf2105f8f5bd94c87499ffa9d180bf1a458dcfd02101a2cf86f81c5a14be784f294710e431125505407f79be96f6f38f292f8bfb81556880" > "$OUT"/hashes/'["production","dot-ssh","known-hosts","github"]'
                                                                                         echo -n "2cf9b5764e63babd485f143c543d41935a3c2cab0046ed26422e78f6ccb4c45ece30497d74bd55cd0c65e3d62f95248cdeb953fe67d9d6c67428751d625ff5cb" > "$OUT"/hashes/'["production","repository","secrets"]'
-                                                                                        echo -n "/nix/store/rxbf4gnalsams334i9a3abf9r68dbsnb-release/bin/release" > "$OUT/release"
-                                                                                        echo -n "/nix/store/k7kaaa2shwhxwrgwx3y88fb0j0958v2g-release/bin/release" > "$OUT/release.secrets"
+                                                                                        mkdir --parents "$OUT/release"
+                                                                                        echo -n "/nix/store/rxbf4gnalsams334i9a3abf9r68dbsnb-release/bin/release" > "$OUT"/release/'["production","dot-ssh","config","github"]'
+                                                                                        echo -n "/nix/store/rxbf4gnalsams334i9a3abf9r68dbsnb-release/bin/release" > "$OUT"/release/'["production","dot-ssh","identity","github"]'
+                                                                                        echo -n "/nix/store/rxbf4gnalsams334i9a3abf9r68dbsnb-release/bin/release" > "$OUT"/release/'["production","dot-ssh","known-hosts","github"]'
+                                                                                        echo -n "/nix/store/k7kaaa2shwhxwrgwx3y88fb0j0958v2g-release/bin/release" > "$OUT/release/''"
                                                                                         mkdir --parents "$OUT/repository/secrets/ciphertext/dot-gnupg"
                                                                                         ln --symbolic ${ builtins.toFile "ownertrust.asc.age" secrets.dot-gnupg.ownertrust } "$OUT/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age"
                                                                                         ln --symbolic ${ builtins.toFile "secret-keys.asc.age" secrets.dot-gnupg.secret-keys } "$OUT/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age"
@@ -1847,7 +1850,7 @@
                                                                         non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" ] ;
                                                                         order = 10 ;
                                                                         release = [ "0000000000000000" "0000000000000001" "0000000000000002" ] ;
-                                                                        release-script = builtins.readFile "${ shared }/release" ;
+                                                                        release-script = builtins.readFile "${ shared }/release/'["production","dot-ssh","config","github"]'" ;
                                                                         size = 3 ;
                                                                     }
                                                             )
@@ -1912,7 +1915,7 @@
                                                                         non-deterministic-regular-files = [ ] ;
                                                                         order = 0 ;
                                                                         release = [ "0000000000000000" ] ;
-                                                                        release-script = builtins.readFile "${ shared }/release" ;
+                                                                        release-script = builtins.readFile "${ shared }/release/'["production","dot-ssh","identity","github"]'" ;
                                                                         size = 1 ;
                                                                     }
                                                             )
@@ -1976,7 +1979,7 @@
                                                                         non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
                                                                         order = 0 ;
                                                                         release = [ "0000000000000000" ] ;
-                                                                        release-script = builtins.readFile "${ shared }/release" ;
+                                                                        release-script = builtins.readFile "${ shared }/release/'["production","dot-ssh","known-hosts","github"]'" ;
                                                                         size = 1 ;
                                                                     }
                                                             )
@@ -2239,7 +2242,7 @@
                                                                         non-deterministic-regular-files = [ ] ;
                                                                         order = 100 ;
                                                                         release = [ "0000000000000000" "0000000000000001" "0000000000000002" "0000000000000003" ] ;
-                                                                        release-script = builtins.readFile "${ shared }/release.secrets" ;
+                                                                        release-script = builtins.readFile "${ shared }/release/'["production","repository","secrets"]'" ;
                                                                         size = 4 ;
                                                                     }
                                                             )
