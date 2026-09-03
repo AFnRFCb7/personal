@@ -1904,7 +1904,7 @@
                                                                                                                             stat = "" ;
                                                                                                                             type = "regular file" ;
                                                                                                                         } ;
-                                                                                                                in builtins.map mapper release-recoveries ;
+                                                                                                                in builtins.map mapper release-recoveries
                                                                                                         )
                                                                                                         {
                                                                                                             cat =
@@ -2054,13 +2054,27 @@
                                                                                                     text = spoiler ;
                                                                                             }
                                                                                             {
-                                                                                                    process = "pre" ;
-                                                                                                    standard-output = "" ;
-                                                                                                    status = error-code ;
+                                                                                                    process = "post" ;
+                                                                                                    text = "force-sync" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "post" ;
+                                                                                                    reads = false ;
+                                                                                                    standard-output = files.spoil ;
                                                                                                     text =
                                                                                                         ''
                                                                                                             check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }
                                                                                                         '' ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "post" ;
+                                                                                                    standard-error = "183" ;
+                                                                                                    text = "check-redis" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "post" ;
+                                                                                                    status = release-recovery-error-code ;
+                                                                                                    text = release-recovery ;
                                                                                             }
                                                                                             {
                                                                                                     process = "post" ;
@@ -2070,54 +2084,12 @@
                                                                                                     process = "post" ;
                                                                                                     reads = false ;
                                                                                                     standard-output = files.init ;
-                                                                                                    text =
-                                                                                                        ''
-                                                                                                            check-files --exclusion "/home/checker/resources/*.lock" --delete true
-                                                                                                        '' ;
+                                                                                                    text = "check-files" ;
                                                                                             }
-                                                                                        ]
-                                                                                        (
-                                                                                            let
-                                                                                                mapper =
-                                                                                                    { index , standard-output } :
-                                                                                                        {
-                                                                                                            process = "post" ;
-                                                                                                            standard-output =
-                                                                                                                let
-                                                                                                                    derivation =
-                                                                                                                        pkgs.runCommand
-                                                                                                                            "standard-output.json"
-                                                                                                                            { nativeBuildInputs = [ pkgs.jq ] ; }
-                                                                                                                            ''
-                                                                                                                                jq \
-                                                                                                                                    --null-input \
-                                                                                                                                    --rawfile STANDARD_OUTPUT ${ builtins.toFile "standard-output" standard-output } \
-                                                                                                                                    '{
-                                                                                                                                        "type" : "message" ,
-                                                                                                                                        "channel" : "valid-release" ,
-                                                                                                                                        "payload" :
-                                                                                                                                            {
-                                                                                                                                                "index": "${ index }" ,
-                                                                                                                                                "standard-output": $STANDARD_OUTPUT ,
-                                                                                                                                                "status": "0"
-                                                                                                                                            }
-                                                                                                                                    }' > $out ;
-                                                                                                                            '' ;
-                                                                                                                    in builtins.readFile derivation ;
-                                                                                                            text = ''check-redis --exclude'' ;
-                                                                                                        } ;
-                                                                                                in builtins.map mapper release
-                                                                                        )
-                                                                                        [
                                                                                             {
                                                                                                     process = "post" ;
                                                                                                     standard-output = "183" ;
                                                                                                     text = "check-redis" ;
-                                                                                            }
-                                                                                            {
-                                                                                                    process = "post" ;
-                                                                                                    status = release-recovery-error-code ;
-                                                                                                    text = release-recovery ;
                                                                                             }
                                                                                             {
                                                                                                     process = "post" ;
