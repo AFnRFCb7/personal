@@ -1610,7 +1610,7 @@
                                                                                         (
                                                                                             let
                                                                                                 mapper =
-                                                                                                    index :
+                                                                                                    { index , standard-output } :
                                                                                                         {
                                                                                                                 process = "post" ;
                                                                                                                 standard-output =
@@ -1622,13 +1622,14 @@
                                                                                                                                 ''
                                                                                                                                     jq \
                                                                                                                                         --null-input \
+                                                                                                                                        --rawfile STANDARD_OUTPUT ${ builtins.toFile "standard-output" standard-output }
                                                                                                                                         '{
                                                                                                                                             "type" : "message" ,
                                                                                                                                             "channel" : "valid-release" ,
                                                                                                                                             "payload" :
                                                                                                                                                 {
                                                                                                                                                     "index": "${ index }" ,
-                                                                                                                                                    "standard-output": "",
+                                                                                                                                                    "standard-output": standard-output,
                                                                                                                                                     "status": "0"
                                                                                                                                                 }
                                                                                                                                         }' > $out ;
@@ -1852,7 +1853,7 @@
                                                                             ]  ;
                                                                         non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" ] ;
                                                                         order = 10 ;
-                                                                        release = [ "0000000000000000" "0000000000000001" "0000000000000002" ] ;
+                                                                        release = [ { index = "0000000000000000" ; standard-output = "" ; } { index = "0000000000000001" ; standard-output = "" ; } { index = "0000000000000002" ; standard-output = "" ; } ] ;
                                                                         release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","config","github"].sh'' ;
                                                                         size = 3 ;
                                                                     }
@@ -1918,7 +1919,7 @@
                                                                             ]  ;
                                                                         non-deterministic-regular-files = [ ] ;
                                                                         order = 0 ;
-                                                                        release = [ "0000000000000000" ] ;
+                                                                        release = [ { index = "0000000000000000" ; standard-output = "" ; } ] ;
                                                                         release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","identity","github"].sh'' ;
                                                                         size = 1 ;
                                                                     }
@@ -1983,7 +1984,7 @@
                                                                             ]  ;
                                                                         non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
                                                                         order = 0 ;
-                                                                        release = [ "0000000000000000" ] ;
+                                                                        release = [ { index = "0000000000000000" ; standard-output = "" ; } ] ;
                                                                         release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","known-hosts","github"].sh'' ;
                                                                         size = 1 ;
                                                                     }
@@ -2280,7 +2281,13 @@
                                                                             ]  ;
                                                                         non-deterministic-regular-files = [ ] ;
                                                                         order = 100 ;
-                                                                        release = [ "0000000000000000" "0000000000000001" "0000000000000002" "0000000000000003" ] ;
+                                                                        release =
+                                                                            [
+                                                                                { index = "0000000000000000" ; standard-output = "" ; }
+                                                                                { index = "0000000000000001" ; standard-output = "" ; }
+                                                                                { index = "0000000000000002" ; standard-output = "" ; }
+                                                                                { index = "0000000000000003" ; standard-output = "" ; }
+                                                                            ] ;
                                                                         release-script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
                                                                         size = 4 ;
                                                                     }
