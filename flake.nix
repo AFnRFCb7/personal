@@ -1305,7 +1305,7 @@
                                                                                             "init.json"
                                                                                             { nativeBuildInputs = [ pkgs.jq ] ; }
                                                                                             ''
-                                                                                                jq --sort-keys ${ builtins.toFile "data.json" ( builtins.toJSON ( builtins.sort ( a : b : a.name < b.name ) json ) ) } > $out
+                                                                                                jq --sort-keys "." ${ builtins.toFile "data.json" ( builtins.toJSON ( builtins.sort ( a : b : a.name < b.name ) json ) ) } > $out
                                                                                             '' ;
                                                                                     in builtins.readFile derivation ;
                                                                         in
