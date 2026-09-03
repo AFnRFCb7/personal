@@ -1252,7 +1252,8 @@
                                                                                         echo -n "6d6aa4a9f7504a8ae0dbc19fb4dc54d048b781b07f92ac0753f6f980954e66b3bea86219302c9e0bfb727301efae2766812ed8cf13af98fc0c592342f7fc0a6b" > "$OUT"/hashes/'["production","dot-ssh","identity","github"]'
                                                                                         echo -n "68b45fb93af883c4bf2105f8f5bd94c87499ffa9d180bf1a458dcfd02101a2cf86f81c5a14be784f294710e431125505407f79be96f6f38f292f8bfb81556880" > "$OUT"/hashes/'["production","dot-ssh","known-hosts","github"]'
                                                                                         echo -n "2cf9b5764e63babd485f143c543d41935a3c2cab0046ed26422e78f6ccb4c45ece30497d74bd55cd0c65e3d62f95248cdeb953fe67d9d6c67428751d625ff5cb" > "$OUT"/hashes/'["production","repository","secrets"]'
-                                                                                        echo -n "/nix/store/rxbf4gnalsams334i9a3abf9r68dbsnb-release/bin/release" > "$OUT/release"
+                                                                                        echo -n "/nix/store/rxbf4gnalsams334i9a3abf9r68dbsnb-release/bin/release" > "$OUT/release.secrets"
+                                                                                        echo -n "/nix/store/k7kaaa2shwhxwrgwx3y88fb0j0958v2g-release/bin/release" > "$OUT/release"
                                                                                         mkdir --parents "$OUT/repository/secrets/ciphertext/dot-gnupg"
                                                                                         ln --symbolic ${ builtins.toFile "ownertrust.asc.age" secrets.dot-gnupg.ownertrust } "$OUT/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age"
                                                                                         ln --symbolic ${ builtins.toFile "secret-keys.asc.age" secrets.dot-gnupg.secret-keys } "$OUT/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age"
@@ -2143,24 +2144,27 @@
                                                                                                                 { path = [ 2 ] ; type = "string" ; value = "secrets" ; }
                                                                                                             ] ;
                                                                                                         standard-output =
-                                                                                                            ''
-                                                                                                                hint: Using 'master' as the name for the initial branch. This default branch name
-                                                                                                                hint: is subject to change. To configure the initial branch name to use in all
-                                                                                                                hint: of your new repositories, which will suppress this warning, call:
-                                                                                                                hint:
-                                                                                                                hint: \tgit config --global init.defaultBranch <name>
-                                                                                                                hint:
-                                                                                                                hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
-                                                                                                                hint: 'development'. The just-created branch can be renamed via this command:
-                                                                                                                hint:
-                                                                                                                hint: \tgit branch -m <name>
-                                                                                                                Initialized empty Git repository in /mount/.git/
-                                                                                                                From github.com:AFnRFCb7/9ebf9ebc
-                                                                                                                 * branch            main       -> FETCH_HEAD
-                                                                                                                 * [new branch]      main       -> origin/main
-                                                                                                                Switched to a new branch 'main'
-                                                                                                                branch 'main' set up to track 'origin/main'.
-                                                                                                            '';
+                                                                                                            let
+                                                                                                                tab = "\t" ;
+                                                                                                                in
+                                                                                                                    ''
+                                                                                                                        hint: Using 'master' as the name for the initial branch. This default branch name
+                                                                                                                        hint: is subject to change. To configure the initial branch name to use in all
+                                                                                                                        hint: of your new repositories, which will suppress this warning, call:
+                                                                                                                        hint:
+                                                                                                                        hint: ${ tab }git config --global init.defaultBranch <name>
+                                                                                                                        hint:
+                                                                                                                        hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+                                                                                                                        hint: 'development'. The just-created branch can be renamed via this command:
+                                                                                                                        hint:
+                                                                                                                        hint: ${ tab }git branch -m <name>
+                                                                                                                        Initialized empty Git repository in /mount/.git/
+                                                                                                                        From github.com:AFnRFCb7/9ebf9ebc
+                                                                                                                         * branch            main       -> FETCH_HEAD
+                                                                                                                         * [new branch]      main       -> origin/main
+                                                                                                                        Switched to a new branch 'main'
+                                                                                                                        branch 'main' set up to track 'origin/main'.
+                                                                                                                    '' ;
                                                                                                         targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
                                                                                                         temporary = false ;
                                                                                                         text =
@@ -2235,7 +2239,7 @@
                                                                         non-deterministic-regular-files = [ ] ;
                                                                         order = 100 ;
                                                                         release = [ "0000000000000000" "0000000000000001" "0000000000000002" "0000000000000003" ] ;
-                                                                        release-script = builtins.readFile "${ shared }/release" ;
+                                                                        release-script = builtins.readFile "${ shared }/release.secrets" ;
                                                                         size = 4 ;
                                                                     }
                                                             )
