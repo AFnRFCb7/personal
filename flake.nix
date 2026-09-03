@@ -454,8 +454,6 @@
                                                                                                                                                                                 CONFIG="$( "$RESOURCES"/resources/'["production","dot-ssh","config","github"]' )" || exit 172
                                                                                                                                                                                 git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $CONFIG/config.asc"
                                                                                                                                                                                 ln --symbolic "$CONFIG" /gc-root/config
-                                                                                                                                                                                ls -lah "$CONFIG" >&2
-                                                                                                                                                                                echo 1723258852938545 3878765118231494
                                                                                                                                                                              '' ;
                                                                                                                                                                     }
                                                                                                                                                             )
