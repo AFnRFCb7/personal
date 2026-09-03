@@ -2148,7 +2148,7 @@
                                                                                                             ] ;
                                                                                                         standard-output =
                                                                                                             let
-                                                                                                                single-quote = "\\'" ;
+                                                                                                                single-quote = "\\\'" ;
                                                                                                                 tab = "\t" ;
                                                                                                                 in
                                                                                                                     ''
