@@ -1424,19 +1424,19 @@
                                                                                                         {
                                                                                                             log =
                                                                                                                 let
-                                                                                                                    generator =
-                                                                                                                        index :
+                                                                                                                    mapper =
+                                                                                                                        { index , standard-output } :
                                                                                                                             {
                                                                                                                                 channel = "valid-release" ;
                                                                                                                                 payload =
                                                                                                                                     {
                                                                                                                                         index = pkgs.lib.fixedWidthString 16 "0" ( builtins.toString index ) ;
-                                                                                                                                        standard-output = "" ;
+                                                                                                                                        standard-output = standard-output ;
                                                                                                                                         status = "0" ;
                                                                                                                                     } ;
                                                                                                                                 type = "message" ;
                                                                                                                             } ;
-                                                                                                                    in builtins.genList generator size ;
+                                                                                                                    in builtins.map mapper release ;
                                                                                                                 name = "/home/checker/resources/log.yaml" ;
                                                                                                                 stat = "-rw-r--r--" ;
                                                                                                                 type = "log file" ;
