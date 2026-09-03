@@ -1722,6 +1722,7 @@
                                                             non-deterministic-regular-files ,
                                                             release ,
                                                             release-recovery ,
+                                                            release-recoveries ,
                                                             release-recovery-error-code ,
                                                             release-script ,
                                                             spoiler
@@ -1857,7 +1858,7 @@
                                                                                                     ]
                                                                                                 ]
                                                                                         ) ;
-                                                                                release =
+                                                                                spoil =
                                                                                     json
                                                                                         (
                                                                                             builtins.concatLists
@@ -1879,24 +1880,10 @@
                                                                                                             type = "directory" ;
                                                                                                         }
                                                                                                         {
-                                                                                                            log =
-                                                                                                                let
-                                                                                                                    mapper =
-                                                                                                                        { index , standard-output } :
-                                                                                                                            {
-                                                                                                                                channel = "valid-release" ;
-                                                                                                                                payload =
-                                                                                                                                    {
-                                                                                                                                        index = pkgs.lib.fixedWidthString 16 "0" ( builtins.toString index ) ;
-                                                                                                                                        standard-output = standard-output ;
-                                                                                                                                        status = "0" ;
-                                                                                                                                    } ;
-                                                                                                                                type = "message" ;
-                                                                                                                            } ;
-                                                                                                                    in builtins.map mapper release ;
-                                                                                                                name = "/home/checker/resources/log.yaml" ;
-                                                                                                                stat = "-rw-r--r--" ;
-                                                                                                                type = "log file" ;
+                                                                                                            log = [ ] ;
+                                                                                                            name = "/home/checker/resources/log.yaml" ;
+                                                                                                            stat = "-rw-r--r--" ;
+                                                                                                            type = "log file" ;
                                                                                                         }
                                                                                                         {
                                                                                                             name = "/home/checker/resources/mounts" ;
@@ -1904,10 +1891,21 @@
                                                                                                             type = "directory" ;
                                                                                                         }
                                                                                                         {
-                                                                                                            name = "/home/checker/resources/release" ;
+                                                                                                            name = "/home/checker/resources/invalid-release" ;
                                                                                                             stat = "drwxr-xr-x" ;
                                                                                                             type = "directory" ;
                                                                                                         }
+                                                                                                        (
+                                                                                                            let
+                                                                                                                mapper =
+                                                                                                                    release-recovery :
+                                                                                                                        {
+                                                                                                                            name = "/home/checker/resources/invalid-release/${ release-recovery }.sh" ;
+                                                                                                                            stat = "" ;
+                                                                                                                            type = "regular file" ;
+                                                                                                                        } ;
+                                                                                                                in builtins.map mapper release-recoveries ;
+                                                                                                        )
                                                                                                         {
                                                                                                             cat =
                                                                                                                 ''
@@ -2703,6 +2701,7 @@
                                                                                 { index = "0000000000000003" ; standard-output = "" ; }
                                                                             ] ;
                                                                         release-recovery = ''/home/checker/resources/invalid-release/0000000000000000/'["unrecoverable"]'.sh'' ;
+                                                                        release-recoveries = [ "recoverable" "unrecoverable" ] ;
                                                                         release-recovery-error-code = 119 ;
                                                                         release-script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
                                                                         spoiler = "echo > /home/checker/resources/mounts/0000000000000001/config" ;
