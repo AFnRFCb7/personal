@@ -2148,10 +2148,11 @@
                                                                                                             ] ;
                                                                                                         standard-output =
                                                                                                             let
+                                                                                                                single-quote = "'" '
                                                                                                                 tab = "\t" ;
                                                                                                                 in
                                                                                                                     ''
-                                                                                                                        hint: Using 'master' as the name for the initial branch. This default branch name
+                                                                                                                        hint: Using ${ single-quote }master ${ single-quote } as the name for the initial branch. This default branch name
                                                                                                                         hint: is subject to change. To configure the initial branch name to use in all
                                                                                                                         hint: of your new repositories, which will suppress this warning, call:
                                                                                                                         hint:
