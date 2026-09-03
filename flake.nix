@@ -1711,7 +1711,431 @@
                                                     init-recovered = null ;
                                                     init-recovered-release-unrecoverable = null ;
                                                     release-recovered = null ;
-                                                    release-unrecoverable = null ;
+                                                    release-unrecoverable =
+                                                        {
+                                                            command ,
+                                                            exclusions ,
+                                                            init ,
+                                                            init-files ,
+                                                            non-deterministic-regular-files ,
+                                                            release ,
+                                                            release-script
+                                                        } :
+                                                            let
+                                                                files =
+                                                                    let
+                                                                        json =
+                                                                            json :
+                                                                                let
+                                                                                    derivation =
+                                                                                        pkgs.runCommand
+                                                                                            "init.json"
+                                                                                            { nativeBuildInputs = [ pkgs.jq ] ; }
+                                                                                            ''
+                                                                                                jq --sort-keys "." ${ builtins.toFile "data.json" ( builtins.toJSON ( builtins.sort ( a : b : a.name < b.name ) json ) ) } > $out
+                                                                                            '' ;
+                                                                                    in builtins.readFile derivation ;
+                                                                        in
+                                                                            {
+                                                                                cleaned =
+                                                                                    json
+                                                                                        [
+                                                                                            {
+                                                                                                name = "/home/checker/resources" ;
+                                                                                                stat = "drwxr-xr-x" ;
+                                                                                                type = "directory" ;
+                                                                                            }
+                                                                                        ] ;
+                                                                                empty =
+                                                                                    json
+                                                                                        [
+                                                                                            {
+                                                                                                name = "/home/checker/resources" ;
+                                                                                                stat = "drwxr-xr-x" ;
+                                                                                                type = "directory" ;
+                                                                                            }
+                                                                                            {
+                                                                                                log = [ ] ;
+                                                                                                name = "/home/checker/resources/log.yaml" ;
+                                                                                                stat = "-rw-r--r--" ;
+                                                                                                type = "log file" ;
+                                                                                            }
+                                                                                        ] ;
+                                                                                init =
+                                                                                    json
+                                                                                        (
+                                                                                            builtins.concatLists
+                                                                                                [
+                                                                                                    init-files
+                                                                                                    [
+                                                                                                        {
+                                                                                                            name = "/home/checker/.gc-roots" ;
+                                                                                                            stat = "drwxr-xr-x" ;
+                                                                                                            type = "directory" ;
+                                                                                                        }
+                                                                                                        {
+                                                                                                            name = "/home/checker/.gc-roots/0000000000000000" ;
+                                                                                                            stat = "drwxr-xr-x" ;
+                                                                                                            type = "directory" ;
+                                                                                                        }
+                                                                                                        {
+                                                                                                            name = "/home/checker/resources" ;
+                                                                                                            stat = "drwxr-xr-x" ;
+                                                                                                            type = "directory" ;
+                                                                                                        }
+                                                                                                        {
+                                                                                                            name = "/home/checker/resources/canonical" ;
+                                                                                                            stat = "drwxr-xr-x" ;
+                                                                                                            type = "directory" ;
+                                                                                                        }
+                                                                                                        {
+                                                                                                            log =
+                                                                                                                let
+                                                                                                                    mapper =
+                                                                                                                        { index , seed , standard-output , targets , text } :
+                                                                                                                            {
+                                                                                                                                channel = "valid-init" ;
+                                                                                                                                payload =
+                                                                                                                                    {
+                                                                                                                                        arguments = [ ] ;
+                                                                                                                                        index = index ;
+                                                                                                                                        inputs = { } ;
+                                                                                                                                        seed = seed ;
+                                                                                                                                        standard-output = standard-output ;
+                                                                                                                                        targets = targets ;
+                                                                                                                                        temporary = false ;
+                                                                                                                                        text = text ;
+                                                                                                                                    } ;
+                                                                                                                                type = "message" ;
+                                                                                                                            } ;
+                                                                                                                    in builtins.map mapper init ;
+                                                                                                            name = "/home/checker/resources/log.yaml" ;
+                                                                                                            stat = "-rw-r--r--" ;
+                                                                                                            type = "log file" ;
+                                                                                                        }
+                                                                                                        {
+                                                                                                            name = "/home/checker/resources/mounts" ;
+                                                                                                            stat = "drwxr-xr-x" ;
+                                                                                                            type = "directory" ;
+                                                                                                        }
+                                                                                                        {
+                                                                                                            name = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                                                            stat = "drwxr-xr-x" ;
+                                                                                                            type = "directory" ;
+                                                                                                        }
+                                                                                                        {
+                                                                                                            name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/${ builtins.head ( builtins.match ".*resources/'(.*)' *" command ) }" }" ;
+                                                                                                            stat = "lrwxrwxrwx" ;
+                                                                                                            target = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                                                            type = "symbolic link" ;
+                                                                                                        }
+                                                                                                        {
+                                                                                                            name = "/home/checker/resources/release" ;
+                                                                                                            stat = "drwxr-xr-x" ;
+                                                                                                            type = "directory" ;
+                                                                                                        }
+                                                                                                        {
+                                                                                                            name = "/home/checker/resources/release/0000000000000000" ;
+                                                                                                            stat = "lrwxrwxrwx" ;
+                                                                                                            target = release-script ;
+                                                                                                            type = "symbolic link" ;
+                                                                                                        }
+                                                                                                        {
+                                                                                                            cat =
+                                                                                                                ''
+                                                                                                                    ${ builtins.toString size }
+                                                                                                                '' ;
+                                                                                                            name = "/home/checker/resources/sequential" ;
+                                                                                                            stat = "-rw-r--r--" ;
+                                                                                                            type = "regular file" ;
+                                                                                                        }
+                                                                                                    ]
+                                                                                                ]
+                                                                                        ) ;
+                                                                                release =
+                                                                                    json
+                                                                                        (
+                                                                                            builtins.concatLists
+                                                                                                [
+                                                                                                    [
+                                                                                                        {
+                                                                                                            name = "/home/checker/.gc-roots" ;
+                                                                                                            stat = "drwxr-xr-x" ;
+                                                                                                            type = "directory" ;
+                                                                                                        }
+                                                                                                        {
+                                                                                                            name = "/home/checker/resources" ;
+                                                                                                            stat = "drwxr-xr-x" ;
+                                                                                                            type = "directory" ;
+                                                                                                        }
+                                                                                                        {
+                                                                                                            name = "/home/checker/resources/canonical" ;
+                                                                                                            stat = "drwxr-xr-x" ;
+                                                                                                            type = "directory" ;
+                                                                                                        }
+                                                                                                        {
+                                                                                                            log =
+                                                                                                                let
+                                                                                                                    mapper =
+                                                                                                                        { index , standard-output } :
+                                                                                                                            {
+                                                                                                                                channel = "valid-release" ;
+                                                                                                                                payload =
+                                                                                                                                    {
+                                                                                                                                        index = pkgs.lib.fixedWidthString 16 "0" ( builtins.toString index ) ;
+                                                                                                                                        standard-output = standard-output ;
+                                                                                                                                        status = "0" ;
+                                                                                                                                    } ;
+                                                                                                                                type = "message" ;
+                                                                                                                            } ;
+                                                                                                                    in builtins.map mapper release ;
+                                                                                                                name = "/home/checker/resources/log.yaml" ;
+                                                                                                                stat = "-rw-r--r--" ;
+                                                                                                                type = "log file" ;
+                                                                                                        }
+                                                                                                        {
+                                                                                                            name = "/home/checker/resources/mounts" ;
+                                                                                                            stat = "drwxr-xr-x" ;
+                                                                                                            type = "directory" ;
+                                                                                                        }
+                                                                                                        {
+                                                                                                            name = "/home/checker/resources/release" ;
+                                                                                                            stat = "drwxr-xr-x" ;
+                                                                                                            type = "directory" ;
+                                                                                                        }
+                                                                                                        {
+                                                                                                            cat =
+                                                                                                                ''
+                                                                                                                    ${ builtins.toString size }
+                                                                                                                '' ;
+                                                                                                            name = "/home/checker/resources/sequential" ;
+                                                                                                            stat = "-rw-r--r--" ;
+                                                                                                            type = "regular file" ;
+                                                                                                        }
+                                                                                                    ]
+                                                                                                ]
+                                                                                        ) ;
+                                                                            } ;
+                                                                cleaned-files = "[\n  {\n    \"name\": \"/home/checker/.gc-roots\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  },\n  {\n    \"name\": \"/home/checker/resources\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  }\n]\n" ;
+                                                                empty-files =  "[\n  {\n    \"name\": \"/home/checker/resources\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  },\n  {\n    \"cat\": \"[]\",\n    \"name\": \"/home/checker/resources/log.yaml\",\n    \"stat\": \"-rw-r--r--\",\n    \"type\": \"regular file\"\n  }\n]\n" ;
+                                                                size = if builtins.length init == builtins.length release then builtins.length init else builtins.throw "the length of init ${ builtins.toString ( builtins.length init ) } must equal the length of init ${ builtins.toString ( builtins.length release ) }" ;
+                                                                subscribe =
+                                                                    {
+                                                                        invalid-init = "{\n  \"type\": \"subscribe\",\n  \"channel\": \"invalid-init\",\n  \"payload\": 1\n}\n" ;
+                                                                        invalid-release = "{\n  \"type\": \"subscribe\",\n  \"channel\": \"invalid-release\",\n  \"payload\": 2\n}\n" ;
+                                                                        valid-init = "{\n  \"type\": \"subscribe\",\n  \"channel\": \"valid-init\",\n  \"payload\": 3\n}\n" ;
+                                                                        valid-release = "{\n  \"type\": \"subscribe\",\n  \"channel\": \"valid-release\",\n  \"payload\": 4\n}\n" ;
+                                                                    } ;
+                                                                in
+                                                                    _resource.check2
+                                                                        {
+                                                                            gc-roots-directory = "/home/checker/.gc-roots" ;
+                                                                            inputs =
+                                                                                builtins.concatLists
+                                                                                    [
+                                                                                        [
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    text = "force-sync" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    reads = false ;
+                                                                                                    standard-output = files.empty ;
+                                                                                                    text = "check-files --delete true" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    standard-output = subscribe.invalid-init ;
+                                                                                                    text = "check-redis" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    standard-output = subscribe.invalid-release ;
+                                                                                                    text = "check-redis" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    standard-output = subscribe.valid-init ;
+                                                                                                    text = "check-redis" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    standard-output = subscribe.valid-release ;
+                                                                                                    text = "check-redis" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    standard-output = "183" ;
+                                                                                                    text = "check-redis" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    standard-output = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                                                    text = command ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    text = "force-sync" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    reads = false ;
+                                                                                                    standard-output = files.init ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }
+                                                                                                        '' ;
+                                                                                            }
+                                                                                        ]
+                                                                                        (
+                                                                                            let
+                                                                                                mapper =
+                                                                                                    init :
+                                                                                                        {
+                                                                                                            process = "pre" ;
+                                                                                                            standard-output =
+                                                                                                                let
+                                                                                                                    derivation =
+                                                                                                                        pkgs.runCommand
+                                                                                                                            "init.json"
+                                                                                                                            { nativeBuildInputs = [ pkgs.jq ] ; }
+                                                                                                                            ''
+                                                                                                                                PAYLOAD="$( jq --sort-keys '. + { "arguments" : [ ] , "inputs" : { } , "temporary" : false }' ${ builtins.toFile "init.json" ( builtins.toJSON init ) } )" || exit 151
+                                                                                                                                jq \
+                                                                                                                                    --null-input \
+                                                                                                                                    --argjson PAYLOAD "$PAYLOAD" \
+                                                                                                                                    '{
+                                                                                                                                        "type" : "message" ,
+                                                                                                                                        "channel" : "valid-init" ,
+                                                                                                                                        "payload" : $PAYLOAD
+                                                                                                                                    }' > $out
+                                                                                                                            '' ;
+                                                                                                                    in builtins.readFile derivation ;
+                                                                                                            text = ''check-redis --exclude'' ;
+                                                                                                        } ;
+                                                                                                in
+                                                                                                builtins.map mapper init
+                                                                                        )
+                                                                                        [
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    standard-output = "183" ;
+                                                                                                    text = "check-redis" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "mid" ;
+                                                                                                    standard-output = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                                                    text = '' ${ command } '' ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    text = "force-sync" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    reads = false ;
+                                                                                                    standard-output = files.init ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }
+                                                                                                        '' ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    standard-output = "183" ;
+                                                                                                    text = "check-redis" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "post" ;
+                                                                                                    text = "force-sync" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "post" ;
+                                                                                                    reads = false ;
+                                                                                                    standard-output = files.release ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            check-files --exclusion "/home/checker/resources/*.lock" --delete true
+                                                                                                        '' ;
+                                                                                            }
+                                                                                        ]
+                                                                                        (
+                                                                                            let
+                                                                                                mapper =
+                                                                                                    { index , standard-output } :
+                                                                                                        {
+                                                                                                            process = "post" ;
+                                                                                                            standard-output =
+                                                                                                                let
+                                                                                                                    derivation =
+                                                                                                                        pkgs.runCommand
+                                                                                                                            "standard-output.json"
+                                                                                                                            { nativeBuildInputs = [ pkgs.jq ] ; }
+                                                                                                                            ''
+                                                                                                                                jq \
+                                                                                                                                    --null-input \
+                                                                                                                                    --rawfile STANDARD_OUTPUT ${ builtins.toFile "standard-output" standard-output } \
+                                                                                                                                    '{
+                                                                                                                                        "type" : "message" ,
+                                                                                                                                        "channel" : "valid-release" ,
+                                                                                                                                        "payload" :
+                                                                                                                                            {
+                                                                                                                                                "index": "${ index }" ,
+                                                                                                                                                "standard-output": $STANDARD_OUTPUT ,
+                                                                                                                                                "status": "0"
+                                                                                                                                            }
+                                                                                                                                    }' > $out ;
+                                                                                                                            '' ;
+                                                                                                                    in builtins.readFile derivation ;
+                                                                                                            text = ''check-redis --exclude'' ;
+                                                                                                        } ;
+                                                                                                in builtins.map mapper release
+                                                                                        )
+                                                                                        [
+                                                                                            {
+                                                                                                    process = "post" ;
+                                                                                                    standard-output = "183" ;
+                                                                                                    text = "check-redis" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "post" ;
+                                                                                                    text = ''"$RESOURCES"/clean.sh'' ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "post" ;
+                                                                                                    text = "force-sync" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "post" ;
+                                                                                                    reads = false ;
+                                                                                                    standard-output = cleaned-files ;
+                                                                                                    text = "check-files" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "post" ;
+                                                                                                    standard-output = "183" ;
+                                                                                                    text = "check-redis" ;
+                                                                                            }
+                                                                                        ]
+                                                                                    ] ;
+                                                                            name = "resource happy path : ${ command }" ;
+                                                                            nodes = { github = github ; client = client ; } ;
+                                                                            order = size ;
+                                                                            pkgs = pkgs ;
+                                                                            resources-directory = "/home/checker/resources" ;
+                                                                            tests =
+                                                                                action-derivation :
+                                                                                    [
+                                                                                        ''github.wait_for_unit("network-online.target")''
+                                                                                        ''client.wait_for_unit("network-online.target")''
+                                                                                        ''client.wait_for_unit("log.service")''
+                                                                                        ''client.wait_for_unit("release.service")''
+                                                                                        ''client.succeed("runuser checker -- ${ action-derivation }/execute")''
+                                                                                        ''client.copy_from_vm("/tmp/scratch/","scratch")''
+                                                                                        ''client.succeed("runuser checker -- ${ action-derivation }/test")''
+                                                                                    ] ;
+                                                                        } ;
                                                 } ;
                                         in
                                             builtins.listToAttrs
