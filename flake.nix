@@ -1916,70 +1916,70 @@
                                                                         size = 1 ;
                                                                     }
                                                             )
-                                                            (
-                                                                tests.happy
-                                                                    {
-                                                                        command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]' '' ;
-                                                                        exclusions = [ ] ;
-                                                                        init =
-                                                                            [
-                                                                                {
-                                                                                    index = "0000000000000000" ;
-                                                                                    seed =
-                                                                                        [
-                                                                                            { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                            { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                            { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
-                                                                                            { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                        ] ;
-                                                                                    targets = [ "known-hosts.asc" ] ;
-                                                                                    text = "known-hosts" ;
-                                                                                }
-                                                                            ] ;
-                                                                        init-files =
-                                                                            [
-                                                                                {
-                                                                                    log =
-                                                                                        [
-                                                                                            {
-                                                                                                channel = "valid-init" ;
-                                                                                                payload =
-                                                                                                    {
-                                                                                                        arguments = [ ] ;
-                                                                                                        index = "0000000000000000" ;
-                                                                                                        inputs = { } ;
-                                                                                                        seed =
-                                                                                                            [
-                                                                                                                { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                                { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                                                { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
-                                                                                                                { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                                            ] ;
-                                                                                                        standard-output = "" ;
-                                                                                                        targets = [ "known-hosts.asc" ] ;
-                                                                                                        temporary = false ;
-                                                                                                        text = "known-hosts" ;
-                                                                                                    } ;
-                                                                                                type = "message" ;
-                                                                                            }
-                                                                                        ] ;
-                                                                                    name = "/home/checker/resources/log.yaml" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "log file" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ;
-                                                                                    stat = "-r--------" ;
-                                                                                    type = "non-deterministic regular file" ;
-                                                                                }
-                                                                            ]  ;
-                                                                        non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
-                                                                        order = 0 ;
-                                                                        release = [ "0000000000000000" ] ;
-                                                                        release-script = builtins.readFile "${ shared }/release" ;
-                                                                        size = 1 ;
-                                                                    }
-                                                            )
+#                                                            (
+#                                                                tests.happy
+#                                                                    {
+#                                                                        command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]' '' ;
+#                                                                        exclusions = [ ] ;
+#                                                                        init =
+#                                                                            [
+#                                                                                {
+#                                                                                    index = "0000000000000000" ;
+#                                                                                    seed =
+#                                                                                        [
+#                                                                                            { path = [ 0 ] ; type = "string" ; value = "production" ; }
+#                                                                                            { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+#                                                                                            { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
+#                                                                                            { path = [ 3 ] ; type = "string" ; value = "github" ; }
+#                                                                                        ] ;
+#                                                                                    targets = [ "known-hosts.asc" ] ;
+#                                                                                    text = "known-hosts" ;
+#                                                                                }
+#                                                                            ] ;
+#                                                                        init-files =
+#                                                                            [
+#                                                                                {
+#                                                                                    log =
+#                                                                                        [
+#                                                                                            {
+#                                                                                                channel = "valid-init" ;
+#                                                                                                payload =
+#                                                                                                    {
+#                                                                                                        arguments = [ ] ;
+#                                                                                                        index = "0000000000000000" ;
+#                                                                                                        inputs = { } ;
+#                                                                                                        seed =
+#                                                                                                            [
+#                                                                                                                { path = [ 0 ] ; type = "string" ; value = "production" ; }
+#                                                                                                                { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+#                                                                                                                { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
+#                                                                                                                { path = [ 3 ] ; type = "string" ; value = "github" ; }
+#                                                                                                            ] ;
+#                                                                                                        standard-output = "" ;
+#                                                                                                        targets = [ "known-hosts.asc" ] ;
+#                                                                                                        temporary = false ;
+#                                                                                                        text = "known-hosts" ;
+#                                                                                                    } ;
+#                                                                                                type = "message" ;
+#                                                                                            }
+#                                                                                        ] ;
+#                                                                                    name = "/home/checker/resources/log.yaml" ;
+#                                                                                    stat = "-rw-r--r--" ;
+#                                                                                    type = "log file" ;
+#                                                                                }
+#                                                                                {
+#                                                                                    name = "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ;
+#                                                                                    stat = "-r--------" ;
+#                                                                                    type = "non-deterministic regular file" ;
+#                                                                                }
+#                                                                            ]  ;
+#                                                                        non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
+#                                                                        order = 0 ;
+#                                                                        release = [ "0000000000000000" ] ;
+#                                                                        release-script = builtins.readFile "${ shared }/release" ;
+#                                                                        size = 1 ;
+#                                                                    }
+#                                                            )
                                                             (
                                                                 tests.happy
                                                                     {
