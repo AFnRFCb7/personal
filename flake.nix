@@ -1360,6 +1360,31 @@
                                                                                                             type = "directory" ;
                                                                                                         }
                                                                                                         {
+                                                                                                            log =
+                                                                                                                let
+                                                                                                                    mapper =
+                                                                                                                        { index , seed , standard-output , targets , text } :
+                                                                                                                            {
+                                                                                                                                channel = "valid-init" ;
+                                                                                                                                payload =
+                                                                                                                                    {
+                                                                                                                                        arguments = [ ] ;
+                                                                                                                                        index = index ;
+                                                                                                                                        inputs = { } ;
+                                                                                                                                        seed = seed ;
+                                                                                                                                        standard-output = "" ;
+                                                                                                                                        targets = targets ;
+                                                                                                                                        temporary = false ;
+                                                                                                                                        text = text ;
+                                                                                                                                    } ;
+                                                                                                                                type = "message" ;
+                                                                                                                            } ;
+                                                                                                                    in builtins.map mapper init ;
+                                                                                                            name = "/home/checker/resources/log.yaml" ;
+                                                                                                            stat = "-rw-r--r--" ;
+                                                                                                            type = "log file" ;
+                                                                                                        }
+                                                                                                        {
                                                                                                             name = "/home/checker/resources/mounts" ;
                                                                                                             stat = "drwxr-xr-x" ;
                                                                                                             type = "directory" ;
@@ -1603,7 +1628,7 @@
                                                                                                     text =
                                                                                                         ''
                                                                                                             check-files --exclusion "/home/checker/resources/*.lock" --delete true
-                                                                                                        '' ; ###FINDME A
+                                                                                                        '' ;
                                                                                             }
                                                                                         ]
                                                                                         (
@@ -1621,7 +1646,7 @@
                                                                                                                             ''
                                                                                                                                 jq \
                                                                                                                                     --null-input \
-                                                                                                                                    --rawfile STANDARD_OUTPUT ${ builtins.toFile "standard-output" ( builtins.trace "9824725872138521 ${ standard-output }" standard-output ) } \
+                                                                                                                                    --rawfile STANDARD_OUTPUT ${ builtins.toFile "standard-output" standard-output } \
                                                                                                                                     '{
                                                                                                                                         "type" : "message" ,
                                                                                                                                         "channel" : "valid-release" ,
@@ -1765,77 +1790,6 @@
                                                                                     type = "symbolic link" ;
                                                                                 }
                                                                                 {
-                                                                                    log =
-                                                                                        [
-                                                                                            {
-                                                                                                channel = "valid-init" ;
-                                                                                                payload =
-                                                                                                    {
-                                                                                                        arguments = [ ] ;
-                                                                                                        index = "0000000000000001" ;
-                                                                                                        inputs = { } ;
-                                                                                                        seed =
-                                                                                                            [
-                                                                                                                { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                                { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                                                { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
-                                                                                                                { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                                            ] ;
-                                                                                                        standard-output = "" ;
-                                                                                                        targets = [ "known-hosts.asc" ] ;
-                                                                                                        temporary = false ;
-                                                                                                        text = "known-hosts" ;
-                                                                                                    } ;
-                                                                                                type = "message" ;
-                                                                                            }
-                                                                                            {
-                                                                                                channel = "valid-init" ;
-                                                                                                payload =
-                                                                                                    {
-                                                                                                        arguments = [ ] ;
-                                                                                                        index = "0000000000000002" ;
-                                                                                                        inputs = { } ;
-                                                                                                        seed =
-                                                                                                            [
-                                                                                                                { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                                { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                                                { path = [ 2 ] ; type = "string" ; value = "identity" ; }
-                                                                                                                { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                                            ] ;
-                                                                                                        standard-output = "" ;
-                                                                                                        targets = [ "identity.asc" ] ;
-                                                                                                        temporary = false ;
-                                                                                                        text = "identity" ;
-                                                                                                    } ;
-                                                                                                type = "message" ;
-                                                                                            }
-                                                                                            {
-                                                                                                channel = "valid-init" ;
-                                                                                                payload =
-                                                                                                    {
-                                                                                                        arguments = [ ] ;
-                                                                                                        index = "0000000000000000" ;
-                                                                                                        inputs = { } ;
-                                                                                                        seed =
-                                                                                                            [
-                                                                                                                { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                                { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                                                { path = [ 2 ] ; type = "string" ; value = "config" ; }
-                                                                                                                { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                                            ] ;
-                                                                                                        standard-output = "" ;
-                                                                                                        targets = [ "config.asc" ] ;
-                                                                                                        temporary = false ;
-                                                                                                        text = "dot-ssh-configure" ;
-                                                                                                    } ;
-                                                                                                type = "message" ;
-                                                                                            }
-                                                                                        ] ;
-                                                                                    name = "/home/checker/resources/log.yaml" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "log file" ;
-                                                                                }
-                                                                                {
                                                                                     cat =
                                                                                         ''
                                                                                             Host github.com
@@ -1884,35 +1838,6 @@
                                                                         init-files =
                                                                             [
                                                                                 {
-                                                                                    log =
-                                                                                        [
-                                                                                            {
-                                                                                                channel = "valid-init" ;
-                                                                                                payload =
-                                                                                                    {
-                                                                                                        arguments = [ ] ;
-                                                                                                        index = "0000000000000000" ;
-                                                                                                        inputs = { } ;
-                                                                                                        seed =
-                                                                                                            [
-                                                                                                                { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                                { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                                                { path = [ 2 ] ; type = "string" ; value = "identity" ; }
-                                                                                                                { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                                            ] ;
-                                                                                                        standard-output = "" ;
-                                                                                                        targets = [ "identity.asc" ] ;
-                                                                                                        temporary = false ;
-                                                                                                        text = "identity" ;
-                                                                                                    } ;
-                                                                                                type = "message" ;
-                                                                                            }
-                                                                                        ] ;
-                                                                                    name = "/home/checker/resources/log.yaml" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "log file" ;
-                                                                                }
-                                                                                {
                                                                                     cat = builtins.readFile "${ shared }/dot-ssh/identity.asc" ;
                                                                                     name = "/home/checker/resources/mounts/0000000000000000/identity.asc" ;
                                                                                     stat = "-r--------" ;
@@ -1947,35 +1872,6 @@
                                                                             ] ;
                                                                         init-files =
                                                                             [
-                                                                                {
-                                                                                    log =
-                                                                                        [
-                                                                                            {
-                                                                                                channel = "valid-init" ;
-                                                                                                payload =
-                                                                                                    {
-                                                                                                        arguments = [ ] ;
-                                                                                                        index = "0000000000000000" ;
-                                                                                                        inputs = { } ;
-                                                                                                        seed =
-                                                                                                            [
-                                                                                                                { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                                { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                                                { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
-                                                                                                                { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                                            ] ;
-                                                                                                        standard-output = "" ;
-                                                                                                        targets = [ "known-hosts.asc" ] ;
-                                                                                                        temporary = false ;
-                                                                                                        text = "known-hosts" ;
-                                                                                                    } ;
-                                                                                                type = "message" ;
-                                                                                            }
-                                                                                        ] ;
-                                                                                    name = "/home/checker/resources/log.yaml" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "log file" ;
-                                                                                }
                                                                                 {
                                                                                     name = "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ;
                                                                                     stat = "-r--------" ;
@@ -2104,127 +2000,6 @@
                                                                                     stat = "lrwxrwxrwx" ;
                                                                                     target = "/nix/store/9kfgh5k0frl2vkdvcvdmsfg0cmsm02nz-openssh-9.9p2" ;
                                                                                     type = "symbolic link" ;
-                                                                                }
-                                                                                {
-                                                                                    log =
-                                                                                        [
-                                                                                            {
-                                                                                                channel = "valid-init" ;
-                                                                                                payload =
-                                                                                                    {
-                                                                                                        arguments = [ ] ;
-                                                                                                        index = "0000000000000002" ;
-                                                                                                        inputs = { } ;
-                                                                                                        seed =
-                                                                                                            [
-                                                                                                                { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                                { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                                                { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
-                                                                                                                { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                                            ] ;
-                                                                                                        standard-output = "" ;
-                                                                                                        targets = [ "known-hosts.asc" ] ;
-                                                                                                        temporary = false ;
-                                                                                                        text = "known-hosts" ;
-                                                                                                    } ;
-                                                                                                type = "message" ;
-                                                                                            }
-                                                                                            {
-                                                                                                channel = "valid-init" ;
-                                                                                                payload =
-                                                                                                    {
-                                                                                                        arguments = [ ] ;
-                                                                                                        index = "0000000000000003" ;
-                                                                                                        inputs = { } ;
-                                                                                                        seed =
-                                                                                                            [
-                                                                                                                { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                                { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                                                { path = [ 2 ] ; type = "string" ; value = "identity" ; }
-                                                                                                                { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                                            ] ;
-                                                                                                        standard-output = "" ;
-                                                                                                        targets = [ "identity.asc" ] ;
-                                                                                                        temporary = false ;
-                                                                                                        text = "identity" ;
-                                                                                                    } ;
-                                                                                                type = "message" ;
-                                                                                            }
-                                                                                            {
-                                                                                                channel = "valid-init" ;
-                                                                                                payload =
-                                                                                                    {
-                                                                                                        arguments = [ ] ;
-                                                                                                        index = "0000000000000001" ;
-                                                                                                        inputs = { } ;
-                                                                                                        seed =
-                                                                                                            [
-                                                                                                                { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                                { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                                                { path = [ 2 ] ; type = "string" ; value = "config" ; }
-                                                                                                                { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                                            ] ;
-                                                                                                        standard-output = "" ;
-                                                                                                        targets = [ "config.asc" ] ;
-                                                                                                        temporary = false ;
-                                                                                                        text = "dot-ssh-configure" ;
-                                                                                                    } ;
-                                                                                                type = "message" ;
-                                                                                            }
-                                                                                            {
-                                                                                                channel = "valid-init" ;
-                                                                                                payload =
-                                                                                                    {
-                                                                                                        arguments = [ ] ;
-                                                                                                        index = "0000000000000000" ;
-                                                                                                        inputs = { } ;
-                                                                                                        seed =
-                                                                                                            [
-                                                                                                                { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                                { path = [ 1 ] ; type = "string" ; value = "repository" ; }
-                                                                                                                { path = [ 2 ] ; type = "string" ; value = "secrets" ; }
-                                                                                                            ] ;
-                                                                                                        standard-output =
-                                                                                                            let
-                                                                                                                tab = "\t" ;
-                                                                                                                in
-                                                                                                                    ''
-                                                                                                                        hint: Using 'master' as the name for the initial branch. This default branch name
-                                                                                                                        hint: is subject to change. To configure the initial branch name to use in all
-                                                                                                                        hint: of your new repositories, which will suppress this warning, call:
-                                                                                                                        hint:
-                                                                                                                        hint: ${ tab }git config --global init.defaultBranch <name>
-                                                                                                                        hint:
-                                                                                                                        hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
-                                                                                                                        hint: 'development'. The just-created branch can be renamed via this command:
-                                                                                                                        hint:
-                                                                                                                        hint: ${ tab }git branch -m <name>
-                                                                                                                        Initialized empty Git repository in /mount/.git/
-                                                                                                                        From github.com:AFnRFCb7/9ebf9ebc
-                                                                                                                         * branch            main       -> FETCH_HEAD
-                                                                                                                         * [new branch]      main       -> origin/main
-                                                                                                                        Switched to a new branch 'main'
-                                                                                                                        branch 'main' set up to track 'origin/main'.
-                                                                                                                    '' ;
-                                                                                                        targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
-                                                                                                        temporary = false ;
-                                                                                                        text =
-                                                                                                            ''
-                                                                                                                git init 2>&1
-                                                                                                                configure-ssh
-                                                                                                                git config user.email "emory.merryman@gmail.com"
-                                                                                                                git config user.name "Emory Merryman"
-                                                                                                                git remote add origin "git@github.com:AFnRFCb7/9ebf9ebc.git"
-                                                                                                                git fetch origin "main" 2>&1
-                                                                                                                git checkout "main" 2>&1
-                                                                                                            '' ;
-                                                                                                    } ;
-                                                                                                type = "message" ;
-                                                                                            }
-                                                                                        ] ;
-                                                                                    name = "/home/checker/resources/log.yaml" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "log file" ;
                                                                                 }
                                                                                 {
                                                                                     name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg" ;
