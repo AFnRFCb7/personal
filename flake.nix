@@ -1290,8 +1290,7 @@
                                                             init-files ,
                                                             non-deterministic-regular-files ,
                                                             release ,
-                                                            release-script ,
-                                                            size
+                                                            release-script
                                                         } :
                                                             let
                                                                 files =
@@ -1465,6 +1464,7 @@
                                                                             } ;
                                                                 cleaned-files = "[\n  {\n    \"name\": \"/home/checker/.gc-roots\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  },\n  {\n    \"name\": \"/home/checker/resources\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  }\n]\n" ;
                                                                 empty-files =  "[\n  {\n    \"name\": \"/home/checker/resources\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  },\n  {\n    \"cat\": \"[]\",\n    \"name\": \"/home/checker/resources/log.yaml\",\n    \"stat\": \"-rw-r--r--\",\n    \"type\": \"regular file\"\n  }\n]\n" ;
+                                                                size = if builtins.length init == builtins.length release then builtins.length init else builtins.throw "the length of init ${ builtins.toString ( builtins.length init ) } must equal the length of init ${ builtins.toString ( builtins.length release ) }"
                                                                 subscribe =
                                                                     {
                                                                         invalid-init = "{\n  \"type\": \"subscribe\",\n  \"channel\": \"invalid-init\",\n  \"payload\": 1\n}\n" ;
@@ -1858,7 +1858,6 @@
                                                                                 { index = "0000000000000002" ; standard-output = "" ; }
                                                                             ] ;
                                                                         release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","config","github"].sh'' ;
-                                                                        size = 3 ;
                                                                     }
                                                             )
                                                             (
@@ -1923,7 +1922,6 @@
                                                                         non-deterministic-regular-files = [ ] ;
                                                                         release = [ { index = "0000000000000000" ; standard-output = "" ; } ] ;
                                                                         release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","identity","github"].sh'' ;
-                                                                        size = 1 ;
                                                                     }
                                                             )
                                                             (
@@ -1987,7 +1985,6 @@
                                                                         non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
                                                                         release = [ { index = "0000000000000000" ; standard-output = "" ; } ] ;
                                                                         release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","known-hosts","github"].sh'' ;
-                                                                        size = 1 ;
                                                                     }
                                                             )
                                                             (
@@ -2295,7 +2292,6 @@
                                                                                 { index = "0000000000000003" ; standard-output = "" ; }
                                                                             ] ;
                                                                         release-script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
-                                                                        size = 4 ;
                                                                     }
                                                             )
                                                         ]
