@@ -2673,7 +2673,7 @@
                                                                                 { index = "0000000000000003" ; standard-output = "" ; }
                                                                             ] ;
                                                                         release-recovery = ''/home/checker/resources/invalid-release/0000000000000000/'["unrecoverable"]'.sh'' ;
-                                                                        release-recoveries = [ "recoverable" "unrecoverable" ] ;
+                                                                        release-recoveries = [ "recoverable" "unrecoverable" "z" ] ;
                                                                         release-recovery-error-code = 119 ;
                                                                         release-script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
                                                                         spoiler = "echo > /home/checker/resources/mounts/0000000000000001/config" ;
