@@ -2056,6 +2056,12 @@
                                                                                     type = "symbolic link" ;
                                                                                 }
                                                                                 {
+                                                                                    name = "/home/checker/.gc-roots/0000000000000000/openssh" ;
+                                                                                    stat = "lrwxrwxrwx" ;
+                                                                                    target = "/nix/store/9kfgh5k0frl2vkdvcvdmsfg0cmsm02nz-openssh-9.9p2" ;
+                                                                                    type = "symbolic link" ;
+                                                                                }
+                                                                                {
                                                                                     log =
                                                                                         [
                                                                                             {
@@ -2150,13 +2156,19 @@
                                                                                 }
                                                                                 {
                                                                                     name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg" ;
-                                                                                    stat = "" ;
+                                                                                    stat = "drwxr-xr-x" ;
                                                                                     type = "directory" ;
+                                                                                }
+                                                                                {
+                                                                                    cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age" ;
+                                                                                    name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/ownertrust.asc.age" ;
+                                                                                    stat = "lrwxrwxrwx" ;
+                                                                                    type = "regular file" ;
                                                                                 }
                                                                                 {
                                                                                     cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age" ;
                                                                                     name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/secret-keys.asc.age" ;
-                                                                                    stat = "" ;
+                                                                                    stat = "lrwxrwxrwx" ;
                                                                                     type = "regular file" ;
                                                                                 }
                                                                             ]  ;
