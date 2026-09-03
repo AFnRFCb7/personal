@@ -2156,18 +2156,18 @@
                                                                                                                  * [new branch]      main       -> origin/main
                                                                                                                 Switched to a new branch 'main'
                                                                                                                 branch 'main' set up to track 'origin/main'.
-                                                                                                            '' ;
+                                                                                                            '';
                                                                                                         targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
                                                                                                         temporary = false ;
                                                                                                         text =
                                                                                                             ''
                                                                                                                 git init 2>&1
                                                                                                                 configure-ssh
-                                                                                                                git config user.email \"emory.merryman@gmail.com\"
-                                                                                                                git config user.name \"Emory Merryman\"
-                                                                                                                git remote add origin \"git@github.com:AFnRFCb7/9ebf9ebc.git\"
-                                                                                                                git fetch origin \"main\" 2>&1
-                                                                                                                git checkout \"main\" 2>&1
+                                                                                                                git config user.email "emory.merryman@gmail.com"
+                                                                                                                git config user.name "Emory Merryman"
+                                                                                                                git remote add origin "git@github.com:AFnRFCb7/9ebf9ebc.git"
+                                                                                                                git fetch origin "main" 2>&1
+                                                                                                                git checkout "main" 2>&1
                                                                                                             '' ;
                                                                                                     } ;
                                                                                                 type = "message" ;
@@ -2181,12 +2181,6 @@
                                                                                     name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg" ;
                                                                                     stat = "drwxr-xr-x" ;
                                                                                     type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age" ;
-                                                                                    name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/ownertrust.asc.age" ;
-                                                                                    stat = "lrwxrwxrwx" ;
-                                                                                    type = "regular file" ;
                                                                                 }
                                                                                 {
                                                                                     name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/ownertrust.asc.age" ;
