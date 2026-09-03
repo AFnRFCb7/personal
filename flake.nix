@@ -1287,6 +1287,7 @@
                                                             non-deterministic-regular-files ,
                                                             order ,
                                                             release ,
+                                                            release-script ,
                                                             size
                                                         } :
                                                             let
@@ -1380,7 +1381,7 @@
                                                                                                         {
                                                                                                             name = "/home/checker/resources/release/0000000000000000" ;
                                                                                                             stat = "lrwxrwxrwx" ;
-                                                                                                            target = builtins.readFile "${ shared }/release" ;
+                                                                                                            target = release-script ;
                                                                                                             type = "symbolic link" ;
                                                                                                         }
                                                                                                         {
@@ -1845,6 +1846,7 @@
                                                                         non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" ] ;
                                                                         order = 10 ;
                                                                         release = [ "0000000000000000" "0000000000000001" "0000000000000002" ] ;
+                                                                        release-script = builtins.readFile "${ shared }/release" ;
                                                                         size = 3 ;
                                                                     }
                                                             )
@@ -1909,6 +1911,7 @@
                                                                         non-deterministic-regular-files = [ ] ;
                                                                         order = 0 ;
                                                                         release = [ "0000000000000000" ] ;
+                                                                        release-script = builtins.readFile "${ shared }/release" ;
                                                                         size = 1 ;
                                                                     }
                                                             )
@@ -1972,6 +1975,7 @@
                                                                         non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
                                                                         order = 0 ;
                                                                         release = [ "0000000000000000" ] ;
+                                                                        release-script = builtins.readFile "${ shared }/release" ;
                                                                         size = 1 ;
                                                                     }
                                                             )
@@ -2231,6 +2235,7 @@
                                                                         non-deterministic-regular-files = [ ] ;
                                                                         order = 100 ;
                                                                         release = [ "0000000000000000" "0000000000000001" "0000000000000002" "0000000000000003" ] ;
+                                                                        release-script = builtins.readFile "${ shared }/release" ;
                                                                         size = 4 ;
                                                                     }
                                                             )
