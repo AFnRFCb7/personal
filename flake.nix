@@ -1528,7 +1528,7 @@
                                                                                             {
                                                                                                     process = "pre" ;
                                                                                                     reads = false ;
-                                                                                                    standard-output = files.init ;
+                                                                                                    standard-output = builtins.trace "1572852854486351 ${ builtins.toJSON files.init }" files.init ;
                                                                                                     text =
                                                                                                         ''
                                                                                                             check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }
