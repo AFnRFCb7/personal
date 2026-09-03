@@ -1722,7 +1722,7 @@
                                                             non-deterministic-regular-files ,
                                                             release ,
                                                             release-recovery ,
-                                                            release-recover-error-code ,
+                                                            release-recovery-error-code ,
                                                             release-script ,
                                                             spoiler
                                                         } :
