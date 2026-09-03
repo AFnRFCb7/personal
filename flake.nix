@@ -2080,7 +2080,16 @@
                                                                                                     branch 'main' set up to track 'origin/main'.
                                                                                                 '' ;
                                                                                     targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
-                                                                                    text = "" ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            git init 2>&1
+                                                                                            configure-ssh
+                                                                                            git config user.email "emory.merryman@gmail.com"
+                                                                                            git config user.name "Emory Merryman"
+                                                                                            git remote add origin "git@github.com:AFnRFCb7/9ebf9ebc.git"
+                                                                                            git fetch origin "main" 2>&1
+                                                                                            git checkout "main" 2>&1
+                                                                                        '' ;
                                                                                 }
                                                                             ] ;
                                                                         init-files =
