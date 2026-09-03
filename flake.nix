@@ -2283,15 +2283,16 @@
                                                                         order = 100 ;
                                                                         release =
                                                                             [
-                                                                                { index = "0000000000000000" ; standard-output = "" ; }
-                                                                                { index = "0000000000000001" ; standard-output = "" ; }
-                                                                                { index = "0000000000000002" ; standard-output = "" ; }
                                                                                 {
-                                                                                    index = "0000000000000003" ;
+                                                                                    index = "0000000000000000" ;
                                                                                     standard-output =
                                                                                         ''
                                                                                             Everything up-to-date
-                                                                                        '' ; }
+                                                                                        '' ;
+                                                                                }
+                                                                                { index = "0000000000000001" ; standard-output = "" ; }
+                                                                                { index = "0000000000000002" ; standard-output = "" ; }
+                                                                                { index = "0000000000000003" ; standard-output = "" ; }
                                                                             ] ;
                                                                         release-script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
                                                                         size = 4 ;
