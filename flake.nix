@@ -1291,6 +1291,7 @@
                                                             non-deterministic-regular-files ,
                                                             order ,
                                                             release ,
+                                                            release-standard-output ,
                                                             release-script ,
                                                             size
                                                         } :
@@ -1605,6 +1606,12 @@
                                                                                                         ''
                                                                                                             check-files --exclusion "/home/checker/resources/*.lock" --delete true
                                                                                                         '' ; ###FINDME A
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "post" ;
+                                                                                                    reads = true ;
+                                                                                                    standard-output = "" ;
+                                                                                                    text = "check-redis --exclude" ;
                                                                                             }
                                                                                         ]
                                                                                         (
@@ -2294,6 +2301,10 @@
                                                                                 { index = "0000000000000002" ; standard-output = "" ; }
                                                                                 { index = "0000000000000003" ; standard-output = "" ; }
                                                                             ] ;
+                                                                        release-standard-output =
+                                                                            ''
+                                                                                Everything up-to-date
+                                                                            '' ;
                                                                         release-script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
                                                                         size = 4 ;
                                                                     }
