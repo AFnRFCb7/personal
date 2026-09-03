@@ -1548,7 +1548,7 @@
                                                                                                                             "init.json"
                                                                                                                             { nativeBuildInputs = [ pkgs.jq ] ; }
                                                                                                                             ''
-                                                                                                                                PAYLOAD="$( jq --null-input --sort-keys '${ builtins.toJSON init } + { "arguments" : [ ] , "inputs" : { } , "standard-output" : "" , "temporary" : false }' )" || exit 151
+                                                                                                                                PAYLOAD="$( jq --null-input --sort-keys '${ builtins.toJSON init } + { "arguments" : [ ] , "inputs" : { } , "temporary" : false }' )" || exit 151
                                                                                                                                 jq \
                                                                                                                                     --null-input \
                                                                                                                                     --argjson PAYLOAD "$PAYLOAD" \
@@ -1719,6 +1719,7 @@
                                                                                             { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
                                                                                             { path = [ 3 ] ; type = "string" ; value = "github" ; }
                                                                                         ] ;
+                                                                                    standard-output = "" ;
                                                                                     targets = [ "known-hosts.asc" ] ;
                                                                                     text = "known-hosts" ;
                                                                                 }
@@ -1731,6 +1732,7 @@
                                                                                             { path = [ 2 ] ; type = "string" ; value = "identity" ; }
                                                                                             { path = [ 3 ] ; type = "string" ; value = "github" ; }
                                                                                         ] ;
+                                                                                    standard-output = "" ;
                                                                                     targets = [ "identity.asc" ] ;
                                                                                     text = "identity" ;
                                                                                 }
@@ -1743,6 +1745,7 @@
                                                                                             { path = [ 2 ] ; type = "string" ; value = "config" ; }
                                                                                             { path = [ 3 ] ; type = "string" ; value = "github" ; }
                                                                                         ] ;
+                                                                                    standard-output = "" ;
                                                                                     targets = [ "config.asc" ] ;
                                                                                     text = "dot-ssh-configure" ;
                                                                                 }
@@ -1870,6 +1873,7 @@
                                                                                             { path = [ 2 ] ; type = "string" ; value = "identity" ; }
                                                                                             { path = [ 3 ] ; type = "string" ; value = "github" ; }
                                                                                         ] ;
+                                                                                    standard-output = "" ;
                                                                                     targets = [ "identity.asc" ] ;
                                                                                     text = "identity" ;
                                                                                 }
@@ -1935,6 +1939,7 @@
                                                                                             { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
                                                                                             { path = [ 3 ] ; type = "string" ; value = "github" ; }
                                                                                         ] ;
+                                                                                    standard-output = "" ;
                                                                                     targets = [ "known-hosts.asc" ] ;
                                                                                     text = "known-hosts" ;
                                                                                 }
@@ -2014,6 +2019,7 @@
                                                                                             { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
                                                                                             { path = [ 3 ] ; type = "string" ; value = "github" ; }
                                                                                         ] ;
+                                                                                    standard-output = "" ;
                                                                                     targets = [ "known-hosts.asc" ] ;
                                                                                     text = "known-hosts" ;
                                                                                 }
@@ -2026,6 +2032,7 @@
                                                                                             { path = [ 2 ] ; type = "string" ; value = "identity" ; }
                                                                                             { path = [ 3 ] ; type = "string" ; value = "github" ; }
                                                                                         ] ;
+                                                                                    standard-output = "" ;
                                                                                     targets = [ "identity.asc" ] ;
                                                                                     text = "identity" ;
                                                                                 }
@@ -2038,6 +2045,7 @@
                                                                                             { path = [ 2 ] ; type = "string" ; value = "config" ; }
                                                                                             { path = [ 3 ] ; type = "string" ; value = "github" ; }
                                                                                         ] ;
+                                                                                    standard-output = "" ;
                                                                                     targets = [ "config.asc" ] ;
                                                                                     text = "dot-ssh-configure" ;
                                                                                 }
