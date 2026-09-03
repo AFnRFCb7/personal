@@ -1372,7 +1372,7 @@
                                                                                                                                         index = index ;
                                                                                                                                         inputs = { } ;
                                                                                                                                         seed = seed ;
-                                                                                                                                        standard-output = "" ;
+                                                                                                                                        standard-output = standard-output ;
                                                                                                                                         targets = targets ;
                                                                                                                                         temporary = false ;
                                                                                                                                         text = text ;
