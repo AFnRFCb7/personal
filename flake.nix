@@ -2046,8 +2046,8 @@
                                                                                     seed =
                                                                                         [
                                                                                             { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                            { path = [ 0 ] ; type = "string" ; value = "repository" ; }
-                                                                                            { path = [ 0 ] ; type = "string" ; value = "secrets" ; }
+                                                                                            { path = [ 1 ] ; type = "string" ; value = "repository" ; }
+                                                                                            { path = [ 2 ] ; type = "string" ; value = "secrets" ; }
                                                                                         ] ;
                                                                                     targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
                                                                                     text = "" ;
