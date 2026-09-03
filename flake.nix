@@ -1629,7 +1629,7 @@
                                                                                                                                             "payload" :
                                                                                                                                                 {
                                                                                                                                                     "index": "${ index }" ,
-                                                                                                                                                    "standard-output": standard-output,
+                                                                                                                                                    "standard-output": $STANDARD_OUTPUT ,
                                                                                                                                                     "status": "0"
                                                                                                                                                 }
                                                                                                                                         }' > $out ;
