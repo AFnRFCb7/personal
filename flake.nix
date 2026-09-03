@@ -2167,7 +2167,7 @@
                                                                                     type = "directory" ;
                                                                                 }
                                                                                 {
-                                                                                    cat = builtins.readFile "${ shared }/repository/secrets/dot-gnupg/secret-keys.asc.age" ;
+                                                                                    cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age" ;
                                                                                     name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/secret-keys.asc.age" ;
                                                                                     stat = "" ;
                                                                                     type = "regular file" ;
