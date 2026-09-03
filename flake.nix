@@ -2140,19 +2140,20 @@
                                                                                                             ] ;
                                                                                                         standard-output =
                                                                                                             ''
-                                                                                                                hint: Using 'master' as the name for the initial branch. This default branch name\nhint: is subject to change. To configure the initial branch name to use in all
+                                                                                                                hint: Using 'master' as the name for the initial branch. This default branch name
+                                                                                                                hint: is subject to change. To configure the initial branch name to use in all
                                                                                                                 hint: of your new repositories, which will suppress this warning, call:
                                                                                                                 hint:
-                                                                                                                hint:   git config --global init.defaultBranch <name>
+                                                                                                                hint: \tgit config --global init.defaultBranch <name>
                                                                                                                 hint:
                                                                                                                 hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
                                                                                                                 hint: 'development'. The just-created branch can be renamed via this command:
                                                                                                                 hint:
-                                                                                                                hint:   git branch -m <name>
+                                                                                                                hint: \tgit branch -m <name>
                                                                                                                 Initialized empty Git repository in /mount/.git/
                                                                                                                 From github.com:AFnRFCb7/9ebf9ebc
-                                                                                                                * branch            main       -> FETCH_HEAD
-                                                                                                                * [new branch]      main       -> origin/main
+                                                                                                                 * branch            main       -> FETCH_HEAD
+                                                                                                                 * [new branch]      main       -> origin/main
                                                                                                                 Switched to a new branch 'main'
                                                                                                                 branch 'main' set up to track 'origin/main'.
                                                                                                             '' ;
@@ -2160,6 +2161,13 @@
                                                                                                         temporary = false ;
                                                                                                         text =
                                                                                                             ''
+                                                                                                                git init 2>&1
+                                                                                                                configure-ssh
+                                                                                                                git config user.email \"emory.merryman@gmail.com\"
+                                                                                                                git config user.name \"Emory Merryman\"
+                                                                                                                git remote add origin \"git@github.com:AFnRFCb7/9ebf9ebc.git\"
+                                                                                                                git fetch origin \"main\" 2>&1
+                                                                                                                git checkout \"main\" 2>&1
                                                                                                             '' ;
                                                                                                     } ;
                                                                                                 type = "message" ;
@@ -2181,10 +2189,49 @@
                                                                                     type = "regular file" ;
                                                                                 }
                                                                                 {
-                                                                                    cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age" ;
+                                                                                    name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/ownertrust.asc.age" ;
+                                                                                    stat = "lrwxrwxrwx" ;
+                                                                                    target = "/nix/store/09jv7gwy4qppvw2r93isv67f55syz3if-ownertrust.asc.age" ;
+                                                                                    type = "symbolic link" ;
+                                                                                }
+                                                                                {
                                                                                     name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/secret-keys.asc.age" ;
                                                                                     stat = "lrwxrwxrwx" ;
-                                                                                    type = "regular file" ;
+                                                                                    target = "/nix/store/pj2z2r7849vm28fspvm0zyll81j38gqx-secret-keys.asc.age" ;
+                                                                                    type = "symbolic link" ;
+                                                                                }
+                                                                                {
+                                                                                    name = "/home/checker/resources/mounts/0000000000000000/dot-ssh" ;
+                                                                                    stat = "drwxr-xr-x" ;
+                                                                                    type = "directory" ;
+                                                                                }
+                                                                                {
+                                                                                    name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile" ;
+                                                                                    stat = "drwxr-xr-x" ;
+                                                                                    type = "directory" ;
+                                                                                }
+                                                                                {
+                                                                                    name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile/identity.asc.age" ;
+                                                                                    stat = "lrwxrwxrwx" ;
+                                                                                    target = "/nix/store/9xz28p0sqr53axrfq5kl26r35rsqzxpv-user-keys.asc.age" ;
+                                                                                    type = "symbolic link" ;
+                                                                                }
+                                                                                {
+                                                                                    name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile/known-hosts.asc.age" ;
+                                                                                    stat = "lrwxrwxrwx" ;
+                                                                                    target = "/nix/store/7ah05xw1vr1lrkn2ar5gcxak38waai4x-identity.asc.age" ;
+                                                                                    type = "symbolic link" ;
+                                                                                }
+                                                                                {
+                                                                                    name = "/home/checker/resources/mounts/0000000000000000/github" ;
+                                                                                    stat = "drwxr-xr-x" ;
+                                                                                    type = "directory" ;
+                                                                                }
+                                                                                {
+                                                                                    name = "/home/checker/resources/mounts/0000000000000000/github/token.asc.age" ;
+                                                                                    stat = "lrwxrwxrwx" ;
+                                                                                    target = "/nix/store/4i9g1bdffyiinq6jlkwdac2gs3y64983-token.asc.age" ;
+                                                                                    type = "symbolic link" ;
                                                                                 }
                                                                             ]  ;
                                                                         non-deterministic-regular-files = [ ] ;
