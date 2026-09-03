@@ -1291,7 +1291,6 @@
                                                             non-deterministic-regular-files ,
                                                             order ,
                                                             release ,
-                                                            release-standard-output ,
                                                             release-script ,
                                                             size
                                                         } :
@@ -1860,7 +1859,12 @@
                                                                             ]  ;
                                                                         non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" ] ;
                                                                         order = 10 ;
-                                                                        release = [ { index = "0000000000000000" ; standard-output = "" ; } { index = "0000000000000001" ; standard-output = "" ; } { index = "0000000000000002" ; standard-output = "" ; } ] ;
+                                                                        release =
+                                                                            [
+                                                                                { index = "0000000000000000" ; standard-output = "" ; }
+                                                                                { index = "0000000000000001" ; standard-output = "" ; }
+                                                                                { index = "0000000000000002" ; standard-output = "" ; }
+                                                                            ] ;
                                                                         release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","config","github"].sh'' ;
                                                                         size = 3 ;
                                                                     }
@@ -2301,10 +2305,6 @@
                                                                                 { index = "0000000000000002" ; standard-output = "" ; }
                                                                                 { index = "0000000000000003" ; standard-output = "" ; }
                                                                             ] ;
-                                                                        release-standard-output =
-                                                                            ''
-                                                                                Everything up-to-date
-                                                                            '' ;
                                                                         release-script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
                                                                         size = 4 ;
                                                                     }
