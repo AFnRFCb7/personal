@@ -1606,42 +1606,36 @@
                                                                                                             check-files --exclusion "/home/checker/resources/*.lock" --delete true
                                                                                                         '' ; ###FINDME A
                                                                                             }
-                                                                                            {
-                                                                                                    process = "post" ;
-                                                                                                    reads = true ;
-                                                                                                    standard-output = "" ;
-                                                                                                    text = "check-redis --exclude" ;
-                                                                                            }
                                                                                         ]
                                                                                         (
                                                                                             let
                                                                                                 mapper =
                                                                                                     { index , standard-output } :
                                                                                                         {
-                                                                                                                process = "post" ;
-                                                                                                                standard-output =
-                                                                                                                    let
-                                                                                                                        derivation =
-                                                                                                                            pkgs.runCommand
-                                                                                                                                "standard-output.json"
-                                                                                                                                { nativeBuildInputs = [ pkgs.jq ] ; }
-                                                                                                                                ''
-                                                                                                                                    jq \
-                                                                                                                                        --null-input \
-                                                                                                                                        --rawfile STANDARD_OUTPUT ${ builtins.toFile "standard-output" standard-output } \
-                                                                                                                                        '{
-                                                                                                                                            "type" : "message" ,
-                                                                                                                                            "channel" : "valid-release" ,
-                                                                                                                                            "payload" :
-                                                                                                                                                {
-                                                                                                                                                    "index": "${ index }" ,
-                                                                                                                                                    "standard-output": $STANDARD_OUTPUT ,
-                                                                                                                                                    "status": "0"
-                                                                                                                                                }
-                                                                                                                                        }' > $out ;
-                                                                                                                                '' ;
-                                                                                                                        in builtins.readFile derivation ;
-                                                                                                                text = ''check-redis --exclude'' ;
+                                                                                                            process = "post" ;
+                                                                                                            standard-output =
+                                                                                                                let
+                                                                                                                    derivation =
+                                                                                                                        pkgs.runCommand
+                                                                                                                            "standard-output.json"
+                                                                                                                            { nativeBuildInputs = [ pkgs.jq ] ; }
+                                                                                                                            ''
+                                                                                                                                jq \
+                                                                                                                                    --null-input \
+                                                                                                                                    --rawfile STANDARD_OUTPUT ${ builtins.toFile "standard-output" standard-output } \
+                                                                                                                                    '{
+                                                                                                                                        "type" : "message" ,
+                                                                                                                                        "channel" : "valid-release" ,
+                                                                                                                                        "payload" :
+                                                                                                                                            {
+                                                                                                                                                "index": "${ index }" ,
+                                                                                                                                                "standard-output": $STANDARD_OUTPUT ,
+                                                                                                                                                "status": "0"
+                                                                                                                                            }
+                                                                                                                                    }' > $out ;
+                                                                                                                            '' ;
+                                                                                                                    in builtins.readFile derivation ;
+                                                                                                            text = ''check-redis --exclude'' ;
                                                                                                         } ;
                                                                                                 in builtins.map mapper release
                                                                                         )
