@@ -2057,7 +2057,28 @@
                                                                                             { path = [ 1 ] ; type = "string" ; value = "repository" ; }
                                                                                             { path = [ 2 ] ; type = "string" ; value = "secrets" ; }
                                                                                         ] ;
-                                                                                    standard-output = "WRONG" ;
+                                                                                    standard-output =
+                                                                                        let
+                                                                                            tab = "\t" ;
+                                                                                            in
+                                                                                                ''
+                                                                                                    hint: Using 'master' as the name for the initial branch. This default branch name
+                                                                                                    hint: is subject to change. To configure the initial branch name to use in all
+                                                                                                    hint: of your new repositories, which will suppress this warning, call:
+                                                                                                    hint:
+                                                                                                    hint: ${ tab }git config --global init.defaultBranch <name>
+                                                                                                    hint:
+                                                                                                    hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+                                                                                                    hint: 'development'. The just-created branch can be renamed via this command:
+                                                                                                    hint:
+                                                                                                    hint: ${ tab }git branch -m <name>
+                                                                                                    Initialized empty Git repository in /mount/.git/
+                                                                                                    From github.com:AFnRFCb7/9ebf9ebc
+                                                                                                     * branch            main       -> FETCH_HEAD
+                                                                                                     * [new branch]      main       -> origin/main
+                                                                                                    Switched to a new branch 'main'
+                                                                                                    branch 'main' set up to track 'origin/main'.
+                                                                                                '' ;
                                                                                     targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
                                                                                     text = "" ;
                                                                                 }
