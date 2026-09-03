@@ -2049,6 +2049,7 @@
                                                                                             { path = [ 1 ] ; type = "string" ; value = "repository" ; }
                                                                                             { path = [ 2 ] ; type = "string" ; value = "secrets" ; }
                                                                                         ] ;
+                                                                                    standard-output = "WRONG" ;
                                                                                     targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
                                                                                     text = "" ;
                                                                                 }
@@ -2148,11 +2149,10 @@
                                                                                                             ] ;
                                                                                                         standard-output =
                                                                                                             let
-                                                                                                                single-quote = "'" ;
                                                                                                                 tab = "\t" ;
                                                                                                                 in
                                                                                                                     ''
-                                                                                                                        hint: Using ${ single-quote }master${ single-quote } as the name for the initial branch. This default branch name
+                                                                                                                        hint: Using 'master' as the name for the initial branch. This default branch name
                                                                                                                         hint: is subject to change. To configure the initial branch name to use in all
                                                                                                                         hint: of your new repositories, which will suppress this warning, call:
                                                                                                                         hint:
