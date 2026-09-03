@@ -1622,7 +1622,7 @@
                                                                                                                                 ''
                                                                                                                                     jq \
                                                                                                                                         --null-input \
-                                                                                                                                        --rawfile STANDARD_OUTPUT ${ builtins.toFile "standard-output" standard-output }
+                                                                                                                                        --rawfile STANDARD_OUTPUT ${ builtins.toFile "standard-output" standard-output } \
                                                                                                                                         '{
                                                                                                                                             "type" : "message" ,
                                                                                                                                             "channel" : "valid-release" ,
