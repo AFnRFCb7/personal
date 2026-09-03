@@ -1915,7 +1915,7 @@
                                                                         non-deterministic-regular-files = [ ] ;
                                                                         order = 0 ;
                                                                         release = [ "0000000000000000" ] ;
-                                                                        release-script = builtins.readFile "${ shared }/release/'[\"production\",\"dot-ssh\",\"identity\",\"github\"]'" ;
+                                                                        release-script = builtins.trace "HI" ( builtins.readFile "${ shared }/release/'[\"production\",\"dot-ssh\",\"identity\",\"github\"]'" ) ;
                                                                         size = 1 ;
                                                                     }
                                                             )
