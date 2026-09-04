@@ -1046,7 +1046,7 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "ExecStart" ;
-                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.git ] ;
                                                                                                 text =
                                                                                                     ''
                                                                                                         mkdir --parents /home/git/AFnRFCb7/9ebf9ebc.git
@@ -1055,15 +1055,8 @@
                                                                                                         git config user.email "git@git"
                                                                                                         git config user.name "git"
                                                                                                         git checkout -b ${ builtins.readFile "${ shared }/branch" }
-                                                                                                        mkdir --parents /home/git/AFnRFCb7/9ebf9ebc.git/dot-gnupg
-                                                                                                        cat ${ shared }/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age > /home/git/AFnRFCb7/9ebf9ebc.git/dot-gnupg/ownertrust.asc.age
-                                                                                                        cat ${ shared }/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age > /home/git/AFnRFCb7/9ebf9ebc.git/dot-gnupg/secret-keys.asc.age
-                                                                                                        mkdir --parents /home/git/AFnRFCb7/9ebf9ebc.git/dot-ssh
-                                                                                                        cat ${ shared }/repository/secrets/ciphertext/dot-ssh/mobile/identity.asc.age > /home/git/AFnRFCb7/9ebf9ebc.git/dot-ssh/mobile/identity.asc.age
-                                                                                                        cat ${ shared }/repository/secrets/ciphertext/dot-ssh/mobile/known-hosts.asc.age > /home/git/AFnRFCb7/9ebf9ebc.git/dot-ssh/mobile/known-hosts.asc.age
-                                                                                                        mkdir --parents /home/git/AFnRFCb7/9ebf9ebc.git/github
-                                                                                                        cat ${ shared }/repository/secrets/github/token.asc.age > /home/git/AFnRFCb7/9ebf9ebc.git/github/token.asc.age
-                                                                                                        chmod 0400 /home/git/AFnRFCb7/9ebf9ebc.git/dot-gnupg/ownertrust.asc.age /home/git/AFnRFCb7/9ebf9ebc.git/dot-gnupg/secret-keys.asc.age /home/git/AFnRFCb7/9ebf9ebc.git/dot-ssh/mobile/identity.asc.age /home/git/AFnRFCb7/9ebf9ebc.git/dot-ssh/mobile/known-hosts.asc.age /home/git/AFnRFCb7/9ebf9ebc.git/github/token.asc.age
+                                                                                                        cp --dereference --recursive ${ shared }/repository/secrets/ciphertext .
+                                                                                                        find . -type f chmod 0400 {} \;
                                                                                                         git add .
                                                                                                         git commit -am "initial commit"
                                                                                                         sleep inf
