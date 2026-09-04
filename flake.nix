@@ -1056,9 +1056,8 @@
                                                                                                         git config user.name "git"
                                                                                                         git checkout -b ${ builtins.readFile "${ shared }/branch" }
                                                                                                         cp --dereference --recursive ${ shared }/repository/secrets/ciphertext/* .
-                                                                                                        find ./dot-gnupg ./dot-ssh ./github -type f -exec chmod 0400 {} \;
                                                                                                         git add .
-                                                                                                        git commit -am "initial commit"
+                                                                                                        git commit -am "initial commit" --allow-empty
                                                                                                         sleep inf
                                                                                                     '' ;
                                                                                             } ;
