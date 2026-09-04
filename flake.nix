@@ -2009,9 +2009,9 @@
                                                                                 }
                                                                                 {
                                                                                     name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/ownertrust.asc.age" ;
-                                                                                    stat = "lrwxrwxrwx" ;
-                                                                                    target = "/nix/store/09jv7gwy4qppvw2r93isv67f55syz3if-ownertrust.asc.age" ;
-                                                                                    type = "symbolic link" ;
+                                                                                    stat = "-r--------" ;
+                                                                                    target = "${ shared }/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age" ;
+                                                                                    type = "regular file" ;
                                                                                 }
                                                                                 {
                                                                                     name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/secret-keys.asc.age" ;
