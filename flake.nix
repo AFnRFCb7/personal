@@ -1055,7 +1055,15 @@
                                                                                                         git config user.email "git@git"
                                                                                                         git config user.name "git"
                                                                                                         git checkout -b ${ builtins.readFile "${ shared }/branch" }
-                                                                                                        cp --recursive ${ shared }/repository/secrets/ciphertext/* .
+                                                                                                        mkdir --parents /home/git/AFnRFCb7/9ebf9ebc.git/dot-gnupg
+                                                                                                        cat ${ shared }/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age > /home/git/AFnRFCb7/9ebf9ebc.git/dot-gnupg/ownertrust.asc.age
+                                                                                                        cat ${ shared }/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age > /home/git/AFnRFCb7/9ebf9ebc.git/dot-gnupg/secret-keys.asc.age
+                                                                                                        mkdir --parents /home/git/AFnRFCb7/9ebf9ebc.git/dot-ssh
+                                                                                                        cat ${ shared }/repository/secrets/ciphertext/dot-ssh/mobile/identity.asc.age > /home/git/AFnRFCb7/9ebf9ebc.git/dot-ssh/mobile/identity.asc.age
+                                                                                                        cat ${ shared }/repository/secrets/ciphertext/dot-ssh/mobile/known-hosts.asc.age > /home/git/AFnRFCb7/9ebf9ebc.git/dot-ssh/mobile/known-hosts.asc.age
+                                                                                                        mkdir --parents /home/git/AFnRFCb7/9ebf9ebc.git/github
+                                                                                                        cat ${ shared }/repository/secrets/github/token.asc.age > /home/git/AFnRFCb7/9ebf9ebc.git/github/token.asc.age
+                                                                                                        chmod 0400 /home/git/AFnRFCb7/9ebf9ebc.git/dot-gnupg/ownertrust.asc.age /home/git/AFnRFCb7/9ebf9ebc.git/dot-gnupg/secret-keys.asc.age /home/git/AFnRFCb7/9ebf9ebc.git/dot-ssh/mobile/identity.asc.age /home/git/AFnRFCb7/9ebf9ebc.git/dot-ssh/mobile/known-hosts.asc.age /home/git/AFnRFCb7/9ebf9ebc.git/github/token.asc.age
                                                                                                         git add .
                                                                                                         git commit -am "initial commit"
                                                                                                         sleep inf
@@ -2007,10 +2015,10 @@
                                                                                     type = "directory" ;
                                                                                 }
                                                                                 {
+                                                                                    cat = builtins.readFile "${ shared }/repositories/secrets/ciphertext/dot-gnupg/ownertrust.asc.age" ;
                                                                                     name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/ownertrust.asc.age" ;
-                                                                                    stat = "lrwxrwxrwx" ;
-                                                                                    target = "/nix/store/09jv7gwy4qppvw2r93isv67f55syz3if-ownertrust.asc.age" ;
-                                                                                    type = "symbolic link" ;
+                                                                                    stat = "-r--------" ;
+                                                                                    type = "regular file" ;
                                                                                 }
                                                                                 {
                                                                                     name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/secret-keys.asc.age" ;
