@@ -2015,9 +2015,9 @@
                                                                                 }
                                                                                 {
                                                                                     name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/secret-keys.asc.age" ;
-                                                                                    stat = "lrwxrwxrwx" ;
-                                                                                    target = "/nix/store/pj2z2r7849vm28fspvm0zyll81j38gqx-secret-keys.asc.age" ;
-                                                                                    type = "symbolic link" ;
+                                                                                    stat = "-r--------" ;
+                                                                                    target = "${ shared }/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age" ;
+                                                                                    type = "regular text" ;
                                                                                 }
                                                                                 {
                                                                                     name = "/home/checker/resources/mounts/0000000000000000/dot-ssh" ;
