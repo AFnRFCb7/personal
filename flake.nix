@@ -2037,16 +2037,16 @@
                                                                                     type = "directory" ;
                                                                                 }
                                                                                 {
+                                                                                    cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-ssh/mobile/identity.asc.age" ;
                                                                                     name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile/identity.asc.age" ;
-                                                                                    stat = "lrwxrwxrwx" ;
-                                                                                    target = "/nix/store/9xz28p0sqr53axrfq5kl26r35rsqzxpv-user-keys.asc.age" ;
-                                                                                    type = "symbolic link" ;
+                                                                                    stat = "-r--------" ;
+                                                                                    type = "regular file" ;
                                                                                 }
                                                                                 {
+                                                                                    cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-ssh/mobile/known-hosts.asc.age" ;
                                                                                     name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile/known-hosts.asc.age" ;
-                                                                                    stat = "lrwxrwxrwx" ;
-                                                                                    target = "/nix/store/7ah05xw1vr1lrkn2ar5gcxak38waai4x-identity.asc.age" ;
-                                                                                    type = "symbolic link" ;
+                                                                                    stat = "-r--------" ;
+                                                                                    type = "regular file" ;
                                                                                 }
                                                                                 {
                                                                                     name = "/home/checker/resources/mounts/0000000000000000/github" ;
@@ -2054,10 +2054,10 @@
                                                                                     type = "directory" ;
                                                                                 }
                                                                                 {
+                                                                                    cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/github/token.asc.age" ;
                                                                                     name = "/home/checker/resources/mounts/0000000000000000/github/token.asc.age" ;
-                                                                                    stat = "lrwxrwxrwx" ;
-                                                                                    target = "/nix/store/4i9g1bdffyiinq6jlkwdac2gs3y64983-token.asc.age" ;
-                                                                                    type = "symbolic link" ;
+                                                                                    stat = "-r--------" ;
+                                                                                    type = "regular file" ;
                                                                                 }
                                                                             ]  ;
                                                                         non-deterministic-regular-files = [ ] ;
