@@ -1284,6 +1284,7 @@
                                                 let
                                                     generic =
                                                         {
+                                                            case ,
                                                             command ,
                                                             exclusions ,
                                                             init ,
@@ -1690,7 +1691,7 @@
                                                                                             }
                                                                                         ]
                                                                                     ] ;
-                                                                            name = "resource happy path : ${ command }" ;
+                                                                            name = "resource : ${ case } : ${ command }" ;
                                                                             nodes = { github = github ; client = client ; } ;
                                                                             order = size ;
                                                                             pkgs = pkgs ;
@@ -1709,7 +1710,23 @@
                                                                         } ;
                                                     in
                                                         {
-                                                            happy = generic ;
+                                                            happy =
+                                                                {
+                                                                    command ,
+                                                                    exclusions ,
+                                                                    init ,
+                                                                    init-files ,
+                                                                    non-deterministic-regular-files ,
+                                                                    release ,
+                                                                    release-script
+                                                                } @primary :
+                                                                    let
+                                                                        defaults =
+                                                                            {
+                                                                                case = "happy" ;
+                                                                            } ;
+                                                                        parameters = primary // defaults ;
+                                                                        in generic parameters ;
                                                             init-and-release-recovered = null ;
                                                             init-recovered = null ;
                                                             init-recovered-release-unrecoverable = null ;
