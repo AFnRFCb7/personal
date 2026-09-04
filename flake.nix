@@ -2015,16 +2015,16 @@
                                                                                     type = "directory" ;
                                                                                 }
                                                                                 {
-                                                                                    cat = builtins.readFile "${ shared }/repositories/secrets/ciphertext/dot-gnupg/ownertrust.asc.age" ;
+                                                                                    cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age" ;
                                                                                     name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/ownertrust.asc.age" ;
                                                                                     stat = "-r--------" ;
                                                                                     type = "regular file" ;
                                                                                 }
                                                                                 {
+                                                                                    cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age" ;
                                                                                     name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/secret-keys.asc.age" ;
-                                                                                    stat = "lrwxrwxrwx" ;
-                                                                                    target = "/nix/store/pj2z2r7849vm28fspvm0zyll81j38gqx-secret-keys.asc.age" ;
-                                                                                    type = "symbolic link" ;
+                                                                                    stat = "-r--------" ;
+                                                                                    type = "regular file" ;
                                                                                 }
                                                                                 {
                                                                                     name = "/home/checker/resources/mounts/0000000000000000/dot-ssh" ;
