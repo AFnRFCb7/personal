@@ -1281,8 +1281,8 @@
                                                     src = ./. ;
                                                 } ;
                                             tests =
-                                                {
-                                                    happy =
+                                                let
+                                                    generic =
                                                         {
                                                             command ,
                                                             exclusions ,
@@ -1707,12 +1707,15 @@
                                                                                         ''client.succeed("runuser checker -- ${ action-derivation }/test")''
                                                                                     ] ;
                                                                         } ;
-                                                    init-and-release-recovered = null ;
-                                                    init-recovered = null ;
-                                                    init-recovered-release-unrecoverable = null ;
-                                                    release-recovered = null ;
-                                                    release-unrecoverable = null ;
-                                                } ;
+                                                    in
+                                                        {
+                                                            happy = generic ;
+                                                            init-and-release-recovered = null ;
+                                                            init-recovered = null ;
+                                                            init-recovered-release-unrecoverable = null ;
+                                                            release-recovered = null ;
+                                                            release-unrecoverable = null ;
+                                                        } ;
                                         in
                                             builtins.listToAttrs
                                                 (
