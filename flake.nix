@@ -1508,6 +1508,10 @@
                                                                                         [
                                                                                             {
                                                                                                     process = "pre" ;
+                                                                                                    text = "force-garbage-collection" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
                                                                                                     text = "force-sync" ;
                                                                                             }
                                                                                             {
