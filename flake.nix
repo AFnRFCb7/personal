@@ -1649,7 +1649,7 @@
                                                                                             {
                                                                                                     process = "post" ;
                                                                                                     reads = false ;
-                                                                                                    standard-output = if generic-parameters.init-post-corrution then files.corruption else files.release ;
+                                                                                                    standard-output = if generic-parameters.init-post-corruption then files.corruption else files.release ;
                                                                                                     text =
                                                                                                         ''
                                                                                                             check-files --exclusion "/home/checker/resources/*.lock" --delete true
