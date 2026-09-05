@@ -1472,7 +1472,7 @@
                                                                                         ] ;
                                                                                 corrupt =
                                                                                     {
-                                                                                        post-init = json ( builtins.filter ( i : i.type != "directory" ) init-array ) ;
+                                                                                        post-init = json ( builtins.filter ( i : i.type != "regular file" ) init-array ) ;
                                                                                         post-release = json ( builtins.filter ( i : i.type != "directory" ) init-array ) ;
                                                                                     } ;
                                                                                 empty =
