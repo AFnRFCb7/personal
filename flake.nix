@@ -1292,6 +1292,7 @@
                                                             init-post-corruption ,
                                                             non-deterministic-regular-files ,
                                                             release ,
+                                                            release-post-recovery ,
                                                             release-script
                                                         } :
                                                             let
@@ -1493,6 +1494,7 @@
                                                                 generic-parameters =
                                                                     {
                                                                         init-post-corruption = _visitor.implementation { bool = path : value : value ; } init-post-corruption ;
+                                                                        release-post-recovery = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery ;
                                                                     } ;
                                                                 size = if builtins.length init == builtins.length release then builtins.length init else builtins.throw "the length of init ${ builtins.toString ( builtins.length init ) } must equal the length of init ${ builtins.toString ( builtins.length release ) }" ;
                                                                 subscribe =
@@ -1686,7 +1688,7 @@
                                                                                                                     in builtins.readFile derivation ;
                                                                                                             text = ''check-redis --exclude'' ;
                                                                                                         } ;
-                                                                                                in builtins.map mapper release
+                                                                                                in if generic-parameters.init-post-corruption then [ ] else builtins.map mapper release
                                                                                         )
                                                                                         [
                                                                                             {
@@ -1694,6 +1696,18 @@
                                                                                                     standard-output = "183" ;
                                                                                                     text = "check-redis" ;
                                                                                             }
+                                                                                        ]
+                                                                                        (
+                                                                                            if builtins.typeOf generic-parameters.release-post-recovery == "string" then
+                                                                                                [
+                                                                                                    {
+                                                                                                        process = "post" ;
+                                                                                                        text = generic-parameters.release-post-recovery ;
+                                                                                                    }
+                                                                                                ]
+                                                                                            else [ ]
+                                                                                        )
+                                                                                        [
                                                                                             {
                                                                                                     process = "post" ;
                                                                                                     text = ''"$RESOURCES"/clean.sh'' ;
@@ -1749,6 +1763,7 @@
                                                                             {
                                                                                 case = "happy" ;
                                                                                 init-post-corruption = false ;
+                                                                                release-post-recovery = null ;
                                                                             } ;
                                                                         parameters = primary // case-defaults ;
                                                                         in generic parameters ;
