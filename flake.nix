@@ -1400,7 +1400,7 @@
                                                                                     in builtins.readFile derivation ;
                                                                         in
                                                                             {
-                                                                                cleaned =
+                                                                                clean =
                                                                                     [
                                                                                         {
                                                                                             name = "/home/checker/.gc-roots" ;
