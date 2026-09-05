@@ -1716,7 +1716,7 @@
                                                                                                     }
                                                                                                     {
                                                                                                         process = "post" ;
-                                                                                                        standard-output = if generic-parameters.release-post-recovery-success then files.release else files.corrupt ;
+                                                                                                        standard-output = if generic-parameters.release-post-recovery-success then files.release else files.corruption ;
                                                                                                         text = "check-files" ;
                                                                                                     }
                                                                                                     {
