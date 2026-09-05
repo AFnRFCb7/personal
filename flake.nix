@@ -1401,18 +1401,19 @@
                                                                         in
                                                                             {
                                                                                 clean =
-                                                                                    [
-                                                                                        {
-                                                                                            name = "/home/checker/.gc-roots" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/resources" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                    ] ;
+                                                                                    json
+                                                                                        [
+                                                                                            {
+                                                                                                name = "/home/checker/.gc-roots" ;
+                                                                                                stat = "drwxr-xr-x" ;
+                                                                                                type = "directory" ;
+                                                                                            }
+                                                                                            {
+                                                                                                name = "/home/checker/resources" ;
+                                                                                                stat = "drwxr-xr-x" ;
+                                                                                                type = "directory" ;
+                                                                                            }
+                                                                                        ] ;
                                                                                 corruption = json ( builtins.filter ( i : i.type != "directory" ) init-array ) ;
                                                                                 empty =
                                                                                     json
