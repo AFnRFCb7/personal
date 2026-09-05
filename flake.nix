@@ -1289,6 +1289,7 @@
                                                             exclusions ,
                                                             init ,
                                                             init-files ,
+                                                            init-post-corruption ,
                                                             non-deterministic-regular-files ,
                                                             release ,
                                                             release-script
@@ -1622,6 +1623,18 @@
                                                                                                     standard-output = "183" ;
                                                                                                     text = "check-redis" ;
                                                                                             }
+                                                                                        ]
+                                                                                        (
+                                                                                            if init-post-corruption then
+                                                                                                [
+                                                                                                    {
+                                                                                                        process = "pre" ;
+                                                                                                        text = "force-corruption" ;
+                                                                                                    }
+                                                                                                ]
+                                                                                            else [ ]
+                                                                                        )
+                                                                                        [
                                                                                             {
                                                                                                     process = "pre" ;
                                                                                                     text = "force-garbage-collection" ;
@@ -1732,6 +1745,7 @@
                                                                         defaults =
                                                                             {
                                                                                 case = "happy" ;
+                                                                                init-post-corruption = false ;
                                                                             } ;
                                                                         parameters = primary // defaults ;
                                                                         in generic parameters ;
