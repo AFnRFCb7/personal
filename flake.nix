@@ -1806,9 +1806,9 @@
                                                                         case-defaults =
                                                                             {
                                                                                 case = "release-unrecoverable" ;
-                                                                                init-post-corruption = false ;
-                                                                                release-post-recovery = null ;
-                                                                                release-post-recovery-success = null ;
+                                                                                init-post-corruption = true ;
+                                                                                release-post-recovery = ''/home/checker/resources/invalid-init/0000000000000000/'["no-recovery"]'.sh'' ;
+                                                                                release-post-recovery-success = false ;
                                                                             } ;
                                                                         parameters = primary // case-defaults ;
                                                                         in generic parameters ;
