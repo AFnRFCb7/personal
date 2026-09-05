@@ -1407,7 +1407,7 @@
                                                                                                 type = "directory" ;
                                                                                             }
                                                                                         ] ;
-                                                                                corruption = null ;
+                                                                                corruption = json ( builtins.filter ( i : i.type != "directory" ) init-array ) ;
                                                                                 empty =
                                                                                     json
                                                                                         [
@@ -1492,7 +1492,7 @@
                                                                 empty-files =  "[\n  {\n    \"name\": \"/home/checker/resources\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  },\n  {\n    \"cat\": \"[]\",\n    \"name\": \"/home/checker/resources/log.yaml\",\n    \"stat\": \"-rw-r--r--\",\n    \"type\": \"regular file\"\n  }\n]\n" ;
                                                                 generic-parameters =
                                                                     {
-                                                                        init-post-corruption = visitor { bool = path : value : value ; } init-post-corruption ;
+                                                                        init-post-corruption = visitor.implementation { bool = path : value : value ; } init-post-corruption ;
                                                                     } ;
                                                                 size = if builtins.length init == builtins.length release then builtins.length init else builtins.throw "the length of init ${ builtins.toString ( builtins.length init ) } must equal the length of init ${ builtins.toString ( builtins.length release ) }" ;
                                                                 subscribe =
