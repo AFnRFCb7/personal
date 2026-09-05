@@ -1416,7 +1416,7 @@
                                                                                     type = "directory" ;
                                                                                 }
                                                                                 {
-                                                                                    name = "/home/checker/resources/invalid-release" ;
+                                                                                    name = "/home/checker/resources/invalid-init" ;
                                                                                     stat = "drwxr-xr-x" ;
                                                                                     type = "directory" ;
                                                                                 }
