@@ -1665,7 +1665,7 @@
                                                                                                     standard-output = if generic-parameters.init-post-corruption then files.corruption else files.release ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            check-files --exclusion "/home/checker/resources/*.lock" --delete true
+                                                                                                            check-files --exclusion "/home/checker/resources/*.lock" --delete true --uuid 4955995593443148
                                                                                                         '' ;
                                                                                             }
                                                                                         ]
