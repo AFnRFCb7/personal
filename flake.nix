@@ -1293,6 +1293,7 @@
                                                             non-deterministic-regular-files ,
                                                             release ,
                                                             release-post-recovery ,
+                                                            release-post-recovery-success ,
                                                             release-script
                                                         } :
                                                             let
@@ -1495,6 +1496,7 @@
                                                                     {
                                                                         init-post-corruption = _visitor.implementation { bool = path : value : value ; } init-post-corruption ;
                                                                         release-post-recovery = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery ;
+                                                                        release-post-recovery-success = _visitor.implementation { bool = path : value : value ; null = path : value : true ; } release-post-recovery-success ;
                                                                     } ;
                                                                 size = if builtins.length init == builtins.length release then builtins.length init else builtins.throw "the length of init ${ builtins.toString ( builtins.length init ) } must equal the length of init ${ builtins.toString ( builtins.length release ) }" ;
                                                                 subscribe =
@@ -1704,6 +1706,20 @@
                                                                                                         process = "post" ;
                                                                                                         text = generic-parameters.release-post-recovery ;
                                                                                                     }
+                                                                                                    {
+                                                                                                        process = "post" ;
+                                                                                                        text = "force-sync" ;
+                                                                                                    }
+                                                                                                    {
+                                                                                                        process = "post" ;
+                                                                                                        standard-output = if generic-parameters.release-post-recovery-success then files.release else files.corrupt ;
+                                                                                                        text = "check-files" ;
+                                                                                                    }
+                                                                                                    {
+                                                                                                        process = "post" ;
+                                                                                                        standard-output = "183" ;
+                                                                                                        text = "check-redis" ;
+                                                                                                    }
                                                                                                 ]
                                                                                             else [ ]
                                                                                         )
@@ -1764,6 +1780,7 @@
                                                                                 case = "happy" ;
                                                                                 init-post-corruption = false ;
                                                                                 release-post-recovery = null ;
+                                                                                release-post-recovery-success = null ;
                                                                             } ;
                                                                         parameters = primary // case-defaults ;
                                                                         in generic parameters ;
