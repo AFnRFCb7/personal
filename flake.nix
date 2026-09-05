@@ -1400,6 +1400,19 @@
                                                                                     in builtins.readFile derivation ;
                                                                         in
                                                                             {
+                                                                                cleaned-files =
+                                                                                    [
+                                                                                        {
+                                                                                            name = "/home/checker/.gc-roots" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                    ] ;
                                                                                 cleaned =
                                                                                     json
                                                                                         [
@@ -1735,7 +1748,7 @@
                                                                                             {
                                                                                                     process = "post" ;
                                                                                                     reads = false ;
-                                                                                                    standard-output = cleaned-files ;
+                                                                                                    standard-output = if generic-parameters.release-post-recovery-success then cleaned-files else files.corrupt ;
                                                                                                     text = "check-files" ;
                                                                                             }
                                                                                             {
