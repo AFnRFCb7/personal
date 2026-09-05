@@ -1297,6 +1297,94 @@
                                                             let
                                                                 files =
                                                                     let
+                                                                        init-array =
+                                                                            builtins.concatLists
+                                                                                [
+                                                                                    init-files
+                                                                                    [
+                                                                                        {
+                                                                                            name = "/home/checker/.gc-roots" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/.gc-roots/0000000000000000" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/canonical" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            log =
+                                                                                                let
+                                                                                                    mapper =
+                                                                                                        { index , seed , standard-output , targets , text } :
+                                                                                                            {
+                                                                                                                channel = "valid-init" ;
+                                                                                                                payload =
+                                                                                                                    {
+                                                                                                                        arguments = [ ] ;
+                                                                                                                        index = index ;
+                                                                                                                        inputs = { } ;
+                                                                                                                        seed = seed ;
+                                                                                                                        standard-output = standard-output ;
+                                                                                                                        targets = targets ;
+                                                                                                                        temporary = false ;
+                                                                                                                        text = text ;
+                                                                                                                    } ;
+                                                                                                                type = "message" ;
+                                                                                                            } ;
+                                                                                                    in builtins.map mapper init ;
+                                                                                            name = "/home/checker/resources/log.yaml" ;
+                                                                                            stat = "-rw-r--r--" ;
+                                                                                            type = "log file" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/mounts" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/${ builtins.head ( builtins.match ".*resources/'(.*)' *" command ) }" }" ;
+                                                                                            stat = "lrwxrwxrwx" ;
+                                                                                            target = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                                            type = "symbolic link" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/release" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/release/0000000000000000" ;
+                                                                                            stat = "lrwxrwxrwx" ;
+                                                                                            target = release-script ;
+                                                                                            type = "symbolic link" ;
+                                                                                        }
+                                                                                        {
+                                                                                            cat =
+                                                                                                ''
+                                                                                                    ${ builtins.toString size }
+                                                                                                '' ;
+                                                                                            name = "/home/checker/resources/sequential" ;
+                                                                                            stat = "-rw-r--r--" ;
+                                                                                            type = "regular file" ;
+                                                                                        }
+                                                                                    ]
+                                                                                ] ;
                                                                         json =
                                                                             json :
                                                                                 let
@@ -1319,6 +1407,7 @@
                                                                                                 type = "directory" ;
                                                                                             }
                                                                                         ] ;
+                                                                                corruption = null ;
                                                                                 empty =
                                                                                     json
                                                                                         [
@@ -1334,97 +1423,7 @@
                                                                                                 type = "log file" ;
                                                                                             }
                                                                                         ] ;
-                                                                                init =
-                                                                                    json
-                                                                                        (
-                                                                                            builtins.concatLists
-                                                                                                [
-                                                                                                    init-files
-                                                                                                    [
-                                                                                                        {
-                                                                                                            name = "/home/checker/.gc-roots" ;
-                                                                                                            stat = "drwxr-xr-x" ;
-                                                                                                            type = "directory" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            name = "/home/checker/.gc-roots/0000000000000000" ;
-                                                                                                            stat = "drwxr-xr-x" ;
-                                                                                                            type = "directory" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            name = "/home/checker/resources" ;
-                                                                                                            stat = "drwxr-xr-x" ;
-                                                                                                            type = "directory" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            name = "/home/checker/resources/canonical" ;
-                                                                                                            stat = "drwxr-xr-x" ;
-                                                                                                            type = "directory" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            log =
-                                                                                                                let
-                                                                                                                    mapper =
-                                                                                                                        { index , seed , standard-output , targets , text } :
-                                                                                                                            {
-                                                                                                                                channel = "valid-init" ;
-                                                                                                                                payload =
-                                                                                                                                    {
-                                                                                                                                        arguments = [ ] ;
-                                                                                                                                        index = index ;
-                                                                                                                                        inputs = { } ;
-                                                                                                                                        seed = seed ;
-                                                                                                                                        standard-output = standard-output ;
-                                                                                                                                        targets = targets ;
-                                                                                                                                        temporary = false ;
-                                                                                                                                        text = text ;
-                                                                                                                                    } ;
-                                                                                                                                type = "message" ;
-                                                                                                                            } ;
-                                                                                                                    in builtins.map mapper init ;
-                                                                                                            name = "/home/checker/resources/log.yaml" ;
-                                                                                                            stat = "-rw-r--r--" ;
-                                                                                                            type = "log file" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            name = "/home/checker/resources/mounts" ;
-                                                                                                            stat = "drwxr-xr-x" ;
-                                                                                                            type = "directory" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000" ;
-                                                                                                            stat = "drwxr-xr-x" ;
-                                                                                                            type = "directory" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/${ builtins.head ( builtins.match ".*resources/'(.*)' *" command ) }" }" ;
-                                                                                                            stat = "lrwxrwxrwx" ;
-                                                                                                            target = "/home/checker/resources/mounts/0000000000000000" ;
-                                                                                                            type = "symbolic link" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            name = "/home/checker/resources/release" ;
-                                                                                                            stat = "drwxr-xr-x" ;
-                                                                                                            type = "directory" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            name = "/home/checker/resources/release/0000000000000000" ;
-                                                                                                            stat = "lrwxrwxrwx" ;
-                                                                                                            target = release-script ;
-                                                                                                            type = "symbolic link" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            cat =
-                                                                                                                ''
-                                                                                                                    ${ builtins.toString size }
-                                                                                                                '' ;
-                                                                                                            name = "/home/checker/resources/sequential" ;
-                                                                                                            stat = "-rw-r--r--" ;
-                                                                                                            type = "regular file" ;
-                                                                                                        }
-                                                                                                    ]
-                                                                                                ]
-                                                                                        ) ;
+                                                                                init = json init-array ;
                                                                                 release =
                                                                                     json
                                                                                         (
@@ -1491,6 +1490,10 @@
                                                                             } ;
                                                                 cleaned-files = "[\n  {\n    \"name\": \"/home/checker/.gc-roots\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  },\n  {\n    \"name\": \"/home/checker/resources\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  }\n]\n" ;
                                                                 empty-files =  "[\n  {\n    \"name\": \"/home/checker/resources\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  },\n  {\n    \"cat\": \"[]\",\n    \"name\": \"/home/checker/resources/log.yaml\",\n    \"stat\": \"-rw-r--r--\",\n    \"type\": \"regular file\"\n  }\n]\n" ;
+                                                                generic-parameters =
+                                                                    {
+                                                                        init-post-corruption = visitor { bool = path : value : value ; } init-post-corruption ;
+                                                                    } ;
                                                                 size = if builtins.length init == builtins.length release then builtins.length init else builtins.throw "the length of init ${ builtins.toString ( builtins.length init ) } must equal the length of init ${ builtins.toString ( builtins.length release ) }" ;
                                                                 subscribe =
                                                                     {
@@ -1625,7 +1628,7 @@
                                                                                             }
                                                                                         ]
                                                                                         (
-                                                                                            if init-post-corruption then
+                                                                                            if generic-parameters.init-post-corruption then
                                                                                                 [
                                                                                                     {
                                                                                                         process = "pre" ;
@@ -1742,12 +1745,12 @@
                                                                     release-script
                                                                 } @primary :
                                                                     let
-                                                                        defaults =
+                                                                        case-defaults =
                                                                             {
                                                                                 case = "happy" ;
                                                                                 init-post-corruption = false ;
                                                                             } ;
-                                                                        parameters = primary // defaults ;
+                                                                        parameters = primary // case-defaults ;
                                                                         in generic parameters ;
                                                             init-and-release-recovered = null ;
                                                             init-recovered = null ;
