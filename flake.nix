@@ -1680,7 +1680,7 @@
                                                                                             {
                                                                                                     process = "post" ;
                                                                                                     reads = false ;
-                                                                                                    standard-output = if generic-parameters.init-post-corruption then files.corrupt.init else files.release ;
+                                                                                                    standard-output = if generic-parameters.init-post-corruption then files.corrupt.post-init else files.release ;
                                                                                                     text =
                                                                                                         ''
                                                                                                             check-files --exclusion "/home/checker/resources/*.lock" --delete true
@@ -1739,7 +1739,7 @@
                                                                                                     }
                                                                                                     {
                                                                                                         process = "post" ;
-                                                                                                        standard-output = if generic-parameters.release-post-recovery-success then files.release else files.corrupt.init ;
+                                                                                                        standard-output = if generic-parameters.release-post-recovery-success then files.release else files.corrupt.post-init ;
                                                                                                         text = "check-files" ;
                                                                                                     }
                                                                                                     {
@@ -1762,7 +1762,7 @@
                                                                                             {
                                                                                                     process = "post" ;
                                                                                                     reads = false ;
-                                                                                                    standard-output = if generic-parameters.release-post-recovery-success then files.clean else files.corrupt.init ;
+                                                                                                    standard-output = if generic-parameters.release-post-recovery-success then files.clean else files.corrupt.post-init ;
                                                                                                     text = "check-files" ;
                                                                                             }
                                                                                             {
