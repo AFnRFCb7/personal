@@ -1294,6 +1294,7 @@
                                                             release ,
                                                             release-post-recovery ,
                                                             release-post-recovery-success ,
+                                                            release-recovery-scripts ,
                                                             release-script
                                                         } :
                                                             let
@@ -1501,6 +1502,10 @@
                                                                         init-post-corruption = _visitor.implementation { bool = path : value : value ; } init-post-corruption ;
                                                                         release-post-recovery = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery ;
                                                                         release-post-recovery-success = _visitor.implementation { bool = path : value : value ; null = path : value : true ; } release-post-recovery-success ;
+                                                                        release-recovery-scripts =
+                                                                            if builtins.typeOf release-recovery-scripts == null then [ ]
+                                                                            else if builtins.typeOf release-recovery-scripts == "list" then release-recovery-scripts
+                                                                            else builtins.throw "release-recovery-scripts must either be null or a list of release-recovery-scripts" ;
                                                                     } ;
                                                                 size = if builtins.length init == builtins.length release then builtins.length init else builtins.throw "the length of init ${ builtins.toString ( builtins.length init ) } must equal the length of init ${ builtins.toString ( builtins.length release ) }" ;
                                                                 subscribe =
@@ -1785,6 +1790,7 @@
                                                                                 init-post-corruption = false ;
                                                                                 release-post-recovery = null ;
                                                                                 release-post-recovery-success = null ;
+                                                                                release-recovery-scripts = null ;
                                                                             } ;
                                                                         parameters = primary // case-defaults ;
                                                                         in generic parameters ;
@@ -1809,6 +1815,17 @@
                                                                                 init-post-corruption = true ;
                                                                                 release-post-recovery = ''/home/checker/resources/invalid-init/0000000000000000/'["no-recovery"]'.sh'' ;
                                                                                 release-post-recovery-success = false ;
+                                                                                release-recovery-scripts =
+                                                                                    [
+                                                                                        {
+                                                                                            path = [ "recoverable" ] ;
+                                                                                            target = "" ;
+                                                                                        }
+                                                                                        {
+                                                                                            path = [ "unrecoverable" ] ;
+                                                                                            target = "" ;
+                                                                                        }
+                                                                                    ] ;
                                                                             } ;
                                                                         parameters = primary // case-defaults ;
                                                                         in generic parameters ;
