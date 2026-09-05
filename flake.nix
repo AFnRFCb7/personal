@@ -1326,6 +1326,11 @@
                                                                                             type = "directory" ;
                                                                                         }
                                                                                         {
+                                                                                            name = "/home/checker/resources/invalid-init" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
                                                                                             log =
                                                                                                 let
                                                                                                     mapper =
