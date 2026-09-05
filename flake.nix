@@ -1371,12 +1371,6 @@
                                                                                             type = "directory" ;
                                                                                         }
                                                                                         {
-                                                                                            name = "/home/checker/resources/release/0000000000000000" ;
-                                                                                            stat = "lrwxrwxrwx" ;
-                                                                                            target = release-script ;
-                                                                                            type = "symbolic link" ;
-                                                                                        }
-                                                                                        {
                                                                                             cat =
                                                                                                 ''
                                                                                                     ${ builtins.toString size }
@@ -1481,7 +1475,6 @@
                                                                                         post-init = json ( builtins.filter ( i : i.type != "directory" ) init-array ) ;
                                                                                         post-release = json ( builtins.filter ( i : i.type != "directory" ) init-array ) ;
                                                                                     } ;
-                                                                                corruption = json ( builtins.filter ( i : i.type != "directory" ) init-array ) ;
                                                                                 empty =
                                                                                     json
                                                                                         [
@@ -1497,21 +1490,28 @@
                                                                                                 type = "log file" ;
                                                                                             }
                                                                                         ] ;
-                                                                                init = json
-                                                                                    (
-                                                                                        builtins.concatLists
-                                                                                            [
-                                                                                                init-array
+                                                                                init =
+                                                                                    json
+                                                                                        (
+                                                                                            builtins.concatLists
                                                                                                 [
-                                                                                                    {
-                                                                                                        name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/${ builtins.head ( builtins.match ".*resources/'(.*)' *" command ) }" }" ;
-                                                                                                        stat = "lrwxrwxrwx" ;
-                                                                                                        target = "/home/checker/resources/mounts/0000000000000000" ;
-                                                                                                        type = "symbolic link" ;
-                                                                                                    }
+                                                                                                    init-array
+                                                                                                    [
+                                                                                                        {
+                                                                                                            name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/${ builtins.head ( builtins.match ".*resources/'(.*)' *" command ) }" }" ;
+                                                                                                            stat = "lrwxrwxrwx" ;
+                                                                                                            target = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                                                            type = "symbolic link" ;
+                                                                                                        }
+                                                                                                        {
+                                                                                                            name = "/home/checker/resources/release/0000000000000000" ;
+                                                                                                            stat = "lrwxrwxrwx" ;
+                                                                                                            target = release-script ;
+                                                                                                            type = "symbolic link" ;
+                                                                                                        }
+                                                                                                    ]
                                                                                                 ]
-                                                                                            ]
-                                                                                    ) ;
+                                                                                        ) ;
                                                                                 release = json release-array ;
                                                                             } ;
                                                                 empty-files =  "[\n  {\n    \"name\": \"/home/checker/resources\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  },\n  {\n    \"cat\": \"[]\",\n    \"name\": \"/home/checker/resources/log.yaml\",\n    \"stat\": \"-rw-r--r--\",\n    \"type\": \"regular file\"\n  }\n]\n" ;
@@ -1680,7 +1680,7 @@
                                                                                             {
                                                                                                     process = "post" ;
                                                                                                     reads = false ;
-                                                                                                    standard-output = if generic-parameters.init-post-corruption then files.corruption else files.release ;
+                                                                                                    standard-output = if generic-parameters.init-post-corruption then files.corrupt.init else files.release ;
                                                                                                     text =
                                                                                                         ''
                                                                                                             check-files --exclusion "/home/checker/resources/*.lock" --delete true
@@ -1739,7 +1739,7 @@
                                                                                                     }
                                                                                                     {
                                                                                                         process = "post" ;
-                                                                                                        standard-output = if generic-parameters.release-post-recovery-success then files.release else files.corruption ;
+                                                                                                        standard-output = if generic-parameters.release-post-recovery-success then files.release else files.corrupt.init ;
                                                                                                         text = "check-files" ;
                                                                                                     }
                                                                                                     {
@@ -1762,7 +1762,7 @@
                                                                                             {
                                                                                                     process = "post" ;
                                                                                                     reads = false ;
-                                                                                                    standard-output = if generic-parameters.release-post-recovery-success then files.clean else files.corruption ;
+                                                                                                    standard-output = if generic-parameters.release-post-recovery-success then files.clean else files.corrupt.init ;
                                                                                                     text = "check-files" ;
                                                                                             }
                                                                                             {
