@@ -1361,12 +1361,6 @@
                                                                                             type = "directory" ;
                                                                                         }
                                                                                         {
-                                                                                            name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/${ builtins.head ( builtins.match ".*resources/'(.*)' *" command ) }" }" ;
-                                                                                            stat = "lrwxrwxrwx" ;
-                                                                                            target = "/home/checker/resources/mounts/0000000000000000" ;
-                                                                                            type = "symbolic link" ;
-                                                                                        }
-                                                                                        {
                                                                                             name = "/home/checker/resources/release" ;
                                                                                             stat = "drwxr-xr-x" ;
                                                                                             type = "directory" ;
@@ -1493,7 +1487,21 @@
                                                                                                 type = "log file" ;
                                                                                             }
                                                                                         ] ;
-                                                                                init = json init-array ;
+                                                                                init = json
+                                                                                    (
+                                                                                        builtins.concatLists
+                                                                                            [
+                                                                                                init-array
+                                                                                                [
+                                                                                                    {
+                                                                                                        name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/${ builtins.head ( builtins.match ".*resources/'(.*)' *" command ) }" }" ;
+                                                                                                        stat = "lrwxrwxrwx" ;
+                                                                                                        target = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                                                        type = "symbolic link" ;
+                                                                                                    }
+                                                                                                ]
+                                                                                            ]
+                                                                                    ) ;
                                                                                 release = json release-array ;
                                                                             } ;
                                                                 empty-files =  "[\n  {\n    \"name\": \"/home/checker/resources\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  },\n  {\n    \"cat\": \"[]\",\n    \"name\": \"/home/checker/resources/log.yaml\",\n    \"stat\": \"-rw-r--r--\",\n    \"type\": \"regular file\"\n  }\n]\n" ;
