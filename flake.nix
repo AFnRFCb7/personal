@@ -1739,7 +1739,7 @@
                                                                                             {
                                                                                                     process = "post" ;
                                                                                                     reads = false ;
-                                                                                                    standard-output = if generic-parameters.release-post-recovery-success then files.clean else files.corrupt ;
+                                                                                                    standard-output = if generic-parameters.release-post-recovery-success then files.clean else files.corruption ;
                                                                                                     text = "check-files" ;
                                                                                             }
                                                                                             {
