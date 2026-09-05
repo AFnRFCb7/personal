@@ -1399,6 +1399,63 @@
                                                                                                 jq --sort-keys "." ${ builtins.toFile "data.json" ( builtins.toJSON ( builtins.sort ( a : b : a.name < b.name ) json ) ) } > $out
                                                                                             '' ;
                                                                                     in builtins.readFile derivation ;
+                                                                        release-array =
+                                                                            [
+                                                                                {
+                                                                                    name = "/home/checker/.gc-roots" ;
+                                                                                    stat = "drwxr-xr-x" ;
+                                                                                    type = "directory" ;
+                                                                                }
+                                                                                {
+                                                                                    name = "/home/checker/resources" ;
+                                                                                    stat = "drwxr-xr-x" ;
+                                                                                    type = "directory" ;
+                                                                                }
+                                                                                {
+                                                                                    name = "/home/checker/resources/canonical" ;
+                                                                                    stat = "drwxr-xr-x" ;
+                                                                                    type = "directory" ;
+                                                                                }
+                                                                                {
+                                                                                    log =
+                                                                                        let
+                                                                                            mapper =
+                                                                                                { index , standard-output } :
+                                                                                                    {
+                                                                                                        channel = "valid-release" ;
+                                                                                                        payload =
+                                                                                                            {
+                                                                                                                index = pkgs.lib.fixedWidthString 16 "0" ( builtins.toString index ) ;
+                                                                                                                standard-output = standard-output ;
+                                                                                                                status = "0" ;
+                                                                                                            } ;
+                                                                                                        type = "message" ;
+                                                                                                    } ;
+                                                                                            in builtins.map mapper release ;
+                                                                                        name = "/home/checker/resources/log.yaml" ;
+                                                                                        stat = "-rw-r--r--" ;
+                                                                                        type = "log file" ;
+                                                                                }
+                                                                                {
+                                                                                    name = "/home/checker/resources/mounts" ;
+                                                                                    stat = "drwxr-xr-x" ;
+                                                                                    type = "directory" ;
+                                                                                }
+                                                                                {
+                                                                                    name = "/home/checker/resources/release" ;
+                                                                                    stat = "drwxr-xr-x" ;
+                                                                                    type = "directory" ;
+                                                                                }
+                                                                                {
+                                                                                    cat =
+                                                                                        ''
+                                                                                            ${ builtins.toString size }
+                                                                                        '' ;
+                                                                                    name = "/home/checker/resources/sequential" ;
+                                                                                    stat = "-rw-r--r--" ;
+                                                                                    type = "regular file" ;
+                                                                                }
+                                                                            ] ;
                                                                         in
                                                                             {
                                                                                 clean =
@@ -1415,6 +1472,11 @@
                                                                                                 type = "directory" ;
                                                                                             }
                                                                                         ] ;
+                                                                                corrupt =
+                                                                                    {
+                                                                                        post-init = json ( builtins.filter ( i : i.type != "directory" ) init-array ) ;
+                                                                                        post-release = json ( builtins.filter ( i : i.type != "directory" ) init-array ) ;
+                                                                                    } ;
                                                                                 corruption = json ( builtins.filter ( i : i.type != "directory" ) init-array ) ;
                                                                                 empty =
                                                                                     json
@@ -1432,69 +1494,7 @@
                                                                                             }
                                                                                         ] ;
                                                                                 init = json init-array ;
-                                                                                release =
-                                                                                    json
-                                                                                        (
-                                                                                            builtins.concatLists
-                                                                                                [
-                                                                                                    [
-                                                                                                        {
-                                                                                                            name = "/home/checker/.gc-roots" ;
-                                                                                                            stat = "drwxr-xr-x" ;
-                                                                                                            type = "directory" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            name = "/home/checker/resources" ;
-                                                                                                            stat = "drwxr-xr-x" ;
-                                                                                                            type = "directory" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            name = "/home/checker/resources/canonical" ;
-                                                                                                            stat = "drwxr-xr-x" ;
-                                                                                                            type = "directory" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            log =
-                                                                                                                let
-                                                                                                                    mapper =
-                                                                                                                        { index , standard-output } :
-                                                                                                                            {
-                                                                                                                                channel = "valid-release" ;
-                                                                                                                                payload =
-                                                                                                                                    {
-                                                                                                                                        index = pkgs.lib.fixedWidthString 16 "0" ( builtins.toString index ) ;
-                                                                                                                                        standard-output = standard-output ;
-                                                                                                                                        status = "0" ;
-                                                                                                                                    } ;
-                                                                                                                                type = "message" ;
-                                                                                                                            } ;
-                                                                                                                    in builtins.map mapper release ;
-                                                                                                                name = "/home/checker/resources/log.yaml" ;
-                                                                                                                stat = "-rw-r--r--" ;
-                                                                                                                type = "log file" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            name = "/home/checker/resources/mounts" ;
-                                                                                                            stat = "drwxr-xr-x" ;
-                                                                                                            type = "directory" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            name = "/home/checker/resources/release" ;
-                                                                                                            stat = "drwxr-xr-x" ;
-                                                                                                            type = "directory" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            cat =
-                                                                                                                ''
-                                                                                                                    ${ builtins.toString size }
-                                                                                                                '' ;
-                                                                                                            name = "/home/checker/resources/sequential" ;
-                                                                                                            stat = "-rw-r--r--" ;
-                                                                                                            type = "regular file" ;
-                                                                                                        }
-                                                                                                    ]
-                                                                                                ]
-                                                                                        ) ;
+                                                                                release = json release-array ;
                                                                             } ;
                                                                 empty-files =  "[\n  {\n    \"name\": \"/home/checker/resources\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  },\n  {\n    \"cat\": \"[]\",\n    \"name\": \"/home/checker/resources/log.yaml\",\n    \"stat\": \"-rw-r--r--\",\n    \"type\": \"regular file\"\n  }\n]\n" ;
                                                                 generic-parameters =
