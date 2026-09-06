@@ -2087,7 +2087,7 @@
                                                                                 }
                                                                             ]  ;
                                                                         non-deterministic-regular-files = [ ] ;
-                                                                        release = [ { channel = "vaid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
+                                                                        release = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
                                                                         release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","identity","github"].sh'' ;
                                                                     }
                                                             )
