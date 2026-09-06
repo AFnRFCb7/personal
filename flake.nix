@@ -1811,7 +1811,7 @@
                                                                                                                     in builtins.readFile derivation ;
                                                                                                             text = ''check-redis --exclude'' ;
                                                                                                         } ;
-                                                                                                in if generic-parameters.init-post-corruption then [ ] else builtins.map mapper release
+                                                                                                in if generic-parameters.init-post-corruption then [ { channel = "invalid-release" ; payload = { index = "0000000000000000" ; standard-output = "" ; status = 128 ; } ; type = "message" ; } ] else builtins.map mapper release
                                                                                         )
                                                                                         [
                                                                                             {
@@ -1926,7 +1926,7 @@
                                                                             {
                                                                                 case = "release-unrecoverable" ;
                                                                                 init-post-corruption = true ;
-                                                                                release-post-recovery = ''/home/checker/resources/invalid-init/0000000000000000/'["no-recovery"]'.sh'' ;
+                                                                                release-post-recovery = ''/home/checker/resources/invalid-init/0000000000000000/'["unrecoverable"]'.sh'' ;
                                                                                 release-post-recovery-success = false ;
                                                                                 release-recovery-scripts = release-recovery-scripts ;
                                                                             } ;
