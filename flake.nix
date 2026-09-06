@@ -1518,7 +1518,7 @@
                                                                                                         target = target ;
                                                                                                         type = "symbolic link" ;
                                                                                                     } ;
-                                                                                            in builtins.map mapper release-recovery-scripts
+                                                                                            in builtins.map mapper generic-parameters.release-recovery-scripts
                                                                                     )
                                                                                     [
                                                                                         {
