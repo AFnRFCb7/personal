@@ -19,6 +19,7 @@
                                     {
                                         buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                         coreutils = pkgs.coreutils ;
+                                        error-code = 111 ;
                                         findutils = pkgs.findutils ;
                                         invalid-init-channel = "invalid-init" ;
                                         invalid-release-channel = "invalid-release" ;
