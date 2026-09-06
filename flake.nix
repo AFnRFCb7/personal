@@ -362,6 +362,18 @@
                                                                                                                                                             ''
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
+                                                                                                                                            recovery =
+                                                                                                                                                {
+                                                                                                                                                    check =
+                                                                                                                                                        ignore :
+                                                                                                                                                            {
+                                                                                                                                                                targetPkgs = { pkgs , ... } : [ pkgs.coreutils  ] ;
+                                                                                                                                                                text =
+                                                                                                                                                                    ''
+                                                                                                                                                                        echo 9131352568195371
+                                                                                                                                                                    '' ;
+                                                                                                                                                            } ;
+                                                                                                                                                } ;
                                                                                                                                         } ;
                                                                                                                                 targets = [ "identity.asc" ] ;
                                                                                                                                 temporary = false ;
@@ -421,6 +433,18 @@
                                                                                                                                                             ''
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
+                                                                                                                                            recovery =
+                                                                                                                                                {
+                                                                                                                                                    check =
+                                                                                                                                                        ignore :
+                                                                                                                                                            {
+                                                                                                                                                                targetPkgs = { pkgs , ... } : [ pkgs.coreutils  ] ;
+                                                                                                                                                                text =
+                                                                                                                                                                    ''
+                                                                                                                                                                        echo 9131352568195371
+                                                                                                                                                                    '' ;
+                                                                                                                                                            } ;
+                                                                                                                                                } ;
                                                                                                                                         } ;
                                                                                                                                 targets = [ "known-hosts.asc" ] ;
                                                                                                                                 temporary = false ;
