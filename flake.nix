@@ -1300,6 +1300,86 @@
                                                             let
                                                                 files =
                                                                     let
+                                                                        corrupt-array =
+                                                                            builtins.concatLists
+                                                                                [
+                                                                                    [
+                                                                                        {
+                                                                                            name = "/home/checker/.gc-roots" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/.gc-roots/0000000000000000" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/canonical" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/invalid-init" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            log =
+                                                                                                let
+                                                                                                    mapper =
+                                                                                                        { index , seed , standard-output , targets , text } :
+                                                                                                            {
+                                                                                                                channel = "valid-init" ;
+                                                                                                                payload =
+                                                                                                                    {
+                                                                                                                        arguments = [ ] ;
+                                                                                                                        index = index ;
+                                                                                                                        inputs = { } ;
+                                                                                                                        seed = seed ;
+                                                                                                                        standard-output = standard-output ;
+                                                                                                                        targets = targets ;
+                                                                                                                        temporary = false ;
+                                                                                                                        text = text ;
+                                                                                                                    } ;
+                                                                                                                type = "message" ;
+                                                                                                            } ;
+                                                                                                    in builtins.map mapper init ;
+                                                                                            name = "/home/checker/resources/log.yaml" ;
+                                                                                            stat = "-rw-r--r--" ;
+                                                                                            type = "log file" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/mounts" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/release" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            cat =
+                                                                                                ''
+                                                                                                    ${ builtins.toString size }
+                                                                                                '' ;
+                                                                                            name = "/home/checker/resources/sequential" ;
+                                                                                            stat = "-rw-r--r--" ;
+                                                                                            type = "regular file" ;
+                                                                                        }
+                                                                                    ]
+                                                                                ] ;
                                                                         init-array =
                                                                             builtins.concatLists
                                                                                 [
@@ -1472,7 +1552,7 @@
                                                                                         ] ;
                                                                                 corrupt =
                                                                                     {
-                                                                                        post-init = json ( builtins.filter ( i : i.type != "regular file" ) init-array ) ;
+                                                                                        post-init = json corrupt-array ;
                                                                                         post-release = json ( builtins.filter ( i : i.type != "directory" ) init-array ) ;
                                                                                     } ;
                                                                                 empty =
