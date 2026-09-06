@@ -482,6 +482,28 @@
                                                                                                                                                         git push origin HEAD 2>&1
                                                                                                                                                     '' ;
                                                                                                                                             } ;
+                                                                                                                                    recovery =
+                                                                                                                                        {
+                                                                                                                                            recoverable =
+                                                                                                                                                ignore :
+                                                                                                                                                    {
+                                                                                                                                                        targetPkgs = { pkgs , ... } : [ pkgs.coreutils ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                echo RECOVERABLE
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                            unrecoverable =
+                                                                                                                                                ignore :
+                                                                                                                                                    {
+                                                                                                                                                        targetPkgs = { pkgs , ... } : [ pkgs.coreutils ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                echo UNRECOVERABLE >&2
+                                                                                                                                                                exit 110
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                        } ;
                                                                                                                                 } ;
                                                                                                                         targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
                                                                                                                         temporary = false ;
