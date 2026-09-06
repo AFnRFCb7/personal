@@ -1649,7 +1649,7 @@
                                                                         release-post-recovery = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery ;
                                                                         release-post-recovery-success = _visitor.implementation { bool = path : value : value ; null = path : value : true ; } release-post-recovery-success ;
                                                                         release-recovery-scripts =
-                                                                            if builtins.typeOf release-recovery-scripts == null then [ ]
+                                                                            if builtins.typeOf release-recovery-scripts == "null" then [ ]
                                                                             else if builtins.typeOf release-recovery-scripts == "list" then release-recovery-scripts
                                                                             else builtins.throw "release-recovery-scripts must either be null or a list of release-recovery-scripts but it was ${ builtins.typeOf release-recovery-scripts }" ;
                                                                     } ;
