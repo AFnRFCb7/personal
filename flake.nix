@@ -1504,14 +1504,14 @@
                                                                                     log =
                                                                                         let
                                                                                             mapper =
-                                                                                                { index , standard-output } :
+                                                                                                { channel , index , standard-output , status } :
                                                                                                     {
-                                                                                                        channel = "valid-release" ;
+                                                                                                        channel = channel ;
                                                                                                         payload =
                                                                                                             {
                                                                                                                 index = pkgs.lib.fixedWidthString 16 "0" ( builtins.toString index ) ;
                                                                                                                 standard-output = standard-output ;
-                                                                                                                status = "0" ;
+                                                                                                                status = "${ builtins.toString status }" ;
                                                                                                             } ;
                                                                                                         type = "message" ;
                                                                                                     } ;
@@ -2028,9 +2028,9 @@
                                                                         non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" ] ;
                                                                         release =
                                                                             [
-                                                                                { index = "0000000000000000" ; standard-output = "" ; }
-                                                                                { index = "0000000000000001" ; standard-output = "" ; }
-                                                                                { index = "0000000000000002" ; standard-output = "" ; }
+                                                                                { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; }
+                                                                                { channel = "valid-release" ; index = "0000000000000001" ; standard-output = "" ; status = 0 ; }
+                                                                                { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
                                                                             ] ;
                                                                         release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","config","github"].sh'' ;
                                                                     }
@@ -2066,7 +2066,7 @@
                                                                                 }
                                                                             ]  ;
                                                                         non-deterministic-regular-files = [ ] ;
-                                                                        release = [ { index = "0000000000000000" ; standard-output = "" ; } ] ;
+                                                                        release = [ { channel = "vaid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
                                                                         release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","identity","github"].sh'' ;
                                                                     }
                                                             )
@@ -2100,7 +2100,7 @@
                                                                                 }
                                                                             ]  ;
                                                                         non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
-                                                                        release = [ { index = "0000000000000000" ; standard-output = "" ; } ] ;
+                                                                        release = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
                                                                         release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","known-hosts","github"].sh'' ;
                                                                     }
                                                             )
@@ -2277,15 +2277,17 @@
                                                                         release =
                                                                             [
                                                                                 {
+                                                                                    channel = "valid-release" ;
                                                                                     index = "0000000000000000" ;
                                                                                     standard-output =
                                                                                         ''
                                                                                             Everything up-to-date
                                                                                         '' ;
+                                                                                    channel = 0 ;
                                                                                 }
-                                                                                { index = "0000000000000001" ; standard-output = "" ; }
-                                                                                { index = "0000000000000002" ; standard-output = "" ; }
-                                                                                { index = "0000000000000003" ; standard-output = "" ; }
+                                                                                { channel = "valid-release" ; index = "0000000000000001" ; standard-output = "" ; status = 0 ; }
+                                                                                { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
+                                                                                { channel = "valid-release" ; index = "0000000000000003" ; standard-output = "" ; status = 0 ; }
                                                                             ] ;
                                                                         release-script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
                                                                     }
@@ -2463,15 +2465,17 @@
                                                                         release =
                                                                             [
                                                                                 {
+                                                                                    channel = "invalid-release" ;
                                                                                     index = "0000000000000000" ;
                                                                                     standard-output =
                                                                                         ''
                                                                                             Everything up-to-date
                                                                                         '' ;
+                                                                                    status = 128 ;
                                                                                 }
-                                                                                { index = "0000000000000001" ; standard-output = "" ; }
-                                                                                { index = "0000000000000002" ; standard-output = "" ; }
-                                                                                { index = "0000000000000003" ; standard-output = "" ; }
+                                                                                { channel = "valid-release" ; index = "0000000000000001" ; standard-output = "" ; status = 0 ; }
+                                                                                { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
+                                                                                { channel = "valid-release" ; index = "0000000000000003" ; standard-output = "" ; status = 0 ; }
                                                                             ] ;
                                                                         release-script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
                                                                     }
