@@ -1554,7 +1554,7 @@
                                                                                 corrupt =
                                                                                     {
                                                                                         post-init = json corrupt-array ;
-                                                                                        post-release = json ( builtins.filter ( i : i.type != "directory" ) init-array ) ;
+                                                                                        post-release = json ( builtins.filter ( i : i.type != "directory" ) release-array ) ;
                                                                                     } ;
                                                                                 empty =
                                                                                     json
@@ -1761,7 +1761,7 @@
                                                                                             {
                                                                                                     process = "post" ;
                                                                                                     reads = false ;
-                                                                                                    standard-output = if generic-parameters.init-post-corruption then files.corrupt.post-init else files.release ;
+                                                                                                    standard-output = if generic-parameters.init-post-corruption then files.corrupt.post-release else files.release ;
                                                                                                     text =
                                                                                                         ''
                                                                                                             check-files --exclusion "/home/checker/resources/*.lock" --delete true
