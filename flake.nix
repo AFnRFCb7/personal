@@ -1608,7 +1608,7 @@
                                                                                                                     mapper =
                                                                                                                         { path , target } :
                                                                                                                             {
-                                                                                                                                name = "/home/checker/resources/invalid-release/0000000000000000/${ builtins.toJSON path }" ;
+                                                                                                                                name = "/home/checker/resources/invalid-release/0000000000000000/${ builtins.toJSON path }.sh" ;
                                                                                                                                 stat = "" ;
                                                                                                                                 target = target ;
                                                                                                                                 type = "symbolic link" ;
