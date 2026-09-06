@@ -1496,6 +1496,11 @@
                                                                                     type = "directory" ;
                                                                                 }
                                                                                 {
+                                                                                    name = "/home/checker/resources/invalid-release" ;
+                                                                                    stat = "drwxr-xr-x" ;
+                                                                                    type = "directory" ;
+                                                                                }
+                                                                                {
                                                                                     log =
                                                                                         let
                                                                                             mapper =
