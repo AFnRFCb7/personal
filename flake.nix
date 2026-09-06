@@ -1497,16 +1497,6 @@
                                                                                             stat = "drwxr-xr-x" ;
                                                                                             type = "directory" ;
                                                                                         }
-                                                                                        {
-                                                                                            name = "/home/checker/resources/invalid-release" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/resources/invalid-release/0000000000000000" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
                                                                                     ]
                                                                                     (
                                                                                         let
@@ -1593,6 +1583,18 @@
                                                                                                                     )
                                                                                                                 release-array
                                                                                                             )
+                                                                                                            [
+                                                                                                                {
+                                                                                                                    name = "/home/checker/resources/invalid-release" ;
+                                                                                                                    stat = "drwxr-xr-x" ;
+                                                                                                                    type = "directory" ;
+                                                                                                                }
+                                                                                                                {
+                                                                                                                    name = "/home/checker/resources/invalid-release/0000000000000000" ;
+                                                                                                                    stat = "drwxr-xr-x" ;
+                                                                                                                    type = "directory" ;
+                                                                                                                }
+                                                                                                            ]
                                                                                                         ]
                                                                                                 ) ;
                                                                                     } ;
