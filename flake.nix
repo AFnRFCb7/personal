@@ -1511,7 +1511,7 @@
                                                                                                             {
                                                                                                                 index = pkgs.lib.fixedWidthString 16 "0" ( builtins.toString index ) ;
                                                                                                                 standard-output = standard-output ;
-                                                                                                                status = builtins.toString status ;
+                                                                                                                status = status ;
                                                                                                             } ;
                                                                                                         type = "message" ;
                                                                                                     } ;
