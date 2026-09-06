@@ -1559,7 +1559,27 @@
                                                                                 corrupt =
                                                                                     {
                                                                                         post-init = json corrupt-array ;
-                                                                                        post-release = json ( builtins.filter ( i : i.type != "regular file" ) release-array ) ;
+                                                                                        post-release =
+                                                                                            json
+                                                                                                (
+                                                                                                    builtins.concatLists
+                                                                                                        [
+                                                                                                            (
+                                                                                                                builtins.filter
+                                                                                                                    (
+                                                                                                                        i : i.type != "regular file" || i.name == "/home/checker/resources/sequential"
+                                                                                                                    )
+                                                                                                                release-array
+                                                                                                            )
+                                                                                                            [
+                                                                                                                {
+                                                                                                                    name = "/home/checker/resources/invalid-release/0000000000000000" ;
+                                                                                                                    stat = "drwxr-xr-x" ;
+                                                                                                                    type = "directory" ;
+                                                                                                                }
+                                                                                                            ]
+                                                                                                        ]
+                                                                                                ) ;
                                                                                     } ;
                                                                                 empty =
                                                                                     json
