@@ -1651,7 +1651,7 @@
                                                                         release-recovery-scripts =
                                                                             if builtins.typeOf release-recovery-scripts == null then [ ]
                                                                             else if builtins.typeOf release-recovery-scripts == "list" then release-recovery-scripts
-                                                                            else builtins.throw "release-recovery-scripts must either be null or a list of release-recovery-scripts" ;
+                                                                            else builtins.throw "release-recovery-scripts must either be null or a list of release-recovery-scripts but it was ${ builtins.typeOf release-recovery-scripts }" ;
                                                                     } ;
                                                                 size = if builtins.length init == builtins.length release then builtins.length init else builtins.throw "the length of init ${ builtins.toString ( builtins.length init ) } must equal the length of init ${ builtins.toString ( builtins.length release ) }" ;
                                                                 subscribe =
