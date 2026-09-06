@@ -1497,20 +1497,6 @@
                                                                                             stat = "drwxr-xr-x" ;
                                                                                             type = "directory" ;
                                                                                         }
-                                                                                    ]
-                                                                                    (
-                                                                                        let
-                                                                                            mapper =
-                                                                                                { path , target } :
-                                                                                                    {
-                                                                                                        name = "/home/checker/resources/invalid-release/0000000000000000/${ builtins.toJSON path }" ;
-                                                                                                        stat = "" ;
-                                                                                                        target = target ;
-                                                                                                        type = "symbolic link" ;
-                                                                                                    } ;
-                                                                                            in builtins.map mapper generic-parameters.release-recovery-scripts
-                                                                                    )
-                                                                                    [
                                                                                         {
                                                                                             log =
                                                                                                 let
@@ -1595,6 +1581,18 @@
                                                                                                                     type = "directory" ;
                                                                                                                 }
                                                                                                             ]
+                                                                                                            (
+                                                                                                                let
+                                                                                                                    mapper =
+                                                                                                                        { path , target } :
+                                                                                                                            {
+                                                                                                                                name = "/home/checker/resources/invalid-release/0000000000000000/${ builtins.toJSON path }" ;
+                                                                                                                                stat = "" ;
+                                                                                                                                target = target ;
+                                                                                                                                type = "symbolic link" ;
+                                                                                                                            } ;
+                                                                                                                    in builtins.map mapper generic-parameters.release-recovery-scripts
+                                                                                                            )
                                                                                                         ]
                                                                                                 ) ;
                                                                                     } ;
