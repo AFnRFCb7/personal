@@ -1559,7 +1559,7 @@
                                                                                                                         { path , target } :
                                                                                                                             {
                                                                                                                                 name = "/home/checker/resources/invalid-release/0000000000000000/${ builtins.toJSON path }.sh" ;
-                                                                                                                                stat = "" ;
+                                                                                                                                stat = "lrwxrwxrwx" ;
                                                                                                                                 target = target ;
                                                                                                                                 type = "symbolic link" ;
                                                                                                                             } ;
@@ -2479,8 +2479,8 @@
                                                                             ] ;
                                                                         release-recovery-scripts =
                                                                             [
-                                                                                { path = [ "recoverable" ] ; target = "" ; }
-                                                                                { path = [ "unrecoverable" ] ; target = "" ; }
+                                                                                { path = [ "recoverable" ] ; target = "/nix/store/7n9bx25cnhbc41ah8nrn5pmc3ic2ayzi-recovery/bin/recovery" ; }
+                                                                                { path = [ "unrecoverable" ] ; target = "/nix/store/qx42xg29a1ps137r5jh4x2jnsf6c3qcv-recovery/bin/recovery" ; }
                                                                             ] ;
                                                                         release-script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
                                                                     }
