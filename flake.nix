@@ -1474,91 +1474,94 @@
                                                                                             '' ;
                                                                                     in builtins.readFile derivation ;
                                                                         release-array =
-                                                                            [
-                                                                                {
-                                                                                    name = "/home/checker/.gc-roots" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/canonical" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/invalid-init" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/invalid-release" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/invalid-release/0000000000000000" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                            ]
-                                                                            (
-                                                                                let
-                                                                                    mapper =
-                                                                                        { path , target } :
-                                                                                            {
-                                                                                                name = "/home/checker/resources/invalid-release/0000000000000000/${ builtins.toJSON path }" ;
-                                                                                                stat = "" ;
-                                                                                                target = target ;
-                                                                                                type = "symbolic link" ;
-                                                                                            } ;
-                                                                                    in builtins.map mapper release-recovery-scripts
-                                                                            )
-                                                                            [
-                                                                                {
-                                                                                    log =
+                                                                            builtins.concatLists
+                                                                                [
+                                                                                    [
+                                                                                        {
+                                                                                            name = "/home/checker/.gc-roots" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/canonical" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/invalid-init" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/invalid-release" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/invalid-release/0000000000000000" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                    ]
+                                                                                    (
                                                                                         let
                                                                                             mapper =
-                                                                                                { channel , index , standard-output , status } :
+                                                                                                { path , target } :
                                                                                                     {
-                                                                                                        channel = channel ;
-                                                                                                        payload =
-                                                                                                            {
-                                                                                                                index = pkgs.lib.fixedWidthString 16 "0" ( builtins.toString index ) ;
-                                                                                                                standard-output = standard-output ;
-                                                                                                                status = status ;
-                                                                                                            } ;
-                                                                                                        type = "message" ;
+                                                                                                        name = "/home/checker/resources/invalid-release/0000000000000000/${ builtins.toJSON path }" ;
+                                                                                                        stat = "" ;
+                                                                                                        target = target ;
+                                                                                                        type = "symbolic link" ;
                                                                                                     } ;
-                                                                                            in builtins.map mapper release ;
-                                                                                        name = "/home/checker/resources/log.yaml" ;
-                                                                                        stat = "-rw-r--r--" ;
-                                                                                        type = "log file" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/mounts" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    name = "/home/checker/resources/release" ;
-                                                                                    stat = "drwxr-xr-x" ;
-                                                                                    type = "directory" ;
-                                                                                }
-                                                                                {
-                                                                                    cat =
-                                                                                        ''
-                                                                                            ${ builtins.toString size }
-                                                                                        '' ;
-                                                                                    name = "/home/checker/resources/sequential" ;
-                                                                                    stat = "-rw-r--r--" ;
-                                                                                    type = "regular file" ;
-                                                                                }
-                                                                            ] ;
+                                                                                            in builtins.map mapper release-recovery-scripts
+                                                                                    )
+                                                                                    [
+                                                                                        {
+                                                                                            log =
+                                                                                                let
+                                                                                                    mapper =
+                                                                                                        { channel , index , standard-output , status } :
+                                                                                                            {
+                                                                                                                channel = channel ;
+                                                                                                                payload =
+                                                                                                                    {
+                                                                                                                        index = pkgs.lib.fixedWidthString 16 "0" ( builtins.toString index ) ;
+                                                                                                                        standard-output = standard-output ;
+                                                                                                                        status = status ;
+                                                                                                                    } ;
+                                                                                                                type = "message" ;
+                                                                                                            } ;
+                                                                                                    in builtins.map mapper release ;
+                                                                                                name = "/home/checker/resources/log.yaml" ;
+                                                                                                stat = "-rw-r--r--" ;
+                                                                                                type = "log file" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/mounts" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/release" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            cat =
+                                                                                                ''
+                                                                                                    ${ builtins.toString size }
+                                                                                                '' ;
+                                                                                            name = "/home/checker/resources/sequential" ;
+                                                                                            stat = "-rw-r--r--" ;
+                                                                                            type = "regular file" ;
+                                                                                        }
+                                                                                    ]
+                                                                                ] ;
                                                                         in
                                                                             {
                                                                                 clean =
