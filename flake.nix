@@ -1776,7 +1776,7 @@
                                                                                         (
                                                                                             let
                                                                                                 mapper =
-                                                                                                    { index , standard-output } :
+                                                                                                    { channel , index , standard-output , status } :
                                                                                                         {
                                                                                                             process = "post" ;
                                                                                                             standard-output =
@@ -1789,14 +1789,15 @@
                                                                                                                                 jq \
                                                                                                                                     --null-input \
                                                                                                                                     --rawfile STANDARD_OUTPUT ${ builtins.toFile "standard-output" standard-output } \
+                                                                                                                                    --argjson STATUS ${ builtins.toString status } \
                                                                                                                                     '{
                                                                                                                                         "type" : "message" ,
-                                                                                                                                        "channel" : "valid-release" ,
+                                                                                                                                        "channel" : "${ channel }" ,
                                                                                                                                         "payload" :
                                                                                                                                             {
                                                                                                                                                 "index": "${ index }" ,
                                                                                                                                                 "standard-output": $STANDARD_OUTPUT ,
-                                                                                                                                                "status": "0"
+                                                                                                                                                "status": $STATUS
                                                                                                                                             }
                                                                                                                                     }' > $out ;
                                                                                                                             '' ;
