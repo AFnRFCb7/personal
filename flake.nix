@@ -1554,7 +1554,7 @@
                                                                                 corrupt =
                                                                                     {
                                                                                         post-init = json corrupt-array ;
-                                                                                        post-release = json ( builtins.filter ( i : i.type != "directory" ) release-array ) ;
+                                                                                        post-release = json ( builtins.filter ( i : i.type != "regular file" ) release-array ) ;
                                                                                     } ;
                                                                                 empty =
                                                                                     json
