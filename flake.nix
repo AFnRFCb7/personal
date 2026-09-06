@@ -1501,6 +1501,25 @@
                                                                                     type = "directory" ;
                                                                                 }
                                                                                 {
+                                                                                    name = "/home/checker/resources/invalid-release/0000000000000000" ;
+                                                                                    stat = "drwxr-xr-x" ;
+                                                                                    type = "directory" ;
+                                                                                }
+                                                                            ]
+                                                                            (
+                                                                                let
+                                                                                    mapper =
+                                                                                        { path , target } :
+                                                                                            {
+                                                                                                name = "/home/checker/resources/invalid-release/0000000000000000/${ builtins.toJSON path }" ;
+                                                                                                stat = "" ;
+                                                                                                target = target ;
+                                                                                                type = "symbolic link" ;
+                                                                                            } ;
+                                                                                    in builtins.map mapper release-recovery-scripts
+                                                                            )
+                                                                            [
+                                                                                {
                                                                                     log =
                                                                                         let
                                                                                             mapper =
@@ -1931,6 +1950,7 @@
                                                                     init-files ,
                                                                     non-deterministic-regular-files ,
                                                                     release ,
+                                                                    release-recovery-scripts ,
                                                                     release-script
                                                                 } @primary :
                                                                     let
@@ -1940,17 +1960,7 @@
                                                                                 init-post-corruption = true ;
                                                                                 release-post-recovery = ''/home/checker/resources/invalid-init/0000000000000000/'["no-recovery"]'.sh'' ;
                                                                                 release-post-recovery-success = false ;
-                                                                                release-recovery-scripts =
-                                                                                    [
-                                                                                        {
-                                                                                            path = [ "recoverable" ] ;
-                                                                                            target = "" ;
-                                                                                        }
-                                                                                        {
-                                                                                            path = [ "unrecoverable" ] ;
-                                                                                            target = "" ;
-                                                                                        }
-                                                                                    ] ;
+                                                                                release-recovery-scripts = release-recovery-scripts ;
                                                                             } ;
                                                                         parameters = primary // case-defaults ;
                                                                         in generic parameters ;
@@ -2498,6 +2508,11 @@
                                                                                 { channel = "valid-release" ; index = "0000000000000001" ; standard-output = "" ; status = 0 ; }
                                                                                 { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
                                                                                 { channel = "valid-release" ; index = "0000000000000003" ; standard-output = "" ; status = 0 ; }
+                                                                            ] ;
+                                                                        release-recovery-scripts =
+                                                                            [
+                                                                                { path = [ "recoverable" ] ; target = "" ; }
+                                                                                { path = [ "unrecoverable" ] ; target = "" ; }
                                                                             ] ;
                                                                         release-script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
                                                                     }
