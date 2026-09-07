@@ -1827,7 +1827,7 @@
                                                                                                                                 "corrupt.json"
                                                                                                                                 { nativeBuildInputs = [ pkgs.jq ] ; }
                                                                                                                                 ''
-                                                                                                                                    jq '.' ${ builtins.toFile "corruption.json" ( builtins.toJSON { channel = "invalid-release" ; payload = { index = "0000000000000000" ; standard-output = generic-parameters.release-standard-output ; status = generic-parameters.release-status ; } ; type = "message" ; } ) } ;
+                                                                                                                                    jq '.' ${ builtins.toFile "corruption.json" ( builtins.toJSON { channel = "invalid-release" ; payload = { index = "0000000000000000" ; standard-output = generic-parameters.release-standard-output ; status = generic-parameters.release-status ; } ; type = "message" ; } ) } > $out
                                                                                                                                 '' ;
                                                                                                                         in builtins.readFile "${ derivation }" ;
                                                                                                                 text = "check-redis --exclude" ;
