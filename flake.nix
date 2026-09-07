@@ -1776,7 +1776,7 @@
                                                                                             }
                                                                                         ]
                                                                                         (
-                                                                                            if generic-parameters.init-post-corrution then
+                                                                                            if generic-parameters.init-post-corruption then
                                                                                                 [
                                                                                                     {
                                                                                                             process = "post" ;
