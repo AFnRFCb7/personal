@@ -1774,16 +1774,33 @@
                                                                                                     process = "post" ;
                                                                                                     text = "force-sync" ;
                                                                                             }
-                                                                                            {
-                                                                                                    process = "post" ;
-                                                                                                    reads = false ;
-                                                                                                    standard-output = if generic-parameters.init-post-corruption then files.corrupt.post-release else files.release ;
-                                                                                                    text =
-                                                                                                        ''
-                                                                                                            check-files --exclusion "/home/checker/resources/*.lock" --delete true
-                                                                                                        '' ;
-                                                                                            }
                                                                                         ]
+                                                                                        (
+                                                                                            if generic-parameters.init-post-corrution then
+                                                                                                [
+                                                                                                    {
+                                                                                                            process = "post" ;
+                                                                                                            reads = false ;
+                                                                                                            standard-output = files.corrupt.post-release ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    check-files  --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) } --delete true
+                                                                                                                '' ;
+                                                                                                    }
+                                                                                                ]
+                                                                                            else
+                                                                                                [
+                                                                                                    {
+                                                                                                            process = "post" ;
+                                                                                                            reads = false ;
+                                                                                                            standard-output = files.release ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    check-files --exclusion "/home/checker/resources/*.lock" --delete true
+                                                                                                                '' ;
+                                                                                                    }
+                                                                                                ]
+                                                                                        )
                                                                                         (
                                                                                             let
                                                                                                 mapper =
