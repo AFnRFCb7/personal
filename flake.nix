@@ -1626,9 +1626,9 @@
                                                                 subscribe =
                                                                     {
                                                                         invalid-init = "{\n  \"channel\": \"invalid-init\",\n  \"payload\": 1,\n  \"type\": \"subscribe\"\n}\n" ;
-                                                                        invalid-release = "{\n  \"type\": \"subscribe\",\n  \"channel\": \"invalid-release\",\n  \"payload\": 2\n}\n" ;
-                                                                        valid-init = "{\n  \"type\": \"subscribe\",\n  \"channel\": \"valid-init\",\n  \"payload\": 3\n}\n" ;
-                                                                        valid-release = "{\n  \"type\": \"subscribe\",\n  \"channel\": \"valid-release\",\n  \"payload\": 4\n}\n" ;
+                                                                        invalid-release = "{\n  \"channel\": \"invalid-release\",\n  \"payload\": 2,\n  \"type\": \"subscribe\"\n}\n" ;
+                                                                        valid-init = "{\n  \"channel\": \"valid-init\",\n  \"payload\": 3,\n  \"type\": \"subscribe\"\n}\n" ;
+                                                                        valid-release = "{\n  \"channel\": \"valid-release\",\n  \"payload\": 4,\n  \"type\": \"subscribe\"\n}\n" ;
                                                                     } ;
                                                                 in
                                                                     _resource.check2
