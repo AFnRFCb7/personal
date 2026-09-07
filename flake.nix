@@ -1714,9 +1714,9 @@
                                                                                                                                     --null-input \
                                                                                                                                     --argjson PAYLOAD "$PAYLOAD" \
                                                                                                                                     '{
-                                                                                                                                        "type" : "message" ,
                                                                                                                                         "channel" : "valid-init" ,
-                                                                                                                                        "payload" : $PAYLOAD
+                                                                                                                                        "payload" : $PAYLOAD ,
+                                                                                                                                        "type" : "message"
                                                                                                                                     }' > $out
                                                                                                                             '' ;
                                                                                                                     in builtins.readFile derivation ;
