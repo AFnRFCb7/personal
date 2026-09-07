@@ -1802,14 +1802,14 @@
                                                                                                                                     --rawfile STANDARD_OUTPUT ${ builtins.toFile "standard-output" standard-output } \
                                                                                                                                     --argjson STATUS ${ builtins.toString status } \
                                                                                                                                     '{
-                                                                                                                                        "type" : "message" ,
                                                                                                                                         "channel" : "${ channel }" ,
                                                                                                                                         "payload" :
                                                                                                                                             {
                                                                                                                                                 "index": "${ index }" ,
                                                                                                                                                 "standard-output": $STANDARD_OUTPUT ,
                                                                                                                                                 "status": $STATUS
-                                                                                                                                            }
+                                                                                                                                            } ,
+                                                                                                                                        "type" : "message"
                                                                                                                                     }' > $out ;
                                                                                                                             '' ;
                                                                                                                     in builtins.readFile derivation ;
