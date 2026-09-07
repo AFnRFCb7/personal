@@ -1226,7 +1226,7 @@
                                                                                         echo -n "2cf9b5764e63babd485f143c543d41935a3c2cab0046ed26422e78f6ccb4c45ece30497d74bd55cd0c65e3d62f95248cdeb953fe67d9d6c67428751d625ff5cb" > "$OUT"/hashes/'["production","repository","secrets"]'
                                                                                         mkdir --parents "$OUT/release"
                                                                                         echo -n "/nix/store/182wn4l7qgi4p4q6z57x5p7p70cb1izn-release/bin/release" > "$OUT"/release/'["production","dot-ssh","config","github"]'.sh
-                                                                                        echo -n "/nix/store/182wn4l7qgi4p4q6z57x5p7p70cb1izn-release" > "$OUT"/release/'["production","dot-ssh","identity","github"]'.sh
+                                                                                        echo -n "/nix/store/182wn4l7qgi4p4q6z57x5p7p70cb1izn-release/bin/release" > "$OUT"/release/'["production","dot-ssh","identity","github"]'.sh
                                                                                         echo -n "/nix/store/182wn4l7qgi4p4q6z57x5p7p70cb1izn-release/bin/release" > "$OUT"/release/'["production","dot-ssh","known-hosts","github"]'.sh
                                                                                         echo -n "/nix/store/qlb7dpgjids9vd3gf960v92zc2zk98hb-release/bin/release" > "$OUT"/release/'["production","repository","secrets"]'.sh
                                                                                         mkdir --parents "$OUT/repository/secrets/ciphertext/dot-gnupg"
