@@ -1815,7 +1815,16 @@
                                                                                                                     in builtins.readFile derivation ;
                                                                                                             text = ''check-redis --exclude'' ;
                                                                                                         } ;
-                                                                                                in if generic-parameters.init-post-corruption then [ { channel = "invalid-release" ; payload = { index = "0000000000000000" ; standard-output = generic-parameters.release-standard-output ; status = generic-parameters.release-status ; } ; type = "message" ; } ] else builtins.map mapper release
+                                                                                                in
+                                                                                                    if generic-parameters.init-post-corruption then
+                                                                                                        [
+                                                                                                            {
+                                                                                                                process = "post" ;
+                                                                                                                standard-output = builtins.toJSON { channel = "invalid-release" ; payload = { index = "0000000000000000" ; standard-output = generic-parameters.release-standard-output ; status = generic-parameters.release-status ; } ; type = "message" ; } ;
+                                                                                                                text = "check-redis --exclude" ;
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    else builtins.map mapper release
                                                                                         )
                                                                                         [
                                                                                             {
