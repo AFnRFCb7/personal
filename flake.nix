@@ -1228,7 +1228,7 @@
                                                                                         echo -n "/nix/store/fdv3bs998wgwq0mqn1qp1cchiz8q6vmw-release/bin/release" > "$OUT"/release/'["production","dot-ssh","config","github"]'.sh
                                                                                         echo -n "/nix/store/fdv3bs998wgwq0mqn1qp1cchiz8q6vmw-release/bin/release" > "$OUT"/release/'["production","dot-ssh","identity","github"]'.sh
                                                                                         echo -n "/nix/store/fdv3bs998wgwq0mqn1qp1cchiz8q6vmw-release/bin/release" > "$OUT"/release/'["production","dot-ssh","known-hosts","github"]'.sh
-                                                                                        echo -n "/nix/store/d6av0dn0axhqch6awiw7dy3bwn9bsr0k-release/bin/release" > "$OUT"/release/'["production","repository","secrets"]'.sh
+                                                                                        echo -n "/nix/store/qlb7dpgjids9vd3gf960v92zc2zk98hb-release/bin/release/bin/release" > "$OUT"/release/'["production","repository","secrets"]'.sh
                                                                                         mkdir --parents "$OUT/repository/secrets/ciphertext/dot-gnupg"
                                                                                         ln --symbolic ${ builtins.toFile "ownertrust.asc.age" secrets.dot-gnupg.ownertrust } "$OUT/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age"
                                                                                         ln --symbolic ${ builtins.toFile "secret-keys.asc.age" secrets.dot-gnupg.secret-keys } "$OUT/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age"
@@ -1722,8 +1722,7 @@
                                                                                                                     in builtins.readFile derivation ;
                                                                                                             text = ''check-redis --exclude'' ;
                                                                                                         } ;
-                                                                                                in
-                                                                                                builtins.map mapper init
+                                                                                                in builtins.map mapper init
                                                                                         )
                                                                                         [
                                                                                             {
@@ -1818,20 +1817,20 @@
                                                                                                 in
                                                                                                     if generic-parameters.init-post-corruption then
                                                                                                         [
-                                                                                                            {
-                                                                                                                process = "post" ;
-                                                                                                                standard-output =
-                                                                                                                    let
-                                                                                                                        derivation =
-                                                                                                                            pkgs.runCommand
-                                                                                                                                "corrupt.json"
-                                                                                                                                { nativeBuildInputs = [ pkgs.jq ] ; }
-                                                                                                                                ''
-                                                                                                                                    jq '.' ${ builtins.toFile "corruption.json" ( builtins.toJSON { channel = "invalid-release" ; payload = { index = "0000000000000000" ; standard-output = generic-parameters.release-standard-output ; status = generic-parameters.release-status ; } ; type = "message" ; } ) } > $out
-                                                                                                                                '' ;
-                                                                                                                        in builtins.readFile "${ derivation }" ;
-                                                                                                                text = "check-redis --exclude" ;
-                                                                                                            }
+#                                                                                                            {
+#                                                                                                                process = "post" ;
+#                                                                                                                standard-output =
+#                                                                                                                    let
+#                                                                                                                        derivation =
+#                                                                                                                            pkgs.runCommand
+#                                                                                                                                "corrupt.json"
+#                                                                                                                                { nativeBuildInputs = [ pkgs.jq ] ; }
+#                                                                                                                                ''
+#                                                                                                                                    jq '.' ${ builtins.toFile "corruption.json" ( builtins.toJSON { channel = "invalid-release" ; payload = { index = "0000000000000000" ; standard-output = generic-parameters.release-standard-output ; status = generic-parameters.release-status ; } ; type = "message" ; } ) } > $out
+#                                                                                                                                '' ;
+#                                                                                                                        in builtins.readFile "${ derivation }" ;
+#                                                                                                                text = "check-redis --exclude" ;
+#                                                                                                            }
                                                                                                         ]
                                                                                                     else builtins.map mapper release
                                                                                         )
