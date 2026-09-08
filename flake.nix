@@ -1228,7 +1228,7 @@
                                                                                         echo -n "/nix/store/cnd0i7z7g2p2d60247za8zhpz3ij06ia-release/bin/release" > "$OUT"/release/'["production","dot-ssh","config","github"]'.sh
                                                                                         echo -n "/nix/store/cnd0i7z7g2p2d60247za8zhpz3ij06ia-release/bin/release" > "$OUT"/release/'["production","dot-ssh","identity","github"]'.sh
                                                                                         echo -n "/nix/store/cnd0i7z7g2p2d60247za8zhpz3ij06ia-release/bin/release" > "$OUT"/release/'["production","dot-ssh","known-hosts","github"]'.sh
-                                                                                        echo -n "/nix/store/ixjjbls3j71z8igfpm8hv429klzm4m3a-release/bin/release" > "$OUT"/release/'["production","repository","secrets"]'.sh
+                                                                                        echo -n "/nix/store/hhg980svcg23yh7jaz93q8ms0b8qxpj6-release/bin/release" > "$OUT"/release/'["production","repository","secrets"]'.sh
                                                                                         mkdir --parents "$OUT/repository/secrets/ciphertext/dot-gnupg"
                                                                                         ln --symbolic ${ builtins.toFile "ownertrust.asc.age" secrets.dot-gnupg.ownertrust } "$OUT/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age"
                                                                                         ln --symbolic ${ builtins.toFile "secret-keys.asc.age" secrets.dot-gnupg.secret-keys } "$OUT/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age"
@@ -1550,6 +1550,7 @@
                                                                                                             )
                                                                                                             [
                                                                                                                 {
+                                                                                                                    log = release-standard-output ;
                                                                                                                     name = "/home/checker/resources/log.yaml" ;
                                                                                                                     stat = "-rw-r--r--" ;
                                                                                                                     type = "log file" ;
