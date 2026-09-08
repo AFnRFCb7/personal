@@ -1897,10 +1897,13 @@
                                                                                                         process = "post" ;
                                                                                                         text = "force-sync" ;
                                                                                                     }
-                                                                                                    {
+                                                                                                    { ### FINDME
                                                                                                         process = "post" ;
                                                                                                         standard-output = if generic-parameters.release-post-recovery-success then files.release else files.corrupt.post-init ;
-                                                                                                        text = "check-files" ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }
+                                                                                                            '' ;
                                                                                                     }
                                                                                                     {
                                                                                                         process = "post" ;
