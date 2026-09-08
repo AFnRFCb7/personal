@@ -1806,7 +1806,7 @@
                                                                                                             process = "post" ;
                                                                                                             reads = false ;
                                                                                                             standard-output = files.corrupt.post-release ;
-                                                                                                            text = ### FIND ME
+                                                                                                            text =
                                                                                                                 ''
                                                                                                                     check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }
                                                                                                                 '' ;
@@ -1840,6 +1840,7 @@
                                                                                                                             ''
                                                                                                                                 jq \
                                                                                                                                     --null-input \
+                                                                                                                                    --arg STANDARD_ERROR "" \
                                                                                                                                     --rawfile STANDARD_OUTPUT ${ builtins.toFile "standard-output" standard-output } \
                                                                                                                                     --argjson STATUS ${ builtins.toString status } \
                                                                                                                                     '{
@@ -1847,6 +1848,7 @@
                                                                                                                                         "payload" :
                                                                                                                                             {
                                                                                                                                                 "index": "${ index }" ,
+                                                                                                                                                "standard-error" : $STANDARD_ERROR ,
                                                                                                                                                 "standard-output": $STANDARD_OUTPUT ,
                                                                                                                                                 "status": $STATUS
                                                                                                                                             } ,
