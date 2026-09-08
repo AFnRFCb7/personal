@@ -1931,7 +1931,7 @@
                                                                         } ;
                                                     in
                                                         {
-                                                            happy =
+                                                            diagnostic =
                                                                 {
                                                                     command ,
                                                                     exclusions ,
