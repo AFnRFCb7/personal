@@ -1228,7 +1228,7 @@
                                                                                         echo -n "/nix/store/fw3sjd7zg9gsg8mzar27jgdcpbdlym44-release/bin/release" > "$OUT"/release/'["production","dot-ssh","config","github"]'.sh
                                                                                         echo -n "/nix/store/fw3sjd7zg9gsg8mzar27jgdcpbdlym44-release/bin/release" > "$OUT"/release/'["production","dot-ssh","identity","github"]'.sh
                                                                                         echo -n "/nix/store/fw3sjd7zg9gsg8mzar27jgdcpbdlym44-release/bin/release" > "$OUT"/release/'["production","dot-ssh","known-hosts","github"]'.sh
-                                                                                        echo -n "/nix/store/mh0sn6md3hyks9xbsadaqmdd0yskjl3l-release/bin/release" > "$OUT"/release/'["production","repository","secrets"]'.sh
+                                                                                        echo -n "/nix/store/ixjjbls3j71z8igfpm8hv429klzm4m3a-release/bin/release" > "$OUT"/release/'["production","repository","secrets"]'.sh
                                                                                         mkdir --parents "$OUT/repository/secrets/ciphertext/dot-gnupg"
                                                                                         ln --symbolic ${ builtins.toFile "ownertrust.asc.age" secrets.dot-gnupg.ownertrust } "$OUT/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age"
                                                                                         ln --symbolic ${ builtins.toFile "secret-keys.asc.age" secrets.dot-gnupg.secret-keys } "$OUT/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age"
@@ -1544,11 +1544,16 @@
                                                                                                             (
                                                                                                                 builtins.filter
                                                                                                                     (
-                                                                                                                        i : i.type != "regular file" || i.name == "/home/checker/resources/sequential"
+                                                                                                                        i : ( i.type != "regular file" || i.name == "/home/checker/resources/sequential" ) && ( i.type != "log file" )
                                                                                                                     )
                                                                                                                 init-array
                                                                                                             )
                                                                                                             [
+                                                                                                                {
+                                                                                                                    name = "/home/checker/resources/log.yaml" ;
+                                                                                                                    stat = "-rw-r--r--" ;
+                                                                                                                    type = "log file" ;
+                                                                                                                }
                                                                                                                 {
                                                                                                                     name = "/home/checker/resources/invalid-release" ;
                                                                                                                     stat = "drwxr-xr-x" ;
@@ -1787,7 +1792,7 @@
                                                                                                             process = "post" ;
                                                                                                             reads = false ;
                                                                                                             standard-output = files.corrupt.post-release ;
-                                                                                                            text =
+                                                                                                            text = ### FIND ME
                                                                                                                 ''
                                                                                                                     check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }
                                                                                                                 '' ;
