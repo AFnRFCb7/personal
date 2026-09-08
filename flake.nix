@@ -1917,7 +1917,7 @@
                                                                                         [
                                                                                             {
                                                                                                     process = "post" ;
-                                                                                                    status = 111 ;
+                                                                                                    status = if generic-parameters.init-post-corruption then 111 else 0 ;
                                                                                                     text = ''"$RESOURCES"/clean.sh'' ;
                                                                                             }
                                                                                             {
