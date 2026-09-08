@@ -1557,7 +1557,6 @@
                                                                                                                                 payload =
                                                                                                                                     {
                                                                                                                                         index = "0000000000000000" ;
-                                                                                                                                        standard-error = "" ;
                                                                                                                                         standard-output = release-standard-output ;
                                                                                                                                         status = release-status ;
                                                                                                                                     } ;
