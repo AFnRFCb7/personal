@@ -1546,7 +1546,7 @@
                                                                                                                     (
                                                                                                                         i : i.type != "regular file" || i.name == "/home/checker/resources/sequential"
                                                                                                                     )
-                                                                                                                release-array
+                                                                                                                init-array
                                                                                                             )
                                                                                                             [
                                                                                                                 {
@@ -1784,7 +1784,7 @@
                                                                                                             standard-output = files.corrupt.post-release ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    check-files  --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) } --delete true
+                                                                                                                    check-files --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) } --delete true
                                                                                                                 '' ;
                                                                                                     }
                                                                                                 ]
