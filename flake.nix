@@ -1550,7 +1550,20 @@
                                                                                                             )
                                                                                                             [
                                                                                                                 {
-                                                                                                                    log = release-standard-output ;
+                                                                                                                    log =
+                                                                                                                        [
+                                                                                                                            {
+                                                                                                                                channel = "invalid-release" ;
+                                                                                                                                payload =
+                                                                                                                                    {
+                                                                                                                                        index = "0000000000000000" ;
+                                                                                                                                        standard-error = "" ;
+                                                                                                                                        standard-output = release-standard-output ;
+                                                                                                                                        status = release-status ;
+                                                                                                                                    } ;
+                                                                                                                                type = "message" ;
+                                                                                                                            }
+                                                                                                                        ] ;
                                                                                                                     name = "/home/checker/resources/log.yaml" ;
                                                                                                                     stat = "-rw-r--r--" ;
                                                                                                                     type = "log file" ;
