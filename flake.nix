@@ -1265,6 +1265,7 @@
                                                             non-deterministic-regular-files ,
                                                             release ,
                                                             release-post-recovery ,
+                                                            release-post-recovery-standard-error ,
                                                             release-post-recovery-success ,
                                                             release-recovery-scripts ,
                                                             release-script ,
@@ -1637,6 +1638,7 @@
                                                                     {
                                                                         init-post-corruption = _visitor.implementation { bool = path : value : value ; } init-post-corruption ;
                                                                         release-post-recovery = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery ;
+                                                                        release-post-recovery-standard-error = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery-standard-error ;
                                                                         release-post-recovery-success = _visitor.implementation { bool = path : value : value ; null = path : value : true ; } release-post-recovery-success ;
                                                                         release-recovery-scripts =
                                                                             if builtins.typeOf release-recovery-scripts == "null" then [ ]
@@ -1888,6 +1890,7 @@
                                                                                                     {
                                                                                                         process = "post" ;
                                                                                                         status = 111 ;
+                                                                                                        standard-error = generic-parameters.release-post-recovery-standard-error ;
                                                                                                         text = generic-parameters.release-post-recovery ;
                                                                                                     }
                                                                                                     {
@@ -1964,6 +1967,7 @@
                                                                                 case = "happy" ;
                                                                                 init-post-corruption = false ;
                                                                                 release-post-recovery = null ;
+                                                                                release-post-recovery-standard-error = null ;
                                                                                 release-post-recovery-success = null ;
                                                                                 release-recovery-scripts = null ;
                                                                                 release-standard-output = null ;
@@ -1983,6 +1987,7 @@
                                                                     init-files ,
                                                                     non-deterministic-regular-files ,
                                                                     release ,
+                                                                    release-post-recover-standard-error ,
                                                                     release-recovery-scripts ,
                                                                     release-script ,
                                                                     release-standard-output ,
@@ -1994,6 +1999,7 @@
                                                                                 case = "release-unrecoverable" ;
                                                                                 init-post-corruption = true ;
                                                                                 release-post-recovery = ''/home/checker/resources/invalid-release/0000000000000000/'["unrecoverable"]'.sh'' ;
+                                                                                release-post-recovery-standard-error = release-post-recovery-standard-error ;
                                                                                 release-post-recovery-success = false ;
                                                                                 release-recovery-scripts = release-recovery-scripts ;
                                                                                 release-standard-output = release-standard-output ;
@@ -2546,6 +2552,10 @@
                                                                                 { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
                                                                                 { channel = "valid-release" ; index = "0000000000000003" ; standard-output = "" ; status = 0 ; }
                                                                             ] ;
+                                                                        release-post-recovery-standard-error =
+                                                                            ''
+                                                                                UNRECOVERABLE
+                                                                            '' ;
                                                                         release-recovery-scripts =
                                                                             [
                                                                                 { path = [ "recoverable" ] ; target = "/nix/store/7n9bx25cnhbc41ah8nrn5pmc3ic2ayzi-recovery/bin/recovery" ; }
