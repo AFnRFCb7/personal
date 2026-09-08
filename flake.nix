@@ -1258,7 +1258,6 @@
                                                         {
                                                             case ,
                                                             command ,
-                                                            diagnostic ,
                                                             exclusions ,
                                                             init ,
                                                             init-files ,
@@ -1618,7 +1617,6 @@
                                                                 empty-files =  "[\n  {\n    \"name\": \"/home/checker/resources\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  },\n  {\n    \"cat\": \"[]\",\n    \"name\": \"/home/checker/resources/log.yaml\",\n    \"stat\": \"-rw-r--r--\",\n    \"type\": \"regular file\"\n  }\n]\n" ;
                                                                 generic-parameters =
                                                                     {
-                                                                        diagnostic = _visitor.implementation { bool = path : value : if value then -1 else 1 ; } diagnostic ;
                                                                         init-post-corruption = _visitor.implementation { bool = path : value : value ; } init-post-corruption ;
                                                                         release-post-recovery = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery ;
                                                                         release-post-recovery-success = _visitor.implementation { bool = path : value : value ; null = path : value : true ; } release-post-recovery-success ;
@@ -1914,7 +1912,7 @@
                                                                                     ] ;
                                                                             name = "resource : ${ case } : ${ command }" ;
                                                                             nodes = { github = github ; client = client ; } ;
-                                                                            order = diagnostic * size ;
+                                                                            order = size ;
                                                                             pkgs = pkgs ;
                                                                             resources-directory = "/home/checker/resources" ;
                                                                             tests =
@@ -1945,7 +1943,6 @@
                                                                         case-defaults =
                                                                             {
                                                                                 case = "happy" ;
-                                                                                diagnostic = false ;
                                                                                 init-post-corruption = false ;
                                                                                 release-post-recovery = null ;
                                                                                 release-post-recovery-success = null ;
@@ -1976,7 +1973,6 @@
                                                                         case-defaults =
                                                                             {
                                                                                 case = "release-unrecoverable" ;
-                                                                                diagnostic = false ;
                                                                                 init-post-corruption = true ;
                                                                                 release-post-recovery = ''/home/checker/resources/invalid-init/0000000000000000/'["unrecoverable"]'.sh'' ;
                                                                                 release-post-recovery-success = false ;
