@@ -1987,7 +1987,7 @@
                                                                     init-files ,
                                                                     non-deterministic-regular-files ,
                                                                     release ,
-                                                                    release-post-recover-standard-error ,
+                                                                    release-post-recovery-standard-error ,
                                                                     release-recovery-scripts ,
                                                                     release-script ,
                                                                     release-standard-output ,
