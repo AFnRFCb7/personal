@@ -1804,6 +1804,7 @@
                                                                                             if generic-parameters.init-post-corruption then
                                                                                                 [
                                                                                                     {
+                                                                                                            ### FINDME A
                                                                                                             process = "post" ;
                                                                                                             reads = false ;
                                                                                                             standard-output = files.corrupt.post-release ;
@@ -1897,7 +1898,7 @@
                                                                                                         process = "post" ;
                                                                                                         text = "force-sync" ;
                                                                                                     }
-                                                                                                    { ### FINDME
+                                                                                                    { ### FINDME B
                                                                                                         process = "post" ;
                                                                                                         standard-output = if generic-parameters.release-post-recovery-success then files.release else files.corrupt.post-init ;
                                                                                                         text =
