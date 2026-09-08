@@ -1931,30 +1931,6 @@
                                                                         } ;
                                                     in
                                                         {
-                                                            diagnostic =
-                                                                {
-                                                                    command ,
-                                                                    exclusions ,
-                                                                    init ,
-                                                                    init-files ,
-                                                                    non-deterministic-regular-files ,
-                                                                    release ,
-                                                                    release-script
-                                                                } @primary :
-                                                                    let
-                                                                        case-defaults =
-                                                                            {
-                                                                                case = "happy" ;
-                                                                                diagnostic = true ;
-                                                                                init-post-corruption = false ;
-                                                                                release-post-recovery = null ;
-                                                                                release-post-recovery-success = null ;
-                                                                                release-recovery-scripts = null ;
-                                                                                release-standard-output = null ;
-                                                                                release-status = null ;
-                                                                            } ;
-                                                                        parameters = primary // case-defaults ;
-                                                                        in generic parameters ;
                                                             happy =
                                                                 {
                                                                     command ,
