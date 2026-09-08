@@ -1840,7 +1840,6 @@
                                                                                                                             ''
                                                                                                                                 jq \
                                                                                                                                     --null-input \
-                                                                                                                                    --arg STANDARD_ERROR "" \
                                                                                                                                     --rawfile STANDARD_OUTPUT ${ builtins.toFile "standard-output" standard-output } \
                                                                                                                                     --argjson STATUS ${ builtins.toString status } \
                                                                                                                                     '{
@@ -1848,7 +1847,6 @@
                                                                                                                                         "payload" :
                                                                                                                                             {
                                                                                                                                                 "index": "${ index }" ,
-                                                                                                                                                "standard-error" : $STANDARD_ERROR ,
                                                                                                                                                 "standard-output": $STANDARD_OUTPUT ,
                                                                                                                                                 "status": $STATUS
                                                                                                                                             } ,
