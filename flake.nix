@@ -1225,9 +1225,9 @@
                                                                                         echo -n "68b45fb93af883c4bf2105f8f5bd94c87499ffa9d180bf1a458dcfd02101a2cf86f81c5a14be784f294710e431125505407f79be96f6f38f292f8bfb81556880" > "$OUT"/hashes/'["production","dot-ssh","known-hosts","github"]'
                                                                                         echo -n "2cf9b5764e63babd485f143c543d41935a3c2cab0046ed26422e78f6ccb4c45ece30497d74bd55cd0c65e3d62f95248cdeb953fe67d9d6c67428751d625ff5cb" > "$OUT"/hashes/'["production","repository","secrets"]'
                                                                                         mkdir --parents "$OUT/release"
-                                                                                        echo -n "/nix/store/q0ln7r5drx0nhrmlbn81g9zxxai3x324-release/bin/release" > "$OUT"/release/'["production","dot-ssh","config","github"]'.sh
-                                                                                        echo -n "/nix/store/q0ln7r5drx0nhrmlbn81g9zxxai3x324-release/bin/release" > "$OUT"/release/'["production","dot-ssh","identity","github"]'.sh
-                                                                                        echo -n "/nix/store/q0ln7r5drx0nhrmlbn81g9zxxai3x324-release/bin/release" > "$OUT"/release/'["production","dot-ssh","known-hosts","github"]'.sh
+                                                                                        echo -n "/nix/store/fw3sjd7zg9gsg8mzar27jgdcpbdlym44-release/bin/release" > "$OUT"/release/'["production","dot-ssh","config","github"]'.sh
+                                                                                        echo -n "/nix/store/fw3sjd7zg9gsg8mzar27jgdcpbdlym44-release/bin/release" > "$OUT"/release/'["production","dot-ssh","identity","github"]'.sh
+                                                                                        echo -n "/nix/store/fw3sjd7zg9gsg8mzar27jgdcpbdlym44-release/bin/release" > "$OUT"/release/'["production","dot-ssh","known-hosts","github"]'.sh
                                                                                         echo -n "/nix/store/nya884zlg9ma0wbfxxmg9vnmkgikdr15-release/bin/release" > "$OUT"/release/'["production","repository","secrets"]'.sh
                                                                                         mkdir --parents "$OUT/repository/secrets/ciphertext/dot-gnupg"
                                                                                         ln --symbolic ${ builtins.toFile "ownertrust.asc.age" secrets.dot-gnupg.ownertrust } "$OUT/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age"
@@ -1258,6 +1258,7 @@
                                                         {
                                                             case ,
                                                             command ,
+                                                            diagnostic ,
                                                             exclusions ,
                                                             init ,
                                                             init-files ,
@@ -1617,6 +1618,7 @@
                                                                 empty-files =  "[\n  {\n    \"name\": \"/home/checker/resources\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  },\n  {\n    \"cat\": \"[]\",\n    \"name\": \"/home/checker/resources/log.yaml\",\n    \"stat\": \"-rw-r--r--\",\n    \"type\": \"regular file\"\n  }\n]\n" ;
                                                                 generic-parameters =
                                                                     {
+                                                                        diagnostic = _visitor.implementation { bool = path : value : if value then -1 else 1 ; } diagnostic ;
                                                                         init-post-corruption = _visitor.implementation { bool = path : value : value ; } init-post-corruption ;
                                                                         release-post-recovery = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery ;
                                                                         release-post-recovery-success = _visitor.implementation { bool = path : value : value ; null = path : value : true ; } release-post-recovery-success ;
@@ -1912,7 +1914,7 @@
                                                                                     ] ;
                                                                             name = "resource : ${ case } : ${ command }" ;
                                                                             nodes = { github = github ; client = client ; } ;
-                                                                            order = size ;
+                                                                            order = diagnostic * size ;
                                                                             pkgs = pkgs ;
                                                                             resources-directory = "/home/checker/resources" ;
                                                                             tests =
@@ -1943,6 +1945,31 @@
                                                                         case-defaults =
                                                                             {
                                                                                 case = "happy" ;
+                                                                                diagnostic = true ;
+                                                                                init-post-corruption = false ;
+                                                                                release-post-recovery = null ;
+                                                                                release-post-recovery-success = null ;
+                                                                                release-recovery-scripts = null ;
+                                                                                release-standard-output = null ;
+                                                                                release-status = null ;
+                                                                            } ;
+                                                                        parameters = primary // case-defaults ;
+                                                                        in generic parameters ;
+                                                            happy =
+                                                                {
+                                                                    command ,
+                                                                    exclusions ,
+                                                                    init ,
+                                                                    init-files ,
+                                                                    non-deterministic-regular-files ,
+                                                                    release ,
+                                                                    release-script
+                                                                } @primary :
+                                                                    let
+                                                                        case-defaults =
+                                                                            {
+                                                                                case = "happy" ;
+                                                                                diagnostic = false ;
                                                                                 init-post-corruption = false ;
                                                                                 release-post-recovery = null ;
                                                                                 release-post-recovery-success = null ;
@@ -1973,6 +2000,7 @@
                                                                         case-defaults =
                                                                             {
                                                                                 case = "release-unrecoverable" ;
+                                                                                diagnostic = false ;
                                                                                 init-post-corruption = true ;
                                                                                 release-post-recovery = ''/home/checker/resources/invalid-init/0000000000000000/'["unrecoverable"]'.sh'' ;
                                                                                 release-post-recovery-success = false ;
