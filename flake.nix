@@ -1887,7 +1887,7 @@
                                                                                                 [
                                                                                                     {
                                                                                                         process = "post" ;
-                                                                                                        status = 127 ;
+                                                                                                        status = 111 ;
                                                                                                         text = generic-parameters.release-post-recovery ;
                                                                                                     }
                                                                                                     {
@@ -1993,7 +1993,7 @@
                                                                             {
                                                                                 case = "release-unrecoverable" ;
                                                                                 init-post-corruption = true ;
-                                                                                release-post-recovery = ''/home/checker/resources/invalid-init/0000000000000000/'["unrecoverable"]'.sh'' ;
+                                                                                release-post-recovery = ''/home/checker/resources/invalid-release/0000000000000000/'["unrecoverable"]'.sh'' ;
                                                                                 release-post-recovery-success = false ;
                                                                                 release-recovery-scripts = release-recovery-scripts ;
                                                                                 release-standard-output = release-standard-output ;
