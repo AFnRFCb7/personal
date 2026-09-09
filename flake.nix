@@ -2124,7 +2124,7 @@
                                                                                                     { path = [ 2 ] ; type = "string" ; value = "identity" ; }
                                                                                                     { path = [ 3 ] ; type = "string" ; value = "github" ; }
                                                                                                 ] ;
-                                                                                            standard-output = "WTF3q" ;
+                                                                                            standard-output = "" ;
                                                                                             targets = [ "identity.asc" ] ;
                                                                                             text = "identity" ;
                                                                                         }
@@ -2177,6 +2177,7 @@
                                                                                         { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; }
                                                                                         { channel = "valid-release" ; index = "0000000000000001" ; standard-output = "" ; status = 0 ; }
                                                                                         { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
+                                                                                        { type = "WTF-1" ; }
                                                                                     ] ;
                                                                                 release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","config","github"].sh'' ;
                                                                             }
@@ -2188,6 +2189,7 @@
                                                                                 exclusions = [ ] ;
                                                                                 init =
                                                                                     [
+                                                                                        { type = "WTF-3" ; }
                                                                                         {
                                                                                             index = "0000000000000000" ;
                                                                                             seed =
