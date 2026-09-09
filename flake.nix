@@ -2075,8 +2075,7 @@
                                                                                     [
                                                                                         {
                                                                                             name = current.name ;
-                                                                                            value = value ;
-
+                                                                                            value = current.value ;
                                                                                         }
                                                                                     ]
                                                                             )
