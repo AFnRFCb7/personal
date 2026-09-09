@@ -2124,7 +2124,7 @@
                                                                                                     { path = [ 2 ] ; type = "string" ; value = "identity" ; }
                                                                                                     { path = [ 3 ] ; type = "string" ; value = "github" ; }
                                                                                                 ] ;
-                                                                                            standard-output = "" ;
+                                                                                            standard-output = "WTF3q" ;
                                                                                             targets = [ "identity.asc" ] ;
                                                                                             text = "identity" ;
                                                                                         }
@@ -2242,7 +2242,7 @@
                                                                                         {
                                                                                             name = "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ;
                                                                                             stat = "-r--------" ;
-                                                                                            type = "WTF2non-deterministic regular file" ;
+                                                                                            type = "non-deterministic regular file" ;
                                                                                         }
                                                                                     ]  ;
                                                                                 non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
