@@ -2065,7 +2065,7 @@
                                                 (
                                                     builtins.foldl'
                                                         (
-                                                            previous : current : builtins.concatLists [ previous [ ( current previous ) ] ] ;
+                                                            previous : current : builtins.concatLists [ previous [ ( current previous ) ] ]
                                                         )
                                                         (
                                                             builtins.sort ( a : b : if a.order == b.order then a.name < b.name else a.order < b. order )
