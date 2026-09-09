@@ -1304,7 +1304,6 @@
                                                                                             stat = "drwxr-xr-x" ;
                                                                                             type = "directory" ;
                                                                                         }
-                                                                                        # WTF
                                                                                         {
                                                                                             log =
                                                                                                 let
@@ -2148,7 +2147,7 @@
                                                                                             name = "/home/checker/.gc-roots/0000000000000000/identity" ;
                                                                                             stat = "lrwxrwxrwx" ;
                                                                                             target = "/home/checker/resources/mounts/0000000000000002" ;
-                                                                                            type = "symbolic link" ;
+                                                                                            type = "WTF-3 symbolic link" ;
                                                                                         }
                                                                                         {
                                                                                             name = "/home/checker/.gc-roots/0000000000000000/known-hosts" ;
@@ -2177,7 +2176,6 @@
                                                                                         { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; }
                                                                                         { channel = "valid-release" ; index = "0000000000000001" ; standard-output = "" ; status = 0 ; }
                                                                                         { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
-                                                                                        { type = "WTF-1" ; }
                                                                                     ] ;
                                                                                 release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","config","github"].sh'' ;
                                                                             }
@@ -2189,7 +2187,6 @@
                                                                                 exclusions = [ ] ;
                                                                                 init =
                                                                                     [
-                                                                                        { type = "WTF-3" ; }
                                                                                         {
                                                                                             index = "0000000000000000" ;
                                                                                             seed =
@@ -2210,11 +2207,11 @@
                                                                                             cat = builtins.readFile "${ shared }/dot-ssh/identity.asc" ;
                                                                                             name = "/home/checker/resources/mounts/0000000000000000/identity.asc" ;
                                                                                             stat = "-r--------" ;
-                                                                                            type = "WTF1regular file" ;
+                                                                                            type = "regular file" ;
                                                                                         }
                                                                                     ]  ;
                                                                                 non-deterministic-regular-files = [ ] ;
-                                                                                release = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
+                                                                                release = [ { channel = "WTF-1 valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
                                                                                 release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","identity","github"].sh'' ;
                                                                             }
                                                                     )
