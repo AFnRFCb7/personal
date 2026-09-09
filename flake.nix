@@ -2066,7 +2066,10 @@
                                                     builtins.foldl'
                                                         (
                                                             previous : current :
-                                                                builtins.concatLists [ previous ]
+                                                                let
+                                                                    nixos-test = current dependencies ;
+                                                                    dependencies = builtins.map ( p : p.value ) previous ;
+                                                                    in builtins.concatLists [ previous [ ( builtins.listToAttrs [ { name = current.name ; value = nixos-test ; } ] ) ] ] ;
                                                         )
                                                         (
                                                             builtins.sort ( a : b : if a.order == b.order then a.name < b.name else a.order < b. order )
