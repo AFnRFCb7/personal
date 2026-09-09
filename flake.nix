@@ -1918,7 +1918,7 @@
                                                                                             {
                                                                                                     process = "post" ;
                                                                                                     status = if generic-parameters.init-post-corruption then 111 else 0 ;
-                                                                                                    text = '' cat "$RESOURCES"/clean.sh '' ;
+                                                                                                    text = '' "$RESOURCES"/clean.sh '' ;
                                                                                             }
                                                                                             {
                                                                                                     process = "post" ;
