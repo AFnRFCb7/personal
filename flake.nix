@@ -2063,7 +2063,7 @@
                                         in
                                             builtins.listToAttrs
                                                 (
-                                                    builtins.foldl
+                                                    builtins.foldl'
                                                         (
                                                             previous : current : builtins.concatLists [ previous [ { name = current.name ; value = current.value previous ; } ] ]
                                                         )
