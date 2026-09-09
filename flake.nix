@@ -1961,7 +1961,7 @@
                                                                                         [
                                                                                             {
                                                                                                     process = "post" ;
-                                                                                                    status = if generic-parameters.init-post-corruption then 111 else 0 ;
+                                                                                                    status = if generic-parameters.init-post-corruption then 124 else 0 ;
                                                                                                     text = '' "$RESOURCES"/clean.sh '' ;
                                                                                             }
                                                                                             {
