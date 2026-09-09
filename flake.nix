@@ -1971,7 +1971,7 @@
                                                                                             { ### FINDME B
                                                                                                     process = "post" ;
                                                                                                     reads = false ;
-                                                                                                    standard-output = if generic-parameters.release-post-recovery-success then files.clean else files.corrupt.post-release ;
+                                                                                                    standard-output = if generic-parameters.release-post-recovery-success then files.clean else files.corrupt.post-clean ;
                                                                                                     text =
                                                                                                         ''
                                                                                                             check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }
