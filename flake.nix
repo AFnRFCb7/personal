@@ -2075,7 +2075,7 @@
                                                                                     [
                                                                                         {
                                                                                             name = current.name ;
-                                                                                            value = current.value-lambda [ ] ;
+                                                                                            value = current.value-lambda [ previous ] ;
                                                                                         }
                                                                                     ]
                                                                             )
