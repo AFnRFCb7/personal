@@ -2208,7 +2208,7 @@
                                                                                             cat = builtins.readFile "${ shared }/dot-ssh/identity.asc" ;
                                                                                             name = "/home/checker/resources/mounts/0000000000000000/identity.asc" ;
                                                                                             stat = "-r--------" ;
-                                                                                            type = "regular file" ;
+                                                                                            type = "WTF1regular file" ;
                                                                                         }
                                                                                     ]  ;
                                                                                 non-deterministic-regular-files = [ ] ;
@@ -2242,7 +2242,7 @@
                                                                                         {
                                                                                             name = "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ;
                                                                                             stat = "-r--------" ;
-                                                                                            type = "non-deterministic regular file" ;
+                                                                                            type = "WTF2non-deterministic regular file" ;
                                                                                         }
                                                                                     ]  ;
                                                                                 non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
