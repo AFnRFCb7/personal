@@ -2069,7 +2069,7 @@
                                                         (
                                                             builtins.trace "8473192446429738" ( previous : current :
                                                                 builtins.concatLists
-                                                                    [
+                                                                    ( builtins.trace "" [
                                                                         previous
                                                                         [
                                                                             (
@@ -2077,7 +2077,7 @@
                                                                                     [ { name = current.name ; value = current.value [ ] ; } ]
                                                                             )
                                                                         ]
-                                                                    ]
+                                                                    ] )
                                                         ) )
                                                         (
                                                             builtins.sort ( a : b : if a.order == b.order then a.name < b.name else a.order < b.order )
