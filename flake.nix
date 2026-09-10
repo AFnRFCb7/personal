@@ -2178,41 +2178,41 @@
 #                                                                                release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","config","github"].sh'' ;
 #                                                                            }
 #                                                                    ) )
-#                                                                    (
-#                                                                        builtins.trace "7887583197226558" ( tests.happy
-#                                                                            {
-#                                                                                command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
-#                                                                                exclusions = [ ] ;
-#                                                                                init =
-#                                                                                    [
-#                                                                                        {
-#                                                                                            index = "0000000000000000" ;
-#                                                                                            seed =
-#                                                                                                [
-#                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
-#                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-#                                                                                                    { path = [ 2 ] ; type = "string" ; value = "identity" ; }
-#                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
-#                                                                                                ] ;
-#                                                                                            standard-output = "" ;
-#                                                                                            targets = [ "identity.asc" ] ;
-#                                                                                            text = "identity" ;
-#                                                                                        }
-#                                                                                    ] ;
-#                                                                                init-files =
-#                                                                                    [
-#                                                                                        {
-#                                                                                            cat = builtins.readFile "${ shared }/dot-ssh/identity.asc" ;
-#                                                                                            name = "/home/checker/resources/mounts/0000000000000000/identity.asc" ;
-#                                                                                            stat = "-r--------" ;
-#                                                                                            type = "regular file" ;
-#                                                                                        }
-#                                                                                    ]  ;
-#                                                                                non-deterministic-regular-files = [ ] ;
-#                                                                                release = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
-#                                                                                release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","identity","github"].sh'' ;
-#                                                                            }
-#                                                                    ) )
+                                                                    (
+                                                                        builtins.trace "7887583197226558" ( tests.happy
+                                                                            {
+                                                                                command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
+                                                                                exclusions = [ ] ;
+                                                                                init =
+                                                                                    [
+                                                                                        {
+                                                                                            index = "0000000000000000" ;
+                                                                                            seed =
+                                                                                                [
+                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
+                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+                                                                                                    { path = [ 2 ] ; type = "string" ; value = "identity" ; }
+                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
+                                                                                                ] ;
+                                                                                            standard-output = "" ;
+                                                                                            targets = [ "identity.asc" ] ;
+                                                                                            text = "identity" ;
+                                                                                        }
+                                                                                    ] ;
+                                                                                init-files =
+                                                                                    [
+                                                                                        {
+                                                                                            cat = builtins.readFile "${ shared }/dot-ssh/identity.asc" ;
+                                                                                            name = "/home/checker/resources/mounts/0000000000000000/identity.asc" ;
+                                                                                            stat = "-r--------" ;
+                                                                                            type = "regular file" ;
+                                                                                        }
+                                                                                    ]  ;
+                                                                                non-deterministic-regular-files = [ ] ;
+                                                                                release = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
+                                                                                release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","identity","github"].sh'' ;
+                                                                            }
+                                                                    ) )
 #                                                                    (
 #                                                                        builtins.trace "7652139367968535" ( tests.happy
 #                                                                            {
