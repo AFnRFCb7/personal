@@ -2074,7 +2074,7 @@
                                                                         [
                                                                             (
                                                                                 builtins.listToAttrs
-                                                                                    [ { name = current.name ; value = current.value ; } ]
+                                                                                    [ { name = current.name ; value = current.value [ ] ; } ]
                                                                             )
                                                                         ]
                                                                     ]
@@ -2083,7 +2083,7 @@
                                                             builtins.sort ( a : b : if a.order == b.order then a.name < b.name else a.order < b.order )
                                                                 [
                                                                     (
-                                                                        tests.happy
+                                                                        builtins.trace "8627166932776258" ( tests.happy
                                                                             {
                                                                                 command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","config","github"]' '' ;
                                                                                 exclusions =
@@ -2177,7 +2177,7 @@
                                                                                     ] ;
                                                                                 release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","config","github"].sh'' ;
                                                                             }
-                                                                    )
+                                                                    ) )
                                                                     (
                                                                         builtins.trace "7887583197226558" ( tests.happy
                                                                             {
@@ -2214,7 +2214,7 @@
                                                                             }
                                                                     ) )
                                                                     (
-                                                                        tests.happy
+                                                                        builtins.trace "7652139367968535" ( tests.happy
                                                                             {
                                                                                 command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]' '' ;
                                                                                 exclusions = [ ] ;
@@ -2246,7 +2246,7 @@
                                                                                 release = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
                                                                                 release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","known-hosts","github"].sh'' ;
                                                                             }
-                                                                    )
+                                                                    ) )
                                                                     (
                                                                         tests.happy
                                                                             {
