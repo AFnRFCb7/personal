@@ -2067,7 +2067,7 @@
                                                 (
                                                     builtins.trace "8749895283538628" ( builtins.foldl'
                                                         (
-                                                            builtins.trace "8473192446429738" ( previous : current :
+                                                            builtins.trace "8473192446429738" ( builtins.trace "2349715944773284" ( previous : current :
                                                                 builtins.concatLists
                                                                     ( builtins.trace "6925564653766732" [
                                                                         previous
@@ -2078,7 +2078,7 @@
                                                                             )
                                                                         ]
                                                                     ] )
-                                                        ) )
+                                                        ) ) )
                                                         (
                                                             builtins.sort ( a : b : if a.order == b.order then a.name < b.name else a.order < b.order )
                                                                 [
