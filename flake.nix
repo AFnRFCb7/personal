@@ -2178,45 +2178,10 @@
 #                                                                                release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","config","github"].sh'' ;
 #                                                                            }
 #                                                                    ) )
-                                                                    (
-                                                                        builtins.trace "7887583197226558" ( tests.happy
-                                                                            {
-                                                                                command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
-                                                                                exclusions = [ ] ;
-                                                                                init =
-                                                                                    [
-                                                                                        {
-                                                                                            index = "0000000000000000" ;
-                                                                                            seed =
-                                                                                                [
-                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                                    { path = [ 2 ] ; type = "string" ; value = "identity" ; }
-                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                                ] ;
-                                                                                            standard-output = "" ;
-                                                                                            targets = [ "identity.asc" ] ;
-                                                                                            text = "identity" ;
-                                                                                        }
-                                                                                    ] ;
-                                                                                init-files =
-                                                                                    [
-                                                                                        {
-                                                                                            cat = builtins.readFile "${ shared }/dot-ssh/identity.asc" ;
-                                                                                            name = "/home/checker/resources/mounts/0000000000000000/identity.asc" ;
-                                                                                            stat = "-r--------" ;
-                                                                                            type = "regular file" ;
-                                                                                        }
-                                                                                    ]  ;
-                                                                                non-deterministic-regular-files = [ ] ;
-                                                                                release = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
-                                                                                release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","identity","github"].sh'' ;
-                                                                            }
-                                                                    ) )
 #                                                                    (
-#                                                                        builtins.trace "7652139367968535" ( tests.happy
+#                                                                        builtins.trace "7887583197226558" ( tests.happy
 #                                                                            {
-#                                                                                command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]' '' ;
+#                                                                                command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
 #                                                                                exclusions = [ ] ;
 #                                                                                init =
 #                                                                                    [
@@ -2226,27 +2191,62 @@
 #                                                                                                [
 #                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
 #                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-#                                                                                                    { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
+#                                                                                                    { path = [ 2 ] ; type = "string" ; value = "identity" ; }
 #                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
 #                                                                                                ] ;
 #                                                                                            standard-output = "" ;
-#                                                                                            targets = [ "known-hosts.asc" ] ;
-#                                                                                            text = "known-hosts" ;
+#                                                                                            targets = [ "identity.asc" ] ;
+#                                                                                            text = "identity" ;
 #                                                                                        }
 #                                                                                    ] ;
 #                                                                                init-files =
 #                                                                                    [
 #                                                                                        {
-#                                                                                            name = "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ;
+#                                                                                            cat = builtins.readFile "${ shared }/dot-ssh/identity.asc" ;
+#                                                                                            name = "/home/checker/resources/mounts/0000000000000000/identity.asc" ;
 #                                                                                            stat = "-r--------" ;
-#                                                                                            type = "non-deterministic regular file" ;
+#                                                                                            type = "regular file" ;
 #                                                                                        }
 #                                                                                    ]  ;
-#                                                                                non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
+#                                                                                non-deterministic-regular-files = [ ] ;
 #                                                                                release = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
-#                                                                                release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","known-hosts","github"].sh'' ;
+#                                                                                release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","identity","github"].sh'' ;
 #                                                                            }
 #                                                                    ) )
+                                                                    (
+                                                                        builtins.trace "7652139367968535" ( tests.happy
+                                                                            {
+                                                                                command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]' '' ;
+                                                                                exclusions = [ ] ;
+                                                                                init =
+                                                                                    [
+                                                                                        {
+                                                                                            index = "0000000000000000" ;
+                                                                                            seed =
+                                                                                                [
+                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
+                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+                                                                                                    { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
+                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
+                                                                                                ] ;
+                                                                                            standard-output = "" ;
+                                                                                            targets = [ "known-hosts.asc" ] ;
+                                                                                            text = "known-hosts" ;
+                                                                                        }
+                                                                                    ] ;
+                                                                                init-files =
+                                                                                    [
+                                                                                        {
+                                                                                            name = "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ;
+                                                                                            stat = "-r--------" ;
+                                                                                            type = "non-deterministic regular file" ;
+                                                                                        }
+                                                                                    ]  ;
+                                                                                non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
+                                                                                release = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
+                                                                                release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","known-hosts","github"].sh'' ;
+                                                                            }
+                                                                    ) )
 #                                                                    (
 #                                                                        tests.happy
 #                                                                            {
