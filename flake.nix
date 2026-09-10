@@ -2074,7 +2074,7 @@
                                                                         [
                                                                             (
                                                                                 builtins.listToAttrs
-                                                                                    [ { name = builtins.trace "8739848919571623 ${ builtins.typeOf current }" current.name ; value = current.value [ ] ; } ]
+                                                                                    [ { name = builtins.trace "8739848919571623 ${ builtins.toJSON current }" current.name ; value = current.value [ ] ; } ]
                                                                             )
                                                                         ]
                                                                     ] )
