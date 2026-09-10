@@ -2074,7 +2074,7 @@
                                                                         [
                                                                             (
                                                                                 builtins.listToAttrs
-                                                                                    [ { name = current.name ; value = current.value [ ] ; } ]
+                                                                                    [ { name = current.name ; value = builtins.trace "6695369849593138 ${ builtins.typeOf current }" ( current.value [ ] ) ; } ]
                                                                             )
                                                                         ]
                                                                     ]
