@@ -2077,7 +2077,7 @@
                                                                                     [
                                                                                         {
                                                                                             name = current.name ;
-                                                                                            value = current.value [ ] ;
+                                                                                            value = builtins.trace "5319139884566589 ${ builtins.typeOf ( current.value [ ] ) }" ( current.value [ ] ) ;
                                                                                         }
                                                                                     ]
                                                                             )
