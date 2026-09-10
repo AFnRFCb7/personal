@@ -2066,7 +2066,7 @@
                                             builtins.listToAttrs
                                                 (
                                                     builtins.foldl'
-                                                        (
+                                                        ( builtins.trace "9247699497137536" (
                                                             previous : current :
                                                                 builtins.concatLists
                                                                     [
@@ -2074,11 +2074,11 @@
                                                                         [
                                                                             (
                                                                                 builtins.listToAttrs
-                                                                                    [ { name = current.name ; value = builtins.trace "6695369849593138" ( current.value [ ] ) ; } ]
+                                                                                    builtins.trace "7432831823985825" [ { name = current.name ; value = builtins.trace "6695369849593138" ( current.value [ ] ) ; } ]
                                                                             )
                                                                         ]
                                                                     ]
-                                                        )
+                                                        ) )
                                                         (
                                                             builtins.sort ( a : b : if a.order == b.order then a.name < b.name else a.order < b.order )
                                                                 [
