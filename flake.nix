@@ -2065,7 +2065,7 @@
                                         in
                                             builtins.listToAttrs
                                                 (
-                                                    builtins.foldl'
+                                                    builtins.trace "9591584989635263" ( builtins.foldl'
                                                         (
                                                             previous : current :
                                                                 builtins.concatLists
@@ -2647,7 +2647,7 @@
                                                                 ]
                                                         )
                                                         [ ]
-                                                ) ;
+                                                ) ) ;
                                     implementation = implementation ;
                                 } ;
             } ;
