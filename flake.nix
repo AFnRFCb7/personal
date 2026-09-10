@@ -2065,9 +2065,9 @@
                                         in
                                             builtins.listToAttrs
                                                 (
-                                                    builtins.foldl'
+                                                    builtins.trace "8749895283538628" ( builtins.foldl'
                                                         (
-                                                            previous : current :
+                                                            builtins.trace "8473192446429738" ( previous : current :
                                                                 builtins.concatLists
                                                                     [
                                                                         previous
@@ -2078,7 +2078,7 @@
                                                                             )
                                                                         ]
                                                                     ]
-                                                        )
+                                                        ) )
                                                         (
                                                             builtins.sort ( a : b : if a.order == b.order then a.name < b.name else a.order < b.order )
                                                                 [
@@ -2642,7 +2642,7 @@
                                                                 ]
                                                         )
                                                         [ ]
-                                                ) ;
+                                                ) ) ;
                                     implementation = implementation ;
                                 } ;
             } ;
