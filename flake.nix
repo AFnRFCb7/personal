@@ -2090,7 +2090,7 @@
                                                             builtins.sort ( a : b : if a.order == b.order then a.name < b.name else a.order < b.order )
                                                                 [
                                                                     (
-                                                                        tests.happy
+                                                                        ( builtins.trace "4854487163394926" ( tests.happy
                                                                             {
                                                                                 command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","config","github"]' '' ;
                                                                                 exclusions =
@@ -2184,9 +2184,9 @@
                                                                                     ] ;
                                                                                 release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","config","github"].sh'' ;
                                                                             }
-                                                                    )
+                                                                    ) )
                                                                     (
-                                                                        tests.happy
+                                                                        builtins.trace "8138967399348676" ( tests.happy
                                                                             {
                                                                                 command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
                                                                                 exclusions = [ ] ;
@@ -2219,9 +2219,9 @@
                                                                                 release = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
                                                                                 release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","identity","github"].sh'' ;
                                                                             }
-                                                                    )
+                                                                    ) )
                                                                     (
-                                                                        tests.happy
+                                                                        builtins.trace "2143338738115818" ( tests.happy
                                                                             {
                                                                                 command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]' '' ;
                                                                                 exclusions = [ ] ;
@@ -2253,9 +2253,9 @@
                                                                                 release = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
                                                                                 release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","known-hosts","github"].sh'' ;
                                                                             }
-                                                                    )
+                                                                    ) )
                                                                     (
-                                                                        tests.happy
+                                                                        builtins.trace "7938889949636334" ( tests.happy
                                                                             {
                                                                                 command = '' check-resource --expression "$RESOURCES"/resources/'["production","repository","secrets"]' '' ;
                                                                                 exclusions =
@@ -2441,9 +2441,9 @@
                                                                                     ] ;
                                                                                 release-script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
                                                                             }
-                                                                    )
+                                                                    ) )
                                                                     (
-                                                                        tests.release-unrecoverable
+                                                                        builtins.trace "6934146395736642" ( tests.release-unrecoverable
                                                                             {
                                                                                 command = '' check-resource --expression "$RESOURCES"/resources/'["production","repository","secrets"]' '' ;
                                                                                 exclusions =
@@ -2645,7 +2645,7 @@
                                                                                     '' ;
                                                                                 release-status = 128 ;
                                                                             }
-                                                                    )
+                                                                    ) )
                                                                 ]
                                                         )
                                                         [ ]
