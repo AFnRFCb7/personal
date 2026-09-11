@@ -2624,7 +2624,7 @@
                                                                                     ] ;
                                                                                 release-post-recovery-standard-error =
                                                                                     ''
-                                                                                        UNRECOVERABLE
+                                                                                        WTF-UNRECOVERABLE
                                                                                     '' ;
                                                                                 release-recovery-scripts =
                                                                                     [
