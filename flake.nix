@@ -2072,10 +2072,10 @@
                                                                     [
                                                                         previous
                                                                         [
-                                                                            (
-                                                                                builtins.listToAttrs
-                                                                                    [ { name = current.name ; value = current.value ( builtins.attrValues previous ) ; } ]
-                                                                            )
+                                                                            {
+                                                                                name = current.name ;
+                                                                                value = current.value ( builtins.attrValues previous ) ;
+                                                                            }
                                                                         ]
                                                                     ]
                                                         )
