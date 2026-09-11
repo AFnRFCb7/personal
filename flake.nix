@@ -1263,6 +1263,7 @@
                                                             init-files ,
                                                             init-post-corruption ,
                                                             non-deterministic-regular-files ,
+                                                            order ,
                                                             release ,
                                                             release-post-recovery ,
                                                             release-post-recovery-standard-error ,
@@ -1986,7 +1987,7 @@
                                                                                     ] ;
                                                                             name = "resource : ${ case } : ${ command }" ;
                                                                             nodes = { github = github ; client = client ; } ;
-                                                                            order = size ;
+                                                                            order = order ;
                                                                             pkgs = pkgs ;
                                                                             resources-directory = "/home/checker/resources" ;
                                                                             tests =
@@ -2012,6 +2013,7 @@
                                                                     init ,
                                                                     init-files ,
                                                                     non-deterministic-regular-files ,
+                                                                    order ,
                                                                     release ,
                                                                     release-script
                                                                 } @primary :
@@ -2032,6 +2034,7 @@
                                                             init-and-release-recovered = null ;
                                                             init-recovered = null ;
                                                             init-recovered-release-unrecoverable = null ;
+                                                            order = order ;
                                                             release-recovered = null ;
                                                             release-unrecoverable =
                                                                 {
@@ -2170,6 +2173,7 @@
                                                                                         }
                                                                                     ]  ;
                                                                                 non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" ] ;
+                                                                                order = 3 ;
                                                                                 release =
                                                                                     [
                                                                                         { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; }
@@ -2210,6 +2214,7 @@
                                                                                         }
                                                                                     ]  ;
                                                                                 non-deterministic-regular-files = [ ] ;
+                                                                                order = 1 ;
                                                                                 release = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
                                                                                 release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","identity","github"].sh'' ;
                                                                             }
@@ -2244,6 +2249,7 @@
                                                                                         }
                                                                                     ]  ;
                                                                                 non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
+                                                                                order = 2 ;
                                                                                 release = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
                                                                                 release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","known-hosts","github"].sh'' ;
                                                                             }
@@ -2418,6 +2424,7 @@
                                                                                         }
                                                                                     ]  ;
                                                                                 non-deterministic-regular-files = [ ] ;
+                                                                                order = 4 ;
                                                                                 release =
                                                                                     [
                                                                                         {
@@ -2606,6 +2613,7 @@
                                                                                         }
                                                                                     ]  ;
                                                                                 non-deterministic-regular-files = [ ] ;
+                                                                                order = 5 ;
                                                                                 release =
                                                                                     [
                                                                                         {
