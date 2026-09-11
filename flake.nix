@@ -2433,7 +2433,7 @@
                                                                     (
                                                                         tests.release-unrecoverable
                                                                             {
-                                                                                command = '' check-resource --expression "$RESOURCES"/resources/'["production","repository","secrets"]' '' ;
+                                                                                command = '' check-resource --expression "$RESOURCES"/resources/'["production","repository","secrets"]' WTF '' ;
                                                                                 exclusions =
                                                                                     [
                                                                                         "/home/checker/.gc-roots/0000000000000001"
