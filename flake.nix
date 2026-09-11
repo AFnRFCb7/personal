@@ -1,4 +1,3 @@
-# 7465649313643859
 {
     inputs = { } ;
     outputs =
@@ -507,8 +506,6 @@
                                                             } ;
                                                         networking =
                                                             {
-                                                                # interfaces.wlp0s20f3.ipv4.addresses = [ { address = "192.168.0.105" ; prefixLength = 24 ; } ] ;
-                                                                # interfaces.wlp0s20f3.ipv4.addresses = [ ] ;
                                                                 wireless =
                                                                     {
                                                                         enable = true ;
@@ -1285,11 +1282,6 @@
                                                                                             stat = "drwxr-xr-x" ;
                                                                                             type = "directory" ;
                                                                                         }
-#                                                                                        {
-#                                                                                            name = "/home/checker/.gc-roots/0000000000000000" ;
-#                                                                                            stat = "drwxr-xr-x" ;
-#                                                                                            type = "directory" ;
-#                                                                                        }
                                                                                         {
                                                                                             name = "/home/checker/resources" ;
                                                                                             stat = "drwxr-xr-x" ;
@@ -1305,7 +1297,6 @@
                                                                                             stat = "drwxr-xr-x" ;
                                                                                             type = "directory" ;
                                                                                         }
-                                                                                        # WTF
                                                                                         {
                                                                                             log =
                                                                                                 let
@@ -1336,11 +1327,6 @@
                                                                                             stat = "drwxr-xr-x" ;
                                                                                             type = "directory" ;
                                                                                         }
-#                                                                                        {
-#                                                                                            name = "/home/checker/resources/mounts/0000000000000000" ;
-#                                                                                            stat = "drwxr-xr-x" ;
-#                                                                                            type = "directory" ;
-#                                                                                        }
                                                                                         {
                                                                                             name = "/home/checker/resources/release" ;
                                                                                             stat = "drwxr-xr-x" ;
@@ -1943,7 +1929,6 @@
                                                                                                         text = "force-sync" ;
                                                                                                     }
                                                                                                     {
-                                                                                                        ### FINDME A
                                                                                                         process = "post" ;
                                                                                                         standard-output = if generic-parameters.release-post-recovery-success then files.release else files.corrupt.post-release ;
                                                                                                         text =
@@ -1969,7 +1954,7 @@
                                                                                                     process = "post" ;
                                                                                                     text = "force-sync" ;
                                                                                             }
-                                                                                            { ### FINDME B
+                                                                                            {
                                                                                                     process = "post" ;
                                                                                                     reads = false ;
                                                                                                     standard-output = if generic-parameters.release-post-recovery-success then files.clean else files.corrupt.post-clean ;
