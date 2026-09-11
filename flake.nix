@@ -2074,7 +2074,7 @@
                                                                         [
                                                                             {
                                                                                 name = current.name ;
-                                                                                value = current.value ( builtins.attrValues previous ) ;
+                                                                                value = current.value ( builtins.map ( p : p.value ) previous ) ;
                                                                             }
                                                                         ]
                                                                     ]
