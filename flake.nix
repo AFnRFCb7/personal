@@ -2079,6 +2079,7 @@
                                                                         ]
                                                                     ]
                                                         )
+                                                        [ ]
                                                         (
                                                             builtins.sort ( a : b : if a.order == b.order then a.name < b.name else a.order < b.order )
                                                                 [
@@ -2641,7 +2642,6 @@
 #                                                                    )
                                                                 ]
                                                         )
-                                                        [ ]
                                                 ) ;
                                     implementation = implementation ;
                                 } ;
