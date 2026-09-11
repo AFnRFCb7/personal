@@ -2537,6 +2537,12 @@
                                                                                 init-files =
                                                                                     [
                                                                                         {
+                                                                                            name = "WTF" ;
+                                                                                            stat = "WTF" ;
+                                                                                            target = "WTF" ;
+                                                                                            type = "WTF" ;
+                                                                                        }
+                                                                                        {
                                                                                             name = "/home/checker/.gc-roots/0000000000000000/config" ;
                                                                                             stat = "lrwxrwxrwx" ;
                                                                                             target = "/home/checker/resources/mounts/0000000000000001" ;
