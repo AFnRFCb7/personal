@@ -2022,6 +2022,7 @@
                                                                             {
                                                                                 case = "happy" ;
                                                                                 init-post-corruption = false ;
+                                                                                order = order ;
                                                                                 release-post-recovery = null ;
                                                                                 release-post-recovery-standard-error = null ;
                                                                                 release-post-recovery-success = null ;
@@ -2034,7 +2035,6 @@
                                                             init-and-release-recovered = null ;
                                                             init-recovered = null ;
                                                             init-recovered-release-unrecoverable = null ;
-                                                            order = order ;
                                                             release-recovered = null ;
                                                             release-unrecoverable =
                                                                 {
@@ -2043,6 +2043,7 @@
                                                                     init ,
                                                                     init-files ,
                                                                     non-deterministic-regular-files ,
+                                                                    order ,
                                                                     release ,
                                                                     release-post-recovery-standard-error ,
                                                                     release-recovery-scripts ,
@@ -2055,6 +2056,7 @@
                                                                             {
                                                                                 case = "release-unrecoverable" ;
                                                                                 init-post-corruption = true ;
+                                                                                order = order ;
                                                                                 release-post-recovery = ''/home/checker/resources/invalid-release/0000000000000000/'["unrecoverable"]'.sh'' ;
                                                                                 release-post-recovery-standard-error = release-post-recovery-standard-error ;
                                                                                 release-post-recovery-success = false ;
