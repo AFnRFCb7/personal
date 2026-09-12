@@ -1685,8 +1685,11 @@
                                                                                                 let
                                                                                                     identity =
                                                                                                         {
-                                                                                                            messages = _visitor.implementation { int = path : value : value ; string = path : value : value ; } action.messages ;
-                                                                                                        } ;
+                                                                                                            messages
+                                                                                                        } :
+                                                                                                            {
+                                                                                                                messages = _visitor.implementation { int = path : value : value ; string = path : value : value ; } messages ;
+                                                                                                            } ;
                                                                                                     in identity action ;
                                                                                         } ;
                                                                                 in identity release_ ;
