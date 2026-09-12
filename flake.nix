@@ -2061,7 +2061,6 @@
                                                                                 case = "release-unrecoverable" ;
                                                                                 init-post-corruption = true ;
                                                                                 order = order ;
-                                                                                order = order ;
                                                                                 release_ =
                                                                                     {
                                                                                         messages = release_.messages ;
