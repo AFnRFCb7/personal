@@ -2063,7 +2063,7 @@
                                                                                 order = order ;
                                                                                 release_ =
                                                                                     {
-                                                                                        messages_ = release_.messages ;
+                                                                                        messages = release_.messages ;
                                                                                     } ;
                                                                                 release-post-recovery = ''/home/checker/resources/invalid-release/0000000000000000/'["unrecoverable"]'.sh'' ;
                                                                                 release-post-recovery-standard-error = release-post-recovery-standard-error ;
