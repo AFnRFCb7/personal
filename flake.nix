@@ -2032,7 +2032,7 @@
                                                                                 order = order ;
                                                                                 release_ =
                                                                                     {
-                                                                                        messages = release_.action.messages ;
+                                                                                        action = release_.action ;
                                                                                     } ;
                                                                                 release-post-recovery = null ;
                                                                                 release-post-recovery-standard-error = null ;
@@ -2070,7 +2070,7 @@
                                                                                 order = order ;
                                                                                 release_ =
                                                                                     {
-                                                                                        messages = release_.action.messages ;
+                                                                                        action = release_.action ;
                                                                                     } ;
                                                                                 release-post-recovery = ''/home/checker/resources/invalid-release/0000000000000000/'["unrecoverable"]'.sh'' ;
                                                                                 release-post-recovery-standard-error = release-post-recovery-standard-error ;
