@@ -1700,7 +1700,7 @@
                                                                                                             success
                                                                                                         } :
                                                                                                             {
-                                                                                                                standard-error = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery-standard-error ;
+                                                                                                                standard-error = _visitor.implementation { null = path : value : value ; string = path : value : value ; } standard-error ;
                                                                                                                 success = _visitor.implementation { bool = path : value : value ; null = path : value : true ; } success ;
                                                                                                             } ;
                                                                                                     in identity recovery ;
@@ -2091,7 +2091,6 @@
                                                                                         script = release_.script ;
                                                                                     } ;
                                                                                 release-post-recovery = ''/home/checker/resources/invalid-release/0000000000000000/'["unrecoverable"]'.sh'' ;
-                                                                                release-post-recovery-standard-error = release-post-recovery-standard-error ;
                                                                                 release-recovery-scripts = release-recovery-scripts ;
                                                                             } ;
                                                                         parameters = primary // case-defaults ;
