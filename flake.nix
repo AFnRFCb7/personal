@@ -1479,7 +1479,7 @@
                                                                                                                     } ;
                                                                                                                 type = "message" ;
                                                                                                             } ;
-                                                                                                    in builtins.map mapper release ;
+                                                                                                    in builtins.map mapper release.messages ;
                                                                                                 name = "/home/checker/resources/log.yaml" ;
                                                                                                 stat = "-rw-r--r--" ;
                                                                                                 type = "log file" ;
