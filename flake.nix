@@ -1672,6 +1672,7 @@
                                                                         exclusions = _visitor.implementation { set = path : set : builtins.throw "unsupported" ; string = path : value : value ; } exclusions ;
                                                                         init-post-corruption = _visitor.implementation { bool = path : value : value ; } init-post-corruption ;
                                                                         non-deterministic-regular-files = _visitor.implementation { set = path : set : builtins.throw "unsupported" ; string = path : value : value ; } non-deterministic-regular-files ;
+                                                                        order = _visitor.implementation { int = path : value : value ; list = path : list : builtins.throw "unsupported" ; set = path : set : builtins.throw "unsupported" ; } order ;
                                                                         release-post-recovery = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery ;
                                                                         release-post-recovery-standard-error = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery-standard-error ;
                                                                         release-post-recovery-success = _visitor.implementation { bool = path : value : value ; null = path : value : true ; } release-post-recovery-success ;
@@ -1976,7 +1977,7 @@
                                                                                     ] ;
                                                                             name = "resource : ${ generic-parameters.case } : ${ generic-parameters.command }" ;
                                                                             nodes = { github = github ; client = client ; } ;
-                                                                            order = order ;
+                                                                            order = generic-parameters.order ;
                                                                             pkgs = pkgs ;
                                                                             resources-directory = "/home/checker/resources" ;
                                                                             tests =
