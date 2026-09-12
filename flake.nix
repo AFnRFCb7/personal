@@ -1263,8 +1263,7 @@
                                                             non-deterministic-regular-files ,
                                                             order ,
                                                             release_ ,
-                                                            release-post-recovery ,
-                                                            release-recovery-scripts
+                                                            release-post-recovery
                                                         } :
                                                             let
                                                                 files =
@@ -1572,7 +1571,7 @@
                                                                                                                                 target = target ;
                                                                                                                                 type = "symbolic link" ;
                                                                                                                             } ;
-                                                                                                                    in builtins.map mapper generic-parameters.release-recovery-scripts
+                                                                                                                    in builtins.map mapper generic-parameters.release_.recovery.scripts
                                                                                                             )
                                                                                                         ]
                                                                                                 ) ;
@@ -1616,7 +1615,7 @@
                                                                                                                                 target = target ;
                                                                                                                                 type = "symbolic link" ;
                                                                                                                             } ;
-                                                                                                                    in builtins.map mapper generic-parameters.release-recovery-scripts
+                                                                                                                    in builtins.map mapper generic-parameters.release_.recovery.scripts
                                                                                                             )
                                                                                                         ]
                                                                                                 ) ;
@@ -1697,10 +1696,12 @@
                                                                                                     identity =
                                                                                                         {
                                                                                                             standard-error ,
+                                                                                                            scripts ,
                                                                                                             success
                                                                                                         } :
                                                                                                             {
                                                                                                                 standard-error = _visitor.implementation { null = path : value : value ; string = path : value : value ; } standard-error ;
+                                                                                                                scripts = _visitor.implementation { null = path : value : [ ] ; string = path : value : value ; } scripts ;
                                                                                                                 success = _visitor.implementation { bool = path : value : value ; null = path : value : true ; } success ;
                                                                                                             } ;
                                                                                                     in identity recovery ;
@@ -1708,10 +1709,6 @@
                                                                                         } ;
                                                                                 in identity release_ ;
                                                                         release-post-recovery = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery ;
-                                                                        release-recovery-scripts =
-                                                                            if builtins.typeOf release-recovery-scripts == "null" then [ ]
-                                                                            else if builtins.typeOf release-recovery-scripts == "list" then release-recovery-scripts
-                                                                            else builtins.throw "release-recovery-scripts must either be null or a list of release-recovery-scripts but it was ${ builtins.typeOf release-recovery-scripts }" ;
                                                                     } ;
                                                                 size = if builtins.length init == builtins.length release_.action.messages then builtins.length init else builtins.throw "the length of init ${ builtins.toString ( builtins.length init ) } must equal the length of release ${ builtins.toString ( builtins.length release_.action.messages ) }" ;
                                                                 subscribe =
@@ -2048,12 +2045,12 @@
                                                                                         recovery =
                                                                                             {
                                                                                                 standard-error = null ;
+                                                                                                scripts = null ;
                                                                                                 success = null ;
                                                                                             } ;
                                                                                         script = release_.script ;
                                                                                     } ;
                                                                                 release-post-recovery = null ;
-                                                                                release-recovery-scripts = null ;
                                                                             } ;
                                                                         parameters = primary // case-defaults ;
                                                                         in generic parameters ;
@@ -2069,8 +2066,7 @@
                                                                     init-files ,
                                                                     non-deterministic-regular-files ,
                                                                     order ,
-                                                                    release_ ,
-                                                                    release-recovery-scripts
+                                                                    release_
                                                                 } @primary :
                                                                     let
                                                                         case-defaults =
@@ -2706,14 +2702,14 @@
                                                                                                     ''
                                                                                                         UNRECOVERABLE
                                                                                                     '' ;
+                                                                                                scripts =
+                                                                                                    [
+                                                                                                        { path = [ "recoverable" ] ; target = "/nix/store/7n9bx25cnhbc41ah8nrn5pmc3ic2ayzi-recovery/bin/recovery" ; }
+                                                                                                        { path = [ "unrecoverable" ] ; target = "/nix/store/qx42xg29a1ps137r5jh4x2jnsf6c3qcv-recovery/bin/recovery" ; }
+                                                                                                    ] ;
                                                                                             } ;
                                                                                         script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
                                                                                     } ;
-                                                                                release-recovery-scripts =
-                                                                                    [
-                                                                                        { path = [ "recoverable" ] ; target = "/nix/store/7n9bx25cnhbc41ah8nrn5pmc3ic2ayzi-recovery/bin/recovery" ; }
-                                                                                        { path = [ "unrecoverable" ] ; target = "/nix/store/qx42xg29a1ps137r5jh4x2jnsf6c3qcv-recovery/bin/recovery" ; }
-                                                                                    ] ;
                                                                             }
                                                                     )
                                                                 ]
