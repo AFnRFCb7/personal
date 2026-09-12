@@ -2228,7 +2228,7 @@
                                                                                     ]  ;
                                                                                 non-deterministic-regular-files = [ ] ;
                                                                                 order = 1 ;
-                                                                                release =
+                                                                                release_ =
                                                                                     {
                                                                                         messages = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
                                                                                     } ;
@@ -2266,7 +2266,7 @@
                                                                                     ]  ;
                                                                                 non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
                                                                                 order = 2 ;
-                                                                                release =
+                                                                                release_ =
                                                                                     {
                                                                                         messages = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
                                                                                     } ;
@@ -2636,7 +2636,7 @@
                                                                                     ]  ;
                                                                                 non-deterministic-regular-files = [ ] ;
                                                                                 order = 5 ;
-                                                                                release =
+                                                                                release_ =
                                                                                     {
                                                                                         messages =
                                                                                             [
