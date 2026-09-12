@@ -1648,7 +1648,7 @@
                                                                                                     init-array
                                                                                                     [
                                                                                                         {
-                                                                                                            name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/${ builtins.head ( builtins.match ".*resources/'(.*)' *" command ) }" }" ;
+                                                                                                            name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/${ builtins.head ( builtins.match ".*resources/'(.*)' *" generic-parameters.command ) }" }" ;
                                                                                                             stat = "lrwxrwxrwx" ;
                                                                                                             target = "/home/checker/resources/mounts/0000000000000000" ;
                                                                                                             type = "symbolic link" ;
@@ -1668,6 +1668,7 @@
                                                                 generic-parameters =
                                                                     {
                                                                         case = _visitor.implementation { string = path : value : value ; } case ;
+                                                                        command = _visitor.implementation { string = path : value : value ; } command ;
                                                                         init-post-corruption = _visitor.implementation { bool = path : value : value ; } init-post-corruption ;
                                                                         release-post-recovery = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery ;
                                                                         release-post-recovery-standard-error = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery-standard-error ;
@@ -1737,7 +1738,7 @@
                                                                                             {
                                                                                                     process = "pre" ;
                                                                                                     standard-output = "/home/checker/resources/mounts/0000000000000000" ;
-                                                                                                    text = command ;
+                                                                                                    text = generic-parameters.command ;
                                                                                             }
                                                                                             {
                                                                                                     process = "pre" ;
@@ -1791,7 +1792,7 @@
                                                                                             {
                                                                                                     process = "mid" ;
                                                                                                     standard-output = "/home/checker/resources/mounts/0000000000000000" ;
-                                                                                                    text = '' ${ command } '' ;
+                                                                                                    text = '' ${ generic-parameters.command } '' ;
                                                                                             }
                                                                                             {
                                                                                                     process = "pre" ;
@@ -1971,7 +1972,7 @@
                                                                                             }
                                                                                         ]
                                                                                     ] ;
-                                                                            name = "resource : ${ generic-parameters.case } : ${ command }" ;
+                                                                            name = "resource : ${ generic-parameters.case } : ${ generic-parameters.command }" ;
                                                                             nodes = { github = github ; client = client ; } ;
                                                                             order = order ;
                                                                             pkgs = pkgs ;
