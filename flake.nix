@@ -1667,6 +1667,7 @@
                                                                 empty-files =  "[\n  {\n    \"name\": \"/home/checker/resources\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  },\n  {\n    \"cat\": \"[]\",\n    \"name\": \"/home/checker/resources/log.yaml\",\n    \"stat\": \"-rw-r--r--\",\n    \"type\": \"regular file\"\n  }\n]\n" ;
                                                                 generic-parameters =
                                                                     {
+                                                                        case = _visitor.implementation { string = path : value : value ; } case ;
                                                                         init-post-corruption = _visitor.implementation { bool = path : value : value ; } init-post-corruption ;
                                                                         release-post-recovery = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery ;
                                                                         release-post-recovery-standard-error = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery-standard-error ;
@@ -1970,7 +1971,7 @@
                                                                                             }
                                                                                         ]
                                                                                     ] ;
-                                                                            name = "resource : ${ case } : ${ command }" ;
+                                                                            name = "resource : ${ generic-parameters.case } : ${ command }" ;
                                                                             nodes = { github = github ; client = client ; } ;
                                                                             order = order ;
                                                                             pkgs = pkgs ;
