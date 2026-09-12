@@ -1479,7 +1479,7 @@
                                                                                                                     } ;
                                                                                                                 type = "message" ;
                                                                                                             } ;
-                                                                                                    in builtins.map mapper release_.messages ;
+                                                                                                    in builtins.map mapper release_.action.messages ;
                                                                                                 name = "/home/checker/resources/log.yaml" ;
                                                                                                 stat = "-rw-r--r--" ;
                                                                                                 type = "log file" ;
@@ -1677,10 +1677,16 @@
                                                                             let
                                                                                 identity =
                                                                                     {
-                                                                                        messages
+                                                                                        action
                                                                                     } :
                                                                                         {
-                                                                                            messages = _visitor.implementation { int = path : value : value ; string = path : value : value ; } messages ;
+                                                                                            action =
+                                                                                                let
+                                                                                                    identity =
+                                                                                                        {
+                                                                                                            messages = _visitor.implementation { int = path : value : value ; string = path : value : value ; } action.messages ;
+                                                                                                        } ;
+                                                                                                    in identity action ;
                                                                                         } ;
                                                                                 in identity release_ ;
                                                                         release-post-recovery = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery ;
@@ -1693,7 +1699,7 @@
                                                                         release-standard-output = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-standard-output ;
                                                                         release-status = _visitor.implementation { int = path : value : value ; null = path : value : value ; } release-status ;
                                                                     } ;
-                                                                size = if builtins.length init == builtins.length release_.messages then builtins.length init else builtins.throw "the length of init ${ builtins.toString ( builtins.length init ) } must equal the length of release ${ builtins.toString ( builtins.length release_.messages ) }" ;
+                                                                size = if builtins.length init == builtins.length release_.action.messages then builtins.length init else builtins.throw "the length of init ${ builtins.toString ( builtins.length init ) } must equal the length of release ${ builtins.toString ( builtins.length release_.action.messages ) }" ;
                                                                 subscribe =
                                                                     {
                                                                         invalid-init = "{\n  \"channel\": \"invalid-init\",\n  \"payload\": 1,\n  \"type\": \"subscribe\"\n}\n" ;
@@ -1921,7 +1927,7 @@
                                                                                                                 text = "check-redis --exclude" ;
                                                                                                             }
                                                                                                         ]
-                                                                                                    else builtins.map mapper generic-parameters.release_.messages
+                                                                                                    else builtins.map mapper generic-parameters.release_.action.messages
                                                                                         )
                                                                                         [
                                                                                             {
@@ -2025,7 +2031,7 @@
                                                                                 order = order ;
                                                                                 release_ =
                                                                                     {
-                                                                                        messages = release_.messages ;
+                                                                                        messages = release_.action.messages ;
                                                                                     } ;
                                                                                 release-post-recovery = null ;
                                                                                 release-post-recovery-standard-error = null ;
@@ -2063,7 +2069,7 @@
                                                                                 order = order ;
                                                                                 release_ =
                                                                                     {
-                                                                                        messages = release_.messages ;
+                                                                                        messages = release_.action.messages ;
                                                                                     } ;
                                                                                 release-post-recovery = ''/home/checker/resources/invalid-release/0000000000000000/'["unrecoverable"]'.sh'' ;
                                                                                 release-post-recovery-standard-error = release-post-recovery-standard-error ;
@@ -2186,12 +2192,15 @@
                                                                                 order = 3 ;
                                                                                 release_ =
                                                                                     {
-                                                                                        messages =
-                                                                                            [
-                                                                                                { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; }
-                                                                                                { channel = "valid-release" ; index = "0000000000000001" ; standard-output = "" ; status = 0 ; }
-                                                                                                { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
-                                                                                            ] ;
+                                                                                        action =
+                                                                                            {
+                                                                                                messages =
+                                                                                                    [
+                                                                                                        { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; }
+                                                                                                        { channel = "valid-release" ; index = "0000000000000001" ; standard-output = "" ; status = 0 ; }
+                                                                                                        { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
+                                                                                                    ] ;
+                                                                                            } ;
                                                                                     } ;
                                                                                 release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","config","github"].sh'' ;
                                                                             }
@@ -2230,7 +2239,10 @@
                                                                                 order = 1 ;
                                                                                 release_ =
                                                                                     {
-                                                                                        messages = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
+                                                                                        action =
+                                                                                            {
+                                                                                                messages = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
+                                                                                            } ;
                                                                                     } ;
                                                                                 release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","identity","github"].sh'' ;
                                                                             }
@@ -2446,21 +2458,24 @@
                                                                                 order = 4 ;
                                                                                 release_ =
                                                                                     {
-                                                                                        messages =
-                                                                                            [
-                                                                                                {
-                                                                                                    channel = "valid-release" ;
-                                                                                                    index = "0000000000000000" ;
-                                                                                                    standard-output =
-                                                                                                        ''
-                                                                                                            Everything up-to-date
-                                                                                                        '' ;
-                                                                                                    status = 0 ;
-                                                                                                }
-                                                                                                { channel = "valid-release" ; index = "0000000000000001" ; standard-output = "" ; status = 0 ; }
-                                                                                                { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
-                                                                                                { channel = "valid-release" ; index = "0000000000000003" ; standard-output = "" ; status = 0 ; }
-                                                                                            ] ;
+                                                                                        action =
+                                                                                            {
+                                                                                                messages =
+                                                                                                    [
+                                                                                                        {
+                                                                                                            channel = "valid-release" ;
+                                                                                                            index = "0000000000000000" ;
+                                                                                                            standard-output =
+                                                                                                                ''
+                                                                                                                    Everything up-to-date
+                                                                                                                '' ;
+                                                                                                            status = 0 ;
+                                                                                                        }
+                                                                                                        { channel = "valid-release" ; index = "0000000000000001" ; standard-output = "" ; status = 0 ; }
+                                                                                                        { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
+                                                                                                        { channel = "valid-release" ; index = "0000000000000003" ; standard-output = "" ; status = 0 ; }
+                                                                                                    ] ;
+                                                                                            } ;
                                                                                     } ;
                                                                                 release-script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
                                                                             }
@@ -2638,22 +2653,25 @@
                                                                                 order = 5 ;
                                                                                 release_ =
                                                                                     {
-                                                                                        messages =
-                                                                                            [
-                                                                                                {
-                                                                                                    channel = "invalid-release" ;
-                                                                                                    index = "0000000000000000" ;
-                                                                                                    standard-output =
-                                                                                                        ''
-                                                                                                            fatal: not a git repository (or any parent up to mount point /)
-                                                                                                            Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
-                                                                                                        '' ;
-                                                                                                    status = 128 ;
-                                                                                                }
-                                                                                                { channel = "valid-release" ; index = "0000000000000001" ; standard-output = "" ; status = 0 ; }
-                                                                                                { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
-                                                                                                { channel = "valid-release" ; index = "0000000000000003" ; standard-output = "" ; status = 0 ; }
-                                                                                            ] ;
+                                                                                        action =
+                                                                                            {
+                                                                                                messages =
+                                                                                                    [
+                                                                                                        {
+                                                                                                            channel = "invalid-release" ;
+                                                                                                            index = "0000000000000000" ;
+                                                                                                            standard-output =
+                                                                                                                ''
+                                                                                                                    fatal: not a git repository (or any parent up to mount point /)
+                                                                                                                    Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+                                                                                                                '' ;
+                                                                                                            status = 128 ;
+                                                                                                        }
+                                                                                                        { channel = "valid-release" ; index = "0000000000000001" ; standard-output = "" ; status = 0 ; }
+                                                                                                        { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
+                                                                                                        { channel = "valid-release" ; index = "0000000000000003" ; standard-output = "" ; status = 0 ; }
+                                                                                                    ] ;
+                                                                                            } ;
                                                                                     } ;
                                                                                 release-post-recovery-standard-error =
                                                                                     ''
