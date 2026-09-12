@@ -1965,7 +1965,7 @@
                                                                                                     }
                                                                                                     {
                                                                                                         process = "post" ;
-                                                                                                        standard-output = if generic-parameters.release_recovery.success then files.release else files.corrupt.post-release ;
+                                                                                                        standard-output = if generic-parameters.release_.recovery.success then files.release else files.corrupt.post-release ;
                                                                                                         text =
                                                                                                             ''
                                                                                                                 check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
