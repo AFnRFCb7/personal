@@ -2087,7 +2087,6 @@
                                                                                         script = release_.script ;
                                                                                     } ;
                                                                                 release-post-recovery = ''/home/checker/resources/invalid-release/0000000000000000/'["unrecoverable"]'.sh'' ;
-                                                                                release-recovery-scripts = release-recovery-scripts ;
                                                                             } ;
                                                                         parameters = primary // case-defaults ;
                                                                         in generic parameters ;
