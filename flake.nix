@@ -1544,8 +1544,8 @@
                                                                                                                                 payload =
                                                                                                                                     {
                                                                                                                                         index = "0000000000000000" ;
-                                                                                                                                        standard-output = generic-parameters.release.action.standard-output ;
-                                                                                                                                        status = generic-parameters.release.action.status ;
+                                                                                                                                        standard-output = generic-parameters.release_.action.standard-output ;
+                                                                                                                                        status = generic-parameters.release_.action.status ;
                                                                                                                                     } ;
                                                                                                                                 type = "message" ;
                                                                                                                             }
@@ -1678,6 +1678,7 @@
                                                                                     {
                                                                                         action ,
                                                                                         recovery
+                                                                                        # script
                                                                                     } :
                                                                                         {
                                                                                             action =
@@ -1695,6 +1696,7 @@
                                                                                                             } ;
                                                                                                     in identity action ;
                                                                                             recovery = recovery ;
+                                                                                            # script = _visitor.implementation { string = path : value : value ; } script ;
                                                                                         } ;
                                                                                 in identity release_ ;
                                                                         release-post-recovery = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery ;
@@ -1927,7 +1929,7 @@
                                                                                                                                 "corrupt.json"
                                                                                                                                 { nativeBuildInputs = [ pkgs.jq ] ; }
                                                                                                                                 ''
-                                                                                                                                    jq '.' ${ builtins.toFile "corruption.json" ( builtins.toJSON { channel = "invalid-release" ; payload = { index = "0000000000000000" ; standard-output = generic-parameters.release.action.standard-output ; status = generic-parameters.release.action.release.status ; } ; type = "message" ; } ) } > $out
+                                                                                                                                    jq '.' ${ builtins.toFile "corruption.json" ( builtins.toJSON { channel = "invalid-release" ; payload = { index = "0000000000000000" ; standard-output = generic-parameters.release_.action.standard-output ; status = generic-parameters.release_.action.release.status ; } ; type = "message" ; } ) } > $out
                                                                                                                                 '' ;
                                                                                                                         in builtins.readFile "${ derivation }" ;
                                                                                                                 text = "check-redis --exclude" ;
