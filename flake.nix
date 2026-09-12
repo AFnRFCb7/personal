@@ -2079,7 +2079,6 @@
                                                                                 release-post-recovery-standard-error = release-post-recovery-standard-error ;
                                                                                 release-post-recovery-success = false ;
                                                                                 release-recovery-scripts = release-recovery-scripts ;
-                                                                                release-status = release-status ;
                                                                             } ;
                                                                         parameters = primary // case-defaults ;
                                                                         in generic parameters ;
