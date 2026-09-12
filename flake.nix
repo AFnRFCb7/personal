@@ -1265,7 +1265,6 @@
                                                             release_ ,
                                                             release-post-recovery ,
                                                             release-post-recovery-standard-error ,
-                                                            release-post-recovery-success ,
                                                             release-recovery-scripts
                                                         } :
                                                             let
@@ -1694,13 +1693,18 @@
                                                                                                                 status = _visitor.implementation { int = path : value : value ; null = path : value : value ; } status ;
                                                                                                             } ;
                                                                                                     in identity action ;
-                                                                                            recovery = recovery ;
+                                                                                            recovery =
+                                                                                                let
+                                                                                                    identity =
+                                                                                                        {
+                                                                                                            success = _visitor.implementation { bool = path : value : value ; null = path : value : true ; } recovery.success ;
+                                                                                                        } ;
+                                                                                                    in identity recovery ;
                                                                                             script = _visitor.implementation { string = path : value : value ; } script ;
                                                                                         } ;
                                                                                 in identity release_ ;
                                                                         release-post-recovery = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery ;
                                                                         release-post-recovery-standard-error = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery-standard-error ;
-                                                                        release-post-recovery-success = _visitor.implementation { bool = path : value : value ; null = path : value : true ; } release-post-recovery-success ;
                                                                         release-recovery-scripts =
                                                                             if builtins.typeOf release-recovery-scripts == "null" then [ ]
                                                                             else if builtins.typeOf release-recovery-scripts == "list" then release-recovery-scripts
@@ -1958,7 +1962,7 @@
                                                                                                     }
                                                                                                     {
                                                                                                         process = "post" ;
-                                                                                                        standard-output = if generic-parameters.release-post-recovery-success then files.release else files.corrupt.post-release ;
+                                                                                                        standard-output = if generic-parameters.release_recovery.success then files.release else files.corrupt.post-release ;
                                                                                                         text =
                                                                                                             ''
                                                                                                                 check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
@@ -1985,7 +1989,7 @@
                                                                                             {
                                                                                                     process = "post" ;
                                                                                                     reads = false ;
-                                                                                                    standard-output = if generic-parameters.release-post-recovery-success then files.clean else files.corrupt.post-clean ;
+                                                                                                    standard-output = if generic-parameters.release_.recovery.success then files.clean else files.corrupt.post-clean ;
                                                                                                     text =
                                                                                                         ''
                                                                                                             check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
@@ -2038,11 +2042,13 @@
                                                                                 release_ =
                                                                                     {
                                                                                         action = release_.action // { standard-output = null ; status = 0 ; } ;
-                                                                                        recovery = null ;
+                                                                                        recovery =
+                                                                                            {
+                                                                                                success = null ;
+                                                                                            }   ;
                                                                                     } ;
                                                                                 release-post-recovery = null ;
                                                                                 release-post-recovery-standard-error = null ;
-                                                                                release-post-recovery-success = null ;
                                                                                 release-recovery-scripts = null ;
                                                                             } ;
                                                                         parameters = primary // case-defaults ;
@@ -2072,11 +2078,13 @@
                                                                                 release_ =
                                                                                     {
                                                                                         action = release_.action ;
-                                                                                        recovery = { } ;
+                                                                                        recovery =
+                                                                                            {
+                                                                                                success = false ;
+                                                                                            } ;
                                                                                     } ;
                                                                                 release-post-recovery = ''/home/checker/resources/invalid-release/0000000000000000/'["unrecoverable"]'.sh'' ;
                                                                                 release-post-recovery-standard-error = release-post-recovery-standard-error ;
-                                                                                release-post-recovery-success = false ;
                                                                                 release-recovery-scripts = release-recovery-scripts ;
                                                                             } ;
                                                                         parameters = primary // case-defaults ;
