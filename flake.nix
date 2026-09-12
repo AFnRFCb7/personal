@@ -1264,7 +1264,6 @@
                                                             order ,
                                                             release_ ,
                                                             release-post-recovery ,
-                                                            release-post-recovery-standard-error ,
                                                             release-recovery-scripts
                                                         } :
                                                             let
@@ -1697,9 +1696,11 @@
                                                                                                 let
                                                                                                     identity =
                                                                                                         {
+                                                                                                            standard-error ,
                                                                                                             success
                                                                                                         } :
                                                                                                             {
+                                                                                                                standard-error = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery-standard-error ;
                                                                                                                 success = _visitor.implementation { bool = path : value : value ; null = path : value : true ; } success ;
                                                                                                             } ;
                                                                                                     in identity recovery ;
@@ -1707,7 +1708,6 @@
                                                                                         } ;
                                                                                 in identity release_ ;
                                                                         release-post-recovery = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery ;
-                                                                        release-post-recovery-standard-error = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery-standard-error ;
                                                                         release-recovery-scripts =
                                                                             if builtins.typeOf release-recovery-scripts == "null" then [ ]
                                                                             else if builtins.typeOf release-recovery-scripts == "list" then release-recovery-scripts
@@ -1956,7 +1956,7 @@
                                                                                                     {
                                                                                                         process = "post" ;
                                                                                                         status = 111 ;
-                                                                                                        standard-error = generic-parameters.release-post-recovery-standard-error ;
+                                                                                                        standard-error = generic-parameters.release_.recovery.standard-error ;
                                                                                                         text = generic-parameters.release-post-recovery ;
                                                                                                     }
                                                                                                     {
@@ -2047,12 +2047,12 @@
                                                                                         action = release_.action // { standard-output = null ; status = 0 ; } ;
                                                                                         recovery =
                                                                                             {
+                                                                                                standard-error = null ;
                                                                                                 success = null ;
                                                                                             } ;
                                                                                         script = release_.script ;
                                                                                     } ;
                                                                                 release-post-recovery = null ;
-                                                                                release-post-recovery-standard-error = null ;
                                                                                 release-recovery-scripts = null ;
                                                                             } ;
                                                                         parameters = primary // case-defaults ;
@@ -2070,7 +2070,6 @@
                                                                     non-deterministic-regular-files ,
                                                                     order ,
                                                                     release_ ,
-                                                                    release-post-recovery-standard-error ,
                                                                     release-recovery-scripts
                                                                 } @primary :
                                                                     let
@@ -2083,9 +2082,12 @@
                                                                                     {
                                                                                         action = release_.action ;
                                                                                         recovery =
-                                                                                            {
-                                                                                                success = false ;
-                                                                                            } ;
+                                                                                            let
+                                                                                                recovery-defaults =
+                                                                                                    {
+                                                                                                        success = false ;
+                                                                                                    } ;
+                                                                                                in release_.recovery // recovery-defaults ;
                                                                                         script = release_.script ;
                                                                                     } ;
                                                                                 release-post-recovery = ''/home/checker/resources/invalid-release/0000000000000000/'["unrecoverable"]'.sh'' ;
@@ -2699,13 +2701,15 @@
                                                                                                     '' ;
                                                                                                 status = 128 ;
                                                                                             } ;
-                                                                                        recovery = { } ;
+                                                                                        recovery =
+                                                                                            {
+                                                                                                standard-error =
+                                                                                                    ''
+                                                                                                        UNRECOVERABLE
+                                                                                                    '' ;
+                                                                                            } ;
                                                                                         script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
                                                                                     } ;
-                                                                                release-post-recovery-standard-error =
-                                                                                    ''
-                                                                                        UNRECOVERABLE
-                                                                                    '' ;
                                                                                 release-recovery-scripts =
                                                                                     [
                                                                                         { path = [ "recoverable" ] ; target = "/nix/store/7n9bx25cnhbc41ah8nrn5pmc3ic2ayzi-recovery/bin/recovery" ; }
