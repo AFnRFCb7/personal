@@ -2074,7 +2074,7 @@
                                                             builtins.sort ( a : b : if a.order == b.order then a.name < b.name else a.order < b.order )
                                                                 [
                                                                     (
-                                                                        builtins.trace "8627166932776258" ( tests.happy
+                                                                        tests.happy
                                                                             {
                                                                                 command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","config","github"]' '' ;
                                                                                 exclusions =
@@ -2169,7 +2169,7 @@
                                                                                     ] ;
                                                                                 release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","config","github"].sh'' ;
                                                                             }
-                                                                    ) )
+                                                                    )
                                                                     (
                                                                         builtins.trace "7887583197226558" ( tests.happy
                                                                             {
