@@ -1921,7 +1921,7 @@
                                                                                                                 text = "check-redis --exclude" ;
                                                                                                             }
                                                                                                         ]
-                                                                                                    else builtins.map mapper generic-parameters.release.messages
+                                                                                                    else builtins.map mapper generic-parameters.release_.messages
                                                                                         )
                                                                                         [
                                                                                             {
