@@ -2044,7 +2044,6 @@
                                                                                 release-post-recovery-standard-error = null ;
                                                                                 release-post-recovery-success = null ;
                                                                                 release-recovery-scripts = null ;
-                                                                                release-status = null ;
                                                                             } ;
                                                                         parameters = primary // case-defaults ;
                                                                         in generic parameters ;
@@ -2064,7 +2063,6 @@
                                                                     release-post-recovery-standard-error ,
                                                                     release-recovery-scripts ,
                                                                     release-script ,
-                                                                    release-status
                                                                 } @primary :
                                                                     let
                                                                         case-defaults =
