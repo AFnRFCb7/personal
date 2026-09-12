@@ -2281,7 +2281,10 @@
                                                                                 order = 2 ;
                                                                                 release_ =
                                                                                     {
-                                                                                        messages = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
+                                                                                        action =
+                                                                                            {
+                                                                                                messages = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
+                                                                                            } ;
                                                                                     } ;
                                                                                 release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","known-hosts","github"].sh'' ;
                                                                             }
