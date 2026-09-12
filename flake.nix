@@ -1261,7 +1261,7 @@
                                                             init-post-corruption ,
                                                             non-deterministic-regular-files ,
                                                             order ,
-                                                            release ,
+                                                            release_ ,
                                                             release-post-recovery ,
                                                             release-post-recovery-standard-error ,
                                                             release-post-recovery-success ,
@@ -1673,6 +1673,16 @@
                                                                         init-post-corruption = _visitor.implementation { bool = path : value : value ; } init-post-corruption ;
                                                                         non-deterministic-regular-files = _visitor.implementation { set = path : set : builtins.throw "unsupported" ; string = path : value : value ; } non-deterministic-regular-files ;
                                                                         order = _visitor.implementation { int = path : value : value ; list = path : list : builtins.throw "unsupported" ; set = path : set : builtins.throw "unsupported" ; } order ;
+                                                                        release_ =
+                                                                            let
+                                                                                identity =
+                                                                                    {
+                                                                                        messages
+                                                                                    } :
+                                                                                        {
+                                                                                            messages = _visitor.implementation { set = path : set : builtins.throw "unsupported" ; string = path : value : value ; } messages ;
+                                                                                        } ;
+                                                                                in identity release_ ;
                                                                         release-post-recovery = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery ;
                                                                         release-post-recovery-standard-error = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery-standard-error ;
                                                                         release-post-recovery-success = _visitor.implementation { bool = path : value : value ; null = path : value : true ; } release-post-recovery-success ;
@@ -1911,7 +1921,7 @@
                                                                                                                 text = "check-redis --exclude" ;
                                                                                                             }
                                                                                                         ]
-                                                                                                    else builtins.map mapper release
+                                                                                                    else builtins.map mapper generic-parameters.release.messages
                                                                                         )
                                                                                         [
                                                                                             {
@@ -2004,7 +2014,7 @@
                                                                     init-files ,
                                                                     non-deterministic-regular-files ,
                                                                     order ,
-                                                                    release ,
+                                                                    release_ ,
                                                                     release-script
                                                                 } @primary :
                                                                     let
@@ -2013,6 +2023,10 @@
                                                                                 case = "happy" ;
                                                                                 init-post-corruption = false ;
                                                                                 order = order ;
+                                                                                release_ =
+                                                                                    {
+                                                                                        release_.messages = release_.messages ;
+                                                                                    } ;
                                                                                 release-post-recovery = null ;
                                                                                 release-post-recovery-standard-error = null ;
                                                                                 release-post-recovery-success = null ;
@@ -2034,7 +2048,7 @@
                                                                     init-files ,
                                                                     non-deterministic-regular-files ,
                                                                     order ,
-                                                                    release ,
+                                                                    release_ ,
                                                                     release-post-recovery-standard-error ,
                                                                     release-recovery-scripts ,
                                                                     release-script ,
@@ -2047,6 +2061,10 @@
                                                                                 case = "release-unrecoverable" ;
                                                                                 init-post-corruption = true ;
                                                                                 order = order ;
+                                                                                release_ =
+                                                                                    {
+                                                                                        messages_ = release_.messages ;
+                                                                                    } ;
                                                                                 release-post-recovery = ''/home/checker/resources/invalid-release/0000000000000000/'["unrecoverable"]'.sh'' ;
                                                                                 release-post-recovery-standard-error = release-post-recovery-standard-error ;
                                                                                 release-post-recovery-success = false ;
@@ -2167,11 +2185,14 @@
                                                                                 non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" ] ;
                                                                                 order = 3 ;
                                                                                 release =
-                                                                                    [
-                                                                                        { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; }
-                                                                                        { channel = "valid-release" ; index = "0000000000000001" ; standard-output = "" ; status = 0 ; }
-                                                                                        { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
-                                                                                    ] ;
+                                                                                    {
+                                                                                        messages =
+                                                                                            [
+                                                                                                { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; }
+                                                                                                { channel = "valid-release" ; index = "0000000000000001" ; standard-output = "" ; status = 0 ; }
+                                                                                                { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
+                                                                                            ] ;
+                                                                                    } ;
                                                                                 release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","config","github"].sh'' ;
                                                                             }
                                                                     )
@@ -2207,7 +2228,10 @@
                                                                                     ]  ;
                                                                                 non-deterministic-regular-files = [ ] ;
                                                                                 order = 1 ;
-                                                                                release = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
+                                                                                release =
+                                                                                    {
+                                                                                        messages = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
+                                                                                    } ;
                                                                                 release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","identity","github"].sh'' ;
                                                                             }
                                                                     )
@@ -2242,7 +2266,10 @@
                                                                                     ]  ;
                                                                                 non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
                                                                                 order = 2 ;
-                                                                                release = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
+                                                                                release =
+                                                                                    {
+                                                                                        messages = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
+                                                                                    } ;
                                                                                 release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","known-hosts","github"].sh'' ;
                                                                             }
                                                                     )
@@ -2417,21 +2444,24 @@
                                                                                     ]  ;
                                                                                 non-deterministic-regular-files = [ ] ;
                                                                                 order = 4 ;
-                                                                                release =
-                                                                                    [
-                                                                                        {
-                                                                                            channel = "valid-release" ;
-                                                                                            index = "0000000000000000" ;
-                                                                                            standard-output =
-                                                                                                ''
-                                                                                                    Everything up-to-date
-                                                                                                '' ;
-                                                                                            status = 0 ;
-                                                                                        }
-                                                                                        { channel = "valid-release" ; index = "0000000000000001" ; standard-output = "" ; status = 0 ; }
-                                                                                        { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
-                                                                                        { channel = "valid-release" ; index = "0000000000000003" ; standard-output = "" ; status = 0 ; }
-                                                                                    ] ;
+                                                                                release_ =
+                                                                                    {
+                                                                                        messages =
+                                                                                            [
+                                                                                                {
+                                                                                                    channel = "valid-release" ;
+                                                                                                    index = "0000000000000000" ;
+                                                                                                    standard-output =
+                                                                                                        ''
+                                                                                                            Everything up-to-date
+                                                                                                        '' ;
+                                                                                                    status = 0 ;
+                                                                                                }
+                                                                                                { channel = "valid-release" ; index = "0000000000000001" ; standard-output = "" ; status = 0 ; }
+                                                                                                { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
+                                                                                                { channel = "valid-release" ; index = "0000000000000003" ; standard-output = "" ; status = 0 ; }
+                                                                                            ] ;
+                                                                                    } ;
                                                                                 release-script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
                                                                             }
                                                                     )
@@ -2607,21 +2637,24 @@
                                                                                 non-deterministic-regular-files = [ ] ;
                                                                                 order = 5 ;
                                                                                 release =
-                                                                                    [
-                                                                                        {
-                                                                                            channel = "invalid-release" ;
-                                                                                            index = "0000000000000000" ;
-                                                                                            standard-output =
-                                                                                                ''
-                                                                                                    fatal: not a git repository (or any parent up to mount point /)
-                                                                                                    Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
-                                                                                                '' ;
-                                                                                            status = 128 ;
-                                                                                        }
-                                                                                        { channel = "valid-release" ; index = "0000000000000001" ; standard-output = "" ; status = 0 ; }
-                                                                                        { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
-                                                                                        { channel = "valid-release" ; index = "0000000000000003" ; standard-output = "" ; status = 0 ; }
-                                                                                    ] ;
+                                                                                    {
+                                                                                        messages =
+                                                                                            [
+                                                                                                {
+                                                                                                    channel = "invalid-release" ;
+                                                                                                    index = "0000000000000000" ;
+                                                                                                    standard-output =
+                                                                                                        ''
+                                                                                                            fatal: not a git repository (or any parent up to mount point /)
+                                                                                                            Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+                                                                                                        '' ;
+                                                                                                    status = 128 ;
+                                                                                                }
+                                                                                                { channel = "valid-release" ; index = "0000000000000001" ; standard-output = "" ; status = 0 ; }
+                                                                                                { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
+                                                                                                { channel = "valid-release" ; index = "0000000000000003" ; standard-output = "" ; status = 0 ; }
+                                                                                            ] ;
+                                                                                    } ;
                                                                                 release-post-recovery-standard-error =
                                                                                     ''
                                                                                         UNRECOVERABLE
