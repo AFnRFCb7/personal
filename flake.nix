@@ -1268,7 +1268,6 @@
                                                             release-post-recovery-success ,
                                                             release-recovery-scripts ,
                                                             release-script ,
-                                                            release-standard-output ,
                                                             release-status
                                                         } :
                                                             let
@@ -1686,10 +1685,12 @@
                                                                                                 let
                                                                                                     identity =
                                                                                                         {
-                                                                                                            messages
+                                                                                                            messages ,
+                                                                                                            standard-output
                                                                                                         } :
                                                                                                             {
                                                                                                                 messages = _visitor.implementation { int = path : value : value ; string = path : value : value ; } messages ;
+                                                                                                                standard-output = _visitor.implementation { null = path : value : value ; string = path : value : value ; } standard-output ;
                                                                                                             } ;
                                                                                                     in identity action ;
                                                                                             recovery = recovery ;
@@ -1702,7 +1703,6 @@
                                                                             if builtins.typeOf release-recovery-scripts == "null" then [ ]
                                                                             else if builtins.typeOf release-recovery-scripts == "list" then release-recovery-scripts
                                                                             else builtins.throw "release-recovery-scripts must either be null or a list of release-recovery-scripts but it was ${ builtins.typeOf release-recovery-scripts }" ;
-                                                                        release-standard-output = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-standard-output ;
                                                                         release-status = _visitor.implementation { int = path : value : value ; null = path : value : value ; } release-status ;
                                                                     } ;
                                                                 size = if builtins.length init == builtins.length release_.action.messages then builtins.length init else builtins.throw "the length of init ${ builtins.toString ( builtins.length init ) } must equal the length of release ${ builtins.toString ( builtins.length release_.action.messages ) }" ;
@@ -1927,7 +1927,7 @@
                                                                                                                                 "corrupt.json"
                                                                                                                                 { nativeBuildInputs = [ pkgs.jq ] ; }
                                                                                                                                 ''
-                                                                                                                                    jq '.' ${ builtins.toFile "corruption.json" ( builtins.toJSON { channel = "invalid-release" ; payload = { index = "0000000000000000" ; standard-output = generic-parameters.release-standard-output ; status = generic-parameters.release-status ; } ; type = "message" ; } ) } > $out
+                                                                                                                                    jq '.' ${ builtins.toFile "corruption.json" ( builtins.toJSON { channel = "invalid-release" ; payload = { index = "0000000000000000" ; standard-output = generic-parameters.release.standard-output ; status = generic-parameters.release-status ; } ; type = "message" ; } ) } > $out
                                                                                                                                 '' ;
                                                                                                                         in builtins.readFile "${ derivation }" ;
                                                                                                                 text = "check-redis --exclude" ;
@@ -2037,7 +2037,7 @@
                                                                                 order = order ;
                                                                                 release_ =
                                                                                     {
-                                                                                        action = release_.action ;
+                                                                                        action = release_.action // { standard-output = null ; } ;
                                                                                     } ;
                                                                                 release-post-recovery = null ;
                                                                                 release-post-recovery-standard-error = null ;
@@ -2064,7 +2064,6 @@
                                                                     release-post-recovery-standard-error ,
                                                                     release-recovery-scripts ,
                                                                     release-script ,
-                                                                    release-standard-output ,
                                                                     release-status
                                                                 } @primary :
                                                                     let
@@ -2684,6 +2683,11 @@
                                                                                                         { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
                                                                                                         { channel = "valid-release" ; index = "0000000000000003" ; standard-output = "" ; status = 0 ; }
                                                                                                     ] ;
+                                                                                                standard-output =
+                                                                                                    ''
+                                                                                                        fatal: not a git repository (or any parent up to mount point /)
+                                                                                                        Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+                                                                                                    '' ;
                                                                                             } ;
                                                                                         recovery = { } ;
                                                                                     } ;
@@ -2697,11 +2701,6 @@
                                                                                         { path = [ "unrecoverable" ] ; target = "/nix/store/qx42xg29a1ps137r5jh4x2jnsf6c3qcv-recovery/bin/recovery" ; }
                                                                                     ] ;
                                                                                 release-script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
-                                                                                release-standard-output =
-                                                                                    ''
-                                                                                        fatal: not a git repository (or any parent up to mount point /)
-                                                                                        Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
-                                                                                    '' ;
                                                                                 release-status = 128 ;
                                                                             }
                                                                     )
