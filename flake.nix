@@ -2171,7 +2171,7 @@
                                                                             }
                                                                     )
                                                                     (
-                                                                        builtins.trace "7887583197226558" ( tests.happy
+                                                                        tests.happy
                                                                             {
                                                                                 command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
                                                                                 exclusions = [ ] ;
@@ -2205,7 +2205,7 @@
                                                                                 release = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
                                                                                 release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","identity","github"].sh'' ;
                                                                             }
-                                                                    ) )
+                                                                    )
                                                                     (
                                                                         tests.happy
                                                                             {
