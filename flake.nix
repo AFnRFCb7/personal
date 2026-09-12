@@ -1266,8 +1266,7 @@
                                                             release-post-recovery ,
                                                             release-post-recovery-standard-error ,
                                                             release-post-recovery-success ,
-                                                            release-recovery-scripts ,
-                                                            release-script
+                                                            release-recovery-scripts
                                                         } :
                                                             let
                                                                 files =
@@ -1655,7 +1654,7 @@
                                                                                                         {
                                                                                                             name = "/home/checker/resources/release/0000000000000000" ;
                                                                                                             stat = "lrwxrwxrwx" ;
-                                                                                                            target = release-script ;
+                                                                                                            target = generic-parameters.release_.script ;
                                                                                                             type = "symbolic link" ;
                                                                                                         }
                                                                                                     ]
@@ -1677,8 +1676,8 @@
                                                                                 identity =
                                                                                     {
                                                                                         action ,
-                                                                                        recovery
-                                                                                        # script
+                                                                                        recovery ,
+                                                                                        script
                                                                                     } :
                                                                                         {
                                                                                             action =
@@ -1696,7 +1695,7 @@
                                                                                                             } ;
                                                                                                     in identity action ;
                                                                                             recovery = recovery ;
-                                                                                            # script = _visitor.implementation { string = path : value : value ; } script ;
+                                                                                            script = _visitor.implementation { string = path : value : value ; } script ;
                                                                                         } ;
                                                                                 in identity release_ ;
                                                                         release-post-recovery = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery ;
@@ -2028,8 +2027,7 @@
                                                                     init-files ,
                                                                     non-deterministic-regular-files ,
                                                                     order ,
-                                                                    release_ ,
-                                                                    release-script
+                                                                    release_
                                                                 } @primary :
                                                                     let
                                                                         case-defaults =
@@ -2063,8 +2061,7 @@
                                                                     order ,
                                                                     release_ ,
                                                                     release-post-recovery-standard-error ,
-                                                                    release-recovery-scripts ,
-                                                                    release-script ,
+                                                                    release-recovery-scripts
                                                                 } @primary :
                                                                     let
                                                                         case-defaults =
@@ -2206,8 +2203,8 @@
                                                                                                     ] ;
                                                                                             } ;
                                                                                         recovery = { } ;
+                                                                                        script = builtins.readFile ''${ shared }/release/["production","dot-ssh","config","github"].sh'' ;
                                                                                     } ;
-                                                                                release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","config","github"].sh'' ;
                                                                             }
                                                                     )
                                                                     (
@@ -2249,8 +2246,8 @@
                                                                                                 messages = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
                                                                                             } ;
                                                                                         recovery = { } ;
+                                                                                        script = builtins.readFile ''${ shared }/release/["production","dot-ssh","identity","github"].sh'' ;
                                                                                     } ;
-                                                                                release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","identity","github"].sh'' ;
                                                                             }
                                                                     )
                                                                     (
@@ -2291,8 +2288,8 @@
                                                                                                 messages = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
                                                                                             } ;
                                                                                         recovery = { } ;
+                                                                                        script = builtins.readFile ''${ shared }/release/["production","dot-ssh","known-hosts","github"].sh'' ;
                                                                                     } ;
-                                                                                release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","known-hosts","github"].sh'' ;
                                                                             }
                                                                     )
                                                                     (
@@ -2487,8 +2484,8 @@
                                                                                                     ] ;
                                                                                             } ;
                                                                                         recovery = { } ;
+                                                                                        script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
                                                                                     } ;
-                                                                                release-script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
                                                                             }
                                                                     )
                                                                     (
@@ -2690,6 +2687,7 @@
                                                                                                 status = 128 ;
                                                                                             } ;
                                                                                         recovery = { } ;
+                                                                                        script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
                                                                                     } ;
                                                                                 release-post-recovery-standard-error =
                                                                                     ''
@@ -2700,7 +2698,6 @@
                                                                                         { path = [ "recoverable" ] ; target = "/nix/store/7n9bx25cnhbc41ah8nrn5pmc3ic2ayzi-recovery/bin/recovery" ; }
                                                                                         { path = [ "unrecoverable" ] ; target = "/nix/store/qx42xg29a1ps137r5jh4x2jnsf6c3qcv-recovery/bin/recovery" ; }
                                                                                     ] ;
-                                                                                release-script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
                                                                             }
                                                                     )
                                                                 ]
