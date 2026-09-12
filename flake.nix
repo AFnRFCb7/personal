@@ -1697,8 +1697,11 @@
                                                                                                 let
                                                                                                     identity =
                                                                                                         {
-                                                                                                            success = _visitor.implementation { bool = path : value : value ; null = path : value : true ; } recovery.success ;
-                                                                                                        } ;
+                                                                                                            success
+                                                                                                        } :
+                                                                                                            {
+                                                                                                                success = _visitor.implementation { bool = path : value : value ; null = path : value : true ; } success ;
+                                                                                                            } ;
                                                                                                     in identity recovery ;
                                                                                             script = _visitor.implementation { string = path : value : value ; } script ;
                                                                                         } ;
