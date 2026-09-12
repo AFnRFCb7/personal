@@ -1678,7 +1678,8 @@
                                                                             let
                                                                                 identity =
                                                                                     {
-                                                                                        action
+                                                                                        action ,
+                                                                                        recovery
                                                                                     } :
                                                                                         {
                                                                                             action =
@@ -1691,6 +1692,7 @@
                                                                                                                 messages = _visitor.implementation { int = path : value : value ; string = path : value : value ; } messages ;
                                                                                                             } ;
                                                                                                     in identity action ;
+                                                                                            recovery = recovery ;
                                                                                         } ;
                                                                                 in identity release_ ;
                                                                         release-post-recovery = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery ;
@@ -2205,6 +2207,7 @@
                                                                                                         { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
                                                                                                     ] ;
                                                                                             } ;
+                                                                                        recovery = { } ;
                                                                                     } ;
                                                                                 release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","config","github"].sh'' ;
                                                                             }
@@ -2247,6 +2250,7 @@
                                                                                             {
                                                                                                 messages = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
                                                                                             } ;
+                                                                                        recovery = { } ;
                                                                                     } ;
                                                                                 release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","identity","github"].sh'' ;
                                                                             }
@@ -2288,6 +2292,7 @@
                                                                                             {
                                                                                                 messages = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
                                                                                             } ;
+                                                                                        recovery = { } ;
                                                                                     } ;
                                                                                 release-script = builtins.readFile ''${ shared }/release/["production","dot-ssh","known-hosts","github"].sh'' ;
                                                                             }
@@ -2483,6 +2488,7 @@
                                                                                                         { channel = "valid-release" ; index = "0000000000000003" ; standard-output = "" ; status = 0 ; }
                                                                                                     ] ;
                                                                                             } ;
+                                                                                        recovery = { } ;
                                                                                     } ;
                                                                                 release-script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
                                                                             }
@@ -2679,6 +2685,7 @@
                                                                                                         { channel = "valid-release" ; index = "0000000000000003" ; standard-output = "" ; status = 0 ; }
                                                                                                     ] ;
                                                                                             } ;
+                                                                                        recovery = { } ;
                                                                                     } ;
                                                                                 release-post-recovery-standard-error =
                                                                                     ''
