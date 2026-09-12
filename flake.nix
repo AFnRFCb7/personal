@@ -1689,7 +1689,7 @@
                                                                                                         } :
                                                                                                             {
                                                                                                                 messages = _visitor.implementation { int = path : value : value ; string = path : value : value ; } messages ;
-                                                                                                                standard-output = _visitor.implementation { null = path : value : value ; string = path : value : value } standard-output ;
+                                                                                                                standard-output = _visitor.implementation { null = path : value : value ; string = path : value : value ; } standard-output ;
                                                                                                             } ;
                                                                                                     in identity action ;
                                                                                         } ;
