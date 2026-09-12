@@ -1667,8 +1667,9 @@
                                                                 empty-files =  "[\n  {\n    \"name\": \"/home/checker/resources\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  },\n  {\n    \"cat\": \"[]\",\n    \"name\": \"/home/checker/resources/log.yaml\",\n    \"stat\": \"-rw-r--r--\",\n    \"type\": \"regular file\"\n  }\n]\n" ;
                                                                 generic-parameters =
                                                                     {
-                                                                        case = _visitor.implementation { string = path : value : value ; } case ;
-                                                                        command = _visitor.implementation { string = path : value : value ; } command ;
+                                                                        case = _visitor.implementation { list = path : list : builtins.throw "unsupported" ; set = path : set : builtins.throw "unsupported" ; string = path : value : value ; } case ;
+                                                                        command = _visitor.implementation { list = path : list : builtins.throw "unsupported" ; set = path : set : builtins.throw "unsupported" ; string = path : value : value ; } command ;
+                                                                        exclusions = _visitor.implementation { set = path : set : builtins.throw "unsupported" ; string = path : value : value ; } exclusions ;
                                                                         init-post-corruption = _visitor.implementation { bool = path : value : value ; } init-post-corruption ;
                                                                         release-post-recovery = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery ;
                                                                         release-post-recovery-standard-error = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery-standard-error ;
@@ -1750,7 +1751,7 @@
                                                                                                     standard-output = files.init ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }
+                                                                                                            check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }
                                                                                                         '' ;
                                                                                             }
                                                                                         ]
@@ -1804,7 +1805,7 @@
                                                                                                     standard-output = files.init ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }
+                                                                                                            check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }
                                                                                                         '' ;
                                                                                             }
                                                                                             {
@@ -1842,7 +1843,7 @@
                                                                                                             standard-output = files.corrupt.post-release ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }
+                                                                                                                    check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }
                                                                                                                 '' ;
                                                                                                     }
                                                                                                 ]
@@ -1935,7 +1936,7 @@
                                                                                                         standard-output = if generic-parameters.release-post-recovery-success then files.release else files.corrupt.post-release ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }
+                                                                                                                check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }
                                                                                                             '' ;
                                                                                                     }
                                                                                                     {
@@ -1962,7 +1963,7 @@
                                                                                                     standard-output = if generic-parameters.release-post-recovery-success then files.clean else files.corrupt.post-clean ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }
+                                                                                                            check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) non-deterministic-regular-files ) }
                                                                                                         '' ;
                                                                                             }
                                                                                             {
