@@ -1545,7 +1545,7 @@
                                                                                                                                 payload =
                                                                                                                                     {
                                                                                                                                         index = "0000000000000000" ;
-                                                                                                                                        standard-output = release-standard-output ;
+                                                                                                                                        standard-output = release.action.standard-output ;
                                                                                                                                         status = release-status ;
                                                                                                                                     } ;
                                                                                                                                 type = "message" ;
@@ -2044,7 +2044,6 @@
                                                                                 release-post-recovery-standard-error = null ;
                                                                                 release-post-recovery-success = null ;
                                                                                 release-recovery-scripts = null ;
-                                                                                release-standard-output = null ;
                                                                                 release-status = null ;
                                                                             } ;
                                                                         parameters = primary // case-defaults ;
@@ -2082,7 +2081,6 @@
                                                                                 release-post-recovery-standard-error = release-post-recovery-standard-error ;
                                                                                 release-post-recovery-success = false ;
                                                                                 release-recovery-scripts = release-recovery-scripts ;
-                                                                                release-standard-output = release-standard-output ;
                                                                                 release-status = release-status ;
                                                                             } ;
                                                                         parameters = primary // case-defaults ;
