@@ -1545,7 +1545,7 @@
                                                                                                                                 payload =
                                                                                                                                     {
                                                                                                                                         index = "0000000000000000" ;
-                                                                                                                                        standard-output = release.action.standard-output ;
+                                                                                                                                        standard-output = release_.action.standard-output ;
                                                                                                                                         status = release-status ;
                                                                                                                                     } ;
                                                                                                                                 type = "message" ;
