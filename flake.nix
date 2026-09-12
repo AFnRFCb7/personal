@@ -2025,7 +2025,7 @@
                                                                                 order = order ;
                                                                                 release_ =
                                                                                     {
-                                                                                        release_.messages = release_.messages ;
+                                                                                        messages = release_.messages ;
                                                                                     } ;
                                                                                 release-post-recovery = null ;
                                                                                 release-post-recovery-standard-error = null ;
