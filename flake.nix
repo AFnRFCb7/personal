@@ -1693,7 +1693,7 @@
                                                                         release-standard-output = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-standard-output ;
                                                                         release-status = _visitor.implementation { int = path : value : value ; null = path : value : value ; } release-status ;
                                                                     } ;
-                                                                size = if builtins.length init == builtins.length release then builtins.length init else builtins.throw "the length of init ${ builtins.toString ( builtins.length init ) } must equal the length of init ${ builtins.toString ( builtins.length release ) }" ;
+                                                                size = if builtins.length init == builtins.length release_.messages then builtins.length init else builtins.throw "the length of init ${ builtins.toString ( builtins.length init ) } must equal the length of init ${ builtins.toString ( builtins.length release ) }" ;
                                                                 subscribe =
                                                                     {
                                                                         invalid-init = "{\n  \"channel\": \"invalid-init\",\n  \"payload\": 1,\n  \"type\": \"subscribe\"\n}\n" ;
