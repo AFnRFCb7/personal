@@ -2038,6 +2038,7 @@
                                                                                 release_ =
                                                                                     {
                                                                                         action = release_.action // { standard-output = null ; } ;
+                                                                                        recovery = null ;
                                                                                     } ;
                                                                                 release-post-recovery = null ;
                                                                                 release-post-recovery-standard-error = null ;
@@ -2075,6 +2076,7 @@
                                                                                 release_ =
                                                                                     {
                                                                                         action = release_.action ;
+                                                                                        recovery = { } ;
                                                                                     } ;
                                                                                 release-post-recovery = ''/home/checker/resources/invalid-release/0000000000000000/'["unrecoverable"]'.sh'' ;
                                                                                 release-post-recovery-standard-error = release-post-recovery-standard-error ;
