@@ -2045,7 +2045,8 @@
                                                                                         recovery =
                                                                                             {
                                                                                                 success = null ;
-                                                                                            }   ;
+                                                                                            } ;
+                                                                                        script = release_.script ;
                                                                                     } ;
                                                                                 release-post-recovery = null ;
                                                                                 release-post-recovery-standard-error = null ;
@@ -2082,6 +2083,7 @@
                                                                                             {
                                                                                                 success = false ;
                                                                                             } ;
+                                                                                        script = release_.script ;
                                                                                     } ;
                                                                                 release-post-recovery = ''/home/checker/resources/invalid-release/0000000000000000/'["unrecoverable"]'.sh'' ;
                                                                                 release-post-recovery-standard-error = release-post-recovery-standard-error ;
