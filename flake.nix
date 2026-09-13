@@ -1266,6 +1266,87 @@
                                                             let
                                                                 files_ =
                                                                     let
+                                                                        init-array =
+                                                                            builtins.concatLists
+                                                                                [
+                                                                                    generic-parameters.init.action.files
+                                                                                    [
+                                                                                        {
+                                                                                            name = "/home/checker/.gc-roots" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/.gc-roots/0000000000000000" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/canonical" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/invalid-init" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            log =
+                                                                                                let
+                                                                                                    mapper =
+                                                                                                        { index , seed , standard-output , targets , text } :
+                                                                                                            {
+                                                                                                                channel = "valid-init" ;
+                                                                                                                payload =
+                                                                                                                    {
+                                                                                                                        arguments = [ ] ;
+                                                                                                                        index = index ;
+                                                                                                                        inputs = { } ;
+                                                                                                                        seed = seed ;
+                                                                                                                        standard-output = standard-output ;
+                                                                                                                        targets = targets ;
+                                                                                                                        temporary = false ;
+                                                                                                                        text = text ;
+                                                                                                                    } ;
+                                                                                                                type = "message" ;
+                                                                                                            } ;
+                                                                                                    in builtins.map mapper generic-parameters.init.action.messages ;
+                                                                                            name = "/home/checker/resources/log.yaml" ;
+                                                                                            stat = "-rw-r--r--" ;
+                                                                                            type = "log file" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/mounts" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/release" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            cat =
+                                                                                                ''
+                                                                                                    ${ builtins.toString size }
+                                                                                                '' ;
+                                                                                            name = "/home/checker/resources/sequential" ;
+                                                                                            stat = "-rw-r--r--" ;
+                                                                                            type = "regular file" ;
+                                                                                        }
+                                                                                    ]
+                                                                                ] ;
                                                                         json =
                                                                             json :
                                                                                 let
