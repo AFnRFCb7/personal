@@ -1264,6 +1264,23 @@
                                                             stage
                                                         } :
                                                             let
+                                                                files_ =
+                                                                    let
+                                                                        json =
+                                                                            json :
+                                                                                let
+                                                                                    derivation =
+                                                                                        pkgs.runCommand
+                                                                                            "init.json"
+                                                                                            { nativeBuildInputs = [ pkgs.jq ] ; }
+                                                                                            ''
+                                                                                                jq --sort-keys "." ${ builtins.toFile "data.json" ( builtins.toJSON ( builtins.sort ( a : b : a.name < b.name ) json ) ) } > $out
+                                                                                            '' ;
+                                                                                    in builtins.readFile derivation ;
+                                                                        in
+                                                                            {
+
+                                                                            } ;
                                                                 files =
                                                                     let
                                                                         corrupt-array =
@@ -1757,6 +1774,7 @@
                                                                                         } ;
                                                                                 in identity stage ;
                                                                     } ;
+                                                                messages = [ ] ;
                                                                 size = if builtins.length generic-parameters.init.action.messages == builtins.length generic-parameters.release.action.messages then builtins.length generic-parameters.init.action.messages else builtins.throw "the length of init ${ builtins.toString ( builtins.length generic-parameters.init.action.messages ) } must equal the length of release ${ builtins.toString ( builtins.length generic-parameters.release.action.messages ) }" ;
                                                                 subscribe =
                                                                     {
