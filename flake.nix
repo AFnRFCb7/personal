@@ -1263,7 +1263,8 @@
                                                             init-post-corruption ,
                                                             non-deterministic-regular-files ,
                                                             order ,
-                                                            release_
+                                                            release_ ,
+                                                            stage
                                                         } :
                                                             let
                                                                 files =
@@ -1714,6 +1715,7 @@
                                                                                             script = _visitor.implementation { string = path : value : value ; } script ;
                                                                                         } ;
                                                                                 in identity release_ ;
+                                                                        stage = stage ;
                                                                     } ;
                                                                 size = if builtins.length init == builtins.length release_.action.messages then builtins.length init else builtins.throw "the length of init ${ builtins.toString ( builtins.length init ) } must equal the length of release ${ builtins.toString ( builtins.length release_.action.messages ) }" ;
                                                                 subscribe =
@@ -2057,6 +2059,7 @@
                                                                                             } ;
                                                                                         script = release_.script ;
                                                                                     } ;
+                                                                                stage = null ;
                                                                             } ;
                                                                         parameters = primary // case-defaults ;
                                                                         in generic parameters ;
@@ -2093,6 +2096,7 @@
                                                                                                 in release_.recovery // recovery-defaults ;
                                                                                         script = release_.script ;
                                                                                     } ;
+                                                                                stage = null ;
                                                                             } ;
                                                                         parameters = primary // case-defaults ;
                                                                         in generic parameters ;
