@@ -1386,6 +1386,21 @@
                                                                                                 false = null ;
                                                                                             } ;
                                                                                     } ;
+                                                                                empty =
+                                                                                    json
+                                                                                        [
+                                                                                            {
+                                                                                                name = "/home/checker/resources" ;
+                                                                                                stat = "drwxr-xr-x" ;
+                                                                                                type = "directory" ;
+                                                                                            }
+                                                                                            {
+                                                                                                log = [ ] ;
+                                                                                                name = "/home/checker/resources/log.yaml" ;
+                                                                                                stat = "-rw-r--r--" ;
+                                                                                                type = "log file" ;
+                                                                                            }
+                                                                                        ] ;
                                                                                 init =
                                                                                     {
                                                                                         true = null ;
@@ -1739,21 +1754,6 @@
                                                                                 ] ;
                                                                         in
                                                                             {
-                                                                                empty =
-                                                                                    json
-                                                                                        [
-                                                                                            {
-                                                                                                name = "/home/checker/resources" ;
-                                                                                                stat = "drwxr-xr-x" ;
-                                                                                                type = "directory" ;
-                                                                                            }
-                                                                                            {
-                                                                                                log = [ ] ;
-                                                                                                name = "/home/checker/resources/log.yaml" ;
-                                                                                                stat = "-rw-r--r--" ;
-                                                                                                type = "log file" ;
-                                                                                            }
-                                                                                        ] ;
                                                                                 init =
                                                                                     json
                                                                                         (
@@ -1906,7 +1906,7 @@
                                                                                             {
                                                                                                     process = "pre" ;
                                                                                                     reads = false ;
-                                                                                                    standard-output = files.empty ;
+                                                                                                    standard-output = files_.empty ;
                                                                                                     text = "check-files --delete true" ;
                                                                                             }
                                                                                             {
