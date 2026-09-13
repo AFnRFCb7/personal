@@ -2130,7 +2130,7 @@
                                                                                                     }
                                                                                                     {
                                                                                                         process = "post" ;
-                                                                                                        standard-output = if generic-parameters.release.recovery.success then files.release else files_._TEST_ ;
+                                                                                                        standard-output = if generic-parameters.release.recovery.success then files.release else files_.release.true.false ; ###FINDME
                                                                                                         text =
                                                                                                             ''
                                                                                                                 check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
