@@ -1704,22 +1704,7 @@
                                                                                                                 in
                                                                                                                     {
                                                                                                                         standard-error = _visitor.implementation { null = path : value : value ; string = path : value : value ; } standard-error ;
-                                                                                                                        script =
-                                                                                                                            _visitor.implementation
-                                                                                                                                {
-                                                                                                                                    lambda =
-                                                                                                                                        path : value :
-                                                                                                                                            let
-                                                                                                                                                scripts__ =
-                                                                                                                                                    _visitor.implementation
-                                                                                                                                                        {
-                                                                                                                                                            string = path : value : "/home/checker/resources/invalid-release/0000000000000000/${ builtins.toJSON path }.sh" ;
-                                                                                                                                                        }
-                                                                                                                                                        ( builtins.map ( { path , target } : path ) scripts_ ) ;
-                                                                                                                                                in value scripts__ ;
-                                                                                                                                    null = path : value : value ;
-                                                                                                                                    string = path : value : value ;
-                                                                                                                                } script ;
+                                                                                                                        script = _visitor.implementation { null = path : value : value ; string = path : value : value ; } script ;
                                                                                                                         scripts = scripts_ ;
                                                                                                                         success = _visitor.implementation { bool = path : value : value ; null = path : value : true ; } success ;
                                                                                                                     } ;
