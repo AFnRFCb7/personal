@@ -1707,6 +1707,11 @@
                                                                                                                         script =
                                                                                                                             _visitor.implementation
                                                                                                                                 {
+                                                                                                                                    lambda =
+                                                                                                                                        path : value :
+                                                                                                                                            let
+                                                                                                                                                scripts__ = null ;
+                                                                                                                                                in value scripts__ l
                                                                                                                                     null = path : value : value ;
                                                                                                                                     string = path : value : value ;
                                                                                                                                 } script ;
