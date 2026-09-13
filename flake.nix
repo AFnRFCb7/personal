@@ -1710,7 +1710,12 @@
                                                                                                                                     lambda =
                                                                                                                                         path : value :
                                                                                                                                             let
-                                                                                                                                                scripts__ = null ;
+                                                                                                                                                scripts__ =
+                                                                                                                                                    _visitor.implementation
+                                                                                                                                                        {
+                                                                                                                                                            string = path : value : "/home/checker/resources/invalid-release/0000000000000000/${ builtins.toJSON path }.sh" ;
+                                                                                                                                                        }
+                                                                                                                                                        ( builtins.map ( { path , target } : path ) scripts_ ) ;
                                                                                                                                                 in value scripts__ ;
                                                                                                                                     null = path : value : value ;
                                                                                                                                     string = path : value : value ;
