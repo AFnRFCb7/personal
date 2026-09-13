@@ -1502,7 +1502,14 @@
                                                                                                                     )
                                                                                                                     [
                                                                                                                         {
-                                                                                                                            log = [ ] ;
+                                                                                                                            log =
+                                                                                                                                [
+                                                                                                                                    {
+                                                                                                                                        channel = "invalid-release" ;
+                                                                                                                                        payload = { } ;
+                                                                                                                                        type = message ;
+                                                                                                                                    }
+                                                                                                                                ] ;
                                                                                                                             name = "/home/checker/resources/log.yaml" ;
                                                                                                                             stat = "-rw-r--r--" ;
                                                                                                                             type = "log file" ;
