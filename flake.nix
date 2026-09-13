@@ -1739,21 +1739,6 @@
                                                                                 ] ;
                                                                         in
                                                                             {
-                                                                                empty =
-                                                                                    json
-                                                                                        [
-                                                                                            {
-                                                                                                name = "/home/checker/resources" ;
-                                                                                                stat = "drwxr-xr-x" ;
-                                                                                                type = "directory" ;
-                                                                                            }
-                                                                                            {
-                                                                                                log = [ ] ;
-                                                                                                name = "/home/checker/resources/log.yaml" ;
-                                                                                                stat = "-rw-r--r--" ;
-                                                                                                type = "log file" ;
-                                                                                            }
-                                                                                        ] ;
                                                                                 init =
                                                                                     json
                                                                                         (
