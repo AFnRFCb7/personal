@@ -1711,7 +1711,7 @@
                                                                                                                                         path : value :
                                                                                                                                             let
                                                                                                                                                 scripts__ = null ;
-                                                                                                                                                in value scripts__ l
+                                                                                                                                                in value scripts__ ;
                                                                                                                                     null = path : value : value ;
                                                                                                                                     string = path : value : value ;
                                                                                                                                 } script ;
