@@ -1259,7 +1259,6 @@
                                                             exclusions ,
                                                             init_ ,
                                                             init ,
-                                                            init-files ,
                                                             non-deterministic-regular-files ,
                                                             order ,
                                                             release_ ,
@@ -1341,7 +1340,7 @@
                                                                         init-array =
                                                                             builtins.concatLists
                                                                                 [
-                                                                                    init-files
+                                                                                    generic-parameters.init_.files
                                                                                     [
                                                                                         {
                                                                                             name = "/home/checker/.gc-roots" ;
@@ -1669,10 +1668,12 @@
                                                                             let
                                                                                 identity =
                                                                                     {
-                                                                                        corruption
+                                                                                        corruption ,
+                                                                                        files
                                                                                     } :
                                                                                         {
                                                                                             corruption = _visitor.implementation { bool = path : value : value ; } corruption ;
+                                                                                            files = _visitor.implementation { string = path : value : value ; } files ;
                                                                                         } ;
                                                                                 in identity init_ ;
                                                                         non-deterministic-regular-files = _visitor.implementation { set = path : set : builtins.throw "unsupported 1272865764937351" ; string = path : value : value ; } non-deterministic-regular-files ;
@@ -2050,8 +2051,8 @@
                                                                 {
                                                                     command ,
                                                                     exclusions ,
+                                                                    init_ ,
                                                                     init ,
-                                                                    init-files ,
                                                                     non-deterministic-regular-files ,
                                                                     order ,
                                                                     release_
@@ -2060,7 +2061,13 @@
                                                                         case-defaults =
                                                                             {
                                                                                 case = "happy" ;
-                                                                                init_ = { corruption = false ; } ;
+                                                                                init_ =
+                                                                                    let
+                                                                                        init-defaults =
+                                                                                            {
+                                                                                                corruption = false ;
+                                                                                            } ;
+                                                                                        in init_ // init-defaults ;
                                                                                 order = order ;
                                                                                 release_ =
                                                                                     {
@@ -2089,6 +2096,7 @@
                                                                 {
                                                                     command ,
                                                                     exclusions ,
+                                                                    init_ ,
                                                                     init ,
                                                                     init-files ,
                                                                     non-deterministic-regular-files ,
@@ -2099,7 +2107,13 @@
                                                                         case-defaults =
                                                                             {
                                                                                 case = "release-unrecoverable" ;
-                                                                                init_ = { corruption = true ; } ;
+                                                                                init_ =
+                                                                                    let
+                                                                                        init-defaults =
+                                                                                            {
+                                                                                                corruption = true ;
+                                                                                            } ;
+                                                                                        in init_ // init-defaults ;
                                                                                 order = order ;
                                                                                 release_ =
                                                                                     {
@@ -2158,6 +2172,38 @@
                                                                                         "/home/checker/resources/release/0000000000000002"
                                                                                     ] ;
                                                                                 init =
+                                                                                    {
+                                                                                        files =
+                                                                                            [
+                                                                                                {
+                                                                                                    name = "/home/checker/.gc-roots/0000000000000000/identity" ;
+                                                                                                    stat = "lrwxrwxrwx" ;
+                                                                                                    target = "/home/checker/resources/mounts/0000000000000002" ;
+                                                                                                    type = "symbolic link" ;
+                                                                                                }
+                                                                                                {
+                                                                                                    name = "/home/checker/.gc-roots/0000000000000000/known-hosts" ;
+                                                                                                    stat = "lrwxrwxrwx" ;
+                                                                                                    target = "/home/checker/resources/mounts/0000000000000001" ;
+                                                                                                    type = "symbolic link" ;
+                                                                                                }
+                                                                                                {
+                                                                                                    cat =
+                                                                                                        ''
+                                                                                                            Host github.com
+                                                                                                                HostName 192.168.2.234
+                                                                                                                User git
+                                                                                                                IdentityFile /home/checker/resources/mounts/0000000000000002/identity.asc
+                                                                                                                UserKnownHostsFile /home/checker/resources/mounts/0000000000000001/known-hosts.asc
+                                                                                                                StrictHostKeyChecking no
+                                                                                                        '' ;
+                                                                                                    name = "/home/checker/resources/mounts/0000000000000000/config.asc" ;
+                                                                                                    stat = "-r--------" ;
+                                                                                                    type = "regular file" ;
+                                                                                                }
+                                                                                            ]  ;
+                                                                                    } ;
+                                                                                init =
                                                                                     [
                                                                                         {
                                                                                             index = "0000000000000001" ;
@@ -2199,35 +2245,6 @@
                                                                                             text = "dot-ssh-configure" ;
                                                                                         }
                                                                                     ] ;
-                                                                                init-files =
-                                                                                    [
-                                                                                        {
-                                                                                            name = "/home/checker/.gc-roots/0000000000000000/identity" ;
-                                                                                            stat = "lrwxrwxrwx" ;
-                                                                                            target = "/home/checker/resources/mounts/0000000000000002" ;
-                                                                                            type = "symbolic link" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/.gc-roots/0000000000000000/known-hosts" ;
-                                                                                            stat = "lrwxrwxrwx" ;
-                                                                                            target = "/home/checker/resources/mounts/0000000000000001" ;
-                                                                                            type = "symbolic link" ;
-                                                                                        }
-                                                                                        {
-                                                                                            cat =
-                                                                                                ''
-                                                                                                    Host github.com
-                                                                                                        HostName 192.168.2.234
-                                                                                                        User git
-                                                                                                        IdentityFile /home/checker/resources/mounts/0000000000000002/identity.asc
-                                                                                                        UserKnownHostsFile /home/checker/resources/mounts/0000000000000001/known-hosts.asc
-                                                                                                        StrictHostKeyChecking no
-                                                                                                '' ;
-                                                                                            name = "/home/checker/resources/mounts/0000000000000000/config.asc" ;
-                                                                                            stat = "-r--------" ;
-                                                                                            type = "regular file" ;
-                                                                                        }
-                                                                                    ]  ;
                                                                                 non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" ] ;
                                                                                 order = 3 ;
                                                                                 release_ =
@@ -2251,6 +2268,18 @@
                                                                             {
                                                                                 command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
                                                                                 exclusions = [ ] ;
+                                                                                init_ =
+                                                                                    {
+                                                                                        files =
+                                                                                            [
+                                                                                                {
+                                                                                                    cat = builtins.readFile "${ shared }/dot-ssh/identity.asc" ;
+                                                                                                    name = "/home/checker/resources/mounts/0000000000000000/identity.asc" ;
+                                                                                                    stat = "-r--------" ;
+                                                                                                    type = "regular file" ;
+                                                                                                }
+                                                                                            ]  ;
+                                                                                    } ;
                                                                                 init =
                                                                                     [
                                                                                         {
@@ -2267,15 +2296,6 @@
                                                                                             text = "identity" ;
                                                                                         }
                                                                                     ] ;
-                                                                                init-files =
-                                                                                    [
-                                                                                        {
-                                                                                            cat = builtins.readFile "${ shared }/dot-ssh/identity.asc" ;
-                                                                                            name = "/home/checker/resources/mounts/0000000000000000/identity.asc" ;
-                                                                                            stat = "-r--------" ;
-                                                                                            type = "regular file" ;
-                                                                                        }
-                                                                                    ]  ;
                                                                                 non-deterministic-regular-files = [ ] ;
                                                                                 order = 1 ;
                                                                                 release_ =
@@ -2294,6 +2314,17 @@
                                                                             {
                                                                                 command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]' '' ;
                                                                                 exclusions = [ ] ;
+                                                                                init_ =
+                                                                                    {
+                                                                                        files =
+                                                                                            [
+                                                                                                {
+                                                                                                    name = "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ;
+                                                                                                    stat = "-r--------" ;
+                                                                                                    type = "non-deterministic regular file" ;
+                                                                                                }
+                                                                                            ] ;
+                                                                                    } ;
                                                                                 init =
                                                                                     [
                                                                                         {
@@ -2310,14 +2341,6 @@
                                                                                             text = "known-hosts" ;
                                                                                         }
                                                                                     ] ;
-                                                                                init-files =
-                                                                                    [
-                                                                                        {
-                                                                                            name = "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ;
-                                                                                            stat = "-r--------" ;
-                                                                                            type = "non-deterministic regular file" ;
-                                                                                        }
-                                                                                    ]  ;
                                                                                 non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
                                                                                 order = 2 ;
                                                                                 release_ =
@@ -2351,6 +2374,74 @@
                                                                                         "/home/checker/resources/release/0000000000000002"
                                                                                         "/home/checker/resources/release/0000000000000003"
                                                                                     ] ;
+                                                                                init_ =
+                                                                                    {
+                                                                                        files =
+                                                                                            [
+                                                                                                {
+                                                                                                    name = "/home/checker/.gc-roots/0000000000000000/config" ;
+                                                                                                    stat = "lrwxrwxrwx" ;
+                                                                                                    target = "/home/checker/resources/mounts/0000000000000001" ;
+                                                                                                    type = "symbolic link" ;
+                                                                                                }
+                                                                                                {
+                                                                                                    name = "/home/checker/.gc-roots/0000000000000000/open-ssh" ;
+                                                                                                    stat = "lrwxrwxrwx" ;
+                                                                                                    target = "/nix/store/9kfgh5k0frl2vkdvcvdmsfg0cmsm02nz-openssh-9.9p2" ;
+                                                                                                    type = "symbolic link" ;
+                                                                                                }
+                                                                                                {
+                                                                                                    name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg" ;
+                                                                                                    stat = "drwxr-xr-x" ;
+                                                                                                    type = "directory" ;
+                                                                                                }
+                                                                                                {
+                                                                                                    cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age" ;
+                                                                                                    name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/ownertrust.asc.age" ;
+                                                                                                    stat = "-rw-r--r--" ;
+                                                                                                    type = "regular file" ;
+                                                                                                }
+                                                                                                {
+                                                                                                    cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age" ;
+                                                                                                    name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/secret-keys.asc.age" ;
+                                                                                                    stat = "-rw-r--r--" ;
+                                                                                                    type = "regular file" ;
+                                                                                                }
+                                                                                                {
+                                                                                                    name = "/home/checker/resources/mounts/0000000000000000/dot-ssh" ;
+                                                                                                    stat = "drwxr-xr-x" ;
+                                                                                                    type = "directory" ;
+                                                                                                }
+                                                                                                {
+                                                                                                    name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile" ;
+                                                                                                    stat = "drwxr-xr-x" ;
+                                                                                                    type = "directory" ;
+                                                                                                }
+                                                                                                {
+                                                                                                    cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-ssh/mobile/identity.asc.age" ;
+                                                                                                    name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile/identity.asc.age" ;
+                                                                                                    stat = "-rw-r--r--" ;
+                                                                                                    type = "regular file" ;
+                                                                                                }
+                                                                                                {
+                                                                                                    cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-ssh/mobile/known-hosts.asc.age" ;
+                                                                                                    name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile/known-hosts.asc.age" ;
+                                                                                                    stat = "-rw-r--r--" ;
+                                                                                                    type = "regular file" ;
+                                                                                                }
+                                                                                                {
+                                                                                                    name = "/home/checker/resources/mounts/0000000000000000/github" ;
+                                                                                                    stat = "drwxr-xr-x" ;
+                                                                                                    type = "directory" ;
+                                                                                                }
+                                                                                                {
+                                                                                                    cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/github/token.asc.age" ;
+                                                                                                    name = "/home/checker/resources/mounts/0000000000000000/github/token.asc.age" ;
+                                                                                                    stat = "-rw-r--r--" ;
+                                                                                                    type = "regular file" ;
+                                                                                                }
+                                                                                            ]  ;
+                                                                                    } ;
                                                                                 init =
                                                                                     [
                                                                                         {
@@ -2435,71 +2526,6 @@
                                                                                                 '' ;
                                                                                         }
                                                                                     ] ;
-                                                                                init-files =
-                                                                                    [
-                                                                                        {
-                                                                                            name = "/home/checker/.gc-roots/0000000000000000/config" ;
-                                                                                            stat = "lrwxrwxrwx" ;
-                                                                                            target = "/home/checker/resources/mounts/0000000000000001" ;
-                                                                                            type = "symbolic link" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/.gc-roots/0000000000000000/open-ssh" ;
-                                                                                            stat = "lrwxrwxrwx" ;
-                                                                                            target = "/nix/store/9kfgh5k0frl2vkdvcvdmsfg0cmsm02nz-openssh-9.9p2" ;
-                                                                                            type = "symbolic link" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age" ;
-                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/ownertrust.asc.age" ;
-                                                                                            stat = "-rw-r--r--" ;
-                                                                                            type = "regular file" ;
-                                                                                        }
-                                                                                        {
-                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age" ;
-                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/secret-keys.asc.age" ;
-                                                                                            stat = "-rw-r--r--" ;
-                                                                                            type = "regular file" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-ssh/mobile/identity.asc.age" ;
-                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile/identity.asc.age" ;
-                                                                                            stat = "-rw-r--r--" ;
-                                                                                            type = "regular file" ;
-                                                                                        }
-                                                                                        {
-                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-ssh/mobile/known-hosts.asc.age" ;
-                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile/known-hosts.asc.age" ;
-                                                                                            stat = "-rw-r--r--" ;
-                                                                                            type = "regular file" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/resources/mounts/0000000000000000/github" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/github/token.asc.age" ;
-                                                                                            name = "/home/checker/resources/mounts/0000000000000000/github/token.asc.age" ;
-                                                                                            stat = "-rw-r--r--" ;
-                                                                                            type = "regular file" ;
-                                                                                        }
-                                                                                    ]  ;
                                                                                 non-deterministic-regular-files = [ ] ;
                                                                                 order = 4 ;
                                                                                 release_ =
@@ -2547,6 +2573,74 @@
                                                                                         "/home/checker/resources/release/0000000000000002"
                                                                                         "/home/checker/resources/release/0000000000000003"
                                                                                     ] ;
+                                                                                init_ =
+                                                                                    {
+                                                                                        files =
+                                                                                            [
+                                                                                                {
+                                                                                                    name = "/home/checker/.gc-roots/0000000000000000/config" ;
+                                                                                                    stat = "lrwxrwxrwx" ;
+                                                                                                    target = "/home/checker/resources/mounts/0000000000000001" ;
+                                                                                                    type = "symbolic link" ;
+                                                                                                }
+                                                                                                {
+                                                                                                    name = "/home/checker/.gc-roots/0000000000000000/open-ssh" ;
+                                                                                                    stat = "lrwxrwxrwx" ;
+                                                                                                    target = "/nix/store/9kfgh5k0frl2vkdvcvdmsfg0cmsm02nz-openssh-9.9p2" ;
+                                                                                                    type = "symbolic link" ;
+                                                                                                }
+                                                                                                {
+                                                                                                    name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg" ;
+                                                                                                    stat = "drwxr-xr-x" ;
+                                                                                                    type = "directory" ;
+                                                                                                }
+                                                                                                {
+                                                                                                    cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age" ;
+                                                                                                    name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/ownertrust.asc.age" ;
+                                                                                                    stat = "-rw-r--r--" ;
+                                                                                                    type = "regular file" ;
+                                                                                                }
+                                                                                                {
+                                                                                                    cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age" ;
+                                                                                                    name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/secret-keys.asc.age" ;
+                                                                                                    stat = "-rw-r--r--" ;
+                                                                                                    type = "regular file" ;
+                                                                                                }
+                                                                                                {
+                                                                                                    name = "/home/checker/resources/mounts/0000000000000000/dot-ssh" ;
+                                                                                                    stat = "drwxr-xr-x" ;
+                                                                                                    type = "directory" ;
+                                                                                                }
+                                                                                                {
+                                                                                                    name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile" ;
+                                                                                                    stat = "drwxr-xr-x" ;
+                                                                                                    type = "directory" ;
+                                                                                                }
+                                                                                                {
+                                                                                                    cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-ssh/mobile/identity.asc.age" ;
+                                                                                                    name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile/identity.asc.age" ;
+                                                                                                    stat = "-rw-r--r--" ;
+                                                                                                    type = "regular file" ;
+                                                                                                }
+                                                                                                {
+                                                                                                    cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-ssh/mobile/known-hosts.asc.age" ;
+                                                                                                    name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile/known-hosts.asc.age" ;
+                                                                                                    stat = "-rw-r--r--" ;
+                                                                                                    type = "regular file" ;
+                                                                                                }
+                                                                                                {
+                                                                                                    name = "/home/checker/resources/mounts/0000000000000000/github" ;
+                                                                                                    stat = "drwxr-xr-x" ;
+                                                                                                    type = "directory" ;
+                                                                                                }
+                                                                                                {
+                                                                                                    cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/github/token.asc.age" ;
+                                                                                                    name = "/home/checker/resources/mounts/0000000000000000/github/token.asc.age" ;
+                                                                                                    stat = "-rw-r--r--" ;
+                                                                                                    type = "regular file" ;
+                                                                                                }
+                                                                                            ]  ;
+                                                                                    } ;
                                                                                 init =
                                                                                     [
                                                                                         {
@@ -2631,71 +2725,6 @@
                                                                                                 '' ;
                                                                                         }
                                                                                     ] ;
-                                                                                init-files =
-                                                                                    [
-                                                                                        {
-                                                                                            name = "/home/checker/.gc-roots/0000000000000000/config" ;
-                                                                                            stat = "lrwxrwxrwx" ;
-                                                                                            target = "/home/checker/resources/mounts/0000000000000001" ;
-                                                                                            type = "symbolic link" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/.gc-roots/0000000000000000/open-ssh" ;
-                                                                                            stat = "lrwxrwxrwx" ;
-                                                                                            target = "/nix/store/9kfgh5k0frl2vkdvcvdmsfg0cmsm02nz-openssh-9.9p2" ;
-                                                                                            type = "symbolic link" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age" ;
-                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/ownertrust.asc.age" ;
-                                                                                            stat = "-rw-r--r--" ;
-                                                                                            type = "regular file" ;
-                                                                                        }
-                                                                                        {
-                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age" ;
-                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/secret-keys.asc.age" ;
-                                                                                            stat = "-rw-r--r--" ;
-                                                                                            type = "regular file" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-ssh/mobile/identity.asc.age" ;
-                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile/identity.asc.age" ;
-                                                                                            stat = "-rw-r--r--" ;
-                                                                                            type = "regular file" ;
-                                                                                        }
-                                                                                        {
-                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-ssh/mobile/known-hosts.asc.age" ;
-                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile/known-hosts.asc.age" ;
-                                                                                            stat = "-rw-r--r--" ;
-                                                                                            type = "regular file" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/resources/mounts/0000000000000000/github" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/github/token.asc.age" ;
-                                                                                            name = "/home/checker/resources/mounts/0000000000000000/github/token.asc.age" ;
-                                                                                            stat = "-rw-r--r--" ;
-                                                                                            type = "regular file" ;
-                                                                                        }
-                                                                                    ]  ;
                                                                                 non-deterministic-regular-files = [ ] ;
                                                                                 order = 5 ;
                                                                                 release_ =
