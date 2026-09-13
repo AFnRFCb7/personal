@@ -1699,12 +1699,15 @@
                                                                                                             scripts ,
                                                                                                             success
                                                                                                         } :
-                                                                                                            {
-                                                                                                                standard-error = _visitor.implementation { null = path : value : value ; string = path : value : value ; } standard-error ;
-                                                                                                                script = _visitor.implementation { null = path : value : value ; string = path : value : value ; } script ;
+                                                                                                            let
                                                                                                                 scripts = _visitor.implementation { null = path : value : [ ] ; string = path : value : value ; } scripts ;
-                                                                                                                success = _visitor.implementation { bool = path : value : value ; null = path : value : true ; } success ;
-                                                                                                            } ;
+                                                                                                                in
+                                                                                                                    {
+                                                                                                                        standard-error = _visitor.implementation { null = path : value : value ; string = path : value : value ; } standard-error ;
+                                                                                                                        script = _visitor.implementation { lambda = path : value : value scripts ; null = path : value : value ; string = path : value : value ; } script ;
+                                                                                                                        scripts = scripts ;
+                                                                                                                        success = _visitor.implementation { bool = path : value : value ; null = path : value : true ; } success ;
+                                                                                                                    } ;
                                                                                                     in identity recovery ;
                                                                                             script = _visitor.implementation { string = path : value : value ; } script ;
                                                                                         } ;
