@@ -1681,7 +1681,6 @@
                                                                             {
                                                                                 corrupt =
                                                                                     {
-                                                                                        post-init = json corrupt-array ;
                                                                                         post-release =
                                                                                             json
                                                                                                 (
