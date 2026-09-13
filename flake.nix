@@ -1347,17 +1347,6 @@
                                                                                         }
                                                                                     ]
                                                                                 ] ;
-                                                                        json =
-                                                                            json :
-                                                                                let
-                                                                                    derivation =
-                                                                                        pkgs.runCommand
-                                                                                            "init.json"
-                                                                                            { nativeBuildInputs = [ pkgs.jq ] ; }
-                                                                                            ''
-                                                                                                jq --sort-keys "." ${ builtins.toFile "data.json" ( builtins.toJSON ( builtins.sort ( a : b : a.name < b.name ) json ) ) } > $out
-                                                                                            '' ;
-                                                                                    in builtins.readFile derivation ;
                                                                         release-array =
                                                                             builtins.concatLists
                                                                                 [
@@ -1720,7 +1709,29 @@
                                                                                         } ;
                                                                                 in identity stage ;
                                                                     } ;
-                                                                messages = [ ] ;
+                                                                messages =
+                                                                    {
+                                                                        subscribe =
+                                                                            let
+                                                                                channels = [ "invalid-init" "invalid-release" "valid-init" "valid-release" ] ;
+                                                                                generator =
+                                                                                    index :
+                                                                                        let
+                                                                                            channel = builtins.elemAt channels index ;
+                                                                                            in json ( builtins.listToAttrs [ { name = channel ; value = { channel = channel ; payload = index ; type = "subscribe" ; } ; } ] ) ;
+                                                                                in builtins.genList generator ( builtins.length channels ) ;
+                                                                    } ;
+                                                                json =
+                                                                    json :
+                                                                        let
+                                                                            derivation =
+                                                                                pkgs.runCommand
+                                                                                    "init.json"
+                                                                                    { nativeBuildInputs = [ pkgs.jq ] ; }
+                                                                                    ''
+                                                                                        jq --sort-keys "." ${ builtins.toFile "data.json" ( builtins.toJSON ( builtins.sort ( a : b : a.name < b.name ) json ) ) } > $out
+                                                                                    '' ;
+                                                                            in builtins.readFile derivation ;
                                                                 sequences =
                                                                     {
                                                                         setup =
@@ -1741,22 +1752,22 @@
                                                                                 }
                                                                                 {
                                                                                         process = "pre" ;
-                                                                                        standard-output = subscribe.invalid-init ;
+                                                                                        standard-output = messages.subscribe.invalid-init ;
                                                                                         text = "check-redis" ;
                                                                                 }
                                                                                 {
                                                                                         process = "pre" ;
-                                                                                        standard-output = subscribe.invalid-release ;
+                                                                                        standard-output = messages.subscribe.invalid-release ;
                                                                                         text = "check-redis" ;
                                                                                 }
                                                                                 {
                                                                                         process = "pre" ;
-                                                                                        standard-output = subscribe.valid-init ;
+                                                                                        standard-output = messages.subscribe.valid-init ;
                                                                                         text = "check-redis" ;
                                                                                 }
                                                                                 {
                                                                                         process = "pre" ;
-                                                                                        standard-output = subscribe.valid-release ;
+                                                                                        standard-output = messages.subscribe.valid-release ;
                                                                                         text = "check-redis" ;
                                                                                 }
                                                                                 {
