@@ -1704,7 +1704,12 @@
                                                                                                                 in
                                                                                                                     {
                                                                                                                         standard-error = _visitor.implementation { null = path : value : value ; string = path : value : value ; } standard-error ;
-                                                                                                                        script = _visitor.implementation { null = path : value : value ; string = path : value : value ; } script ;
+                                                                                                                        script =
+                                                                                                                            _visitor.implementation
+                                                                                                                                {
+                                                                                                                                    null = path : value : value ;
+                                                                                                                                    string = path : value : value ;
+                                                                                                                                } script ;
                                                                                                                         scripts = scripts_ ;
                                                                                                                         success = _visitor.implementation { bool = path : value : value ; null = path : value : true ; } success ;
                                                                                                                     } ;
