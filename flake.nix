@@ -1257,6 +1257,7 @@
                                                             case ,
                                                             command ,
                                                             exclusions ,
+                                                            init_ ,
                                                             init ,
                                                             init-files ,
                                                             init-post-corruption ,
@@ -1664,6 +1665,7 @@
                                                                         case = _visitor.implementation { list = path : list : builtins.throw "unsupported 6314294198285596" ; set = path : set : builtins.throw "unsupported 8389691287776329" ; string = path : value : value ; } case ;
                                                                         command = _visitor.implementation { list = path : list : builtins.throw "unsupported 5565718583448517" ; set = path : set : builtins.throw "unsupported 1975775495651532" ; string = path : value : value ; } command ;
                                                                         exclusions = _visitor.implementation { set = path : set : builtins.throw "unsupported 3513373234215328" ; string = path : value : value ; } exclusions ;
+                                                                        init_ = init_ ;
                                                                         init-post-corruption = _visitor.implementation { bool = path : value : value ; } init-post-corruption ;
                                                                         non-deterministic-regular-files = _visitor.implementation { set = path : set : builtins.throw "unsupported 1272865764937351" ; string = path : value : value ; } non-deterministic-regular-files ;
                                                                         order = _visitor.implementation { int = path : value : value ; list = path : list : builtins.throw "unsupported 4882767679771347" ; set = path : set : builtins.throw "unsupported 7144156552857862" ; } order ;
@@ -2040,6 +2042,7 @@
                                                                         case-defaults =
                                                                             {
                                                                                 case = "happy" ;
+                                                                                init_ = null ;
                                                                                 init-post-corruption = false ;
                                                                                 order = order ;
                                                                                 release_ =
@@ -2075,6 +2078,7 @@
                                                                         case-defaults =
                                                                             {
                                                                                 case = "release-unrecoverable" ;
+                                                                                init_ = null ;
                                                                                 init-post-corruption = true ;
                                                                                 order = order ;
                                                                                 release_ =
