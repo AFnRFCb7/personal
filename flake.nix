@@ -1507,7 +1507,7 @@
                                                                                                                                     {
                                                                                                                                         channel = "invalid-release" ;
                                                                                                                                         payload = { } ;
-                                                                                                                                        type = message ;
+                                                                                                                                        type = "message" ;
                                                                                                                                     }
                                                                                                                                 ] ;
                                                                                                                             name = "/home/checker/resources/log.yaml" ;
