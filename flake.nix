@@ -1739,9 +1739,20 @@
                                                                             let
                                                                                 identity =
                                                                                     {
+                                                                                        action ,
                                                                                         corruption
                                                                                     } :
                                                                                         {
+                                                                                            action =
+                                                                                                let
+                                                                                                    identity =
+                                                                                                        {
+                                                                                                            messages
+                                                                                                        } :
+                                                                                                            {
+                                                                                                                messages = _visitor.implementation { int = path : value : value ; string = path : value : value ; } messages ;
+                                                                                                            } ;
+                                                                                                    in identity action ;
                                                                                             corruption = _visitor.implementation { bool = path : value : value ; } corruption ;
                                                                                         } ;
                                                                                 in identity stage ;
@@ -2092,6 +2103,7 @@
                                                                                     } ;
                                                                                 stage =
                                                                                     {
+                                                                                        action.messages = [ ] ;
                                                                                         corruption = false ;
                                                                                     } ;
                                                                             } ;
@@ -2135,6 +2147,7 @@
                                                                                     } ;
                                                                                 stage =
                                                                                     {
+                                                                                        action.messages = [ ] ;
                                                                                         corruption = false ;
                                                                                     } ;
                                                                             } ;
