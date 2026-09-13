@@ -1687,6 +1687,7 @@
                                                                                                     in identity init_ ;
                                                                                             recovery = recovery ;
                                                                                         } ;
+                                                                                in identity init_ ;
                                                                         non-deterministic-regular-files = _visitor.implementation { set = path : set : builtins.throw "unsupported 1272865764937351" ; string = path : value : value ; } non-deterministic-regular-files ;
                                                                         order = _visitor.implementation { int = path : value : value ; list = path : list : builtins.throw "unsupported 4882767679771347" ; set = path : set : builtins.throw "unsupported 7144156552857862" ; } order ;
                                                                         release_ =
