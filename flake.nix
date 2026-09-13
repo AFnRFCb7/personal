@@ -1735,7 +1735,7 @@
                                                                                         } ;
                                                                                 in identity stage ;
                                                                     } ;
-                                                                size = if builtins.length generic-parameters.init_.messages == builtins.length generic-parameters.release_.action.messages then builtins.length init else builtins.throw "the length of init ${ builtins.toString ( builtins.length generic-parameters.init_.messages ) } must equal the length of release ${ builtins.toString ( builtins.length generic-parameters.release_.action.messages ) }" ;
+                                                                size = if builtins.length generic-parameters.init_.messages == builtins.length generic-parameters.release_.action.messages then builtins.length generic-parameters.init_.messages else builtins.throw "the length of init ${ builtins.toString ( builtins.length generic-parameters.init_.messages ) } must equal the length of release ${ builtins.toString ( builtins.length generic-parameters.release_.action.messages ) }" ;
                                                                 subscribe =
                                                                     {
                                                                         invalid-init = "{\n  \"channel\": \"invalid-init\",\n  \"payload\": 1,\n  \"type\": \"subscribe\"\n}\n" ;
