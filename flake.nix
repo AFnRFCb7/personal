@@ -1668,6 +1668,7 @@
                                                                                 identity =
                                                                                     {
                                                                                         action ,
+                                                                                        corruption ,
                                                                                         recovery
                                                                                     } :
                                                                                         {
@@ -1680,11 +1681,11 @@
                                                                                                             messages
                                                                                                         } :
                                                                                                             {
-                                                                                                                corruption = _visitor.implementation { bool = path : value : value ; } corruption ;
                                                                                                                 files = _visitor.implementation { string = path : value : value ; } files ;
                                                                                                                 messages = _visitor.implementation { int = path : value : value ; string = path : value : value ; } messages ;
                                                                                                             } ;
                                                                                                     in identity action ;
+                                                                                            corruption = _visitor.implementation { bool = path : value : value ; } corruption ;
                                                                                             recovery = recovery ;
                                                                                         } ;
                                                                                 in identity init_ ;
@@ -1880,7 +1881,7 @@
                                                                                             }
                                                                                         ]
                                                                                         (
-                                                                                            if generic-parameters.init_.action.corruption then
+                                                                                            if generic-parameters.init_.corruption then
                                                                                                 [
                                                                                                     {
                                                                                                         process = "pre" ;
@@ -1900,7 +1901,7 @@
                                                                                             }
                                                                                         ]
                                                                                         (
-                                                                                            if generic-parameters.init_.action.corruption then
+                                                                                            if generic-parameters.init_.corruption then
                                                                                                 [
                                                                                                     {
                                                                                                             process = "post" ;
@@ -1957,7 +1958,7 @@
                                                                                                             text = ''check-redis --exclude'' ;
                                                                                                         } ;
                                                                                                 in
-                                                                                                    if generic-parameters.init_.action.corruption then
+                                                                                                    if generic-parameters.init_.corruption then
                                                                                                         [
                                                                                                             {
                                                                                                                 process = "post" ;
@@ -2015,7 +2016,7 @@
                                                                                         [
                                                                                             {
                                                                                                     process = "post" ;
-                                                                                                    status = if generic-parameters.init_.action.corruption then 124 else 0 ;
+                                                                                                    status = if generic-parameters.init_.corruption then 124 else 0 ;
                                                                                                     text = '' "$RESOURCES"/clean.sh '' ;
                                                                                             }
                                                                                             {
@@ -2074,7 +2075,8 @@
                                                                                 case = "happy" ;
                                                                                 init_ =
                                                                                     {
-                                                                                        action = init_.action // { corruption = false ; } ;
+                                                                                        action = init_.action ;
+                                                                                        corruption = false ;
                                                                                         recovery = null ;
                                                                                     } ;
                                                                                 order = order ;
@@ -2116,7 +2118,8 @@
                                                                                 case = "release-unrecoverable" ;
                                                                                 init_ =
                                                                                     {
-                                                                                        action = init_.action // { corruption = true ; } ;
+                                                                                        action = init_.action ;
+                                                                                        corruption = true ;
                                                                                         recovery = null ;
                                                                                     } ;
                                                                                 order = order ;
