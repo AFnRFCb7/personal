@@ -1778,13 +1778,6 @@
                                                                             ] ;
                                                                     } ;
                                                                 size = if builtins.length generic-parameters.init.action.messages == builtins.length generic-parameters.release.action.messages then builtins.length generic-parameters.init.action.messages else builtins.throw "the length of init ${ builtins.toString ( builtins.length generic-parameters.init.action.messages ) } must equal the length of release ${ builtins.toString ( builtins.length generic-parameters.release.action.messages ) }" ;
-                                                                subscribe =
-                                                                    {
-                                                                        invalid-init = "{\n  \"channel\": \"invalid-init\",\n  \"payload\": 1,\n  \"type\": \"subscribe\"\n}\n" ;
-                                                                        invalid-release = "{\n  \"channel\": \"invalid-release\",\n  \"payload\": 2,\n  \"type\": \"subscribe\"\n}\n" ;
-                                                                        valid-init = "{\n  \"channel\": \"valid-init\",\n  \"payload\": 3,\n  \"type\": \"subscribe\"\n}\n" ;
-                                                                        valid-release = "{\n  \"channel\": \"valid-release\",\n  \"payload\": 4,\n  \"type\": \"subscribe\"\n}\n" ;
-                                                                    } ;
                                                                 in
                                                                     _resource.check2
                                                                         {
@@ -1847,6 +1840,8 @@
                                                                                                     standard-output = "183" ;
                                                                                                     text = "check-redis" ;
                                                                                             }
+                                                                                        ]
+                                                                                        [
                                                                                             {
                                                                                                     process = "mid" ;
                                                                                                     standard-output = "/home/checker/resources/mounts/0000000000000000" ;
