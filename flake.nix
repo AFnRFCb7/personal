@@ -1721,6 +1721,51 @@
                                                                                 in identity stage ;
                                                                     } ;
                                                                 messages = [ ] ;
+                                                                sequences =
+                                                                    {
+                                                                        setup =
+                                                                            [
+                                                                                {
+                                                                                        process = "pre" ;
+                                                                                        text = "force-garbage-collection" ;
+                                                                                }
+                                                                                {
+                                                                                        process = "pre" ;
+                                                                                        text = "force-sync" ;
+                                                                                }
+                                                                                {
+                                                                                        process = "pre" ;
+                                                                                        reads = false ;
+                                                                                        standard-output = files.empty ;
+                                                                                        text = "check-files --delete true" ;
+                                                                                }
+                                                                                {
+                                                                                        process = "pre" ;
+                                                                                        standard-output = subscribe.invalid-init ;
+                                                                                        text = "check-redis" ;
+                                                                                }
+                                                                                {
+                                                                                        process = "pre" ;
+                                                                                        standard-output = subscribe.invalid-release ;
+                                                                                        text = "check-redis" ;
+                                                                                }
+                                                                                {
+                                                                                        process = "pre" ;
+                                                                                        standard-output = subscribe.valid-init ;
+                                                                                        text = "check-redis" ;
+                                                                                }
+                                                                                {
+                                                                                        process = "pre" ;
+                                                                                        standard-output = subscribe.valid-release ;
+                                                                                        text = "check-redis" ;
+                                                                                }
+                                                                                {
+                                                                                        process = "pre" ;
+                                                                                        standard-output = "183" ;
+                                                                                        text = "check-redis" ;
+                                                                                }
+                                                                            ] ;
+                                                                    } ;
                                                                 size = if builtins.length generic-parameters.init.action.messages == builtins.length generic-parameters.release.action.messages then builtins.length generic-parameters.init.action.messages else builtins.throw "the length of init ${ builtins.toString ( builtins.length generic-parameters.init.action.messages ) } must equal the length of release ${ builtins.toString ( builtins.length generic-parameters.release.action.messages ) }" ;
                                                                 subscribe =
                                                                     {
@@ -1736,46 +1781,8 @@
                                                                             inputs =
                                                                                 builtins.concatLists
                                                                                     [
+                                                                                        sequences.setup
                                                                                         [
-                                                                                            {
-                                                                                                    process = "pre" ;
-                                                                                                    text = "force-garbage-collection" ;
-                                                                                            }
-                                                                                            {
-                                                                                                    process = "pre" ;
-                                                                                                    text = "force-sync" ;
-                                                                                            }
-                                                                                            {
-                                                                                                    process = "pre" ;
-                                                                                                    reads = false ;
-                                                                                                    standard-output = files.empty ;
-                                                                                                    text = "check-files --delete true" ;
-                                                                                            }
-                                                                                            {
-                                                                                                    process = "pre" ;
-                                                                                                    standard-output = subscribe.invalid-init ;
-                                                                                                    text = "check-redis" ;
-                                                                                            }
-                                                                                            {
-                                                                                                    process = "pre" ;
-                                                                                                    standard-output = subscribe.invalid-release ;
-                                                                                                    text = "check-redis" ;
-                                                                                            }
-                                                                                            {
-                                                                                                    process = "pre" ;
-                                                                                                    standard-output = subscribe.valid-init ;
-                                                                                                    text = "check-redis" ;
-                                                                                            }
-                                                                                            {
-                                                                                                    process = "pre" ;
-                                                                                                    standard-output = subscribe.valid-release ;
-                                                                                                    text = "check-redis" ;
-                                                                                            }
-                                                                                            {
-                                                                                                    process = "pre" ;
-                                                                                                    standard-output = "183" ;
-                                                                                                    text = "check-redis" ;
-                                                                                            }
                                                                                             {
                                                                                                     process = "pre" ;
                                                                                                     standard-output = "/home/checker/resources/mounts/0000000000000000" ;
