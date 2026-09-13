@@ -1264,7 +1264,7 @@
                                                             stage
                                                         } :
                                                             let
-                                                                files_ =
+                                                                files =
                                                                     let
                                                                         init-array =
                                                                             builtins.concatLists
