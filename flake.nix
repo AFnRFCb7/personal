@@ -1279,7 +1279,46 @@
                                                                                     in builtins.readFile derivation ;
                                                                         in
                                                                             {
-
+                                                                                clean =
+                                                                                    {
+                                                                                        true =
+                                                                                            {
+                                                                                                true =
+                                                                                                    json
+                                                                                                        [
+                                                                                                            {
+                                                                                                                name = "/home/checker/.gc-roots" ;
+                                                                                                                stat = "drwxr-xr-x" ;
+                                                                                                                type = "directory" ;
+                                                                                                            }
+                                                                                                            {
+                                                                                                                name = "/home/checker/resources" ;
+                                                                                                                stat = "drwxr-xr-x" ;
+                                                                                                                type = "directory" ;
+                                                                                                            }
+                                                                                                        ] ;
+                                                                                                false = null ;
+                                                                                            } ;
+                                                                                        false =
+                                                                                            {
+                                                                                                true = null ;
+                                                                                                false = null ;
+                                                                                            } ;
+                                                                                    } ;
+                                                                            } ;                                {
+                                                                                clean =
+                                                                                    {
+                                                                                        true =
+                                                                                            {
+                                                                                                true = null ;
+                                                                                                false = null ;
+                                                                                            } ;
+                                                                                        false =
+                                                                                            {
+                                                                                                true = null ;
+                                                                                                false = null ;
+                                                                                            } ;
+                                                                                    } ;
                                                                             } ;
                                                                 files =
                                                                     let
@@ -1517,20 +1556,6 @@
                                                                                 ] ;
                                                                         in
                                                                             {
-                                                                                clean =
-                                                                                    json
-                                                                                        [
-                                                                                            {
-                                                                                                name = "/home/checker/.gc-roots" ;
-                                                                                                stat = "drwxr-xr-x" ;
-                                                                                                type = "directory" ;
-                                                                                            }
-                                                                                            {
-                                                                                                name = "/home/checker/resources" ;
-                                                                                                stat = "drwxr-xr-x" ;
-                                                                                                type = "directory" ;
-                                                                                            }
-                                                                                        ] ;
                                                                                 corrupt =
                                                                                     {
                                                                                         post-init = json corrupt-array ;
@@ -2053,7 +2078,7 @@
                                                                                             {
                                                                                                     process = "post" ;
                                                                                                     reads = false ;
-                                                                                                    standard-output = if generic-parameters.release.recovery.success then files.clean else files.corrupt.post-clean ;
+                                                                                                    standard-output = if generic-parameters.release.recovery.success then files_.clean.true.true else files.corrupt.post-clean ;
                                                                                                     text =
                                                                                                         ''
                                                                                                             check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
