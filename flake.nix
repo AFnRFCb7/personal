@@ -1262,8 +1262,7 @@
                                                             init-post-corruption ,
                                                             non-deterministic-regular-files ,
                                                             order ,
-                                                            release_ ,
-                                                            release-post-recovery
+                                                            release_
                                                         } :
                                                             let
                                                                 files =
@@ -1696,11 +1695,13 @@
                                                                                                     identity =
                                                                                                         {
                                                                                                             standard-error ,
+                                                                                                            script ,
                                                                                                             scripts ,
                                                                                                             success
                                                                                                         } :
                                                                                                             {
                                                                                                                 standard-error = _visitor.implementation { null = path : value : value ; string = path : value : value ; } standard-error ;
+                                                                                                                script = _visitor.implementation { null = path : value : value ; string = path : value : value ; } script ;
                                                                                                                 scripts = _visitor.implementation { null = path : value : [ ] ; string = path : value : value ; } scripts ;
                                                                                                                 success = _visitor.implementation { bool = path : value : value ; null = path : value : true ; } success ;
                                                                                                             } ;
@@ -1708,7 +1709,6 @@
                                                                                             script = _visitor.implementation { string = path : value : value ; } script ;
                                                                                         } ;
                                                                                 in identity release_ ;
-                                                                        release-post-recovery = _visitor.implementation { null = path : value : value ; string = path : value : value ; } release-post-recovery ;
                                                                     } ;
                                                                 size = if builtins.length init == builtins.length release_.action.messages then builtins.length init else builtins.throw "the length of init ${ builtins.toString ( builtins.length init ) } must equal the length of release ${ builtins.toString ( builtins.length release_.action.messages ) }" ;
                                                                 subscribe =
@@ -1948,13 +1948,13 @@
                                                                                             }
                                                                                         ]
                                                                                         (
-                                                                                            if builtins.typeOf generic-parameters.release-post-recovery == "string" then
+                                                                                            if builtins.typeOf generic-parameters.release_.recovery.script == "string" then
                                                                                                 [
                                                                                                     {
                                                                                                         process = "post" ;
                                                                                                         status = 111 ;
                                                                                                         standard-error = generic-parameters.release_.recovery.standard-error ;
-                                                                                                        text = generic-parameters.release-post-recovery ;
+                                                                                                        text = generic-parameters.release_.recovery.script ;
                                                                                                     }
                                                                                                     {
                                                                                                         process = "post" ;
@@ -2045,12 +2045,12 @@
                                                                                         recovery =
                                                                                             {
                                                                                                 standard-error = null ;
+                                                                                                script = null ;
                                                                                                 scripts = null ;
                                                                                                 success = null ;
                                                                                             } ;
                                                                                         script = release_.script ;
                                                                                     } ;
-                                                                                release-post-recovery = null ;
                                                                             } ;
                                                                         parameters = primary // case-defaults ;
                                                                         in generic parameters ;
@@ -2086,7 +2086,6 @@
                                                                                                 in release_.recovery // recovery-defaults ;
                                                                                         script = release_.script ;
                                                                                     } ;
-                                                                                release-post-recovery = ''/home/checker/resources/invalid-release/0000000000000000/'["unrecoverable"]'.sh'' ;
                                                                             } ;
                                                                         parameters = primary // case-defaults ;
                                                                         in generic parameters ;
@@ -2701,6 +2700,7 @@
                                                                                                     ''
                                                                                                         UNRECOVERABLE
                                                                                                     '' ;
+                                                                                                script = ''/home/checker/resources/invalid-release/0000000000000000/'["unrecoverable"]'.sh'' ;
                                                                                                 scripts =
                                                                                                     [
                                                                                                         { path = [ "recoverable" ] ; target = "/nix/store/7n9bx25cnhbc41ah8nrn5pmc3ic2ayzi-recovery/bin/recovery" ; }
