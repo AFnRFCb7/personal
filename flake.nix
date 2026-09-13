@@ -1430,7 +1430,6 @@
                                                                                 ] ;
                                                                         in
                                                                             {
-                                                                                _TEST_ = json [ ] ;
                                                                                 clean =
                                                                                     {
                                                                                         true =
@@ -1449,7 +1448,7 @@
                                                                                                                 type = "directory" ;
                                                                                                             }
                                                                                                         ] ;
-                                                                                                false = files_.release.true.false ;
+                                                                                                false = files.release.true.false ;
                                                                                             } ;
                                                                                         false =
                                                                                             {
@@ -1622,243 +1621,6 @@
                                                                                             } ;
                                                                                     } ;
                                                                             } ;
-                                                                files =
-                                                                    let
-                                                                        corrupt-array =
-                                                                            builtins.concatLists
-                                                                                [
-                                                                                    [
-                                                                                        {
-                                                                                            name = "/home/checker/.gc-roots" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/resources" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/resources/canonical" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/resources/invalid-init" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            log =
-                                                                                                let
-                                                                                                    mapper =
-                                                                                                        { index , seed , standard-output , targets , text } :
-                                                                                                            {
-                                                                                                                channel = "valid-init" ;
-                                                                                                                payload =
-                                                                                                                    {
-                                                                                                                        arguments = [ ] ;
-                                                                                                                        index = index ;
-                                                                                                                        inputs = { } ;
-                                                                                                                        seed = seed ;
-                                                                                                                        standard-output = standard-output ;
-                                                                                                                        targets = targets ;
-                                                                                                                        temporary = false ;
-                                                                                                                        text = text ;
-                                                                                                                    } ;
-                                                                                                                type = "message" ;
-                                                                                                            } ;
-                                                                                                    in builtins.map mapper generic-parameters.init.action.messages ;
-                                                                                            name = "/home/checker/resources/log.yaml" ;
-                                                                                            stat = "-rw-r--r--" ;
-                                                                                            type = "log file" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/resources/mounts" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/resources/release" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            cat =
-                                                                                                ''
-                                                                                                    ${ builtins.toString size }
-                                                                                                '' ;
-                                                                                            name = "/home/checker/resources/sequential" ;
-                                                                                            stat = "-rw-r--r--" ;
-                                                                                            type = "regular file" ;
-                                                                                        }
-                                                                                    ]
-                                                                                ] ;
-                                                                        init-array =
-                                                                            builtins.concatLists
-                                                                                [
-                                                                                    generic-parameters.init.action.files
-                                                                                    [
-                                                                                        {
-                                                                                            name = "/home/checker/.gc-roots" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/.gc-roots/0000000000000000" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/resources" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/resources/canonical" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/resources/invalid-init" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            log =
-                                                                                                let
-                                                                                                    mapper =
-                                                                                                        { index , seed , standard-output , targets , text } :
-                                                                                                            {
-                                                                                                                channel = "valid-init" ;
-                                                                                                                payload =
-                                                                                                                    {
-                                                                                                                        arguments = [ ] ;
-                                                                                                                        index = index ;
-                                                                                                                        inputs = { } ;
-                                                                                                                        seed = seed ;
-                                                                                                                        standard-output = standard-output ;
-                                                                                                                        targets = targets ;
-                                                                                                                        temporary = false ;
-                                                                                                                        text = text ;
-                                                                                                                    } ;
-                                                                                                                type = "message" ;
-                                                                                                            } ;
-                                                                                                    in builtins.map mapper generic-parameters.init.action.messages ;
-                                                                                            name = "/home/checker/resources/log.yaml" ;
-                                                                                            stat = "-rw-r--r--" ;
-                                                                                            type = "log file" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/resources/mounts" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/resources/mounts/0000000000000000" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/resources/release" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            cat =
-                                                                                                ''
-                                                                                                    ${ builtins.toString size }
-                                                                                                '' ;
-                                                                                            name = "/home/checker/resources/sequential" ;
-                                                                                            stat = "-rw-r--r--" ;
-                                                                                            type = "regular file" ;
-                                                                                        }
-                                                                                    ]
-                                                                                ] ;
-                                                                        json =
-                                                                            json :
-                                                                                let
-                                                                                    derivation =
-                                                                                        pkgs.runCommand
-                                                                                            "init.json"
-                                                                                            { nativeBuildInputs = [ pkgs.jq ] ; }
-                                                                                            ''
-                                                                                                jq --sort-keys "." ${ builtins.toFile "data.json" ( builtins.toJSON ( builtins.sort ( a : b : a.name < b.name ) json ) ) } > $out
-                                                                                            '' ;
-                                                                                    in builtins.readFile derivation ;
-                                                                        release-array =
-                                                                            builtins.concatLists
-                                                                                [
-                                                                                    [
-                                                                                        {
-                                                                                            name = "/home/checker/.gc-roots" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/resources" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/resources/canonical" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/resources/invalid-init" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/resources/invalid-release" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            log =
-                                                                                                let
-                                                                                                    mapper =
-                                                                                                        { channel , index , standard-output , status } :
-                                                                                                            {
-                                                                                                                channel = channel ;
-                                                                                                                payload =
-                                                                                                                    {
-                                                                                                                        index = pkgs.lib.fixedWidthString 16 "0" ( builtins.toString index ) ;
-                                                                                                                        standard-output = standard-output ;
-                                                                                                                        status = status ;
-                                                                                                                    } ;
-                                                                                                                type = "message" ;
-                                                                                                            } ;
-                                                                                                    in builtins.map mapper release.action.messages ;
-                                                                                                name = "/home/checker/resources/log.yaml" ;
-                                                                                                stat = "-rw-r--r--" ;
-                                                                                                type = "log file" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/resources/mounts" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            name = "/home/checker/resources/release" ;
-                                                                                            stat = "drwxr-xr-x" ;
-                                                                                            type = "directory" ;
-                                                                                        }
-                                                                                        {
-                                                                                            cat =
-                                                                                                ''
-                                                                                                    ${ builtins.toString size }
-                                                                                                '' ;
-                                                                                            name = "/home/checker/resources/sequential" ;
-                                                                                            stat = "-rw-r--r--" ;
-                                                                                            type = "regular file" ;
-                                                                                        }
-                                                                                    ]
-                                                                                ] ;
-                                                                        in
-                                                                            {
-                                                                            } ;
                                                                 empty-files =  "[\n  {\n    \"name\": \"/home/checker/resources\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  },\n  {\n    \"cat\": \"[]\",\n    \"name\": \"/home/checker/resources/log.yaml\",\n    \"stat\": \"-rw-r--r--\",\n    \"type\": \"regular file\"\n  }\n]\n" ;
                                                                 generic-parameters =
                                                                     {
@@ -1987,7 +1749,7 @@
                                                                                             {
                                                                                                     process = "pre" ;
                                                                                                     reads = false ;
-                                                                                                    standard-output = files_.empty ;
+                                                                                                    standard-output = files.empty ;
                                                                                                     text = "check-files --delete true" ;
                                                                                             }
                                                                                             {
@@ -2027,7 +1789,7 @@
                                                                                             {
                                                                                                     process = "pre" ;
                                                                                                     reads = false ;
-                                                                                                    standard-output = files_.init.true ;
+                                                                                                    standard-output = files.init.true ;
                                                                                                     text =
                                                                                                         ''
                                                                                                             check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
@@ -2080,7 +1842,7 @@
                                                                                             {
                                                                                                     process = "pre" ;
                                                                                                     reads = false ;
-                                                                                                    standard-output = files_.init.true ;
+                                                                                                    standard-output = files.init.true ;
                                                                                                     text =
                                                                                                         ''
                                                                                                             check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
@@ -2118,7 +1880,7 @@
                                                                                                     {
                                                                                                             process = "post" ;
                                                                                                             reads = false ;
-                                                                                                            standard-output = files_.init.false ;
+                                                                                                            standard-output = files.init.false ;
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
@@ -2130,7 +1892,7 @@
                                                                                                     {
                                                                                                             process = "post" ;
                                                                                                             reads = false ;
-                                                                                                            standard-output = files_.release.true.true ;
+                                                                                                            standard-output = files.release.true.true ;
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     check-files --exclusion "/home/checker/resources/*.lock" --delete true
@@ -2211,7 +1973,7 @@
                                                                                                     }
                                                                                                     {
                                                                                                         process = "post" ;
-                                                                                                        standard-output = if generic-parameters.release.recovery.success then files_.release.true.true else files_.release.true.false ;
+                                                                                                        standard-output = if generic-parameters.release.recovery.success then files.release.true.true else files.release.true.false ;
                                                                                                         text =
                                                                                                             ''
                                                                                                                 check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
@@ -2238,7 +2000,7 @@
                                                                                             {
                                                                                                     process = "post" ;
                                                                                                     reads = false ;
-                                                                                                    standard-output = if generic-parameters.release.recovery.success then files_.clean.true.true else files_.clean.true.false ;
+                                                                                                    standard-output = if generic-parameters.release.recovery.success then files.clean.true.true else files.clean.true.false ;
                                                                                                     text =
                                                                                                         ''
                                                                                                             check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
