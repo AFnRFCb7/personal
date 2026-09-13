@@ -1260,7 +1260,7 @@
                                                             init ,
                                                             non-deterministic-regular-files ,
                                                             order ,
-                                                            release_ ,
+                                                            release ,
                                                             stage
                                                         } :
                                                             let
@@ -1472,7 +1472,7 @@
                                                                                                                     } ;
                                                                                                                 type = "message" ;
                                                                                                             } ;
-                                                                                                    in builtins.map mapper release_.action.messages ;
+                                                                                                    in builtins.map mapper release.action.messages ;
                                                                                                 name = "/home/checker/resources/log.yaml" ;
                                                                                                 stat = "-rw-r--r--" ;
                                                                                                 type = "log file" ;
@@ -1538,8 +1538,8 @@
                                                                                                                                 payload =
                                                                                                                                     {
                                                                                                                                         index = "0000000000000000" ;
-                                                                                                                                        standard-output = generic-parameters.release_.action.standard-output ;
-                                                                                                                                        status = generic-parameters.release_.action.status ;
+                                                                                                                                        standard-output = generic-parameters.release.action.standard-output ;
+                                                                                                                                        status = generic-parameters.release.action.status ;
                                                                                                                                     } ;
                                                                                                                                 type = "message" ;
                                                                                                                             }
@@ -1569,7 +1569,7 @@
                                                                                                                                 target = target ;
                                                                                                                                 type = "symbolic link" ;
                                                                                                                             } ;
-                                                                                                                    in builtins.map mapper generic-parameters.release_.recovery.scripts
+                                                                                                                    in builtins.map mapper generic-parameters.release.recovery.scripts
                                                                                                             )
                                                                                                         ]
                                                                                                 ) ;
@@ -1613,7 +1613,7 @@
                                                                                                                                 target = target ;
                                                                                                                                 type = "symbolic link" ;
                                                                                                                             } ;
-                                                                                                                    in builtins.map mapper generic-parameters.release_.recovery.scripts
+                                                                                                                    in builtins.map mapper generic-parameters.release.recovery.scripts
                                                                                                             )
                                                                                                         ]
                                                                                                 ) ;
@@ -1649,7 +1649,7 @@
                                                                                                         {
                                                                                                             name = "/home/checker/resources/release/0000000000000000" ;
                                                                                                             stat = "lrwxrwxrwx" ;
-                                                                                                            target = generic-parameters.release_.script ;
+                                                                                                            target = generic-parameters.release.script ;
                                                                                                             type = "symbolic link" ;
                                                                                                         }
                                                                                                     ]
@@ -1690,7 +1690,7 @@
                                                                                 in identity init ;
                                                                         non-deterministic-regular-files = _visitor.implementation { set = path : set : builtins.throw "unsupported 1272865764937351" ; string = path : value : value ; } non-deterministic-regular-files ;
                                                                         order = _visitor.implementation { int = path : value : value ; list = path : list : builtins.throw "unsupported 4882767679771347" ; set = path : set : builtins.throw "unsupported 7144156552857862" ; } order ;
-                                                                        release_ =
+                                                                        release =
                                                                             let
                                                                                 identity =
                                                                                     {
@@ -1734,7 +1734,7 @@
                                                                                                     in identity recovery ;
                                                                                             script = _visitor.implementation { string = path : value : value ; } script ;
                                                                                         } ;
-                                                                                in identity release_ ;
+                                                                                in identity release ;
                                                                         stage =
                                                                             let
                                                                                 identity =
@@ -1746,7 +1746,7 @@
                                                                                         } ;
                                                                                 in identity stage ;
                                                                     } ;
-                                                                size = if builtins.length generic-parameters.init.action.messages == builtins.length generic-parameters.release_.action.messages then builtins.length generic-parameters.init.action.messages else builtins.throw "the length of init ${ builtins.toString ( builtins.length generic-parameters.init.action.messages ) } must equal the length of release ${ builtins.toString ( builtins.length generic-parameters.release_.action.messages ) }" ;
+                                                                size = if builtins.length generic-parameters.init.action.messages == builtins.length generic-parameters.release.action.messages then builtins.length generic-parameters.init.action.messages else builtins.throw "the length of init ${ builtins.toString ( builtins.length generic-parameters.init.action.messages ) } must equal the length of release ${ builtins.toString ( builtins.length generic-parameters.release.action.messages ) }" ;
                                                                 subscribe =
                                                                     {
                                                                         invalid-init = "{\n  \"channel\": \"invalid-init\",\n  \"payload\": 1,\n  \"type\": \"subscribe\"\n}\n" ;
@@ -1967,13 +1967,13 @@
                                                                                                                                 "corrupt.json"
                                                                                                                                 { nativeBuildInputs = [ pkgs.jq ] ; }
                                                                                                                                 ''
-                                                                                                                                    jq '.' ${ builtins.toFile "corruption.json" ( builtins.toJSON { channel = "invalid-release" ; payload = { index = "0000000000000000" ; standard-output = generic-parameters.release_.action.standard-output ; status = generic-parameters.release_.action.status ; } ; type = "message" ; } ) } > $out
+                                                                                                                                    jq '.' ${ builtins.toFile "corruption.json" ( builtins.toJSON { channel = "invalid-release" ; payload = { index = "0000000000000000" ; standard-output = generic-parameters.release.action.standard-output ; status = generic-parameters.release.action.status ; } ; type = "message" ; } ) } > $out
                                                                                                                                 '' ;
                                                                                                                         in builtins.readFile "${ derivation }" ;
                                                                                                                 text = "check-redis --exclude" ;
                                                                                                             }
                                                                                                         ]
-                                                                                                    else builtins.map mapper generic-parameters.release_.action.messages
+                                                                                                    else builtins.map mapper generic-parameters.release.action.messages
                                                                                         )
                                                                                         [
                                                                                             {
@@ -1983,13 +1983,13 @@
                                                                                             }
                                                                                         ]
                                                                                         (
-                                                                                            if builtins.typeOf generic-parameters.release_.recovery.script == "string" then
+                                                                                            if builtins.typeOf generic-parameters.release.recovery.script == "string" then
                                                                                                 [
                                                                                                     {
                                                                                                         process = "post" ;
                                                                                                         status = 111 ;
-                                                                                                        standard-error = generic-parameters.release_.recovery.standard-error ;
-                                                                                                        text = generic-parameters.release_.recovery.script ;
+                                                                                                        standard-error = generic-parameters.release.recovery.standard-error ;
+                                                                                                        text = generic-parameters.release.recovery.script ;
                                                                                                     }
                                                                                                     {
                                                                                                         process = "post" ;
@@ -1997,7 +1997,7 @@
                                                                                                     }
                                                                                                     {
                                                                                                         process = "post" ;
-                                                                                                        standard-output = if generic-parameters.release_.recovery.success then files.release else files.corrupt.post-release ;
+                                                                                                        standard-output = if generic-parameters.release.recovery.success then files.release else files.corrupt.post-release ;
                                                                                                         text =
                                                                                                             ''
                                                                                                                 check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
@@ -2024,7 +2024,7 @@
                                                                                             {
                                                                                                     process = "post" ;
                                                                                                     reads = false ;
-                                                                                                    standard-output = if generic-parameters.release_.recovery.success then files.clean else files.corrupt.post-clean ;
+                                                                                                    standard-output = if generic-parameters.release.recovery.success then files.clean else files.corrupt.post-clean ;
                                                                                                     text =
                                                                                                         ''
                                                                                                             check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
@@ -2065,7 +2065,7 @@
                                                                     init ,
                                                                     non-deterministic-regular-files ,
                                                                     order ,
-                                                                    release_
+                                                                    release
                                                                 } @primary :
                                                                     let
                                                                         case-defaults =
@@ -2078,9 +2078,9 @@
                                                                                         recovery = null ;
                                                                                     } ;
                                                                                 order = order ;
-                                                                                release_ =
+                                                                                release =
                                                                                     {
-                                                                                        action = release_.action // { standard-output = null ; status = 0 ; } ;
+                                                                                        action = release.action // { standard-output = null ; status = 0 ; } ;
                                                                                         recovery =
                                                                                             {
                                                                                                 standard-error = null ;
@@ -2088,7 +2088,7 @@
                                                                                                 scripts = null ;
                                                                                                 success = null ;
                                                                                             } ;
-                                                                                        script = release_.script ;
+                                                                                        script = release.script ;
                                                                                     } ;
                                                                                 stage =
                                                                                     {
@@ -2108,7 +2108,7 @@
                                                                     init ,
                                                                     non-deterministic-regular-files ,
                                                                     order ,
-                                                                    release_
+                                                                    release
                                                                 } @primary :
                                                                     let
                                                                         case-defaults =
@@ -2121,17 +2121,17 @@
                                                                                         recovery = null ;
                                                                                     } ;
                                                                                 order = order ;
-                                                                                release_ =
+                                                                                release =
                                                                                     {
-                                                                                        action = release_.action ;
+                                                                                        action = release.action ;
                                                                                         recovery =
                                                                                             let
                                                                                                 recovery-defaults =
                                                                                                     {
                                                                                                         success = false ;
                                                                                                     } ;
-                                                                                                in release_.recovery // recovery-defaults ;
-                                                                                        script = release_.script ;
+                                                                                                in release.recovery // recovery-defaults ;
+                                                                                        script = release.script ;
                                                                                     } ;
                                                                                 stage =
                                                                                     {
@@ -2256,7 +2256,7 @@
                                                                                     } ;
                                                                                 non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" ] ;
                                                                                 order = 3 ;
-                                                                                release_ =
+                                                                                release =
                                                                                     {
                                                                                         action =
                                                                                             {
@@ -2310,7 +2310,7 @@
                                                                                     } ;
                                                                                 non-deterministic-regular-files = [ ] ;
                                                                                 order = 1 ;
-                                                                                release_ =
+                                                                                release =
                                                                                     {
                                                                                         action =
                                                                                             {
@@ -2358,7 +2358,7 @@
                                                                                     } ;
                                                                                 non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
                                                                                 order = 2 ;
-                                                                                release_ =
+                                                                                release =
                                                                                     {
                                                                                         action =
                                                                                             {
@@ -2546,7 +2546,7 @@
                                                                                     } ;
                                                                                 non-deterministic-regular-files = [ ] ;
                                                                                 order = 4 ;
-                                                                                release_ =
+                                                                                release =
                                                                                     {
                                                                                         action =
                                                                                             {
@@ -2748,7 +2748,7 @@
                                                                                     } ;
                                                                                 non-deterministic-regular-files = [ ] ;
                                                                                 order = 5 ;
-                                                                                release_ =
+                                                                                release =
                                                                                     {
                                                                                         action =
                                                                                             {
