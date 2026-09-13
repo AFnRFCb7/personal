@@ -1260,7 +1260,6 @@
                                                             init_ ,
                                                             init ,
                                                             init-files ,
-                                                            init-post-corruption ,
                                                             non-deterministic-regular-files ,
                                                             order ,
                                                             release_ ,
@@ -1667,7 +1666,6 @@
                                                                         command = _visitor.implementation { list = path : list : builtins.throw "unsupported 5565718583448517" ; set = path : set : builtins.throw "unsupported 1975775495651532" ; string = path : value : value ; } command ;
                                                                         exclusions = _visitor.implementation { set = path : set : builtins.throw "unsupported 3513373234215328" ; string = path : value : value ; } exclusions ;
                                                                         init_ = init_ ;
-                                                                        init-post-corruption = _visitor.implementation { bool = path : value : value ; } init-post-corruption ;
                                                                         non-deterministic-regular-files = _visitor.implementation { set = path : set : builtins.throw "unsupported 1272865764937351" ; string = path : value : value ; } non-deterministic-regular-files ;
                                                                         order = _visitor.implementation { int = path : value : value ; list = path : list : builtins.throw "unsupported 4882767679771347" ; set = path : set : builtins.throw "unsupported 7144156552857862" ; } order ;
                                                                         release_ =
@@ -1715,7 +1713,15 @@
                                                                                             script = _visitor.implementation { string = path : value : value ; } script ;
                                                                                         } ;
                                                                                 in identity release_ ;
-                                                                        stage = stage ;
+                                                                        stage =
+                                                                            let
+                                                                                identity =
+                                                                                    {
+                                                                                        corruption
+                                                                                    } :
+                                                                                        {
+                                                                                            corruption = _visitor.implementation { bool = path : value : value ; } corruption ;
+                                                                                        } ;
                                                                     } ;
                                                                 size = if builtins.length init == builtins.length release_.action.messages then builtins.length init else builtins.throw "the length of init ${ builtins.toString ( builtins.length init ) } must equal the length of release ${ builtins.toString ( builtins.length release_.action.messages ) }" ;
                                                                 subscribe =
@@ -1851,7 +1857,7 @@
                                                                                             }
                                                                                         ]
                                                                                         (
-                                                                                            if generic-parameters.init-post-corruption then
+                                                                                            if generic-parameters.init_.corruption then
                                                                                                 [
                                                                                                     {
                                                                                                         process = "pre" ;
@@ -1871,7 +1877,7 @@
                                                                                             }
                                                                                         ]
                                                                                         (
-                                                                                            if generic-parameters.init-post-corruption then
+                                                                                            if generic-parameters.init_.corruption then
                                                                                                 [
                                                                                                     {
                                                                                                             process = "post" ;
@@ -1928,7 +1934,7 @@
                                                                                                             text = ''check-redis --exclude'' ;
                                                                                                         } ;
                                                                                                 in
-                                                                                                    if generic-parameters.init-post-corruption then
+                                                                                                    if generic-parameters.init_.corruption then
                                                                                                         [
                                                                                                             {
                                                                                                                 process = "post" ;
@@ -1986,7 +1992,7 @@
                                                                                         [
                                                                                             {
                                                                                                     process = "post" ;
-                                                                                                    status = if generic-parameters.init-post-corruption then 124 else 0 ;
+                                                                                                    status = if generic-parameters.init_.corruption then 124 else 0 ;
                                                                                                     text = '' "$RESOURCES"/clean.sh '' ;
                                                                                             }
                                                                                             {
@@ -2044,8 +2050,7 @@
                                                                         case-defaults =
                                                                             {
                                                                                 case = "happy" ;
-                                                                                init_ = null ;
-                                                                                init-post-corruption = false ;
+                                                                                init_ = { corruption = false ; } ;
                                                                                 order = order ;
                                                                                 release_ =
                                                                                     {
@@ -2081,8 +2086,7 @@
                                                                         case-defaults =
                                                                             {
                                                                                 case = "release-unrecoverable" ;
-                                                                                init_ = null ;
-                                                                                init-post-corruption = true ;
+                                                                                init_ = { corruption = true ; } ;
                                                                                 order = order ;
                                                                                 release_ =
                                                                                     {
