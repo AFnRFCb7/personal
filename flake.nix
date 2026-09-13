@@ -1722,6 +1722,7 @@
                                                                                         {
                                                                                             corruption = _visitor.implementation { bool = path : value : value ; } corruption ;
                                                                                         } ;
+                                                                                in identity stage ;
                                                                     } ;
                                                                 size = if builtins.length init == builtins.length release_.action.messages then builtins.length init else builtins.throw "the length of init ${ builtins.toString ( builtins.length init ) } must equal the length of release ${ builtins.toString ( builtins.length release_.action.messages ) }" ;
                                                                 subscribe =
