@@ -1621,7 +1621,6 @@
                                                                                             } ;
                                                                                     } ;
                                                                             } ;
-                                                                empty-files =  "[\n  {\n    \"name\": \"/home/checker/resources\",\n    \"stat\": \"drwxr-xr-x\",\n    \"type\": \"directory\"\n  },\n  {\n    \"cat\": \"[]\",\n    \"name\": \"/home/checker/resources/log.yaml\",\n    \"stat\": \"-rw-r--r--\",\n    \"type\": \"regular file\"\n  }\n]\n" ;
                                                                 generic-parameters =
                                                                     {
                                                                         case = _visitor.implementation { list = path : list : builtins.throw "unsupported 6314294198285596" ; set = path : set : builtins.throw "unsupported 8389691287776329" ; string = path : value : value ; } case ;
