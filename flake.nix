@@ -1297,7 +1297,63 @@
                                                                                                                 type = "directory" ;
                                                                                                             }
                                                                                                         ] ;
+                                                                                                false = files_.release.true.false ;
+                                                                                            } ;
+                                                                                        false =
+                                                                                            {
+                                                                                                true = null ;
                                                                                                 false = null ;
+                                                                                            } ;
+                                                                                    } ;
+                                                                                release =
+                                                                                    {
+                                                                                        true =
+                                                                                            {
+                                                                                                true = null ;
+                                                                                                false =
+                                                                                                    json
+                                                                                                        (
+                                                                                                            builtins.concatLists
+                                                                                                                [
+                                                                                                                    (
+                                                                                                                        builtins.filter
+                                                                                                                            (
+                                                                                                                                i : ( i.type != "regular file" || i.name == "/home/checker/resources/sequential" ) && ( i.type != "log file" )
+                                                                                                                            )
+                                                                                                                        init-array
+                                                                                                                    )
+                                                                                                                    [
+                                                                                                                        {
+                                                                                                                            log = [ ] ;
+                                                                                                                            name = "/home/checker/resources/log.yaml" ;
+                                                                                                                            stat = "-rw-r--r--" ;
+                                                                                                                            type = "log file" ;
+                                                                                                                        }
+                                                                                                                        {
+                                                                                                                            name = "/home/checker/resources/invalid-release" ;
+                                                                                                                            stat = "drwxr-xr-x" ;
+                                                                                                                            type = "directory" ;
+                                                                                                                        }
+                                                                                                                        {
+                                                                                                                            name = "/home/checker/resources/invalid-release/0000000000000000" ;
+                                                                                                                            stat = "drwxr-xr-x" ;
+                                                                                                                            type = "directory" ;
+                                                                                                                        }
+                                                                                                                    ]
+                                                                                                                    (
+                                                                                                                        let
+                                                                                                                            mapper =
+                                                                                                                                { path , target } :
+                                                                                                                                    {
+                                                                                                                                        name = "/home/checker/resources/invalid-release/0000000000000000/${ builtins.toJSON path }.sh" ;
+                                                                                                                                        stat = "lrwxrwxrwx" ;
+                                                                                                                                        target = target ;
+                                                                                                                                        type = "symbolic link" ;
+                                                                                                                                    } ;
+                                                                                                                            in builtins.map mapper generic-parameters.release.recovery.scripts
+                                                                                                                    )
+                                                                                                                ]
+                                                                                                        ) ;
                                                                                             } ;
                                                                                         false =
                                                                                             {
@@ -1572,50 +1628,6 @@
                                                                                                                                 type = "message" ;
                                                                                                                             }
                                                                                                                         ] ;
-                                                                                                                    name = "/home/checker/resources/log.yaml" ;
-                                                                                                                    stat = "-rw-r--r--" ;
-                                                                                                                    type = "log file" ;
-                                                                                                                }
-                                                                                                                {
-                                                                                                                    name = "/home/checker/resources/invalid-release" ;
-                                                                                                                    stat = "drwxr-xr-x" ;
-                                                                                                                    type = "directory" ;
-                                                                                                                }
-                                                                                                                {
-                                                                                                                    name = "/home/checker/resources/invalid-release/0000000000000000" ;
-                                                                                                                    stat = "drwxr-xr-x" ;
-                                                                                                                    type = "directory" ;
-                                                                                                                }
-                                                                                                            ]
-                                                                                                            (
-                                                                                                                let
-                                                                                                                    mapper =
-                                                                                                                        { path , target } :
-                                                                                                                            {
-                                                                                                                                name = "/home/checker/resources/invalid-release/0000000000000000/${ builtins.toJSON path }.sh" ;
-                                                                                                                                stat = "lrwxrwxrwx" ;
-                                                                                                                                target = target ;
-                                                                                                                                type = "symbolic link" ;
-                                                                                                                            } ;
-                                                                                                                    in builtins.map mapper generic-parameters.release.recovery.scripts
-                                                                                                            )
-                                                                                                        ]
-                                                                                                ) ;
-                                                                                        post-clean =
-                                                                                            json
-                                                                                                (
-                                                                                                    builtins.concatLists
-                                                                                                        [
-                                                                                                            (
-                                                                                                                builtins.filter
-                                                                                                                    (
-                                                                                                                        i : ( i.type != "regular file" || i.name == "/home/checker/resources/sequential" ) && ( i.type != "log file" )
-                                                                                                                    )
-                                                                                                                init-array
-                                                                                                            )
-                                                                                                            [
-                                                                                                                {
-                                                                                                                    log = [ ] ;
                                                                                                                     name = "/home/checker/resources/log.yaml" ;
                                                                                                                     stat = "-rw-r--r--" ;
                                                                                                                     type = "log file" ;
@@ -2064,7 +2076,7 @@
                                                                                             {
                                                                                                     process = "post" ;
                                                                                                     reads = false ;
-                                                                                                    standard-output = if generic-parameters.release.recovery.success then files_.clean.true.true else files.corrupt.post-clean ;
+                                                                                                    standard-output = if generic-parameters.release.recovery.success then files_.clean.true.true else files_.clean.true.false ;
                                                                                                     text =
                                                                                                         ''
                                                                                                             check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
