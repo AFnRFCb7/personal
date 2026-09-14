@@ -1838,6 +1838,10 @@
                                                                             [
                                                                                 {
                                                                                         process = "pre" ;
+                                                                                        text = "force-dialog --text ' begin setup'" ;
+                                                                                }
+                                                                                {
+                                                                                        process = "pre" ;
                                                                                         text = "force-garbage-collection" ;
                                                                                 }
                                                                                 {
@@ -1874,6 +1878,10 @@
                                                                                         process = "pre" ;
                                                                                         standard-output = "183" ;
                                                                                         text = "check-redis" ;
+                                                                                }
+                                                                                {
+                                                                                        process = "pre" ;
+                                                                                        text = "force-dialog --text 'end setup'" ;
                                                                                 }
                                                                             ] ;
                                                                     } ;
