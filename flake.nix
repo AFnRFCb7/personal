@@ -1818,7 +1818,13 @@
                                                                                 if generic-parameters.init.corruption then [ ]
                                                                                 else [ ]
                                                                             else
-                                                                                if generic-parameters.init.corruption then [ ]
+                                                                                if generic-parameters.init.corruption then
+                                                                                    [
+                                                                                        { process = "pre" ; text = "force-corruption" ; }
+                                                                                        { process = "pre" ; text = "force-sync" ; }
+                                                                                        { process = "pre" ; standard-output = files.init.true ; text = ''check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }'' ; }
+                                                                                        { process = "pre" ; standard-output = "183" ; text = "check-redis" ; }
+                                                                                    ]
                                                                                 else [ ] ;
                                                                         setup =
                                                                             [
@@ -1874,26 +1880,6 @@
                                                                                         sequences.setup
                                                                                         sequences.init
                                                                                         sequences.init-corruption
-                                                                                        (
-                                                                                            if generic-parameters.init.corruption then
-                                                                                                [
-                                                                                                    {
-                                                                                                        process = "pre" ;
-                                                                                                        text = "force-corruption" ;
-                                                                                                    }
-                                                                                                ]
-                                                                                            else [ ]
-                                                                                        )
-                                                                                        [
-                                                                                            {
-                                                                                                    process = "pre" ;
-                                                                                                    text = "force-garbage-collection" ;
-                                                                                            }
-                                                                                            {
-                                                                                                    process = "post" ;
-                                                                                                    text = "force-sync" ;
-                                                                                            }
-                                                                                        ]
                                                                                         (
                                                                                             if generic-parameters.init.corruption then
                                                                                                 [
