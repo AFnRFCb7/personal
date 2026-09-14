@@ -1727,7 +1727,8 @@
                                                                                 files = json : builtins.sort ( a : b : a.name < b.name ) json ;
                                                                                 message = { channel , index } : jq { channel = channel ; payload = index + 1 ; type = "subscribe" ; } ;
                                                                             } ;
-                                                                json =
+                                                                json = jq.files ;
+                                                                json2 =
                                                                     json :
                                                                         let
                                                                             derivation =
