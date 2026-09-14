@@ -1767,7 +1767,7 @@
 #                                                                                }
                                                                                 {
                                                                                         process = "pre" ;
-                                                                                        standard-output = builtins.trace "${ builtins.typeOf messages }" messages.subscribe.valid-release ;
+                                                                                        standard-output = builtins.trace "${ builtins.typeOf messages.subscribe }" messages.subscribe.valid-release ;
                                                                                         text = "check-redis" ;
                                                                                 }
                                                                                 {
