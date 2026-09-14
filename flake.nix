@@ -1729,6 +1729,11 @@
                                                                             } ;
                                                                 messages =
                                                                     {
+                                                                        init =
+                                                                            {
+                                                                                true = payload : jq.message { channel = "valid-init" ; payload = payload ; type = "message" ;
+                                                                                false = null ;
+                                                                            } ;
                                                                         subscribe =
                                                                             let
                                                                                 channels = [ "invalid-init" "invalid-release" "valid-init" "valid-release" ] ;
@@ -2084,7 +2089,7 @@
                                                     in
                                                         {
                                                             happy =
-                                                                {
+
                                                                     command ,
                                                                     exclusions ,
                                                                     init ,
