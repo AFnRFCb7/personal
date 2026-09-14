@@ -1781,7 +1781,7 @@
                                                                                                     init :
                                                                                                         {
                                                                                                             process = "pre" ;
-                                                                                                            standard-output = messages.init.true { arguments = [ ] ; inputs = { } ; temporary = false ; } // init ;
+                                                                                                            standard-output = messages.init.true ( { arguments = [ ] ; inputs = { } ; temporary = false ; } // init ) ;
                                                                                                             text = ''check-redis --exclude'' ;
                                                                                                         } ;
                                                                                                 in builtins.map mapper generic-parameters.init.action.messages
