@@ -1765,11 +1765,11 @@
 #                                                                                        standard-output = messages.subscribe.valid-init ;
 #                                                                                        text = "check-redis" ;
 #                                                                                }
-                                                                                {
-                                                                                        process = "pre" ;
-                                                                                        standard-output = builtins.trace "${ builtins.typeOf messages.subscribe.valid-release }" messages.subscribe.valid-release ;
-                                                                                        text = "check-redis" ;
-                                                                                }
+#                                                                                {
+#                                                                                        process = "pre" ;
+#                                                                                        standard-output = messages.subscribe.valid-release ;
+#                                                                                        text = "check-redis" ;
+#                                                                                }
                                                                                 {
                                                                                         process = "pre" ;
                                                                                         standard-output = "183" ;
