@@ -1718,7 +1718,7 @@
                                                                                     index :
                                                                                         let
                                                                                             channel = builtins.elemAt channels index ;
-                                                                                            in builtins.toJSON ( { name = channel ; value = json ( { channel = channel ; payload = index ; type = "subscribe" ; } ) ; } ) ;
+                                                                                            in { name = channel ; value = json ( { channel = channel ; payload = index ; type = "subscribe" ; } ) ; } ;
                                                                                 in builtins.foldl' ( previous : current : previous // ( builtins.listToAttrs current ) ) { } ( builtins.genList generator ( builtins.length channels ) ) ;
                                                                     } ;
                                                                 json =
