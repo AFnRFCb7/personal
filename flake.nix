@@ -1718,29 +1718,28 @@
                                                                                     index :
                                                                                         let
                                                                                             channel = builtins.elemAt channels index ;
-                                                                                            in { name = channel ; value = json2 { channel = channel ; payload = index + 1 ; type = "subscribe" ; } ; } ;
+                                                                                            in { name = channel ; value = json { channel = channel ; payload = index + 1 ; type = "subscribe" ; } ; } ;
                                                                                 in builtins.listToAttrs ( builtins.genList generator ( builtins.length channels ) ) ;
                                                                     } ;
                                                                 json =
                                                                     json :
                                                                         let
-                                                                            derivation =
-                                                                                pkgs.runCommand
-                                                                                    "init.json"
-                                                                                    { nativeBuildInputs = [ pkgs.jq ] ; }
-                                                                                    ''
-                                                                                        jq --sort-keys "." ${ builtins.toFile "data.json" ( builtins.toJSON ( builtins.sort ( a : b : a.name < b.name ) json ) ) } > $out
-                                                                                    '' ;
-                                                                            in builtins.readFile derivation ;
-                                                                json2 =
-                                                                    json :
-                                                                        let
+                                                                            data =
+                                                                                _visitor.lib
+                                                                                    {
+                                                                                        string = path : value : value ;
+                                                                                        list =
+                                                                                            path : list :
+                                                                                                if builtins.all ( item : builtins.typeOf item == "set" && builtins.hasAttr "name" item ) list then builtins.sort ( a : b : a.name < b.name ) list
+                                                                                                else builtins.throw "unimplemented 7816473325824323" ;
+                                                                                    }
+                                                                                    json ;
                                                                             derivation =
                                                                                 pkgs.runCommand
                                                                                     "data.json"
                                                                                     { nativeBuildInputs = [ pkgs.jq ] ; }
                                                                                     ''
-                                                                                        jq --sort-keys "." ${ builtins.toFile "data.json" ( builtins.toJSON json ) } > $out
+                                                                                        jq --sort-keys "." ${ builtins.toFile "data.json" ( builtins.toJSON data ) } > $out
                                                                                     '' ;
                                                                             in builtins.readFile derivation ;
                                                                 sequences =
