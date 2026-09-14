@@ -1731,7 +1731,7 @@
                                                                     {
                                                                         init =
                                                                             {
-                                                                                true = payload : jq.message { channel = "valid-init" ; payload = payload ; type = "message" ;
+                                                                                true = payload : jq.message { channel = "valid-init" ; payload = payload ; type = "message" ; } ;
                                                                                 false = null ;
                                                                             } ;
                                                                         subscribe =
