@@ -1900,6 +1900,7 @@
                                                                                                 ]
                                                                                             else
                                                                                                 [
+                                                                                                    { process = "post" ; text = "force-dialog --text before" ; }
                                                                                                     {
                                                                                                             process = "post" ;
                                                                                                             reads = false ;
@@ -1909,6 +1910,7 @@
                                                                                                                     check-files --exclusion "/home/checker/resources/*.lock" --delete true
                                                                                                                 '' ;
                                                                                                     }
+                                                                                                    { process = "post" ; text = "force-dialog --text --after" ; }
                                                                                                 ]
                                                                                         )
                                                                                         (
