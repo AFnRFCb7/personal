@@ -1718,7 +1718,7 @@
                                                                                     index :
                                                                                         let
                                                                                             channel = builtins.elemAt channels index ;
-                                                                                            in { name = channel ; value = json [ { channel = channel ; name = index ; payload = index ; type = "subscribe" ; } ] ; } ;
+                                                                                            in { name = channel ; value = json2 { channel = channel ; payload = index ; type = "subscribe" ; } ; } ;
                                                                                 in builtins.listToAttrs ( builtins.genList generator ( builtins.length channels ) ) ;
                                                                     } ;
                                                                 json =
@@ -1732,6 +1732,16 @@
                                                                                         jq --sort-keys "." ${ builtins.toFile "data.json" ( builtins.toJSON ( builtins.sort ( a : b : a.name < b.name ) json ) ) } > $out
                                                                                     '' ;
                                                                             in builtins.readFile derivation ;
+                                                                json2 =
+                                                                    json :
+                                                                        let
+                                                                            derivation =
+                                                                                pkgs.runCommand
+                                                                                    "data.json"
+                                                                                    { nativeBuildInputs = [ pkgs.jq ] ; }
+                                                                                    ''
+                                                                                        jq --sort-keys "." ${ builtins.toFile "data.json" ( builtins.toJSON json ) } > $out
+                                                                                    '' ;
                                                                 sequences =
                                                                     {
                                                                         setup =
