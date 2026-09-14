@@ -1731,8 +1731,8 @@
                                                                                         int = path : value : value ;
                                                                                         list =
                                                                                             path : list :
-                                                                                                if builtins.trace "3513374481421446" ( builtins.all ( item : builtins.typeOf item == "set" && builtins.hasAttr "name" item ) list then builtins.sort ( a : b : a.name < b.name ) list )
-                                                                                                else builtins.throw "unimplemented 7816473325824323" ;
+                                                                                                builtins.trace "3513374481421446" ( if builtins.all ( item : builtins.typeOf item == "set" && builtins.hasAttr "name" item ) list then builtins.sort ( a : b : a.name < b.name ) list
+                                                                                                else builtins.throw "unimplemented 7816473325824323" ) ;
                                                                                         string = path : value : value ;
                                                                                     }
                                                                                     json ;
