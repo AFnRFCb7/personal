@@ -1868,6 +1868,11 @@
                                                                                         text = "check-redis" ;
                                                                                 }
                                                                             ] ;
+                                                                        release =
+                                                                            if generic-parameters.stage.corruption then null
+                                                                            else
+                                                                                if generic-parameters.init.corruption then [ ]
+                                                                                else [ ] ;
                                                                     } ;
                                                                 size = if builtins.length generic-parameters.init.action.messages == builtins.length generic-parameters.release.action.messages then builtins.length generic-parameters.init.action.messages else builtins.throw "the length of init ${ builtins.toString ( builtins.length generic-parameters.init.action.messages ) } must equal the length of release ${ builtins.toString ( builtins.length generic-parameters.release.action.messages ) }" ;
                                                                 in
