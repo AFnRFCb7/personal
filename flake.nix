@@ -1790,86 +1790,89 @@
                                                                         init =
                                                                             if generic-parameters.stage.corruption then [ ]
                                                                             else
-                                                                                [
-                                                                                    {
-                                                                                            process = "pre" ;
-                                                                                            standard-output = "/home/checker/resources/mounts/0000000000000000" ;
-                                                                                            text = generic-parameters.command ;
-                                                                                    }
-                                                                                    {
-                                                                                            process = "pre" ;
-                                                                                            text = "force-sync" ;
-                                                                                    }
-                                                                                    {
-                                                                                            process = "pre" ;
-                                                                                            reads = false ;
-                                                                                            standard-output = files.init.true ;
-                                                                                            text =
-                                                                                                ''
-                                                                                                    check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
-                                                                                                '' ;
-                                                                                    }
-                                                                                ]
-                                                                                (
-                                                                                    let
-                                                                                        mapper =
-                                                                                            init :
-                                                                                                {
+                                                                                builtins.concatLists
+                                                                                    [
+                                                                                        [
+                                                                                            {
                                                                                                     process = "pre" ;
-                                                                                                    standard-output =
-                                                                                                        let
-                                                                                                            derivation =
-                                                                                                                pkgs.runCommand
-                                                                                                                    "init.json"
-                                                                                                                    { nativeBuildInputs = [ pkgs.jq ] ; }
-                                                                                                                    ''
-                                                                                                                        PAYLOAD="$( jq --sort-keys '. + { "arguments" : [ ] , "inputs" : { } , "temporary" : false }' ${ builtins.toFile "init.json" ( builtins.toJSON init ) } )" || exit 151
-                                                                                                                        jq \
-                                                                                                                            --null-input \
-                                                                                                                            --argjson PAYLOAD "$PAYLOAD" \
-                                                                                                                            '{
-                                                                                                                                "channel" : "valid-init" ,
-                                                                                                                                "payload" : $PAYLOAD ,
-                                                                                                                                "type" : "message"
-                                                                                                                            }' > $out
-                                                                                                                    '' ;
-                                                                                                            in builtins.readFile derivation ;
-                                                                                                    text = ''check-redis --exclude'' ;
-                                                                                                } ;
-                                                                                        in builtins.map mapper generic-parameters.init.action.messages
-                                                                                )
-                                                                                [
-                                                                                    {
-                                                                                            process = "pre" ;
-                                                                                            standard-output = "183" ;
-                                                                                            text = "check-redis" ;
-                                                                                    }
-                                                                                ]
-                                                                                [
-                                                                                    {
-                                                                                            process = "mid" ;
-                                                                                            standard-output = "/home/checker/resources/mounts/0000000000000000" ;
-                                                                                            text = '' ${ generic-parameters.command } '' ;
-                                                                                    }
-                                                                                    {
-                                                                                            process = "pre" ;
-                                                                                            text = "force-sync" ;
-                                                                                    }
-                                                                                    {
-                                                                                            process = "pre" ;
-                                                                                            reads = false ;
-                                                                                            standard-output = files.init.true ;
-                                                                                            text =
-                                                                                                ''
-                                                                                                    check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
-                                                                                                '' ;
-                                                                                    }
-                                                                                    {
-                                                                                            process = "pre" ;
-                                                                                            standard-output = "183" ;
-                                                                                            text = "check-redis" ;
-                                                                                    }
-                                                                                ] ;
+                                                                                                    standard-output = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                                                    text = generic-parameters.command ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    text = "force-sync" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    reads = false ;
+                                                                                                    standard-output = files.init.true ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
+                                                                                                        '' ;
+                                                                                            }
+                                                                                        ]
+                                                                                        (
+                                                                                            let
+                                                                                                mapper =
+                                                                                                    init :
+                                                                                                        {
+                                                                                                            process = "pre" ;
+                                                                                                            standard-output =
+                                                                                                                let
+                                                                                                                    derivation =
+                                                                                                                        pkgs.runCommand
+                                                                                                                            "init.json"
+                                                                                                                            { nativeBuildInputs = [ pkgs.jq ] ; }
+                                                                                                                            ''
+                                                                                                                                PAYLOAD="$( jq --sort-keys '. + { "arguments" : [ ] , "inputs" : { } , "temporary" : false }' ${ builtins.toFile "init.json" ( builtins.toJSON init ) } )" || exit 151
+                                                                                                                                jq \
+                                                                                                                                    --null-input \
+                                                                                                                                    --argjson PAYLOAD "$PAYLOAD" \
+                                                                                                                                    '{
+                                                                                                                                        "channel" : "valid-init" ,
+                                                                                                                                        "payload" : $PAYLOAD ,
+                                                                                                                                        "type" : "message"
+                                                                                                                                    }' > $out
+                                                                                                                            '' ;
+                                                                                                                    in builtins.readFile derivation ;
+                                                                                                            text = ''check-redis --exclude'' ;
+                                                                                                        } ;
+                                                                                                in builtins.map mapper generic-parameters.init.action.messages
+                                                                                        )
+                                                                                        [
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    standard-output = "183" ;
+                                                                                                    text = "check-redis" ;
+                                                                                            }
+                                                                                        ]
+                                                                                        [
+                                                                                            {
+                                                                                                    process = "mid" ;
+                                                                                                    standard-output = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                                                    text = '' ${ generic-parameters.command } '' ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    text = "force-sync" ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    reads = false ;
+                                                                                                    standard-output = files.init.true ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
+                                                                                                        '' ;
+                                                                                            }
+                                                                                            {
+                                                                                                    process = "pre" ;
+                                                                                                    standard-output = "183" ;
+                                                                                                    text = "check-redis" ;
+                                                                                            }
+                                                                                        ]
+                                                                                    ] ;
                                                                         release =
                                                                             if generic-parameters.stage.corruption then
                                                                                 if generic-parameters.init.corruption then [ ]
@@ -1887,7 +1890,7 @@
                                                                                 builtins.concatLists
                                                                                     [
                                                                                         sequences.setup
-                                                                                        # sequences.init
+                                                                                        sequences.init
                                                                                         (
                                                                                             if generic-parameters.init.corruption then
                                                                                                 [
