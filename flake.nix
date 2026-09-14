@@ -1727,6 +1727,7 @@
                                                                             data =
                                                                                 _visitor.implementation
                                                                                     {
+                                                                                        bool = path : value : value ;
                                                                                         int = path : value : value ;
                                                                                         list =
                                                                                             path : list :
