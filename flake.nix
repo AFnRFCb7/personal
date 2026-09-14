@@ -1875,8 +1875,7 @@
                                                                                 else [ ]
                                                                             else
                                                                                 if generic-parameters.init.corruption then [ ]
-                                                                                else [ ]
-                                                                            fi ;
+                                                                                else [ ] ;
                                                                     } ;
                                                                 size = if builtins.length generic-parameters.init.action.messages == builtins.length generic-parameters.release.action.messages then builtins.length generic-parameters.init.action.messages else builtins.throw "the length of init ${ builtins.toString ( builtins.length generic-parameters.init.action.messages ) } must equal the length of release ${ builtins.toString ( builtins.length generic-parameters.release.action.messages ) }" ;
                                                                 in
