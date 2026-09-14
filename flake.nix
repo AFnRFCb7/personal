@@ -1820,6 +1820,13 @@
                                                                             else
                                                                                 if generic-parameters.init.corruption then [ ]
                                                                                 else [ ] ;
+                                                                        release =
+                                                                            if generic-parameters.stage.corruption then
+                                                                                if generic-parameters.stage.corruption then [ ]
+                                                                                else [ ]
+                                                                            else
+                                                                                if generic-parameters.init.corruption then [ ]
+                                                                                else [ ] ;
                                                                         setup =
                                                                             [
                                                                                 {
