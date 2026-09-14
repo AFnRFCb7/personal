@@ -1446,7 +1446,7 @@
                                                                                             } ;
                                                                                     } ;
                                                                                 empty =
-                                                                                    json
+                                                                                    jq.files
                                                                                         [
                                                                                             {
                                                                                                 name = "/home/checker/resources" ;
