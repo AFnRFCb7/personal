@@ -1871,15 +1871,9 @@
                                                                             inputs =
                                                                                 builtins.concatLists
                                                                                     [
-                                                                                        [
-                                                                                            { process = "pre" ; text = "force-dialog --text 'setting things up in a standard way'" ; }
-                                                                                        ]
                                                                                         sequences.setup
-                                                                                        [
-                                                                                            { process = "pre" ; text = "force-dialog --text 'set things up in a standard way'" ;}
-                                                                                            { process = "pre" ; text = "force-dialog --text 'run init" ; }
-                                                                                        ]
                                                                                         sequences.init
+                                                                                        sequences.init-corruption
                                                                                         (
                                                                                             if generic-parameters.init.corruption then
                                                                                                 [
