@@ -2089,7 +2089,7 @@
                                                     in
                                                         {
                                                             happy =
-
+                                                                {
                                                                     command ,
                                                                     exclusions ,
                                                                     init ,
