@@ -1869,6 +1869,14 @@
                                                                                             text = "check-redis" ;
                                                                                     }
                                                                                 ] ;
+                                                                        release =
+                                                                            if generic-parameters.stage.corruption then
+                                                                                if generic-parameters.init.corruption then [ ]
+                                                                                else [ ]
+                                                                            else
+                                                                                if generic-parameters.init.corruption then [ ]
+                                                                                else [ ]
+                                                                            fi ;
                                                                     } ;
                                                                 size = if builtins.length generic-parameters.init.action.messages == builtins.length generic-parameters.release.action.messages then builtins.length generic-parameters.init.action.messages else builtins.throw "the length of init ${ builtins.toString ( builtins.length generic-parameters.init.action.messages ) } must equal the length of release ${ builtins.toString ( builtins.length generic-parameters.release.action.messages ) }" ;
                                                                 in
@@ -1879,7 +1887,7 @@
                                                                                 builtins.concatLists
                                                                                     [
                                                                                         sequences.setup
-                                                                                        sequences.init
+                                                                                        # sequences.init
                                                                                         (
                                                                                             if generic-parameters.init.corruption then
                                                                                                 [
