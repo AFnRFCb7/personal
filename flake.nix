@@ -1463,7 +1463,7 @@
                                                                                 init =
                                                                                     {
                                                                                         true =
-                                                                                            json
+                                                                                            jq.files
                                                                                                 (
                                                                                                     builtins.concatLists
                                                                                                         [
