@@ -1424,7 +1424,7 @@
                                                                                         true =
                                                                                             {
                                                                                                 true =
-                                                                                                    json
+                                                                                                    jq.files
                                                                                                         [
                                                                                                             {
                                                                                                                 name = "/home/checker/.gc-roots" ;
