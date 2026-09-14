@@ -1545,9 +1545,9 @@
                                                                                     {
                                                                                         true =
                                                                                             {
-                                                                                                true = json release-array ;
+                                                                                                true = jq.files release-array ;
                                                                                                 false =
-                                                                                                    json
+                                                                                                    jq.files
                                                                                                         (
                                                                                                             builtins.concatLists
                                                                                                                 [
@@ -1728,17 +1728,6 @@
                                                                                 message = { channel , index } : jq { channel = channel ; payload = index + 1 ; type = "subscribe" ; } ;
                                                                             } ;
                                                                 json = jq.files ;
-                                                                json2 =
-                                                                    json :
-                                                                        let
-                                                                            derivation =
-                                                                                pkgs.runCommand
-                                                                                    "init.json"
-                                                                                    { nativeBuildInputs = [ pkgs.jq ] ; }
-                                                                                    ''
-                                                                                        jq --sort-keys "." ${ builtins.toFile "data.json" ( builtins.toJSON ( builtins.sort ( a : b : a.name < b.name ) json ) ) } > $out
-                                                                                    '' ;
-                                                                            in builtins.readFile derivation ;
                                                                 messages =
                                                                     {
                                                                         subscribe =
