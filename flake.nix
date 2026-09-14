@@ -1754,10 +1754,6 @@
                                                                                         [
                                                                                             {
                                                                                                     process = "pre" ;
-                                                                                                    text = "force-dialog --text 'since init should work and should be cached, we can do it twice and the second time will not change files or emit any messages'" ;
-                                                                                            }
-                                                                                            {
-                                                                                                    process = "pre" ;
                                                                                                     standard-output = "/home/checker/resources/mounts/0000000000000000" ;
                                                                                                     text = generic-parameters.command ;
                                                                                             }
@@ -1817,7 +1813,7 @@
                                                                                             }
                                                                                         ]
                                                                                     ] ;
-                                                                        release =
+                                                                        init-corruption =
                                                                             if generic-parameters.stage.corruption then
                                                                                 if generic-parameters.init.corruption then [ ]
                                                                                 else [ ]
@@ -1826,10 +1822,6 @@
                                                                                 else [ ] ;
                                                                         setup =
                                                                             [
-                                                                                {
-                                                                                        process = "pre" ;
-                                                                                        text = "force-dialog --text ' begin setup'" ;
-                                                                                }
                                                                                 {
                                                                                         process = "pre" ;
                                                                                         text = "force-garbage-collection" ;
@@ -1869,10 +1861,6 @@
                                                                                         standard-output = "183" ;
                                                                                         text = "check-redis" ;
                                                                                 }
-                                                                                {
-                                                                                        process = "pre" ;
-                                                                                        text = "force-dialog --text 'end setup'" ;
-                                                                                }
                                                                             ] ;
                                                                     } ;
                                                                 size = if builtins.length generic-parameters.init.action.messages == builtins.length generic-parameters.release.action.messages then builtins.length generic-parameters.init.action.messages else builtins.throw "the length of init ${ builtins.toString ( builtins.length generic-parameters.init.action.messages ) } must equal the length of release ${ builtins.toString ( builtins.length generic-parameters.release.action.messages ) }" ;
@@ -1883,7 +1871,14 @@
                                                                             inputs =
                                                                                 builtins.concatLists
                                                                                     [
+                                                                                        [
+                                                                                            { process = "pre" ; text = "force-dialog --text 'setting things up in a standard way'" ; }
+                                                                                        ]
                                                                                         sequences.setup
+                                                                                        [
+                                                                                            { process = "pre" ; text = "force-dialog --text 'set things up in a standard way'" ;}
+                                                                                            { process = "pre" ; text = "force-dialog --text 'run init" ; }
+                                                                                        ]
                                                                                         sequences.init
                                                                                         (
                                                                                             if generic-parameters.init.corruption then
