@@ -1754,7 +1754,7 @@
                                                                                         [
                                                                                             {
                                                                                                     process = "pre" ;
-                                                                                                    text = "force-dialog --text 'begin init'" ;
+                                                                                                    text = "force-dialog --text 'since init should work and should be cached, we can do it twice and the second time will not change files or emit any messages'" ;
                                                                                             }
                                                                                             {
                                                                                                     process = "pre" ;
@@ -1792,8 +1792,6 @@
                                                                                                     standard-output = "183" ;
                                                                                                     text = "check-redis" ;
                                                                                             }
-                                                                                        ]
-                                                                                        [
                                                                                             {
                                                                                                     process = "mid" ;
                                                                                                     standard-output = "/home/checker/resources/mounts/0000000000000000" ;
@@ -1816,10 +1814,6 @@
                                                                                                     process = "pre" ;
                                                                                                     standard-output = "183" ;
                                                                                                     text = "check-redis" ;
-                                                                                            }
-                                                                                            {
-                                                                                                    process = "pre" ;
-                                                                                                    text = "force-dialog --text 'end init'" ;
                                                                                             }
                                                                                         ]
                                                                                     ] ;
