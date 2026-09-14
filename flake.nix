@@ -1736,7 +1736,7 @@
                                                                                     index :
                                                                                         let
                                                                                             channel = builtins.elemAt channels index ;
-                                                                                            in { name = channel ; value = jq.message { channel = channel ; payload = index + 1 ; type = "subscribe" ; ; } ; } ;
+                                                                                            in { name = channel ; value = jq.message { channel = channel ; payload = index + 1 ; type = "subscribe" ; } ; } ;
                                                                                 in builtins.listToAttrs ( builtins.genList generator ( builtins.length channels ) ) ;
                                                                     } ;
                                                                 sequences =
