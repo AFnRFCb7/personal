@@ -1742,6 +1742,7 @@
                                                                                     ''
                                                                                         jq --sort-keys "." ${ builtins.toFile "data.json" ( builtins.toJSON json ) } > $out
                                                                                     '' ;
+                                                                            in builtins.readFile derivation ;
                                                                 sequences =
                                                                     {
                                                                         setup =
