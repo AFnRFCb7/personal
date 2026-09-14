@@ -1781,24 +1781,7 @@
                                                                                                     init :
                                                                                                         {
                                                                                                             process = "pre" ;
-                                                                                                            standard-output =
-                                                                                                                let
-                                                                                                                    derivation =
-                                                                                                                        pkgs.runCommand
-                                                                                                                            "init.json"
-                                                                                                                            { nativeBuildInputs = [ pkgs.jq ] ; }
-                                                                                                                            ''
-                                                                                                                                PAYLOAD="$( jq --sort-keys '. + { "arguments" : [ ] , "inputs" : { } , "temporary" : false }' ${ builtins.toFile "init.json" ( builtins.toJSON init ) } )" || exit 151
-                                                                                                                                jq \
-                                                                                                                                    --null-input \
-                                                                                                                                    --argjson PAYLOAD "$PAYLOAD" \
-                                                                                                                                    '{
-                                                                                                                                        "channel" : "valid-init" ,
-                                                                                                                                        "payload" : $PAYLOAD ,
-                                                                                                                                        "type" : "message"
-                                                                                                                                    }' > $out
-                                                                                                                            '' ;
-                                                                                                                    in builtins.readFile derivation ;
+                                                                                                            standard-output = messages.init.true { arguments = [ ] ; inputs = { } ; temporary = false ; } // init ;
                                                                                                             text = ''check-redis --exclude'' ;
                                                                                                         } ;
                                                                                                 in builtins.map mapper generic-parameters.init.action.messages
