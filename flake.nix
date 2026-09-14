@@ -1709,6 +1709,25 @@
                                                                                         } ;
                                                                                 in identity stage ;
                                                                     } ;
+                                                                jq =
+                                                                    let
+                                                                        jq =
+                                                                            json :
+                                                                                let
+                                                                                    derivation =
+                                                                                        pkgs.runCommand
+                                                                                            "data.json"
+                                                                                            { nativeBuildInputs = [ pkgs.jq ] ; }
+                                                                                            ''
+                                                                                                jq --sort-keys "." ${ builtins.toFile "data.json" ( builtins.toJSON json ) } > $out
+                                                                                            '' ;
+                                                                                    in builtins.readFile derivation ;
+                                                                        in
+                                                                            {
+                                                                                files = json : builtins.sort ( a : b : a.name < b.name ) json ;
+                                                                                message = { channel , index } : jq { channel = channel ; payload = index + 1 ; type = "subscribe" ; } ;
+                                                                            } ;
+                                                                json = jq.files ;
                                                                 messages =
                                                                     {
                                                                         subscribe =
@@ -1718,32 +1737,9 @@
                                                                                     index :
                                                                                         let
                                                                                             channel = builtins.elemAt channels index ;
-                                                                                            in { name = channel ; value = json { channel = channel ; payload = index + 1 ; type = "subscribe" ; } ; } ;
+                                                                                            in { name = channel ; value = jq.message { channel = channel ; index = index ; } ; } ;
                                                                                 in builtins.listToAttrs ( builtins.genList generator ( builtins.length channels ) ) ;
                                                                     } ;
-                                                                json =
-                                                                    json :
-                                                                        let
-                                                                            data =
-                                                                                _visitor.implementation
-                                                                                    {
-                                                                                        bool = path : value : value ;
-                                                                                        int = path : value : value ;
-                                                                                        list =
-                                                                                            path : list :
-                                                                                                builtins.trace "3513374481421446" ( if builtins.all ( item : builtins.typeOf item == "set" && builtins.hasAttr "name" item ) list then builtins.sort ( a : b : a.name < b.name ) list
-                                                                                                else builtins.throw "unimplemented 7816473325824323" ) ;
-                                                                                        string = path : value : value ;
-                                                                                    }
-                                                                                    json ;
-                                                                            derivation =
-                                                                                pkgs.runCommand
-                                                                                    "data.json"
-                                                                                    { nativeBuildInputs = [ pkgs.jq ] ; }
-                                                                                    ''
-                                                                                        jq --sort-keys "." ${ builtins.toFile "data.json" ( builtins.toJSON data ) } > $out
-                                                                                    '' ;
-                                                                            in builtins.readFile derivation ;
                                                                 sequences =
                                                                     {
                                                                         setup =
