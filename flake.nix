@@ -1724,7 +1724,7 @@
                                                                                     in builtins.readFile derivation ;
                                                                         in
                                                                             {
-                                                                                files = json : builtins.sort ( a : b : a.name < b.name ) json ;
+                                                                                files = json : jq ( builtins.sort ( a : b : a.name < b.name ) json ) ;
                                                                                 message = { channel , index } : jq { channel = channel ; payload = index + 1 ; type = "subscribe" ; } ;
                                                                             } ;
                                                                 json = jq.files ;
