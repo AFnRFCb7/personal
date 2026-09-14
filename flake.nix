@@ -1750,26 +1750,26 @@
                                                                                         standard-output = files.empty ;
                                                                                         text = "check-files --delete true" ;
                                                                                 }
-#                                                                                {
-#                                                                                        process = "pre" ;
-#                                                                                        standard-output = messages.subscribe.invalid-init ;
-#                                                                                        text = "check-redis" ;
-#                                                                                }
-#                                                                                {
-#                                                                                        process = "pre" ;
-#                                                                                        standard-output = messages.subscribe.invalid-release ;
-#                                                                                        text = "check-redis" ;
-#                                                                                }
-#                                                                                {
-#                                                                                        process = "pre" ;
-#                                                                                        standard-output = messages.subscribe.valid-init ;
-#                                                                                        text = "check-redis" ;
-#                                                                                }
-#                                                                                {
-#                                                                                        process = "pre" ;
-#                                                                                        standard-output = messages.subscribe.valid-release ;
-#                                                                                        text = "check-redis" ;
-#                                                                                }
+                                                                                {
+                                                                                        process = "pre" ;
+                                                                                        standard-output = messages.subscribe.invalid-init ;
+                                                                                        text = "check-redis" ;
+                                                                                }
+                                                                                {
+                                                                                        process = "pre" ;
+                                                                                        standard-output = messages.subscribe.invalid-release ;
+                                                                                        text = "check-redis" ;
+                                                                                }
+                                                                                {
+                                                                                        process = "pre" ;
+                                                                                        standard-output = messages.subscribe.valid-init ;
+                                                                                        text = "check-redis" ;
+                                                                                }
+                                                                                {
+                                                                                        process = "pre" ;
+                                                                                        standard-output = messages.subscribe.valid-release ;
+                                                                                        text = "check-redis" ;
+                                                                                }
                                                                                 {
                                                                                         process = "pre" ;
                                                                                         standard-output = "183" ;
