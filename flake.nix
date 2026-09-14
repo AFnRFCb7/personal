@@ -1719,7 +1719,7 @@
                                                                                         let
                                                                                             channel = builtins.elemAt channels index ;
                                                                                             in json ( builtins.listToAttrs [ { name = channel ; value = { channel = channel ; payload = index ; type = "subscribe" ; } ; } ] ) ;
-                                                                                in builtins.genList generator ( builtins.length channels ) ;
+                                                                                in builtins.listToAttrs ( builtins.genList generator ( builtins.length channels ) ) ;
                                                                     } ;
                                                                 json =
                                                                     json :
