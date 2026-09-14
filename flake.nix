@@ -1485,7 +1485,7 @@
                                                                                                         ]
                                                                                                 ) ;
                                                                                         false =
-                                                                                            json
+                                                                                            jq.files
                                                                                                 (
                                                                                                     builtins.concatLists
                                                                                                         [
