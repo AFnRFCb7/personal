@@ -1881,29 +1881,14 @@
                                                                                         sequences.setup
                                                                                         sequences.init
                                                                                         sequences.init-corruption
+                                                                                        ###
                                                                                         (
                                                                                             if generic-parameters.init.corruption then
                                                                                                 [
                                                                                                     {
-                                                                                                        process = "pre" ;
-                                                                                                        text = "force-corruption" ;
+                                                                                                        process = "post" ;
+                                                                                                        text = "force-sync" ;
                                                                                                     }
-                                                                                                ]
-                                                                                            else [ ]
-                                                                                        )
-                                                                                        [
-                                                                                            {
-                                                                                                    process = "pre" ;
-                                                                                                    text = "force-garbage-collection" ;
-                                                                                            }
-                                                                                            {
-                                                                                                    process = "post" ;
-                                                                                                    text = "force-sync" ;
-                                                                                            }
-                                                                                        ]
-                                                                                        (
-                                                                                            if generic-parameters.init.corruption then
-                                                                                                [
                                                                                                     {
                                                                                                             process = "post" ;
                                                                                                             reads = false ;
@@ -1985,6 +1970,7 @@
                                                                                                     text = "check-redis" ;
                                                                                             }
                                                                                         ]
+                                                                                        ###
                                                                                         (
                                                                                             if builtins.typeOf generic-parameters.release.recovery.script == "string" then
                                                                                                 [
