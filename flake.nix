@@ -1725,7 +1725,7 @@
                                                                         in
                                                                             {
                                                                                 files = json : jq ( builtins.sort ( a : b : a.name < b.name ) json ) ;
-                                                                                message = { channel , index } : jq { channel = channel ; payload = index + 1 ; type = "subscribe" ; } ;
+                                                                                message = { channel , payload , type } : jq { channel = channel ; payload = payload ; type = type ; } ;
                                                                             } ;
                                                                 messages =
                                                                     {
@@ -1736,7 +1736,7 @@
                                                                                     index :
                                                                                         let
                                                                                             channel = builtins.elemAt channels index ;
-                                                                                            in { name = channel ; value = jq.message { channel = channel ; index = index ; } ; } ;
+                                                                                            in { name = channel ; value = jq.message { channel = channel ; payload = index + 1 ; type = "subscribe" ; ; } ; } ;
                                                                                 in builtins.listToAttrs ( builtins.genList generator ( builtins.length channels ) ) ;
                                                                     } ;
                                                                 sequences =
