@@ -1856,28 +1856,31 @@
                                                                                         }
                                                                                     ]
                                                                                 else
-                                                                                    [
-                                                                                        {
-                                                                                            process = "post" ;
-                                                                                            reads = false ;
-                                                                                            standard-output = files.release.true.true ;
-                                                                                            text =
-                                                                                                ''
-                                                                                                    check-files --exclusion "/home/checker/resources/*.lock" --delete true
-                                                                                                '' ;
-                                                                                        }
-                                                                                        (
-                                                                                            let
-                                                                                                mapper =
-                                                                                                    { channel , index , standard-output , status } :
-                                                                                                        {
-                                                                                                            process = "post" ;
-                                                                                                            standard-output = messages.release.true.true { index = "0000000000000000" ; standard-output = standard-output ; status = status ; } ;
-                                                                                                            text = ''check-redis --exclude'' ;
-                                                                                                        } ;
-                                                                                                in builtins.map mapper generic-parameters.release.action.messages
-                                                                                        )
-                                                                                    ] ;
+                                                                                    builtins.concatLists
+                                                                                        [
+                                                                                            [
+                                                                                                {
+                                                                                                    process = "post" ;
+                                                                                                    reads = false ;
+                                                                                                    standard-output = files.release.true.true ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            check-files --exclusion "/home/checker/resources/*.lock" --delete true
+                                                                                                        '' ;
+                                                                                                }
+                                                                                            ]
+                                                                                            (
+                                                                                                let
+                                                                                                    mapper =
+                                                                                                        { channel , index , standard-output , status } :
+                                                                                                            {
+                                                                                                                process = "post" ;
+                                                                                                                standard-output = messages.release.true.true { index = "0000000000000000" ; standard-output = standard-output ; status = status ; } ;
+                                                                                                                text = ''check-redis --exclude'' ;
+                                                                                                            } ;
+                                                                                                    in builtins.map mapper generic-parameters.release.action.messages
+                                                                                            )
+                                                                                        ] ;
                                                                         setup =
                                                                             [
                                                                                 {
