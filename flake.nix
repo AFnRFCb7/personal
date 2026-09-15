@@ -1933,16 +1933,6 @@
                                                                                         sequences.setup
                                                                                         sequences.init
                                                                                         sequences.init-corruption
-                                                                                        (
-                                                                                            if generic-parameters.init.corruption then
-                                                                                                [
-                                                                                                    {
-                                                                                                        process = "pre" ;
-                                                                                                        text = "force-corruption" ;
-                                                                                                    }
-                                                                                                ]
-                                                                                            else [ ]
-                                                                                        )
                                                                                         [
                                                                                             { process = "pre" ; standard-output = "183" ; text = "check-redis" ; }
                                                                                             { process = "post" ; text = "force-sync" ; }
