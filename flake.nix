@@ -1825,52 +1825,69 @@
                                                                                 if generic-parameters.stage.corruption then [ ]
                                                                                 else [ ]
                                                                             else
-                                                                                if generic-parameters.init.corruption then [ ]
-                                                                                else
+                                                                                if generic-parameters.init.corruption then
                                                                                     [
                                                                                         {
                                                                                             process = "post" ;
                                                                                             reads = false ;
-                                                                                            standard-output = files.release.true.true ;
+                                                                                            standard-output = files.init.false ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    check-files --exclusion "/home/checker/resources/*.lock" --delete true
+                                                                                                    check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
                                                                                                 '' ;
                                                                                         }
-                                                                                        (
-                                                                                            let
-                                                                                                mapper =
-                                                                                                    { channel , index , standard-output , status } :
-                                                                                                        {
-                                                                                                            process = "post" ;
-                                                                                                            standard-output =
-                                                                                                                let
-                                                                                                                    derivation =
-                                                                                                                        pkgs.runCommand
-                                                                                                                            "standard-output.json"
-                                                                                                                            { nativeBuildInputs = [ pkgs.jq ] ; }
-                                                                                                                            ''
-                                                                                                                                jq \
-                                                                                                                                    --null-input \
-                                                                                                                                    --rawfile STANDARD_OUTPUT ${ builtins.toFile "standard-output" standard-output } \
-                                                                                                                                    --argjson STATUS ${ builtins.toString status } \
-                                                                                                                                    '{
-                                                                                                                                        "channel" : "${ channel }" ,
-                                                                                                                                        "payload" :
-                                                                                                                                            {
-                                                                                                                                                "index": "${ index }" ,
-                                                                                                                                                "standard-output": $STANDARD_OUTPUT ,
-                                                                                                                                                "status": $STATUS
-                                                                                                                                            } ,
-                                                                                                                                        "type" : "message"
-                                                                                                                                    }' > $out ;
-                                                                                                                            '' ;
-                                                                                                                    in builtins.readFile derivation ;
-                                                                                                            text = ''check-redis --exclude'' ;
-                                                                                                        } ;
-                                                                                                    in builtins.map mapper generic-parameters.release.action.messages
-                                                                                        )
-                                                                                    ] ;
+                                                                                    ]
+                                                                                else
+                                                                                    builtins.concatLists
+                                                                                        [
+                                                                                            [
+                                                                                                {
+                                                                                                    process = "post" ;
+                                                                                                    reads = false ;
+                                                                                                    standard-output = files.release.true.true ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            check-files --exclusion "/home/checker/resources/*.lock" --delete true
+                                                                                                        '' ;
+                                                                                                }
+                                                                                                (
+                                                                                                    let
+                                                                                                        mapper =
+                                                                                                            { channel , index , standard-output , status } :
+                                                                                                                {
+                                                                                                                    process = "post" ;
+                                                                                                                    standard-output =
+                                                                                                                        let
+                                                                                                                            derivation =
+                                                                                                                                pkgs.runCommand
+                                                                                                                                    "standard-output.json"
+                                                                                                                                    { nativeBuildInputs = [ pkgs.jq ] ; }
+                                                                                                                                    ''
+                                                                                                                                        jq \
+                                                                                                                                            --null-input \
+                                                                                                                                            --rawfile STANDARD_OUTPUT ${ builtins.toFile "standard-output" standard-output } \
+                                                                                                                                            --argjson STATUS ${ builtins.toString status } \
+                                                                                                                                            '{
+                                                                                                                                                "channel" : "${ channel }" ,
+                                                                                                                                                "payload" :
+                                                                                                                                                    {
+                                                                                                                                                        "index": "${ index }" ,
+                                                                                                                                                        "standard-output": $STANDARD_OUTPUT ,
+                                                                                                                                                        "status": $STATUS
+                                                                                                                                                    } ,
+                                                                                                                                                "type" : "message"
+                                                                                                                                            }' > $out ;
+                                                                                                                                    '' ;
+                                                                                                                            in builtins.readFile derivation ;
+                                                                                                                    text = ''check-redis --exclude'' ;
+                                                                                                                } ;
+                                                                                                            in builtins.map mapper generic-parameters.release.action.messages
+                                                                                                )
+                                                                                            ]
+                                                                                        ] ;
+                                                                        release-corruption =
+                                                                            [
+                                                                            ] ;
                                                                         setup =
                                                                             [
                                                                                 {
