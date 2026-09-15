@@ -1934,9 +1934,7 @@
                                                                                     [
                                                                                         sequences.setup
                                                                                         sequences.init
-                                                                                        [
-                                                                                            { process = "pre" ; standard-output = "183" ; text = "check-redis" ; }
-                                                                                        ]
+                                                                                        [ { process = "pre" ; standard-output = "183" ; text = "check-redis" ; } ]
                                                                                         sequences.init-corruption
                                                                                         [
                                                                                             { process = "pre" ; standard-output = "183" ; text = "check-redis" ; }
