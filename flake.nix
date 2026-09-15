@@ -1820,6 +1820,19 @@
                                                                             else
                                                                                 if generic-parameters.init.corruption then [ ]
                                                                                 else [ ] ;
+                                                                        pause =
+                                                                            let
+                                                                                pause =
+                                                                                    process :
+                                                                                        [
+                                                                                            { process = process ; standard-output = "183" ; text = "check-redis" ; }
+                                                                                            { process = process ; text = "force-sync" ; }
+                                                                                        ] ;
+                                                                                in
+                                                                                    {
+                                                                                        post = pause "post" ;
+                                                                                        pre = pause "pre" ;
+                                                                                    } ;
                                                                         release =
                                                                             if generic-parameters.stage.corruption then
                                                                                 if generic-parameters.stage.corruption then [ ]
@@ -1920,10 +1933,7 @@
                                                                                         sequences.setup
                                                                                         sequences.init
                                                                                         sequences.init-corruption
-                                                                                        [
-                                                                                            { process = "pre" ; standard-output = "183" ; text = "check-redis" ; }
-                                                                                            { process = "pre" ; text = "force-sync" ; }
-                                                                                        ]
+                                                                                        pause.pre
                                                                                         (
                                                                                             if generic-parameters.init.corruption then
                                                                                                 [
