@@ -1881,6 +1881,34 @@
                                                                                                     in builtins.map mapper generic-parameters.release.action.messages
                                                                                             )
                                                                                         ] ;
+                                                                        release-recovery =
+                                                                            if builtins.typeOf generic-parameters.release.recovery.script == "null" then [ ]
+                                                                            else
+                                                                                [
+                                                                                    {
+                                                                                        process = "post" ;
+                                                                                        status = 111 ;
+                                                                                        standard-error = generic-parameters.release.recovery.standard-error ;
+                                                                                        text = generic-parameters.release.recovery.script ;
+                                                                                    }
+                                                                                    {
+                                                                                        process = "post" ;
+                                                                                        text = "force-sync" ;
+                                                                                    }
+                                                                                    {
+                                                                                        process = "post" ;
+                                                                                        standard-output = if generic-parameters.release.recovery.success then files.release.true.true else files.release.true.false ;
+                                                                                        text =
+                                                                                            ''
+                                                                                                check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
+                                                                                            '' ;
+                                                                                    }
+                                                                                    {
+                                                                                        process = "post" ;
+                                                                                        standard-output = "183" ;
+                                                                                        text = "check-redis" ;
+                                                                                    }
+                                                                                ] ;
                                                                         setup =
                                                                             [
                                                                                 {
@@ -1944,35 +1972,7 @@
                                                                                         ]
                                                                                         sequences.release
                                                                                         [ { process = "post" ; standard-output = "183" ; text = "check-redis" ; } ]
-                                                                                        (
-                                                                                            if builtins.typeOf generic-parameters.release.recovery.script == "string" then
-                                                                                                [
-                                                                                                    {
-                                                                                                        process = "post" ;
-                                                                                                        status = 111 ;
-                                                                                                        standard-error = generic-parameters.release.recovery.standard-error ;
-                                                                                                        text = generic-parameters.release.recovery.script ;
-                                                                                                    }
-                                                                                                    {
-                                                                                                        process = "post" ;
-                                                                                                        text = "force-sync" ;
-                                                                                                    }
-                                                                                                    {
-                                                                                                        process = "post" ;
-                                                                                                        standard-output = if generic-parameters.release.recovery.success then files.release.true.true else files.release.true.false ;
-                                                                                                        text =
-                                                                                                            ''
-                                                                                                                check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
-                                                                                                            '' ;
-                                                                                                    }
-                                                                                                    {
-                                                                                                        process = "post" ;
-                                                                                                        standard-output = "183" ;
-                                                                                                        text = "check-redis" ;
-                                                                                                    }
-                                                                                                ]
-                                                                                            else [ ]
-                                                                                        )
+                                                                                        sequences.release-recovery
                                                                                         [
                                                                                             {
                                                                                                     process = "post" ;
