@@ -1743,6 +1743,19 @@
                                                                                             channel = builtins.elemAt channels index ;
                                                                                             in { name = channel ; value = jq.message { channel = channel ; payload = index + 1 ; type = "subscribe" ; } ; } ;
                                                                                 in builtins.listToAttrs ( builtins.genList generator ( builtins.length channels ) ) ;
+                                                                        release =
+                                                                            {
+                                                                                true =
+                                                                                    {
+                                                                                        true = payload : jq.message { channel = "valid-release" ; payload = payload ; type = "message" ; } ;
+                                                                                        false = payload : jq.message { channel = "invalid-release" ; payload = payload ; type = "message" ; } ;
+                                                                                    } ;
+                                                                                false =
+                                                                                    {
+                                                                                        true = payload : jq.message { channel = "valid-init" ; payload = payload ; type = "message" ; } ;
+                                                                                        false = payload : jq.message { channel = "invalid-init" ; payload = payload ; type = "message" ; } ;
+                                                                                    } ;
+                                                                            } ;
                                                                     } ;
                                                                 sequences =
                                                                     {
