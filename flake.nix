@@ -1943,13 +1943,13 @@
                                                                                             if generic-parameters.init.corruption then
                                                                                                 [
                                                                                                     {
-                                                                                                            process = "post" ;
-                                                                                                            reads = false ;
-                                                                                                            standard-output = files.init.false ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
-                                                                                                                '' ;
+                                                                                                        process = "post" ;
+                                                                                                        reads = false ;
+                                                                                                        standard-output = files.init.false ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
+                                                                                                            '' ;
                                                                                                     }
                                                                                                     {
                                                                                                         process = "post" ;
@@ -1971,13 +1971,13 @@
                                                                                                     [
                                                                                                         [
                                                                                                             {
-                                                                                                                    process = "post" ;
-                                                                                                                    reads = false ;
-                                                                                                                    standard-output = files.release.true.true ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                            check-files --exclusion "/home/checker/resources/*.lock" --delete true
-                                                                                                                        '' ;
+                                                                                                                process = "post" ;
+                                                                                                                reads = false ;
+                                                                                                                standard-output = files.release.true.true ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        check-files --exclusion "/home/checker/resources/*.lock" --delete true
+                                                                                                                    '' ;
                                                                                                             }
                                                                                                         ]
                                                                                                             (
