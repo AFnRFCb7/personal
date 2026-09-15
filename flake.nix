@@ -1928,12 +1928,7 @@
                                                                                         [
                                                                                             { process = "pre" ; text = "force-corruption" ; }
                                                                                         ]
-                                                                                        [
-                                                                                            {
-                                                                                                    process = "post" ;
-                                                                                                    text = "force-sync" ;
-                                                                                            }
-                                                                                        ]
+                                                                                        [ { process = "post" ; text = "force-sync" ; } ]
                                                                                         (
                                                                                             if generic-parameters.init.corruption then
                                                                                                 [
