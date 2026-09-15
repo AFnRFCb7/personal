@@ -1825,7 +1825,33 @@
                                                                                 if generic-parameters.stage.corruption then [ ]
                                                                                 else [ ]
                                                                             else
-                                                                                if generic-parameters.init.corruption then [ ]
+                                                                                if generic-parameters.init.corruption then
+                                                                                    [
+                                                                                        { process = "pre" ; text = "force-corruption" ; }
+                                                                                        {
+                                                                                            process = "post" ;
+                                                                                            reads = false ;
+                                                                                            standard-output = files.init.false ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
+                                                                                                '' ;
+                                                                                        }
+                                                                                        {
+                                                                                            process = "post" ;
+                                                                                            standard-output =
+                                                                                                let
+                                                                                                    derivation =
+                                                                                                        pkgs.runCommand
+                                                                                                            "corrupt.json"
+                                                                                                            { nativeBuildInputs = [ pkgs.jq ] ; }
+                                                                                                            ''
+                                                                                                                jq '.' ${ builtins.toFile "corruption.json" ( builtins.toJSON { channel = "invalid-release" ; payload = { index = "0000000000000000" ; standard-output = generic-parameters.release.action.standard-output ; status = generic-parameters.release.action.status ; } ; type = "message" ; } ) } > $out
+                                                                                                            '' ;
+                                                                                                    in builtins.readFile "${ derivation }" ;
+                                                                                            text = "check-redis --exclude" ;
+                                                                                        }
+                                                                                    ]
                                                                                 else
                                                                                     [
                                                                                         {
