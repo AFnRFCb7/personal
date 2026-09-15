@@ -1957,10 +1957,8 @@
                                                                                             else [ ]
                                                                                         )
                                                                                         [
-                                                                                            {
-                                                                                                    process = "post" ;
-                                                                                                    text = "force-sync" ;
-                                                                                            }
+                                                                                            { process = "pre" ; standard-output = "183" ; text = "check-redis" ; }
+                                                                                            { process = "post" ; text = "force-sync" ; }
                                                                                         ]
                                                                                         (
                                                                                             if generic-parameters.init.corruption then
