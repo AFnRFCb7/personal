@@ -1818,7 +1818,7 @@
                                                                                 if generic-parameters.init.corruption then [ ]
                                                                                 else [ ]
                                                                             else
-                                                                                if generic-parameters.init.corruption then [ ]
+                                                                                if generic-parameters.init.corruption then [ { process = "pre" ; text = "force-corruption" ; } ]
                                                                                 else [ ] ;
                                                                         pause =
                                                                             let
@@ -1840,7 +1840,6 @@
                                                                             else
                                                                                 if generic-parameters.init.corruption then
                                                                                     [
-                                                                                        { process = "pre" ; text = "force-corruption" ; }
                                                                                         {
                                                                                             process = "post" ;
                                                                                             reads = false ;
@@ -1876,7 +1875,7 @@
                                                                                                             standard-output = messages.release.true.true { index = "0000000000000000" ; standard-output = standard-output ; status = status ; } ;
                                                                                                             text = ''check-redis --exclude'' ;
                                                                                                         } ;
-                                                                                                    in builtins.map mapper generic-parameters.release.action.messages
+                                                                                                in builtins.map mapper generic-parameters.release.action.messages
                                                                                         )
                                                                                     ] ;
                                                                         setup =
@@ -1932,6 +1931,9 @@
                                                                                     [
                                                                                         sequences.setup
                                                                                         sequences.init
+                                                                                        [
+                                                                                            { process = "pre" ; standard-output = "183" ; text = "check-redis" ; }
+                                                                                        ]
                                                                                         sequences.init-corruption
                                                                                         [
                                                                                             { process = "pre" ; standard-output = "183" ; text = "check-redis" ; }
