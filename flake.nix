@@ -1928,16 +1928,6 @@
                                                                                         [
                                                                                             { process = "pre" ; text = "force-corruption" ; }
                                                                                         ]
-                                                                                        (
-                                                                                            if generic-parameters.init.corruption then
-                                                                                                [
-                                                                                                    {
-                                                                                                        process = "pre" ;
-                                                                                                        text = "force-corruption" ;
-                                                                                                    }
-                                                                                                ]
-                                                                                            else [ ]
-                                                                                        )
                                                                                         [
                                                                                             {
                                                                                                     process = "post" ;
