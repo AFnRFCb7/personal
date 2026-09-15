@@ -1868,14 +1868,8 @@
                                                                                     ] ;
                                                                         setup =
                                                                             [
-                                                                                {
-                                                                                        process = "pre" ;
-                                                                                        text = "force-garbage-collection" ;
-                                                                                }
-                                                                                {
-                                                                                        process = "pre" ;
-                                                                                        text = "force-sync" ;
-                                                                                }
+                                                                                { process = "pre" ; text = "force-garbage-collection" ; }
+                                                                                { process = "pre" ; text = "force-sync" ; }
                                                                                 {
                                                                                         process = "pre" ;
                                                                                         reads = false ;
@@ -1902,11 +1896,6 @@
                                                                                         standard-output = messages.subscribe.valid-release ;
                                                                                         text = "check-redis" ;
                                                                                 }
-                                                                                {
-                                                                                        process = "pre" ;
-                                                                                        standard-output = "183" ;
-                                                                                        text = "check-redis" ;
-                                                                                }
                                                                             ] ;
                                                                     } ;
                                                                 size = if builtins.length generic-parameters.init.action.messages == builtins.length generic-parameters.release.action.messages then builtins.length generic-parameters.init.action.messages else builtins.throw "the length of init ${ builtins.toString ( builtins.length generic-parameters.init.action.messages ) } must equal the length of release ${ builtins.toString ( builtins.length generic-parameters.release.action.messages ) }" ;
@@ -1923,20 +1912,6 @@
                                                                                         [
                                                                                             { process = "pre" ; standard-output = "183" ; text = "check-redis" ; }
                                                                                             { process = "pre" ; text = "force-sync" ; }
-                                                                                        ]
-                                                                                        (
-                                                                                            if generic-parameters.init.corruption then
-                                                                                                [
-                                                                                                    {
-                                                                                                        process = "pre" ;
-                                                                                                        text = "force-corruption" ;
-                                                                                                    }
-                                                                                                ]
-                                                                                            else [ ]
-                                                                                        )
-                                                                                        [
-                                                                                            { process = "pre" ; standard-output = "183" ; text = "check-redis" ; }
-                                                                                            { process = "post" ; text = "force-sync" ; }
                                                                                         ]
                                                                                         (
                                                                                             if generic-parameters.init.corruption then
