@@ -1927,20 +1927,6 @@
                                                                                             { process = "pre" ; standard-output = "183" ; text = "check-redis" ; }
                                                                                             { process = "pre" ; text = "force-sync" ; }
                                                                                         ]
-                                                                                        (
-                                                                                            if generic-parameters.init.corruption then
-                                                                                                [
-                                                                                                    {
-                                                                                                        process = "pre" ;
-                                                                                                        text = "force-corruption" ;
-                                                                                                    }
-                                                                                                ]
-                                                                                            else [ ]
-                                                                                        )
-                                                                                        [
-                                                                                            { process = "pre" ; standard-output = "183" ; text = "check-redis" ; }
-                                                                                            { process = "post" ; text = "force-sync" ; }
-                                                                                        ]
                                                                                         sequences.release
                                                                                         (
                                                                                             if builtins.typeOf generic-parameters.release.recovery.script == "string" then
