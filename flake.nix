@@ -1943,13 +1943,7 @@
                                                                                             { process = "post" ; text = "force-sync" ; }
                                                                                         ]
                                                                                         sequences.release
-                                                                                        [
-                                                                                            {
-                                                                                                    process = "post" ;
-                                                                                                    standard-output = "183" ;
-                                                                                                    text = "check-redis" ;
-                                                                                            }
-                                                                                        ]
+                                                                                        [ { process = "post" ; standard-output = "183" ; text = "check-redis" ; } ]
                                                                                         (
                                                                                             if builtins.typeOf generic-parameters.release.recovery.script == "string" then
                                                                                                 [
