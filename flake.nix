@@ -1734,6 +1734,19 @@
                                                                                 true = payload : jq.message { channel = "valid-init" ; payload = payload ; type = "message" ; } ;
                                                                                 false = null ;
                                                                             } ;
+                                                                        release =
+                                                                            {
+                                                                                true =
+                                                                                    {
+                                                                                        true = payload : jq.message { channel = "valid-release" ; payload = payload ; type = "message" ; } ;
+                                                                                        false = payload : jq.message { channel = "invalid-release" ; payload = payload ; type = "message" ; } ;
+                                                                                    } ;
+                                                                                false =
+                                                                                    {
+                                                                                        true = null ;
+                                                                                        false = null ;
+                                                                                    } ;
+                                                                            } ;
                                                                         subscribe =
                                                                             let
                                                                                 channels = [ "invalid-init" "invalid-release" "valid-init" "valid-release" ] ;
@@ -1820,19 +1833,6 @@
                                                                             else
                                                                                 if generic-parameters.init.corruption then [ { process = "pre" ; text = "force-corruption" ; } ]
                                                                                 else [ ] ;
-                                                                        pause =
-                                                                            let
-                                                                                pause =
-                                                                                    process :
-                                                                                        [
-                                                                                            { process = process ; standard-output = "183" ; text = "check-redis" ; }
-                                                                                            { process = process ; text = "force-sync" ; }
-                                                                                        ] ;
-                                                                                in
-                                                                                    {
-                                                                                        post = pause "post" ;
-                                                                                        pre = pause "pre" ;
-                                                                                    } ;
                                                                         release =
                                                                             if generic-parameters.stage.corruption then
                                                                                 if generic-parameters.stage.corruption then [ ]
