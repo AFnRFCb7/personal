@@ -1839,16 +1839,7 @@
                                                                                         }
                                                                                         {
                                                                                             process = "post" ;
-                                                                                            standard-output =
-                                                                                                let
-                                                                                                    derivation =
-                                                                                                        pkgs.runCommand
-                                                                                                            "corrupt.json"
-                                                                                                            { nativeBuildInputs = [ pkgs.jq ] ; }
-                                                                                                            ''
-                                                                                                                jq '.' ${ builtins.toFile "corruption.json" ( builtins.toJSON { channel = "invalid-release" ; payload = { index = "0000000000000000" ; standard-output = generic-parameters.release.action.standard-output ; status = generic-parameters.release.action.status ; } ; type = "message" ; } ) } > $out
-                                                                                                            '' ;
-                                                                                                    in builtins.readFile "${ derivation }" ;
+                                                                                            standard-output = messages.release.true.false { index = "0000000000000000" ; standard-output = generic-parameters.release.action.standard-output ; status = generic-parameters.release.action.status ; } ;
                                                                                             text = "check-redis --exclude" ;
                                                                                         }
                                                                                     ]
