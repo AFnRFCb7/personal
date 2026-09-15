@@ -1893,10 +1893,6 @@
                                                                                         )
                                                                                         [
                                                                                             {
-                                                                                                    process = "pre" ;
-                                                                                                    text = "force-garbage-collection" ;
-                                                                                            }
-                                                                                            {
                                                                                                     process = "post" ;
                                                                                                     text = "force-sync" ;
                                                                                             }
