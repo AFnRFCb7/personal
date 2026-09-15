@@ -1865,6 +1865,7 @@
                                                                                                     in builtins.map mapper generic-parameters.release.action.messages
                                                                                         )
                                                                                     ] ;
+                                                                        release-recovery = [ ] ;
                                                                         setup =
                                                                             [
                                                                                 { process = "pre" ; text = "force-garbage-collection" ; }
