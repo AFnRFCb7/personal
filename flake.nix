@@ -1820,19 +1820,6 @@
                                                                             else
                                                                                 if generic-parameters.init.corruption then [ { process = "pre" ; text = "force-corruption" ; } ]
                                                                                 else [ ] ;
-                                                                        pause =
-                                                                            let
-                                                                                pause =
-                                                                                    process :
-                                                                                        [
-                                                                                            { process = process ; standard-output = "183" ; text = "check-redis" ; }
-                                                                                            { process = process ; text = "force-sync" ; }
-                                                                                        ] ;
-                                                                                in
-                                                                                    {
-                                                                                        post = pause "post" ;
-                                                                                        pre = pause "pre" ;
-                                                                                    } ;
                                                                         release =
                                                                             if generic-parameters.stage.corruption then
                                                                                 if generic-parameters.stage.corruption then [ ]
@@ -1939,89 +1926,8 @@
                                                                                             { process = "pre" ; standard-output = "183" ; text = "check-redis" ; }
                                                                                             { process = "post" ; text = "force-sync" ; }
                                                                                         ]
-                                                                                        (
-                                                                                            if generic-parameters.init.corruption then
-                                                                                                [
-                                                                                                    {
-                                                                                                            process = "post" ;
-                                                                                                            reads = false ;
-                                                                                                            standard-output = files.init.false ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
-                                                                                                                '' ;
-                                                                                                    }
-                                                                                                    {
-                                                                                                        process = "post" ;
-                                                                                                        standard-output =
-                                                                                                            let
-                                                                                                                derivation =
-                                                                                                                    pkgs.runCommand
-                                                                                                                        "corrupt.json"
-                                                                                                                        { nativeBuildInputs = [ pkgs.jq ] ; }
-                                                                                                                        ''
-                                                                                                                            jq '.' ${ builtins.toFile "corruption.json" ( builtins.toJSON { channel = "invalid-release" ; payload = { index = "0000000000000000" ; standard-output = generic-parameters.release.action.standard-output ; status = generic-parameters.release.action.status ; } ; type = "message" ; } ) } > $out
-                                                                                                                        '' ;
-                                                                                                                in builtins.readFile "${ derivation }" ;
-                                                                                                        text = "check-redis --exclude" ;
-                                                                                                    }
-                                                                                                ]
-                                                                                            else
-                                                                                                builtins.concatLists
-                                                                                                    [
-                                                                                                        [
-                                                                                                            {
-                                                                                                                    process = "post" ;
-                                                                                                                    reads = false ;
-                                                                                                                    standard-output = files.release.true.true ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                            check-files --exclusion "/home/checker/resources/*.lock" --delete true
-                                                                                                                        '' ;
-                                                                                                            }
-                                                                                                        ]
-                                                                                                            (
-                                                                                                                let
-                                                                                                                    mapper =
-                                                                                                                        { channel , index , standard-output , status } :
-                                                                                                                            {
-                                                                                                                                process = "post" ;
-                                                                                                                                standard-output =
-                                                                                                                                    let
-                                                                                                                                        derivation =
-                                                                                                                                            pkgs.runCommand
-                                                                                                                                                "standard-output.json"
-                                                                                                                                                { nativeBuildInputs = [ pkgs.jq ] ; }
-                                                                                                                                                ''
-                                                                                                                                                    jq \
-                                                                                                                                                        --null-input \
-                                                                                                                                                        --rawfile STANDARD_OUTPUT ${ builtins.toFile "standard-output" standard-output } \
-                                                                                                                                                        --argjson STATUS ${ builtins.toString status } \
-                                                                                                                                                        '{
-                                                                                                                                                            "channel" : "${ channel }" ,
-                                                                                                                                                            "payload" :
-                                                                                                                                                                {
-                                                                                                                                                                    "index": "${ index }" ,
-                                                                                                                                                                    "standard-output": $STANDARD_OUTPUT ,
-                                                                                                                                                                    "status": $STATUS
-                                                                                                                                                                } ,
-                                                                                                                                                            "type" : "message"
-                                                                                                                                                        }' > $out ;
-                                                                                                                                                '' ;
-                                                                                                                                        in builtins.readFile derivation ;
-                                                                                                                                text = ''check-redis --exclude'' ;
-                                                                                                                            } ;
-                                                                                                                    in builtins.map mapper generic-parameters.release.action.messages
-                                                                                                            )
-                                                                                                    ]
-                                                                                        )
-                                                                                        [
-                                                                                            {
-                                                                                                    process = "post" ;
-                                                                                                    standard-output = "183" ;
-                                                                                                    text = "check-redis" ;
-                                                                                            }
-                                                                                        ]
+                                                                                        sequences.release
+                                                                                        [ { process = "post" ; standard-output = "183" ; text = "check-redis" ; } ]
                                                                                         (
                                                                                             if builtins.typeOf generic-parameters.release.recovery.script == "string" then
                                                                                                 [
