@@ -3017,7 +3017,7 @@
                                                                                                 scripts =
                                                                                                     [
                                                                                                         { path = [ "recoverable" ] ; target = "/nix/store/7n9bx25cnhbc41ah8nrn5pmc3ic2ayzi-recovery/bin/recovery" ; }
-                                                                                                        { path = [ "unrecoverable" ] ; target = "/nix/store/qx42xg29a1ps137r5jh4x2jnsf6c3qcv-recovery/bin/recovery" ; }
+                                                                                                        { path = [ "unrecoverable" ] ; target = "/nix/store/8ddvdn9mdd8jhy0256r63k544dpp8c3m-recovery/bin/recovery" ; }
                                                                                                     ] ;
                                                                                             } ;
                                                                                         script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
