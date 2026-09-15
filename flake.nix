@@ -2002,7 +2002,7 @@
                                                                                                                     { channel , index , standard-output , status } :
                                                                                                                         {
                                                                                                                             process = "post" ;
-                                                                                                                            standard-output = messages.release.true.true { index = "0000000000000000" ; standard-output = standard-output ; status = status ; } ;
+                                                                                                                            standard-output = messages.release.true.true { index = index ; standard-output = standard-output ; status = status ; } ;
                                                                                                                             text = ''check-redis --exclude'' ;
                                                                                                                         } ;
                                                                                                                 in builtins.map mapper generic-parameters.release.action.messages
