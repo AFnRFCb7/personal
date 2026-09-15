@@ -2123,7 +2123,7 @@
                                                                     let
                                                                         case-defaults =
                                                                             {
-                                                                                case = "release-unrecoverable" ;
+                                                                                case = "release-recovered" ;
                                                                                 init =
                                                                                     {
                                                                                         action = init.action ;
