@@ -1933,7 +1933,7 @@
                                                                                         sequences.setup
                                                                                         sequences.init
                                                                                         sequences.init-corruption
-                                                                                        sequences.pause.pre
+                                                                                        sequences.pause.post
                                                                                         (
                                                                                             if generic-parameters.init.corruption then
                                                                                                 [
