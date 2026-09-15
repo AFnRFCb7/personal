@@ -1732,7 +1732,12 @@
                                                                         init =
                                                                             {
                                                                                 true = payload : jq.message { channel = "valid-init" ; payload = payload ; type = "message" ; } ;
-                                                                                false = null ;
+                                                                                false = payload : jq.message { channel = "invalid-init" ; payload = payload ; type = "message" ; } ;
+                                                                            } ;
+                                                                        release =
+                                                                            {
+                                                                                true = payload : jq.message { channel = "valid-release" ; payload = payload ; type = "message" ; } ;
+                                                                                false = payload : jq.message { channel = "invalid-release" ; payload = payload ; type = "message" ; } ;
                                                                             } ;
                                                                         subscribe =
                                                                             let
@@ -1835,6 +1840,20 @@
                                                                                                 ''
                                                                                                     check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
                                                                                                 '' ;
+                                                                                        }
+                                                                                        {
+                                                                                            process = "post" ;
+                                                                                            standard-output =
+                                                                                                let
+                                                                                                    derivation =
+                                                                                                        pkgs.runCommand
+                                                                                                            "corrupt.json"
+                                                                                                            { nativeBuildInputs = [ pkgs.jq ] ; }
+                                                                                                            ''
+                                                                                                                jq '.' ${ builtins.toFile "corruption.json" ( builtins.toJSON { channel = "invalid-release" ; payload = { index = "0000000000000000" ; standard-output = generic-parameters.release.action.standard-output ; status = generic-parameters.release.action.status ; } ; type = "message" ; } ) } > $out
+                                                                                                            '' ;
+                                                                                                    in builtins.readFile "${ derivation }" ;
+                                                                                            text = "check-redis --exclude" ;
                                                                                         }
                                                                                     ]
                                                                                 else
@@ -1942,9 +1961,6 @@
                                                                                         sequences.setup
                                                                                         sequences.init
                                                                                         sequences.init-corruption
-                                                                                        [
-                                                                                            { process = "pre" ; text = "force-corruption" ; }
-                                                                                        ]
                                                                                         [ { process = "post" ; text = "force-sync" ; } ]
                                                                                         (
                                                                                             if generic-parameters.init.corruption then
