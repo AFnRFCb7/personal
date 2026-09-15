@@ -1786,155 +1786,161 @@
                                                                                 }
                                                                             ] ;
                                                                         init =
-                                                                            if generic-parameters.stage.corruption then [ ]
-                                                                            else
-                                                                                builtins.concatLists
-                                                                                    [
-                                                                                        [
-                                                                                            {
-                                                                                                    process = "pre" ;
-                                                                                                    standard-output = "/home/checker/resources/mounts/0000000000000000" ;
-                                                                                                    text = generic-parameters.command ;
-                                                                                            }
-                                                                                            {
-                                                                                                    process = "pre" ;
-                                                                                                    text = "force-sync" ;
-                                                                                            }
-                                                                                            {
-                                                                                                    process = "pre" ;
-                                                                                                    reads = false ;
-                                                                                                    standard-output = files.init.true ;
-                                                                                                    text =
-                                                                                                        ''
-                                                                                                            check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
-                                                                                                        '' ;
-                                                                                            }
-                                                                                        ]
-                                                                                        (
-                                                                                            let
-                                                                                                mapper =
-                                                                                                    init :
-                                                                                                        {
+                                                                            {
+                                                                                action =
+                                                                                    if generic-parameters.stage.corruption then [ ]
+                                                                                    else
+                                                                                        builtins.concatLists
+                                                                                            [
+                                                                                                [
+                                                                                                    {
                                                                                                             process = "pre" ;
-                                                                                                            standard-output = messages.init.true ( { arguments = [ ] ; inputs = { } ; temporary = false ; } // init ) ;
-                                                                                                            text = ''check-redis --exclude'' ;
-                                                                                                        } ;
-                                                                                                in builtins.map mapper generic-parameters.init.action.messages
-                                                                                        )
-                                                                                        [
-                                                                                            {
-                                                                                                    process = "pre" ;
-                                                                                                    standard-output = "183" ;
-                                                                                                    text = "check-redis" ;
-                                                                                            }
-                                                                                            {
-                                                                                                    process = "mid" ;
-                                                                                                    standard-output = "/home/checker/resources/mounts/0000000000000000" ;
-                                                                                                    text = '' ${ generic-parameters.command } '' ;
-                                                                                            }
-                                                                                            {
-                                                                                                    process = "pre" ;
-                                                                                                    text = "force-sync" ;
-                                                                                            }
-                                                                                            {
-                                                                                                    process = "pre" ;
-                                                                                                    reads = false ;
-                                                                                                    standard-output = files.init.true ;
-                                                                                                    text =
-                                                                                                        ''
-                                                                                                            check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
-                                                                                                        '' ;
-                                                                                            }
-                                                                                            {
-                                                                                                    process = "pre" ;
-                                                                                                    standard-output = "183" ;
-                                                                                                    text = "check-redis" ;
-                                                                                            }
-                                                                                        ]
-                                                                                    ] ;
-                                                                        init-corruption =
-                                                                            if generic-parameters.stage.corruption then
-                                                                                if generic-parameters.init.corruption then [ ]
-                                                                                else [ ]
-                                                                            else
-                                                                                if generic-parameters.init.corruption then [ { process = "pre" ; text = "force-corruption" ; } ]
-                                                                                else [ ] ;
+                                                                                                            standard-output = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                                                            text = generic-parameters.command ;
+                                                                                                    }
+                                                                                                    {
+                                                                                                            process = "pre" ;
+                                                                                                            text = "force-sync" ;
+                                                                                                    }
+                                                                                                    {
+                                                                                                            process = "pre" ;
+                                                                                                            reads = false ;
+                                                                                                            standard-output = files.init.true ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
+                                                                                                                '' ;
+                                                                                                    }
+                                                                                                ]
+                                                                                                (
+                                                                                                    let
+                                                                                                        mapper =
+                                                                                                            init :
+                                                                                                                {
+                                                                                                                    process = "pre" ;
+                                                                                                                    standard-output = messages.init.true ( { arguments = [ ] ; inputs = { } ; temporary = false ; } // init ) ;
+                                                                                                                    text = ''check-redis --exclude'' ;
+                                                                                                                } ;
+                                                                                                        in builtins.map mapper generic-parameters.init.action.messages
+                                                                                                )
+                                                                                                [
+                                                                                                    {
+                                                                                                            process = "pre" ;
+                                                                                                            standard-output = "183" ;
+                                                                                                            text = "check-redis" ;
+                                                                                                    }
+                                                                                                    {
+                                                                                                            process = "mid" ;
+                                                                                                            standard-output = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                                                            text = '' ${ generic-parameters.command } '' ;
+                                                                                                    }
+                                                                                                    {
+                                                                                                            process = "pre" ;
+                                                                                                            text = "force-sync" ;
+                                                                                                    }
+                                                                                                    {
+                                                                                                            process = "pre" ;
+                                                                                                            reads = false ;
+                                                                                                            standard-output = files.init.true ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
+                                                                                                                '' ;
+                                                                                                    }
+                                                                                                    {
+                                                                                                            process = "pre" ;
+                                                                                                            standard-output = "183" ;
+                                                                                                            text = "check-redis" ;
+                                                                                                    }
+                                                                                                ]
+                                                                                            ] ;
+                                                                                corruption =
+                                                                                    if generic-parameters.stage.corruption then
+                                                                                        if generic-parameters.init.corruption then [ ]
+                                                                                        else [ ]
+                                                                                    else
+                                                                                        if generic-parameters.init.corruption then [ { process = "pre" ; text = "force-corruption" ; } ]
+                                                                                        else [ ] ;
+                                                                            } ;
                                                                         release =
-                                                                            if generic-parameters.stage.corruption then
-                                                                                if generic-parameters.stage.corruption then [ ]
-                                                                                else [ ]
-                                                                            else
-                                                                                if generic-parameters.init.corruption then
-                                                                                    [
-                                                                                        {
-                                                                                            process = "post" ;
-                                                                                            reads = false ;
-                                                                                            standard-output = files.init.false ;
-                                                                                            text =
-                                                                                                ''
-                                                                                                    check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
-                                                                                                '' ;
-                                                                                        }
-                                                                                        {
-                                                                                            process = "post" ;
-                                                                                            standard-output = messages.release.true.false { index = "0000000000000000" ; standard-output = generic-parameters.release.action.standard-output ; status = generic-parameters.release.action.status ; } ;
-                                                                                            text = "check-redis --exclude" ;
-                                                                                        }
-                                                                                    ]
-                                                                                else
-                                                                                    builtins.concatLists
-                                                                                        [
+                                                                            {
+                                                                                action =
+                                                                                    if generic-parameters.stage.corruption then
+                                                                                        if generic-parameters.stage.corruption then [ ]
+                                                                                        else [ ]
+                                                                                    else
+                                                                                        if generic-parameters.init.corruption then
                                                                                             [
                                                                                                 {
                                                                                                     process = "post" ;
                                                                                                     reads = false ;
-                                                                                                    standard-output = files.release.true.true ;
+                                                                                                    standard-output = files.init.false ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            check-files --exclusion "/home/checker/resources/*.lock" --delete true
+                                                                                                            check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
                                                                                                         '' ;
                                                                                                 }
+                                                                                                {
+                                                                                                    process = "post" ;
+                                                                                                    standard-output = messages.release.true.false { index = "0000000000000000" ; standard-output = generic-parameters.release.action.standard-output ; status = generic-parameters.release.action.status ; } ;
+                                                                                                    text = "check-redis --exclude" ;
+                                                                                                }
                                                                                             ]
-                                                                                            (
-                                                                                                let
-                                                                                                    mapper =
-                                                                                                        { channel , index , standard-output , status } :
-                                                                                                            {
-                                                                                                                process = "post" ;
-                                                                                                                standard-output = messages.release.true.true { index = index ; standard-output = standard-output ; status = status ; } ;
-                                                                                                                text = ''check-redis --exclude'' ;
-                                                                                                            } ;
-                                                                                                    in builtins.map mapper generic-parameters.release.action.messages
-                                                                                            )
+                                                                                        else
+                                                                                            builtins.concatLists
+                                                                                                [
+                                                                                                    [
+                                                                                                        {
+                                                                                                            process = "post" ;
+                                                                                                            reads = false ;
+                                                                                                            standard-output = files.release.true.true ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    check-files --exclusion "/home/checker/resources/*.lock" --delete true
+                                                                                                                '' ;
+                                                                                                        }
+                                                                                                    ]
+                                                                                                    (
+                                                                                                        let
+                                                                                                            mapper =
+                                                                                                                { channel , index , standard-output , status } :
+                                                                                                                    {
+                                                                                                                        process = "post" ;
+                                                                                                                        standard-output = messages.release.true.true { index = index ; standard-output = standard-output ; status = status ; } ;
+                                                                                                                        text = ''check-redis --exclude'' ;
+                                                                                                                    } ;
+                                                                                                            in builtins.map mapper generic-parameters.release.action.messages
+                                                                                                    )
+                                                                                                ] ;
+                                                                                recovery =
+                                                                                    if builtins.typeOf generic-parameters.release.recovery.script == "null" then [ ]
+                                                                                    else
+                                                                                        [
+                                                                                            {
+                                                                                                process = "post" ;
+                                                                                                status = 111 ;
+                                                                                                standard-error = generic-parameters.release.recovery.standard-error ;
+                                                                                                text = generic-parameters.release.recovery.script ;
+                                                                                            }
+                                                                                            {
+                                                                                                process = "post" ;
+                                                                                                text = "force-sync" ;
+                                                                                            }
+                                                                                            {
+                                                                                                process = "post" ;
+                                                                                                standard-output = if generic-parameters.release.recovery.success then files.release.true.true else files.release.true.false ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
+                                                                                                    '' ;
+                                                                                            }
+                                                                                            {
+                                                                                                process = "post" ;
+                                                                                                standard-output = "183" ;
+                                                                                                text = "check-redis" ;
+                                                                                            }
                                                                                         ] ;
-                                                                        release-recovery =
-                                                                            if builtins.typeOf generic-parameters.release.recovery.script == "null" then [ ]
-                                                                            else
-                                                                                [
-                                                                                    {
-                                                                                        process = "post" ;
-                                                                                        status = 111 ;
-                                                                                        standard-error = generic-parameters.release.recovery.standard-error ;
-                                                                                        text = generic-parameters.release.recovery.script ;
-                                                                                    }
-                                                                                    {
-                                                                                        process = "post" ;
-                                                                                        text = "force-sync" ;
-                                                                                    }
-                                                                                    {
-                                                                                        process = "post" ;
-                                                                                        standard-output = if generic-parameters.release.recovery.success then files.release.true.true else files.release.true.false ;
-                                                                                        text =
-                                                                                            ''
-                                                                                                check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
-                                                                                            '' ;
-                                                                                    }
-                                                                                    {
-                                                                                        process = "post" ;
-                                                                                        standard-output = "183" ;
-                                                                                        text = "check-redis" ;
-                                                                                    }
-                                                                                ] ;
+                                                                                } ;
                                                                         setup =
                                                                             [
                                                                                 {
@@ -1987,18 +1993,18 @@
                                                                                 builtins.concatLists
                                                                                     [
                                                                                         sequences.setup
-                                                                                        sequences.init
+                                                                                        sequences.init.action
                                                                                         [
                                                                                             { process = "pre" ; standard-output = "183" ; text = "check-redis" ; }
                                                                                         ]
-                                                                                        sequences.init-corruption
+                                                                                        sequences.init.corruption
                                                                                         [
                                                                                             { process = "pre" ; standard-output = "183" ; text = "check-redis" ; }
                                                                                             { process = "post" ; text = "force-sync" ; }
                                                                                         ]
-                                                                                        sequences.release
+                                                                                        sequences.release.action
                                                                                         [ { process = "post" ; standard-output = "183" ; text = "check-redis" ; } ]
-                                                                                        sequences.release-recovery
+                                                                                        sequences.release.recovery
                                                                                         sequences.clean
                                                                                     ] ;
                                                                             name = "resource : ${ generic-parameters.case } : ${ generic-parameters.command }" ;
