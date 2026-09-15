@@ -1826,7 +1826,12 @@
                                                                                 else [ ]
                                                                             else
                                                                                 if generic-parameters.init.corruption then [ ]
-                                                                                else [ ] ;
+                                                                                else
+                                                                                    [
+                                                                                        [
+                                                                                            { process = "post" ; text = "force-sync" ; }
+                                                                                        ]
+                                                                                    ] ;
                                                                         setup =
                                                                             [
                                                                                 {
