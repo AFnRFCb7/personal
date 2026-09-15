@@ -3013,7 +3013,7 @@
                                                                                                     ''
                                                                                                         UNRECOVERABLE
                                                                                                     '' ;
-                                                                                                script = ''/home/checker/resources/invalid-release/0000000000000000/'["unrecoverable"]'.sh'' ;
+                                                                                                script = ''/home/checker/resources/invalid-release/0000000000000000/'["recoverable"]'.sh'' ;
                                                                                                 scripts =
                                                                                                     [
                                                                                                         { path = [ "recoverable" ] ; target = "/nix/store/7n9bx25cnhbc41ah8nrn5pmc3ic2ayzi-recovery/bin/recovery" ; }
