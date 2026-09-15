@@ -1828,9 +1828,15 @@
                                                                                 if generic-parameters.init.corruption then [ ]
                                                                                 else
                                                                                     [
-                                                                                        [
-                                                                                            { process = "post" ; text = "force-sync" ; }
-                                                                                        ]
+                                                                                        {
+                                                                                                process = "post" ;
+                                                                                                reads = false ;
+                                                                                                standard-output = files.release.true.true ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        check-files --exclusion "/home/checker/resources/*.lock" --delete true
+                                                                                                    '' ;
+                                                                                        }
                                                                                     ] ;
                                                                         setup =
                                                                             [
