@@ -1225,7 +1225,7 @@
                                                                                         mkdir --parents "$OUT/release"
                                                                                         echo -n "/nix/store/2n2dj0dk2wf5jsjbwdvjr2z0m88yky3j-release/bin/release" > "$OUT"/release/'["production","dot-ssh","config","github"]'.sh
                                                                                         ln --symbolic "$OUT"/release/'["production","dot-ssh","config","github"]'.sh "$OUT"/release/'["production","dot-ssh","identity","github"]'.sh
-                                                                                        ln --symbolic "$OUT"/release/'["production","dot-ssh","config","github"]'.sh  > "$OUT"/release/'["production","dot-ssh","known-hosts","github"]'.sh
+                                                                                        ln --symbolic "$OUT"/release/'["production","dot-ssh","config","github"]'.sh "$OUT"/release/'["production","dot-ssh","known-hosts","github"]'.sh
                                                                                         echo -n "/nix/store/167l4y204xd1cnb5ymcp7djm1a376m86-release/bin/release" > "$OUT"/release/'["production","repository","secrets"]'.sh
                                                                                         mkdir --parents "$OUT/repository/secrets/ciphertext/dot-gnupg"
                                                                                         ln --symbolic ${ builtins.toFile "ownertrust.asc.age" secrets.dot-gnupg.ownertrust } "$OUT/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age"
