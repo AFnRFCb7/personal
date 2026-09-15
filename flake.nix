@@ -2759,7 +2759,7 @@
                                                                                     } ;
                                                                                 non-deterministic-regular-files = [ ] ;
                                                                                 order = 5 ;
-                                                                                release =
+                                                                                release =fre
                                                                                     {
                                                                                         action =
                                                                                             {
@@ -2804,7 +2804,7 @@
                                                                             }
                                                                     )
                                                                     (
-                                                                        tests.release-recoverable
+                                                                        tests.release-recovered
                                                                             {
                                                                                 command = '' check-resource --expression "$RESOURCES"/resources/'["production","repository","secrets"]' '' ;
                                                                                 exclusions =
