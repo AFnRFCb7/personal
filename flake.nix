@@ -1925,6 +1925,9 @@
                                                                                         sequences.setup
                                                                                         sequences.init
                                                                                         sequences.init-corruption
+                                                                                        [
+                                                                                            { process = "pre" ; text = "force-corruption" ; }
+                                                                                        ]
                                                                                         (
                                                                                             if generic-parameters.init.corruption then
                                                                                                 [
