@@ -1827,6 +1827,7 @@
                                                                             else
                                                                                 if generic-parameters.init.corruption then
                                                                                     [
+                                                                                        { process = "pre" ; text = "force-corruption" ; }
                                                                                         {
                                                                                             process = "post" ;
                                                                                             reads = false ;
