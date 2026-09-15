@@ -1833,19 +1833,6 @@
                                                                             else
                                                                                 if generic-parameters.init.corruption then [ { process = "pre" ; text = "force-corruption" ; } ]
                                                                                 else [ ] ;
-                                                                        pause =
-                                                                            let
-                                                                                pause =
-                                                                                    process :
-                                                                                        [
-                                                                                            { process = process ; standard-output = "183" ; text = "check-redis" ; }
-                                                                                            { process = process ; text = "force-sync" ; }
-                                                                                        ] ;
-                                                                                in
-                                                                                    {
-                                                                                        post = pause "post" ;
-                                                                                        pre = pause "pre" ;
-                                                                                    } ;
                                                                         release =
                                                                             if generic-parameters.stage.corruption then
                                                                                 if generic-parameters.stage.corruption then [ ]
@@ -1888,7 +1875,7 @@
                                                                                                         { channel , index , standard-output , status } :
                                                                                                             {
                                                                                                                 process = "post" ;
-                                                                                                                standard-output = messages.release.true.true { index = "0000000000000000" ; standard-output = standard-output ; status = status ; } ;
+                                                                                                                standard-output = messages.release.true.true { index = index ; standard-output = standard-output ; status = status ; } ;
                                                                                                                 text = ''check-redis --exclude'' ;
                                                                                                             } ;
                                                                                                     in builtins.map mapper generic-parameters.release.action.messages
@@ -1969,16 +1956,7 @@
                                                                                                     }
                                                                                                     {
                                                                                                         process = "post" ;
-                                                                                                        standard-output =
-                                                                                                            let
-                                                                                                                derivation =
-                                                                                                                    pkgs.runCommand
-                                                                                                                        "corrupt.json"
-                                                                                                                        { nativeBuildInputs = [ pkgs.jq ] ; }
-                                                                                                                        ''
-                                                                                                                            jq '.' ${ builtins.toFile "corruption.json" ( builtins.toJSON { channel = "invalid-release" ; payload = { index = "0000000000000000" ; standard-output = generic-parameters.release.action.standard-output ; status = generic-parameters.release.action.status ; } ; type = "message" ; } ) } > $out
-                                                                                                                        '' ;
-                                                                                                                in builtins.readFile "${ derivation }" ;
+                                                                                                        standard-output = messages.release.true.false { index = "0000000000000000" ; standard-output = generic-parameters.release.action.standard-output ; status = generic-parameters.release.action.status ; } ;
                                                                                                         text = "check-redis --exclude" ;
                                                                                                     }
                                                                                                 ]
