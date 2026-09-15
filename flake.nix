@@ -1811,11 +1811,6 @@
                                                                                                             check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
                                                                                                         '' ;
                                                                                             }
-                                                                                            {
-                                                                                                    process = "pre" ;
-                                                                                                    standard-output = "183" ;
-                                                                                                    text = "check-redis" ;
-                                                                                            }
                                                                                         ]
                                                                                     ] ;
                                                                         init-corruption =
@@ -1911,10 +1906,6 @@
                                                                             [
                                                                                 {
                                                                                         process = "pre" ;
-                                                                                        text = "force-garbage-collection" ;
-                                                                                }
-                                                                                {
-                                                                                        process = "pre" ;
                                                                                         text = "force-sync" ;
                                                                                 }
                                                                                 {
@@ -1959,9 +1950,20 @@
                                                                                 builtins.concatLists
                                                                                     [
                                                                                         sequences.setup
+                                                                                        [
+                                                                                            { process = "pre" ; standard-output = "183" ; text = "check-redis" ; }
+                                                                                            { process = "pre" ; text = "force-sync" ; }
+                                                                                        ]
                                                                                         sequences.init
+                                                                                        [
+                                                                                            { process = "pre" ; standard-output = "183" ; text = "check-redis" ; }
+                                                                                            { process = "pre" ; text = "force-sync" ; }
+                                                                                        ]
                                                                                         sequences.init-corruption
-                                                                                        [ { process = "post" ; text = "force-sync" ; } ]
+                                                                                        [
+                                                                                            { process = "post" ; standard-output = "183" ; text = "check-redis" ; }
+                                                                                            { process = "post" ; text = "force-sync" ; }
+                                                                                        ]
                                                                                         (
                                                                                             if generic-parameters.init.corruption then
                                                                                                 [
