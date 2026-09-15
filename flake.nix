@@ -1866,6 +1866,9 @@
                                                                                                     in builtins.map mapper generic-parameters.release.action.messages
                                                                                         )
                                                                                     ] ;
+                                                                        release-recover =
+                                                                            if builtins.typeOf generic-parameters.release.recovery.script == "null" then [ ]
+                                                                            else [ ] ;
                                                                         setup =
                                                                             [
                                                                                 {
