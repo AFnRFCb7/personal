@@ -1759,6 +1759,32 @@
                                                                     } ;
                                                                 sequences =
                                                                     {
+                                                                        clean =
+                                                                            [
+                                                                                {
+                                                                                    process = "post" ;
+                                                                                    status = if generic-parameters.init.corruption then 124 else 0 ;
+                                                                                    text = '' "$RESOURCES"/clean.sh '' ;
+                                                                                }
+                                                                                {
+                                                                                    process = "post" ;
+                                                                                    text = "force-sync" ;
+                                                                                }
+                                                                                {
+                                                                                    process = "post" ;
+                                                                                    reads = false ;
+                                                                                    standard-output = if generic-parameters.release.recovery.success then files.clean.true.true else files.clean.true.false ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
+                                                                                        '' ;
+                                                                                }
+                                                                                {
+                                                                                    process = "post" ;
+                                                                                    standard-output = "183" ;
+                                                                                    text = "check-redis" ;
+                                                                                }
+                                                                            ] ;
                                                                         init =
                                                                             if generic-parameters.stage.corruption then [ ]
                                                                             else
@@ -1973,31 +1999,7 @@
                                                                                         sequences.release
                                                                                         [ { process = "post" ; standard-output = "183" ; text = "check-redis" ; } ]
                                                                                         sequences.release-recovery
-                                                                                        [
-                                                                                            {
-                                                                                                    process = "post" ;
-                                                                                                    status = if generic-parameters.init.corruption then 124 else 0 ;
-                                                                                                    text = '' "$RESOURCES"/clean.sh '' ;
-                                                                                            }
-                                                                                            {
-                                                                                                    process = "post" ;
-                                                                                                    text = "force-sync" ;
-                                                                                            }
-                                                                                            {
-                                                                                                    process = "post" ;
-                                                                                                    reads = false ;
-                                                                                                    standard-output = if generic-parameters.release.recovery.success then files.clean.true.true else files.clean.true.false ;
-                                                                                                    text =
-                                                                                                        ''
-                                                                                                            check-files --delete true --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
-                                                                                                        '' ;
-                                                                                            }
-                                                                                            {
-                                                                                                    process = "post" ;
-                                                                                                    standard-output = "183" ;
-                                                                                                    text = "check-redis" ;
-                                                                                            }
-                                                                                        ]
+                                                                                        sequences.clean
                                                                                     ] ;
                                                                             name = "resource : ${ generic-parameters.case } : ${ generic-parameters.command }" ;
                                                                             nodes = { github = github ; client = client ; } ;
