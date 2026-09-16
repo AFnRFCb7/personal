@@ -2106,7 +2106,7 @@
                                                                                                 recovery-defaults =
                                                                                                     {
                                                                                                         standard-error = "" ;
-                                                                                                        status = 111 ;
+                                                                                                        status = 0 ;
                                                                                                         success = true ;
                                                                                                     } ;
                                                                                                 in release.recovery // recovery-defaults ;
@@ -2147,7 +2147,7 @@
                                                                                             let
                                                                                                 recovery-defaults =
                                                                                                     {
-                                                                                                        status = 0 ;
+                                                                                                        status = 111 ;
                                                                                                         success = false ;
                                                                                                     } ;
                                                                                                 in release.recovery // recovery-defaults ;
