@@ -675,7 +675,7 @@
                                                                     {
                                                                         log =
                                                                             {
-                                                                                after = [ "network.target" "redis.service" ];
+                                                                                after = [ "network.target" "redis.service" ] ;
                                                                                 serviceConfig =
                                                                                     {
                                                                                         ExecStart = __resource.log ;
