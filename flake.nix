@@ -1670,7 +1670,7 @@
                                                                                                     identity =
                                                                                                         {
                                                                                                             standard-error ,
-                                                                                                            standard-output ,
+                                                                                                            standard-output ? null ,
                                                                                                             script ,
                                                                                                             scripts ,
                                                                                                             success
