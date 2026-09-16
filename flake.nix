@@ -1669,9 +1669,9 @@
                                                                                                 let
                                                                                                     identity =
                                                                                                         {
-                                                                                                            standard-error ? null ,
-                                                                                                            standard-output ? null ,
-                                                                                                            status ? null ,
+                                                                                                            standard-error ,
+                                                                                                            standard-output ,
+                                                                                                            status ,
                                                                                                             script ,
                                                                                                             scripts ,
                                                                                                             success
@@ -1680,11 +1680,11 @@
                                                                                                                 scripts_ = _visitor.implementation { null = path : value : [ ] ; string = path : value : value ; } scripts ;
                                                                                                                 in
                                                                                                                     {
-                                                                                                                        standard-error = _visitor.implementation { null = path : value : "" ; string = path : value : value ; } standard-error ;
-                                                                                                                        standard-output = _visitor.implementation { null = path : value : "" ; string = path : value : value ; } standard-output ;
+                                                                                                                        standard-error = _visitor.implementation { null = path : value : null ; string = path : value : value ; } standard-error ;
+                                                                                                                        standard-output = _visitor.implementation { null = path : value : null ; string = path : value : value ; } standard-output ;
                                                                                                                         script = _visitor.implementation { null = path : value : value ; string = path : value : value ; } script ;
                                                                                                                         scripts = scripts_ ;
-                                                                                                                        status = _visitor.implementation { int = path : value : value ; null = path : value 0 ; } status ;
+                                                                                                                        status = _visitor.implementation { int = path : value : value ; null = path : value : null ; } status ;
                                                                                                                         success = _visitor.implementation { bool = path : value : value ; null = path : value : true ; } success ;
                                                                                                                     } ;
                                                                                                     in identity recovery ;
@@ -2059,6 +2059,7 @@
                                                                                         recovery =
                                                                                             {
                                                                                                 standard-error = null ;
+                                                                                                standard-output = null ;
                                                                                                 script = null ;
                                                                                                 scripts = null ;
                                                                                                 status = null ;
@@ -2104,6 +2105,7 @@
                                                                                             let
                                                                                                 recovery-defaults =
                                                                                                     {
+                                                                                                        standard-error = "" ;
                                                                                                         status = 111 ;
                                                                                                         success = true ;
                                                                                                     } ;
@@ -2800,6 +2802,7 @@
                                                                                                     ''
                                                                                                         UNRECOVERABLE
                                                                                                     '' ;
+                                                                                                standard-output = "" ;
                                                                                                 script = ''/home/checker/resources/invalid-release/0000000000000000/'["unrecoverable"]'.sh'' ;
                                                                                                 scripts =
                                                                                                     [
