@@ -1669,7 +1669,7 @@
                                                                                                 let
                                                                                                     identity =
                                                                                                         {
-                                                                                                            standard-error ,
+                                                                                                            standard-error ? null ,
                                                                                                             standard-output ? null ,
                                                                                                             script ,
                                                                                                             scripts ,
@@ -1679,7 +1679,7 @@
                                                                                                                 scripts_ = _visitor.implementation { null = path : value : [ ] ; string = path : value : value ; } scripts ;
                                                                                                                 in
                                                                                                                     {
-                                                                                                                        standard-error = _visitor.implementation { null = path : value : value ; string = path : value : value ; } standard-error ;
+                                                                                                                        standard-error = _visitor.implementation { null = path : value : "" ; string = path : value : value ; } standard-error ;
                                                                                                                         standard-output = _visitor.implementation { null = path : value : "" ; string = path : value : value ; } standard-output ;
                                                                                                                         script = _visitor.implementation { null = path : value : value ; string = path : value : value ; } script ;
                                                                                                                         scripts = scripts_ ;
