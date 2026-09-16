@@ -1897,7 +1897,7 @@
                                                                                                         {
                                                                                                             process = "post" ;
                                                                                                             reads = false ;
-                                                                                                            standard-output = files.release.true.true ;
+                                                                                                            standard-output = builtins.throw "WTF" ; # files.release.true.true ;
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     check-files --exclusion "/home/checker/resources/*.lock" --delete true
