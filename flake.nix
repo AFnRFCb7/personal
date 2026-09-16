@@ -1680,7 +1680,7 @@
                                                                                                                 in
                                                                                                                     {
                                                                                                                         standard-error = _visitor.implementation { null = path : value : value ; string = path : value : value ; } standard-error ;
-                                                                                                                        standard-output = _visitor.implementation { null = path : value : value ; string = path : value : value ; } standard-output ;
+                                                                                                                        standard-output = _visitor.implementation { null = path : value : "" ; string = path : value : value ; } standard-output ;
                                                                                                                         script = _visitor.implementation { null = path : value : value ; string = path : value : value ; } script ;
                                                                                                                         scripts = scripts_ ;
                                                                                                                         success = _visitor.implementation { bool = path : value : value ; null = path : value : true ; } success ;
