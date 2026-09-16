@@ -1670,6 +1670,7 @@
                                                                                                     identity =
                                                                                                         {
                                                                                                             standard-error ,
+                                                                                                            standard-output ,
                                                                                                             script ,
                                                                                                             scripts ,
                                                                                                             success
@@ -1679,6 +1680,7 @@
                                                                                                                 in
                                                                                                                     {
                                                                                                                         standard-error = _visitor.implementation { null = path : value : value ; string = path : value : value ; } standard-error ;
+                                                                                                                        standard-output = _visitor.implementation { null = path : value : value ; string = path : value : value ; } standard-output ;
                                                                                                                         script = _visitor.implementation { null = path : value : value ; string = path : value : value ; } script ;
                                                                                                                         scripts = scripts_ ;
                                                                                                                         success = _visitor.implementation { bool = path : value : value ; null = path : value : true ; } success ;
@@ -1920,6 +1922,7 @@
                                                                                                 process = "post" ;
                                                                                                 status = 111 ;
                                                                                                 standard-error = generic-parameters.release.recovery.standard-error ;
+                                                                                                standard-output = generic-parameters.release.recovery.standard-output ;
                                                                                                 text = generic-parameters.release.recovery.script ;
                                                                                             }
                                                                                             {
@@ -3009,9 +3012,9 @@
                                                                                             } ;
                                                                                         recovery =
                                                                                             {
-                                                                                                standard-error =
+                                                                                                standard-output =
                                                                                                     ''
-                                                                                                        UNRECOVERABLE
+                                                                                                        RECOVERABLE
                                                                                                     '' ;
                                                                                                 script = ''/home/checker/resources/invalid-release/0000000000000000/'["recoverable"]'.sh'' ;
                                                                                                 scripts =
