@@ -1671,6 +1671,7 @@
                                                                                                         {
                                                                                                             standard-error ? null ,
                                                                                                             standard-output ? null ,
+                                                                                                            status ? null ,
                                                                                                             script ,
                                                                                                             scripts ,
                                                                                                             success
@@ -1683,6 +1684,7 @@
                                                                                                                         standard-output = _visitor.implementation { null = path : value : "" ; string = path : value : value ; } standard-output ;
                                                                                                                         script = _visitor.implementation { null = path : value : value ; string = path : value : value ; } script ;
                                                                                                                         scripts = scripts_ ;
+                                                                                                                        status = _visitor.implementation { int = path : value : value ; null = path : value 0 ; } status ;
                                                                                                                         success = _visitor.implementation { bool = path : value : value ; null = path : value : true ; } success ;
                                                                                                                     } ;
                                                                                                     in identity recovery ;
@@ -1920,7 +1922,7 @@
                                                                                         [
                                                                                             {
                                                                                                 process = "post" ;
-                                                                                                status = 111 ;
+                                                                                                status = generic-parameters.release.recovery.status ;
                                                                                                 standard-error = generic-parameters.release.recovery.standard-error ;
                                                                                                 standard-output = generic-parameters.release.recovery.standard-output ;
                                                                                                 text = generic-parameters.release.recovery.script ;
@@ -2059,6 +2061,7 @@
                                                                                                 standard-error = null ;
                                                                                                 script = null ;
                                                                                                 scripts = null ;
+                                                                                                status = null ;
                                                                                                 success = null ;
                                                                                             } ;
                                                                                         script = release.script ;
@@ -2101,6 +2104,7 @@
                                                                                             let
                                                                                                 recovery-defaults =
                                                                                                     {
+                                                                                                        status = 111 ;
                                                                                                         success = true ;
                                                                                                     } ;
                                                                                                 in release.recovery // recovery-defaults ;
@@ -2141,6 +2145,7 @@
                                                                                             let
                                                                                                 recovery-defaults =
                                                                                                     {
+                                                                                                        status = 0 ;
                                                                                                         success = false ;
                                                                                                     } ;
                                                                                                 in release.recovery // recovery-defaults ;
