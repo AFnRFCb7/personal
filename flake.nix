@@ -1818,11 +1818,11 @@
                                                                                                                             -e 's/^+.*"target": "\(.*\)",$/\1/p' \
                                                                                                                             "$DIRNAME/diff"
                                                                                                                     )
-                                                                                                                    OLD_TARGET="${TARGETS[0]}"
-                                                                                                                    NEW_TARGET="${TARGETS[1]}"
+                                                                                                                    OLD_TARGET="${ builtins.concatStringsSep "" [ "$" "{" "TARGETS[0]" "}" ] }"
+                                                                                                                    NEW_TARGET="${ builtins.concatStringsSep "" [ "$" "{" "TARGETS[1]" "}" ] }"
                                                                                                                     echo sed \
                                                                                                                         -i \
-                                                                                                                        "s#${OLD_TARGET}#${NEW_TARGET}#" \
+                                                                                                                        "s#$OLD_TARGET#$NEW_TARGET#" \
                                                                                                                         personal/flake.nix
                                                                                                                 '' ;
                                                                                                             process = "pre" ;
