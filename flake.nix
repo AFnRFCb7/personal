@@ -1227,7 +1227,7 @@
                                                                                         echo -n "/nix/store/3ckvbbmqx34741q666260hxhmhv9fv91-release/bin/release" > "$OUT"/release/'["production","dot-ssh","config","github"]'.sh
                                                                                         ln --symbolic "$OUT"/release/'["production","dot-ssh","config","github"]'.sh "$OUT"/release/'["production","dot-ssh","identity","github"]'.sh
                                                                                         ln --symbolic "$OUT"/release/'["production","dot-ssh","config","github"]'.sh "$OUT"/release/'["production","dot-ssh","known-hosts","github"]'.sh
-                                                                                        echo -n "/nix/store/42dgqyb0wipx7d5cmzlaxddvqjxa5idv-release/bin/release" > "$OUT"/release/'["production","repository","secrets"]'.sh
+                                                                                        echo -n "/nix/store/ax8mmbzlzl28lzisdxqy11ix4c4v8112-release/bin/release" > "$OUT"/release/'["production","repository","secrets"]'.sh
                                                                                         mkdir --parents "$OUT/repository/secrets/ciphertext/dot-gnupg"
                                                                                         ln --symbolic ${ builtins.toFile "ownertrust.asc.age" secrets.dot-gnupg.ownertrust } "$OUT/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age"
                                                                                         ln --symbolic ${ builtins.toFile "secret-keys.asc.age" secrets.dot-gnupg.secret-keys } "$OUT/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age"
