@@ -1474,7 +1474,7 @@
                                                                                                             } ;
                                                                                                     in builtins.map mapper ( [
                                                                                                                                  ( builtins.elemAt release.action.messages 0 )
-                                                                                                                                 { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = "0" ; }
+                                                                                                                                 { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; }
                                                                                                                              ] ++ ( builtins.tail release.action.messages )) ;
                                                                                                 name = "/home/checker/resources/log.yaml" ;
                                                                                                 stat = "-rw-r--r--" ;
@@ -2285,17 +2285,17 @@
                                                         (
                                                             builtins.sort ( a : b : if a.order == b.order then a.name < b.name else a.order < b.order )
                                                                 [
-#                                                                    (
-#                                                                        _failure.check
-#                                                                            {
-#                                                                                compile-time-arguments = [ "6699768429138615" ] ;
-#                                                                                diffutils = pkgs.diffutils ;
-#                                                                                mkDerivation = pkgs.stdenv.mkDerivation ;
-#                                                                                order = 0 ;
-#                                                                                run-time-arguments = [ "7437964846613734" ] ;
-#                                                                                standard-input = "9125225445898826" ;
-#                                                                            }
-#                                                                    )
+                                                                    (
+                                                                        _failure.check
+                                                                            {
+                                                                                compile-time-arguments = [ "6699768429138615" ] ;
+                                                                                diffutils = pkgs.diffutils ;
+                                                                                mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                                                order = 0 ;
+                                                                                run-time-arguments = [ "7437964846613734" ] ;
+                                                                                standard-input = "9125225445898826" ;
+                                                                            }
+                                                                    )
                                                                     (
                                                                         tests.happy
                                                                             {
