@@ -2806,8 +2806,8 @@
                                                                                                 script = ''/home/checker/resources/invalid-release/0000000000000000/'["unrecoverable"]'.sh'' ;
                                                                                                 scripts =
                                                                                                     [
-                                                                                                        { path = [ "recoverable" ] ; target = "/nix/store/8ddvdn9mdd8jhy0256r63k544dpp8c3m-recovery/bin/recovery" ; }
-                                                                                                        { path = [ "unrecoverable" ] ; target = "/nix/store/ixv7ibmbzk2qyjnr36m27fz91cf0s7qg-recovery/bin/recovery" ; }
+                                                                                                        { path = [ "recoverable" ] ; target = "/nix/store/wg7m3skb7wak5dday91s7c405y2ffg49-recovery/bin/recovery" ; }
+                                                                                                        { path = [ "unrecoverable" ] ; target = "/nix/store/nr2gmv2rnbnywrmwxha7lvyja4ajmnxh-recovery/bin/recovery" ; }
                                                                                                     ] ;
                                                                                             } ;
                                                                                         script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
@@ -3028,7 +3028,7 @@
                                                                                                 scripts =
                                                                                                     [
                                                                                                         { path = [ "recoverable" ] ; target = "/nix/store/8ddvdn9mdd8jhy0256r63k544dpp8c3m-recovery/bin/recovery" ; }
-                                                                                                        { path = [ "unrecoverable" ] ; target = "/nix/store/ixv7ibmbzk2qyjnr36m27fz91cf0s7qg-recovery/bin/recovery" ; }
+                                                                                                        { path = [ "unrecoverable" ] ; target = "/nix/store/nr2gmv2rnbnywrmwxha7lvyja4ajmnxh-recovery/bin/recovery" ; }
                                                                                                     ] ;
                                                                                             } ;
                                                                                         script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
