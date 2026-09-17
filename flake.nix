@@ -1807,6 +1807,13 @@
                                                                                                             text = "force-sync" ;
                                                                                                     }
                                                                                                     {
+                                                                                                            fix =
+                                                                                                                ''
+                                                                                                                    DIRNAME="$( dirname "$0" )" || exit 122
+                                                                                                                    INDEX="$( basename "$DIRNAME" )" || exit 123
+                                                                                                                    echo "DIRNAME=$DIRNAME"
+                                                                                                                    echo "INDEX="$INDEX"
+                                                                                                                '' ;
                                                                                                             process = "pre" ;
                                                                                                             reads = false ;
                                                                                                             standard-output = files.init.true ;
