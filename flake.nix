@@ -2021,37 +2021,65 @@
                                                                                 recovery =
                                                                                     if builtins.typeOf generic-parameters.release.recovery.script == "null" then [ ]
                                                                                     else
-                                                                                        [
-                                                                                            {
-                                                                                                process = "post" ;
-                                                                                                status = generic-parameters.release.recovery.status ;
-                                                                                                standard-error = generic-parameters.release.recovery.standard-error ;
-                                                                                                standard-output = generic-parameters.release.recovery.standard-output ;
-                                                                                                text = generic-parameters.release.recovery.script ;
-                                                                                            }
-                                                                                            {
-                                                                                                process = "post" ;
-                                                                                                text = "force-sync" ;
-                                                                                            }
-                                                                                            {
-                                                                                                process = "post" ;
-                                                                                                standard-output = if generic-parameters.release.recovery.success then files.release.true.recovered else files.release.true.false ;
-                                                                                                text =
-                                                                                                    ''
-                                                                                                        check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
-                                                                                                    '' ;
-                                                                                            }
-                                                                                            {
-                                                                                                process = "post" ;
-                                                                                                standard-output = messages.release.true.true { index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ;
-                                                                                                text = "check-redis" ;
-                                                                                            }
-                                                                                            {
-                                                                                                process = "post" ;
-                                                                                                standard-output = "183" ;
-                                                                                                text = "check-redis" ;
-                                                                                            }
-                                                                                        ] ;
+                                                                                        if generic-parameters.release.recovery.success then
+                                                                                            [
+                                                                                                {
+                                                                                                    process = "post" ;
+                                                                                                    status = generic-parameters.release.recovery.status ;
+                                                                                                    standard-error = generic-parameters.release.recovery.standard-error ;
+                                                                                                    standard-output = generic-parameters.release.recovery.standard-output ;
+                                                                                                    text = generic-parameters.release.recovery.script ;
+                                                                                                }
+                                                                                                {
+                                                                                                    process = "post" ;
+                                                                                                    text = "force-sync" ;
+                                                                                                }
+                                                                                                {
+                                                                                                    process = "post" ;
+                                                                                                    standard-output = if generic-parameters.release.recovery.success then files.release.true.recovered else files.release.true.false ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
+                                                                                                        '' ;
+                                                                                                }
+                                                                                                {
+                                                                                                    process = "post" ;
+                                                                                                    standard-output = messages.release.true.true { index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ;
+                                                                                                    text = "check-redis" ;
+                                                                                                }
+                                                                                                {
+                                                                                                    process = "post" ;
+                                                                                                    standard-output = "183" ;
+                                                                                                    text = "check-redis" ;
+                                                                                                }
+                                                                                            ]
+                                                                                        else
+                                                                                            [
+                                                                                                {
+                                                                                                    process = "post" ;
+                                                                                                    status = generic-parameters.release.recovery.status ;
+                                                                                                    standard-error = generic-parameters.release.recovery.standard-error ;
+                                                                                                    standard-output = generic-parameters.release.recovery.standard-output ;
+                                                                                                    text = generic-parameters.release.recovery.script ;
+                                                                                                }
+                                                                                                {
+                                                                                                    process = "post" ;
+                                                                                                    text = "force-sync" ;
+                                                                                                }
+                                                                                                {
+                                                                                                    process = "post" ;
+                                                                                                    standard-output = if generic-parameters.release.recovery.success then files.release.true.recovered else files.release.true.false ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
+                                                                                                        '' ;
+                                                                                                }
+                                                                                                {
+                                                                                                    process = "post" ;
+                                                                                                    standard-output = "183" ;
+                                                                                                    text = "check-redis" ;
+                                                                                                }
+                                                                                            ] ;
                                                                                 } ;
                                                                         setup =
                                                                             [
