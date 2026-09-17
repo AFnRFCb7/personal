@@ -2043,6 +2043,11 @@
                                                                                             }
                                                                                             {
                                                                                                 process = "post" ;
+                                                                                                standard-output = messages.release.true.true { index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ;
+                                                                                                text = "check-redis" ;
+                                                                                            }
+                                                                                            {
+                                                                                                process = "post" ;
                                                                                                 standard-output = "183" ;
                                                                                                 text = "check-redis" ;
                                                                                             }
