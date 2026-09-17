@@ -1810,7 +1810,6 @@
                                                                                                             fix =
                                                                                                                 ''
                                                                                                                     DIRNAME="$( dirname "$0" )" || exit 122
-                                                                                                                    INDEX="$( basename "$DIRNAME" )" || exit 123
                                                                                                                     mapfile -t TARGETS < <(
                                                                                                                         sed \
                                                                                                                             -n \
