@@ -1224,7 +1224,7 @@
                                                                                         echo -n "68b45fb93af883c4bf2105f8f5bd94c87499ffa9d180bf1a458dcfd02101a2cf86f81c5a14be784f294710e431125505407f79be96f6f38f292f8bfb81556880" > "$OUT"/hashes/'["production","dot-ssh","known-hosts","github"]'
                                                                                         echo -n "2cf9b5764e63babd485f143c543d41935a3c2cab0046ed26422e78f6ccb4c45ece30497d74bd55cd0c65e3d62f95248cdeb953fe67d9d6c67428751d625ff5cb" > "$OUT"/hashes/'["production","repository","secrets"]'
                                                                                         mkdir --parents "$OUT/release"
-                                                                                        echo -n "/nix/store/mnyjxn75ii2v5zhirgxz8qcxbyqm9hq5-release/bin/release" > "$OUT"/release/'["production","dot-ssh","config","github"]'.sh
+                                                                                        echo -n "/nix/store/s6rrribgg4ycqlw3a92wr4qrw538czv3-release/bin/release" > "$OUT"/release/'["production","dot-ssh","config","github"]'.sh
                                                                                         ln --symbolic "$OUT"/release/'["production","dot-ssh","config","github"]'.sh "$OUT"/release/'["production","dot-ssh","identity","github"]'.sh
                                                                                         ln --symbolic "$OUT"/release/'["production","dot-ssh","config","github"]'.sh "$OUT"/release/'["production","dot-ssh","known-hosts","github"]'.sh
                                                                                         echo -n "/nix/store/48yv8djbcsslc8d9phs281zgzwpick56-release/bin/release" > "$OUT"/release/'["production","repository","secrets"]'.sh
@@ -1894,7 +1894,7 @@
                                                                                                                     )
                                                                                                                     OLD_TARGET="${ builtins.concatStringsSep "" [ "$" "{" "TARGETS[0]" "}" ] }"
                                                                                                                     NEW_TARGET="${ builtins.concatStringsSep "" [ "$" "{" "TARGETS[1]" "}" ] }"
-                                                                                                                    echo sed \
+                                                                                                                    sed \
                                                                                                                         -i \
                                                                                                                         "s#$OLD_TARGET#$NEW_TARGET#" \
                                                                                                                         personal/flake.nix
