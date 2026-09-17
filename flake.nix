@@ -2286,7 +2286,7 @@
                                                             builtins.sort ( a : b : if a.order == b.order then a.name < b.name else a.order < b.order )
                                                                 [
                                                                     (
-                                                                        failure.check
+                                                                        failure_.check
                                                                             {
                                                                                 compile-time-arguments = [ "6699768429138615" ] ;
                                                                                 diffutils = pkgs.diffutils ;
