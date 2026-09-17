@@ -15,6 +15,16 @@
                         visitor
                     } @primary :
                         let
+                            _failure =
+                                failure.lib
+                                    {
+                                        coreutils = pkgs.coreutils ;
+                                        error-planned = 186 ;
+                                        error-unplanned = 135 ;
+                                        jq = pkgs.jq ;
+                                        visitor = visitor ;
+                                        writeShellApplication = pkgs.writeShellApplication ;
+                                    } ;
                             _resource =
                                 resource.lib
                                     {
@@ -1227,7 +1237,7 @@
                                                                                         echo -n "/nix/store/hrzb6v6x1cfi417sd7ml8nd56a6niaky-release/bin/release" > "$OUT"/release/'["production","dot-ssh","config","github"]'.sh
                                                                                         ln --symbolic "$OUT"/release/'["production","dot-ssh","config","github"]'.sh "$OUT"/release/'["production","dot-ssh","identity","github"]'.sh
                                                                                         ln --symbolic "$OUT"/release/'["production","dot-ssh","config","github"]'.sh "$OUT"/release/'["production","dot-ssh","known-hosts","github"]'.sh
-                                                                                        echo -n "/nix/store/ax8mmbzlzl28lzisdxqy11ix4c4v8112-release/bin/release" > "$OUT"/release/'["production","repository","secrets"]'.sh
+                                                                                        echo -n "/nix/store/8zy742iw3jdphs0p4jlphfgqr9zxi4gg-release/bin/release" > "$OUT"/release/'["production","repository","secrets"]'.sh
                                                                                         mkdir --parents "$OUT/repository/secrets/ciphertext/dot-gnupg"
                                                                                         ln --symbolic ${ builtins.toFile "ownertrust.asc.age" secrets.dot-gnupg.ownertrust } "$OUT/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age"
                                                                                         ln --symbolic ${ builtins.toFile "secret-keys.asc.age" secrets.dot-gnupg.secret-keys } "$OUT/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age"
@@ -2275,17 +2285,17 @@
                                                         (
                                                             builtins.sort ( a : b : if a.order == b.order then a.name < b.name else a.order < b.order )
                                                                 [
-#                                                                    (
-#                                                                        failure.check
-#                                                                            {
-#                                                                                compile-time-arguments = [ "6699768429138615" ] ;
-#                                                                                diffutils = pkgs.diffutils ;
-#                                                                                mkDerivation = pkgs.stdenv.mkDerivation ;
-#                                                                                order = 0 ;
-#                                                                                run-time-arguments = [ "7437964846613734" ] ;
-#                                                                                standard-input = "9125225445898826" ;
-#                                                                            }
-#                                                                    )
+                                                                    (
+                                                                        failure.check
+                                                                            {
+                                                                                compile-time-arguments = [ "6699768429138615" ] ;
+                                                                                diffutils = pkgs.diffutils ;
+                                                                                mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                                                order = 0 ;
+                                                                                run-time-arguments = [ "7437964846613734" ] ;
+                                                                                standard-input = "9125225445898826" ;
+                                                                            }
+                                                                    )
                                                                     (
                                                                         tests.happy
                                                                             {
