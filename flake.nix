@@ -1464,7 +1464,7 @@
                                                                                                             } ;
                                                                                                     in builtins.map mapper ( [
                                                                                                                                  ( builtins.elemAt release.action.messages 0 )
-                                                                                                                                 { index = "0000000000000000" ; standard-output = "" ; status = "0" ; }
+                                                                                                                                 { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = "0" ; }
                                                                                                                              ] ++ ( builtins.tail release.action.messages )) ;
                                                                                                 name = "/home/checker/resources/log.yaml" ;
                                                                                                 stat = "-rw-r--r--" ;
