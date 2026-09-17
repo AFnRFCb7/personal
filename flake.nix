@@ -1226,7 +1226,7 @@
                                                                                         echo -n "/nix/store/v2nkj7nrjy3h2120v2l26by5lxn903ms-release/bin/release" > "$OUT"/release/'["production","dot-ssh","config","github"]'.sh
                                                                                         ln --symbolic "$OUT"/release/'["production","dot-ssh","config","github"]'.sh "$OUT"/release/'["production","dot-ssh","identity","github"]'.sh
                                                                                         ln --symbolic "$OUT"/release/'["production","dot-ssh","config","github"]'.sh "$OUT"/release/'["production","dot-ssh","known-hosts","github"]'.sh
-                                                                                        echo -n "/nix/store/axmmjs9ljskg84jkqzx2wxnbv1wly330-release/bin/release" > "$OUT"/release/'["production","repository","secrets"]'.sh
+                                                                                        echo -n "/nix/store/v5ka9c4dl448irfiv3970kdvh09kd0vk-release/bin/release" > "$OUT"/release/'["production","repository","secrets"]'.sh
                                                                                         mkdir --parents "$OUT/repository/secrets/ciphertext/dot-gnupg"
                                                                                         ln --symbolic ${ builtins.toFile "ownertrust.asc.age" secrets.dot-gnupg.ownertrust } "$OUT/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age"
                                                                                         ln --symbolic ${ builtins.toFile "secret-keys.asc.age" secrets.dot-gnupg.secret-keys } "$OUT/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age"
@@ -1811,9 +1811,19 @@
                                                                                                                 ''
                                                                                                                     DIRNAME="$( dirname "$0" )" || exit 122
                                                                                                                     INDEX="$( basename "$DIRNAME" )" || exit 123
-                                                                                                                    echo "DIRNAME=$DIRNAME"
-                                                                                                                    echo "INDEX=$INDEX"
-                                                                                                                    echo sed -i "s###" personal/flake.nix
+                                                                                                                    mapfile -t TARGETS < <(
+                                                                                                                        sed \
+                                                                                                                            -n \
+                                                                                                                            -e 's/^-.*"target": "\(.*\)",$/\1/p' \
+                                                                                                                            -e 's/^+.*"target": "\(.*\)",$/\1/p' \
+                                                                                                                            "$DIRNAME/diff"
+                                                                                                                    )
+                                                                                                                    OLD_TARGET="${TARGETS[0]}"
+                                                                                                                    NEW_TARGET="${TARGETS[1]}"
+                                                                                                                    echo sed \
+                                                                                                                        -i \
+                                                                                                                        "s#${OLD_TARGET}#${NEW_TARGET}#" \
+                                                                                                                        personal/flake.nix
                                                                                                                 '' ;
                                                                                                             process = "pre" ;
                                                                                                             reads = false ;
