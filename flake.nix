@@ -2059,7 +2059,7 @@
                                                                                                                         standard-output = messages.release.true.true { index = index ; standard-output = standard-output ; status = status ; } ;
                                                                                                                         text = ''check-redis --exclude'' ;
                                                                                                                     } ;
-                                                                                                            in builtins.map mapper generic-parameters.release.action.messages
+                                                                                                            in builtins.map mapper ( builtins.tail generic-parameters.release.action.messages )
                                                                                                     )
                                                                                                     [
                                                                                                         {
