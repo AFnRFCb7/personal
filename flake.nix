@@ -1852,7 +1852,11 @@
                                                                             [
                                                                                 {
                                                                                     process = "post" ;
-                                                                                    status = if generic-parameters.init.corruption then 124 else 0 ;
+                                                                                    status =
+                                                                                        if generic-parameters.init.corruption then
+                                                                                            if generic-parameters.release.recovery.success then 0
+                                                                                            else 124
+                                                                                        else 0 ;
                                                                                     text = '' "$RESOURCES"/clean.sh '' ;
                                                                                 }
                                                                                 {
