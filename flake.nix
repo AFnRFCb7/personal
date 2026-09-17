@@ -1417,6 +1417,79 @@
                                                                                         }
                                                                                     ]
                                                                                 ] ;
+                                                                        release-recovered-array =
+                                                                            builtins.concatLists
+                                                                                [
+                                                                                    [
+                                                                                        {
+                                                                                            name = "/home/checker/.gc-roots" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/canonical" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/invalid-init" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/invalid-release" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            log =
+                                                                                                let
+                                                                                                    mapper =
+                                                                                                        { channel , index , standard-output , status } :
+                                                                                                            {
+                                                                                                                channel = channel ;
+                                                                                                                payload =
+                                                                                                                    {
+                                                                                                                        index = pkgs.lib.fixedWidthString 16 "0" ( builtins.toString index ) ;
+                                                                                                                        standard-output = standard-output ;
+                                                                                                                        status = status ;
+                                                                                                                    } ;
+                                                                                                                type = "message" ;
+                                                                                                            } ;
+                                                                                                    in builtins.map mapper ( [
+                                                                                                                                 ( builtins.elemAt release.action.messages 0 )
+                                                                                                                                 { index = "0000000000000000" ; standard-output = "" ; status = "0" ; }
+                                                                                                                             ] ++ ( builtins.tail release.action.messages )) ;
+                                                                                                name = "/home/checker/resources/log.yaml" ;
+                                                                                                stat = "-rw-r--r--" ;
+                                                                                                type = "log file" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/mounts" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/release" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            cat =
+                                                                                                ''
+                                                                                                    ${ builtins.toString size }
+                                                                                                '' ;
+                                                                                            name = "/home/checker/resources/sequential" ;
+                                                                                            stat = "-rw-r--r--" ;
+                                                                                            type = "regular file" ;
+                                                                                        }
+                                                                                    ]
+                                                                                ] ;
                                                                         in
                                                                             {
                                                                                 clean =
@@ -1546,6 +1619,7 @@
                                                                                         true =
                                                                                             {
                                                                                                 true = jq.files release-array ;
+                                                                                                recovered = jq.files release-recovered-array ;
                                                                                                 false =
                                                                                                     jq.files
                                                                                                         (
@@ -1950,7 +2024,7 @@
                                                                                             }
                                                                                             {
                                                                                                 process = "post" ;
-                                                                                                standard-output = if generic-parameters.release.recovery.success then files.release.true.true else files.release.true.false ;
+                                                                                                standard-output = if generic-parameters.release.recovery.success then files.release.true.recovered else files.release.true.false ;
                                                                                                 text =
                                                                                                     ''
                                                                                                         check-files --delete false --exclusion "*.flag" --exclusion "*.lock" ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--exclusion ${ ndrf }" ) generic-parameters.exclusions ) } ${ builtins.concatStringsSep " " ( builtins.map ( ndrf : "--non-deterministic-regular-file ${ ndrf }" ) generic-parameters.non-deterministic-regular-files ) }
