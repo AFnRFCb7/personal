@@ -2376,7 +2376,7 @@
                                                                                 writeShellApplication = pkgs.writeShellApplication ;
                                                                             }
                                                                             {
-                                                                                mounts = { drive = { source = "/tmp/drive" ; type = "ro-bind" ; } } ;
+                                                                                mounts = { drive = { source = "/tmp/drive" ; type = "ro-bind" ; } ; } ;
                                                                                 name = "test-application" ;
                                                                                 runtime-inputs = pkgs : [ pkgs.jq ] ;
                                                                                 text =
