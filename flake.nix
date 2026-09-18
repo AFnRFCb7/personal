@@ -8,6 +8,7 @@
                     {
                         failure ,
                         fixture ,
+                        lazy-shell-application ,
                         nixpkgs ,
                         private ,
                         resource ,
@@ -22,6 +23,17 @@
                                         error-planned = 186 ;
                                         error-unplanned = 135 ;
                                         jq = pkgs.jq ;
+                                        visitor = _visitor.implementation ;
+                                        writeShellApplication = pkgs.writeShellApplication ;
+                                    } ;
+                            _lazy-shell-application =
+                                lazy-shell-application.lib
+                                    {
+                                        buildFHSUserEnv = pkgs.buildFHSUserEnv ;
+                                        coreutils = pkgs.coreutils ;
+                                        failure = _failure.implementation ;
+                                        jq = pkgs.jq ;
+                                        nix = pkgs.nix ;
                                         visitor = _visitor.implementation ;
                                         writeShellApplication = pkgs.writeShellApplication ;
                                     } ;
@@ -2344,11 +2356,28 @@
                                                                             {
                                                                                 diffutils = pkgs.diffutils ;
                                                                                 mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                                                order = 2 ;
+                                                                                order = 1 ;
                                                                             }
                                                                             [ "6699768429138615" ]
                                                                             {
                                                                                 run-time-arguments = [ "7437964846613734" ] ;
+                                                                            }
+                                                                    )
+                                                                    (
+                                                                        _lazy-shell-application.check
+                                                                            {
+                                                                                client = "client" ;
+                                                                                coreutils = pkgs.coreutils ;
+                                                                                findutils = pkgs.findutils ;
+                                                                                nixosTest = pkgs.nixosTest ;
+                                                                                nodes = { client  } ;
+                                                                                writeShellApplication = pkgs.writeShellApplication ;
+                                                                            }
+                                                                            {
+
+                                                                            }
+                                                                            {
+
                                                                             }
                                                                     )
                                                                     (
