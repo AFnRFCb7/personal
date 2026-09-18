@@ -2231,7 +2231,8 @@
                                                                         parameters = primary // case-defaults ;
                                                                         in generic parameters ;
                                                             init-and-release-recovered = null ;
-                                                            init-recovered = null ;
+                                                            init-unrecoverable
+                                                             = null ;
                                                             init-recovered-release-unrecoverable = null ;
                                                             release-recovered =
                                                                 {
