@@ -2376,6 +2376,7 @@
                                                                                 writeShellApplication = pkgs.writeShellApplication ;
                                                                             }
                                                                             {
+                                                                                mounts = [ ] ;
                                                                                 name = "test-application" ;
                                                                                 runtime-inputs = pkgs : [ pkgs.jq ] ;
                                                                                 text =
