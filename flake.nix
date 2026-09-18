@@ -2376,12 +2376,12 @@
                                                                                 writeShellApplication = pkgs.writeShellApplication ;
                                                                             }
                                                                             {
-                                                                                mounts = [ { source = "/tmp/drive" ; type = "ro-bind" ; } ] ;
+                                                                                mounts = { drive = { source = "/tmp/drive" ; type = "ro-bind" ; } } ;
                                                                                 name = "test-application" ;
                                                                                 runtime-inputs = pkgs : [ pkgs.jq ] ;
                                                                                 text =
                                                                                     ''
-                                                                                        cat /mounts/tmp/drive >&2
+                                                                                        cat /mounts/drive >&2
                                                                                         echo -n "$1"
                                                                                         exit 179
                                                                                     '' ;
