@@ -2347,7 +2347,6 @@
                                                                                 mkDerivation = pkgs.stdenv.mkDerivation ;
                                                                                 order = 0 ;
                                                                                 run-time-arguments = [ "7437964846613734" ] ;
-                                                                                standard-input = "9125225445898826" ;
                                                                             }
                                                                     )
                                                                     (
