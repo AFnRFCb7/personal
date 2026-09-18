@@ -2372,23 +2372,23 @@
                                                                                 nixosTest = pkgs.nixosTest ;
                                                                                 nodes = { client = client ; github = github ; } ;
                                                                                 order = 2 ;
-                                                                                test-setup = [ ] ;
+                                                                                test-setup = [ ''client.succeed(echo -n 5635319875343792 > /tmp/drive)'' ] ;
                                                                                 writeShellApplication = pkgs.writeShellApplication ;
                                                                             }
                                                                             {
-                                                                                mounts = [ ] ;
+                                                                                mounts = [ { source = "/tmp/drive" ; type = "ro-bind" ; } ] ;
                                                                                 name = "test-application" ;
                                                                                 runtime-inputs = pkgs : [ pkgs.jq ] ;
                                                                                 text =
                                                                                     ''
-                                                                                        echo -n 7532375698794868 >&2
+                                                                                        cat /mounts/tmp/drive >&2
                                                                                         echo -n "$1"
                                                                                         exit 179
                                                                                     '' ;
                                                                             }
                                                                             {
                                                                                 arguments = [ "5454671132583115" ] ;
-                                                                                standard-error = "7532375698794868" ;
+                                                                                standard-error = "5635319875343792" ;
                                                                                 standard-output = "5454671132583115" ;
                                                                                 status = 179 ;
                                                                             }
