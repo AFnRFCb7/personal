@@ -2370,7 +2370,7 @@
                                                                                 coreutils = pkgs.coreutils ;
                                                                                 findutils = pkgs.findutils ;
                                                                                 nixosTest = pkgs.nixosTest ;
-                                                                                nodes = { client = client ; } ;
+                                                                                nodes = { client = client ; github = github ; } ;
                                                                                 order = 2 ;
                                                                                 test-setup = [ ] ;
                                                                                 writeShellApplication = pkgs.writeShellApplication ;
