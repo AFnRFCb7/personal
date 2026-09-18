@@ -2344,7 +2344,7 @@
                                                                             {
                                                                                 diffutils = pkgs.diffutils ;
                                                                                 mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                                                order = 0 ;
+                                                                                order = 2 ;
                                                                             }
                                                                             [ "6699768429138615" ]
                                                                             {
@@ -2444,7 +2444,7 @@
                                                                                             } ;
                                                                                     } ;
                                                                                 non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" ] ;
-                                                                                order = 3 ;
+                                                                                order = 5 ;
                                                                                 release =
                                                                                     {
                                                                                         action =
@@ -2498,7 +2498,7 @@
                                                                                             } ;
                                                                                     } ;
                                                                                 non-deterministic-regular-files = [ ] ;
-                                                                                order = 1 ;
+                                                                                order = 3 ;
                                                                                 release =
                                                                                     {
                                                                                         action =
@@ -2546,7 +2546,7 @@
                                                                                             } ;
                                                                                     } ;
                                                                                 non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
-                                                                                order = 2 ;
+                                                                                order = 4 ;
                                                                                 release =
                                                                                     {
                                                                                         action =
@@ -2734,7 +2734,7 @@
                                                                                             } ;
                                                                                     } ;
                                                                                 non-deterministic-regular-files = [ ] ;
-                                                                                order = 4 ;
+                                                                                order = 6 ;
                                                                                 release =
                                                                                     {
                                                                                         action =
@@ -2936,7 +2936,7 @@
                                                                                             } ;
                                                                                     } ;
                                                                                 non-deterministic-regular-files = [ ] ;
-                                                                                order = 5 ;
+                                                                                order = 7 ;
                                                                                 release =
                                                                                     {
                                                                                         action =
@@ -3158,7 +3158,7 @@
                                                                                             } ;
                                                                                     } ;
                                                                                 non-deterministic-regular-files = [ ] ;
-                                                                                order = 6 ;
+                                                                                order = 8 ;
                                                                                 release =
                                                                                     {
                                                                                         action =
