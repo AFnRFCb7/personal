@@ -22,7 +22,7 @@
                                         error-planned = 186 ;
                                         error-unplanned = 135 ;
                                         jq = pkgs.jq ;
-                                        visitor = _visitor ;
+                                        visitor = _visitor.implementation ;
                                         writeShellApplication = pkgs.writeShellApplication ;
                                     } ;
                             _resource =
