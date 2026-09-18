@@ -2371,7 +2371,7 @@
                                                                                 findutils = pkgs.findutils ;
                                                                                 nixosTest = pkgs.nixosTest ;
                                                                                 nodes = { client = client ; } ;
-                                                                                order = 1 ;
+                                                                                order = 2 ;
                                                                                 test-setup = [ ] ;
                                                                                 writeShellApplication = pkgs.writeShellApplication ;
                                                                             }
