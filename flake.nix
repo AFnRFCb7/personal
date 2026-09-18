@@ -2342,10 +2342,12 @@
                                                                     (
                                                                         _failure.check
                                                                             {
-                                                                                compile-time-arguments = [ "6699768429138615" ] ;
                                                                                 diffutils = pkgs.diffutils ;
                                                                                 mkDerivation = pkgs.stdenv.mkDerivation ;
                                                                                 order = 0 ;
+                                                                            }
+                                                                            [ "6699768429138615" ]
+                                                                            {
                                                                                 run-time-arguments = [ "7437964846613734" ] ;
                                                                             }
                                                                     )
