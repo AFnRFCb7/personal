@@ -58,7 +58,7 @@
                                         visitor = _visitor.implementation ;
                                         writeShellApplication = pkgs.writeShellApplication ;
                                     } ;
-                            _trump5000 = trump.lib
+                            _trump5000 = trump5000.lib
                                 {
                                     failure = _failure.implementation ;
                                     lazy-shell-application = _lazy-shell-application.implementation ;
