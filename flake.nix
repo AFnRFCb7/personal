@@ -1381,26 +1381,6 @@
                                                                                             type = "directory" ;
                                                                                         }
                                                                                         {
-                                                                                            log =
-                                                                                                let
-                                                                                                    mapper =
-                                                                                                        { channel , index , standard-output , status } :
-                                                                                                            {
-                                                                                                                channel = channel ;
-                                                                                                                payload =
-                                                                                                                    {
-                                                                                                                        index = pkgs.lib.fixedWidthString 16 "0" ( builtins.toString index ) ;
-                                                                                                                        standard-output = standard-output ;
-                                                                                                                        status = status ;
-                                                                                                                    } ;
-                                                                                                                type = "message" ;
-                                                                                                            } ;
-                                                                                                    in builtins.map mapper release.action.messages ;
-                                                                                                name = "/home/checker/resources/log.yaml" ;
-                                                                                                stat = "-rw-r--r--" ;
-                                                                                                type = "log file" ;
-                                                                                        }
-                                                                                        {
                                                                                             name = "/home/checker/resources/mounts" ;
                                                                                             stat = "drwxr-xr-x" ;
                                                                                             type = "directory" ;
@@ -1645,7 +1625,36 @@
                                                                                     {
                                                                                         true =
                                                                                             {
-                                                                                                true = jq.files release-array ;
+                                                                                                true =
+                                                                                                    jq.files
+                                                                                                        (
+                                                                                                            builtins.concatLists
+                                                                                                                [
+                                                                                                                    release-array
+                                                                                                                    [
+                                                                                                                        {
+                                                                                                                            log =
+                                                                                                                                let
+                                                                                                                                    mapper =
+                                                                                                                                        { channel , index , standard-output , status } :
+                                                                                                                                            {
+                                                                                                                                                channel = channel ;
+                                                                                                                                                payload =
+                                                                                                                                                    {
+                                                                                                                                                        index = pkgs.lib.fixedWidthString 16 "0" ( builtins.toString index ) ;
+                                                                                                                                                        standard-output = standard-output ;
+                                                                                                                                                        status = status ;
+                                                                                                                                                    } ;
+                                                                                                                                                type = "message" ;
+                                                                                                                                            } ;
+                                                                                                                                    in builtins.map mapper release.action.messages ;
+                                                                                                                                name = "/home/checker/resources/log.yaml" ;
+                                                                                                                                stat = "-rw-r--r--" ;
+                                                                                                                                type = "log file" ;
+                                                                                                                        }
+                                                                                                                    ]
+                                                                                                                ]
+                                                                                                        ) ;
                                                                                                 recovered = jq.files release-recovered-array ;
                                                                                                 false =
                                                                                                     jq.files
