@@ -1489,15 +1489,15 @@
                                                                                                     }
                                                                                                 ] ;
                                                                                         false =
-                                                                                            jq.files
+                                                                                            jq.array
+                                                                                                (
+                                                                                                    builtins.filter
+                                                                                                        ( i : ( i.type != "regular file" || i.name == "/home/checker/resources/sequential" ) )
+                                                                                                        init-array
+                                                                                                )
                                                                                                 (
                                                                                                     builtins.concatLists
                                                                                                         [
-                                                                                                            (
-                                                                                                                builtins.filter
-                                                                                                                    ( i : ( i.type != "regular file" || i.name == "/home/checker/resources/sequential" ) )
-                                                                                                                    init-array
-                                                                                                            )
                                                                                                             [
                                                                                                                 {
                                                                                                                     log =
