@@ -533,7 +533,7 @@
                                                                         LC_TIME = "en_US.UTF-8" ;
                                                                     } ;
                                                             } ;
-                                                        imports = [ _trump5000.implementation ] ;
+                                                        # imports = [ _trump5000.implementation ] ;
                                                         networking =
                                                             {
                                                                 wireless =
