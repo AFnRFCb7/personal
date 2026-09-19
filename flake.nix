@@ -2372,7 +2372,7 @@
                                                                                 nixosTest = pkgs.nixosTest ;
                                                                                 nodes = { client = client ; github = github ; } ;
                                                                                 order = 2 ;
-                                                                                test-setup = [ ''client.succeed(echo -n 5635319875343792 > /tmp/drive)'' ] ;
+                                                                                test-setup = [ ''client.succeed("echo -n 5635319875343792 > /tmp/drive")'' ] ;
                                                                                 writeShellApplication = pkgs.writeShellApplication ;
                                                                             }
                                                                             {
