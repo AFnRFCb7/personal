@@ -60,7 +60,6 @@
                                     } ;
                             _trump5000 = trump5000.lib
                                 {
-                                    failure = _failure.implementation ;
                                     lazy-shell-application = _lazy-shell-application.implementation ;
                                 } ;
                             _visitor = visitor.lib { } ;
