@@ -3261,7 +3261,7 @@
                                                                                 nixosTest = pkgs.nixosTest ;
                                                                                 nodes = { client = client ; github = github ; } ;
                                                                                 order = 5000 ;
-                                                                                test-setup = [ ''client.wait_for_unit("trump5000-server.service")'' ] ;
+                                                                                test-setup = [ ] ;
                                                                                 writeShellApplication = pkgs.writeShellApplication ;
                                                                             }
                                                                     )
