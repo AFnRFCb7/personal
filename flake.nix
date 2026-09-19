@@ -3251,6 +3251,20 @@
                                                                                     } ;
                                                                             }
                                                                     )
+                                                                    (
+                                                                        _trump5000.check
+                                                                            _lazy-shell-application.check
+                                                                            {
+                                                                                client = "client" ;
+                                                                                coreutils = pkgs.coreutils ;
+                                                                                findutils = pkgs.findutils ;
+                                                                                nixosTest = pkgs.nixosTest ;
+                                                                                nodes = { client = client ; github = github ; } ;
+                                                                                order = 5000 ;
+                                                                                test-setup = [ ] ;
+                                                                                writeShellApplication = pkgs.writeShellApplication ;
+                                                                            }
+                                                                    )
                                                                 ]
                                                         )
                                                 ) ;
