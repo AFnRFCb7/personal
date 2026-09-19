@@ -1605,7 +1605,6 @@
                                                                                                                 stat = "-rw-r--r--" ;
                                                                                                                 type = "log file" ;
                                                                                                         } ;
-                                                                                                        ) ;
                                                                                                 false =
                                                                                                     jq.files
                                                                                                         (
