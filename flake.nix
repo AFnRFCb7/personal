@@ -1326,31 +1326,6 @@
                                                                                             type = "directory" ;
                                                                                         }
                                                                                         {
-                                                                                            log =
-                                                                                                let
-                                                                                                    mapper =
-                                                                                                        { index , seed , standard-output , targets , text } :
-                                                                                                            {
-                                                                                                                channel = "valid-init" ;
-                                                                                                                payload =
-                                                                                                                    {
-                                                                                                                        arguments = [ ] ;
-                                                                                                                        index = index ;
-                                                                                                                        inputs = { } ;
-                                                                                                                        seed = seed ;
-                                                                                                                        standard-output = standard-output ;
-                                                                                                                        targets = targets ;
-                                                                                                                        temporary = false ;
-                                                                                                                        text = text ;
-                                                                                                                    } ;
-                                                                                                                type = "message" ;
-                                                                                                            } ;
-                                                                                                    in builtins.map mapper generic-parameters.init.action.messages ;
-                                                                                            name = "/home/checker/resources/log.yaml" ;
-                                                                                            stat = "-rw-r--r--" ;
-                                                                                            type = "log file" ;
-                                                                                        }
-                                                                                        {
                                                                                             name = "/home/checker/resources/mounts" ;
                                                                                             stat = "drwxr-xr-x" ;
                                                                                             type = "directory" ;
@@ -1572,6 +1547,31 @@
                                                                                                             init-array
                                                                                                             [
                                                                                                                 {
+                                                                                                                    log =
+                                                                                                                        let
+                                                                                                                            mapper =
+                                                                                                                                { index , seed , standard-output , targets , text } :
+                                                                                                                                    {
+                                                                                                                                        channel = "valid-init" ;
+                                                                                                                                        payload =
+                                                                                                                                            {
+                                                                                                                                                arguments = [ ] ;
+                                                                                                                                                index = index ;
+                                                                                                                                                inputs = { } ;
+                                                                                                                                                seed = seed ;
+                                                                                                                                                standard-output = standard-output ;
+                                                                                                                                                targets = targets ;
+                                                                                                                                                temporary = false ;
+                                                                                                                                                text = text ;
+                                                                                                                                            } ;
+                                                                                                                                        type = "message" ;
+                                                                                                                                    } ;
+                                                                                                                            in builtins.map mapper generic-parameters.init.action.messages ;
+                                                                                                                    name = "/home/checker/resources/log.yaml" ;
+                                                                                                                    stat = "-rw-r--r--" ;
+                                                                                                                    type = "log file" ;
+                                                                                                                }
+                                                                                                                {
                                                                                                                     name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/${ builtins.head ( builtins.match ".*resources/'(.*)' *" generic-parameters.command ) }" }" ;
                                                                                                                     stat = "lrwxrwxrwx" ;
                                                                                                                     target = "/home/checker/resources/mounts/0000000000000000" ;
@@ -1593,10 +1593,8 @@
                                                                                                         [
                                                                                                             (
                                                                                                                 builtins.filter
-                                                                                                                    (
-                                                                                                                        i : ( i.type != "regular file" || i.name == "/home/checker/resources/sequential" ) && ( i.type != "log file" )
-                                                                                                                    )
-                                                                                                                init-array
+                                                                                                                    ( i : ( i.type != "regular file" || i.name == "/home/checker/resources/sequential" ) )
+                                                                                                                    init-array
                                                                                                             )
                                                                                                             [
                                                                                                                 {
@@ -1656,10 +1654,8 @@
                                                                                                                 [
                                                                                                                     (
                                                                                                                         builtins.filter
-                                                                                                                            (
-                                                                                                                                i : ( i.type != "regular file" || i.name == "/home/checker/resources/sequential" ) && ( i.type != "log file" )
-                                                                                                                            )
-                                                                                                                        init-array
+                                                                                                                            ( i : ( i.type != "regular file" || i.name == "/home/checker/resources/sequential" ) )
+                                                                                                                            init-array
                                                                                                                     )
                                                                                                                     [
                                                                                                                         {
