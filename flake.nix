@@ -755,6 +755,7 @@
                                                                 password = config.personal.password ;
                                                             } ;
                                                     } ;
+                                                imports = [ trump5000.implementation ] ;
                                                 options =
                                                     {
                                                         personal =
