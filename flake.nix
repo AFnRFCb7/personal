@@ -33,7 +33,6 @@
                                         coreutils = pkgs.coreutils ;
                                         failure = _failure.implementation ;
                                         jq = pkgs.jq ;
-                                        nix = pkgs.nix ;
                                         visitor = _visitor.implementation ;
                                         writeShellApplication = pkgs.writeShellApplication ;
                                     } ;
