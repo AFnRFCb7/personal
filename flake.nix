@@ -58,6 +58,11 @@
                                         visitor = _visitor.implementation ;
                                         writeShellApplication = pkgs.writeShellApplication ;
                                     } ;
+                            _trump5000 = trump.lib
+                                {
+                                    failure = _failure.implementation ;
+                                    lazy-shell-application = _lazy-shell-application.implementation ;
+                                } ;
                             _visitor = visitor.lib { } ;
                             implementation =
                                 { config , lib , pkgs , ... } :
@@ -528,6 +533,7 @@
                                                                         LC_TIME = "en_US.UTF-8" ;
                                                                     } ;
                                                             } ;
+                                                        imports = [ _trump5000.implementation ] ;
                                                         networking =
                                                             {
                                                                 wireless =
