@@ -13,6 +13,7 @@
                         private ,
                         resource ,
                         system ,
+                        trump5000 ,
                         visitor
                     } @primary :
                         let
