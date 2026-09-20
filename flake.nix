@@ -1789,7 +1789,7 @@
                                                                                 files = files ;
                                                                                 files_ =
                                                                                     base-array : corrupt : event : directories :
-                                                                                        json
+                                                                                        jq
                                                                                             (
                                                                                                 builtins.filter
                                                                                                     ( i : ( ! corrupt ) || ( i.type != "regular file" ) || ( i.name == "/home/checker/resources/sequential" ) )
