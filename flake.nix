@@ -12,6 +12,7 @@
                         nixpkgs ,
                         private ,
                         resource ,
+                        sally ,
                         system ,
                         trump5000 ,
                         visitor
@@ -58,6 +59,10 @@
                                         visitor = _visitor.implementation ;
                                         writeShellApplication = pkgs.writeShellApplication ;
                                     } ;
+                            _sally = sally.lib
+                                {
+                                    lazy-shell-application = _lazy-shell-application.implementation ;
+                                } ;
                             _trump5000 = trump5000.lib
                                 {
                                     lazy-shell-application = _lazy-shell-application.implementation ;
@@ -754,7 +759,7 @@
                                                                 password = config.personal.password ;
                                                             } ;
                                                     } ;
-                                                imports = [ _trump5000.implementation ] ;
+                                                imports = [ _sally.implementation _trump5000.implementation ] ;
                                                 options =
                                                     {
                                                         personal =
@@ -3300,6 +3305,20 @@
                                                                     )
                                                                     (
                                                                         _trump5000.check
+                                                                            _lazy-shell-application.check
+                                                                            {
+                                                                                client = "client" ;
+                                                                                coreutils = pkgs.coreutils ;
+                                                                                findutils = pkgs.findutils ;
+                                                                                nixosTest = pkgs.nixosTest ;
+                                                                                nodes = { client = client ; github = github ; } ;
+                                                                                order = 5000 ;
+                                                                                test-setup = [ ] ;
+                                                                                writeShellApplication = pkgs.writeShellApplication ;
+                                                                            }
+                                                                    )
+                                                                    (
+                                                                        _sally.check
                                                                             _lazy-shell-application.check
                                                                             {
                                                                                 client = "client" ;
