@@ -1807,14 +1807,35 @@
                                                                                 array = json : extra : files ( builtins.concatLists [ json extra ] ) ;
                                                                                 files = files ;
                                                                                 files_ =
-                                                                                    base-array : corruption : log-file :
-                                                                                        jq
-                                                                                            (
+                                                                                    base-array : corruption :
+                                                                                        let
+                                                                                            corrupted = builtins.filter ( t : ( ! corruption ) || ( t.type != "regular file" ) ) base-array ;
+                                                                                            directories =
+                                                                                                let
+                                                                                                    grouper = { name , stat , type } : name ;
+                                                                                                    mapper =
+                                                                                                        { cat , name , stat , type } :
+                                                                                                            {
+                                                                                                                name = builtins.dirOf name ;
+                                                                                                                stat = "drwxr-xr-x" ;
+                                                                                                                type = "directory" ;
+                                                                                                            } ;
+                                                                                                    in builtins.attrValues ( builtins.mapAttrs builtins.head ( builtins.groupBy grouper ( builtins.map mapper base-array ) ) ) ;
+                                                                                            sequential =
+                                                                                                {
+                                                                                                    cat = builtins.toString size ;
+                                                                                                    name = "/home/checker/resources/sequential" ;
+                                                                                                    stat = "-rw-r--r--" ;
+                                                                                                    type = "sequential file" ;
+                                                                                                } ;
+                                                                                            total =
                                                                                                 builtins.concatLists
                                                                                                     [
-                                                                                                        ( builtins.filter ( i : ( ! corruption ) || ( i.type != "regular file" ) ) base-array )
-                                                                                                    ]
-                                                                                            ) ;
+                                                                                                        corrupted
+                                                                                                        directories
+                                                                                                        [ sequential ]
+                                                                                                    ] ;
+                                                                                            in jq total ;
                                                                                 message = { channel , payload , type } : jq { channel = channel ; payload = payload ; type = type ; } ;
                                                                             } ;
                                                                 messages =
