@@ -1341,13 +1341,10 @@
                                                                                             type = "directory" ;
                                                                                         }
                                                                                         {
-                                                                                            cat =
-                                                                                                ''
-                                                                                                    ${ builtins.toString size }
-                                                                                                '' ;
+                                                                                            cat = builtins.toString size ;
                                                                                             name = "/home/checker/resources/sequential" ;
                                                                                             stat = "-rw-r--r--" ;
-                                                                                            type = "regular file" ;
+                                                                                            type = "sequential file" ;
                                                                                         }
                                                                                     ]
                                                                                 ] ;
@@ -1391,13 +1388,10 @@
                                                                                             type = "directory" ;
                                                                                         }
                                                                                         {
-                                                                                            cat =
-                                                                                                ''
-                                                                                                    ${ builtins.toString size }
-                                                                                                '' ;
+                                                                                            cat = builtins.toString size ;
                                                                                             name = "/home/checker/resources/sequential" ;
                                                                                             stat = "-rw-r--r--" ;
-                                                                                            type = "regular file" ;
+                                                                                            type = "sequential file" ;
                                                                                         }
                                                                                     ]
                                                                                 ] ;
