@@ -1348,6 +1348,48 @@
                                                                                         }
                                                                                     ]
                                                                                 ] ;
+                                                                        init-array_ =
+                                                                            builtins.concatLists
+                                                                                [
+                                                                                    generic-parameters.init.action.files
+                                                                                    [
+                                                                                        {
+                                                                                            name = "/home/checker/.gc-roots/0000000000000000" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/canonical" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/invalid-init" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/mounts" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/mounts/0000000000000000" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                        {
+                                                                                            name = "/home/checker/resources/release" ;
+                                                                                            stat = "drwxr-xr-x" ;
+                                                                                            type = "directory" ;
+                                                                                        }
+                                                                                    ]
+                                                                                ] ;
                                                                         release-array =
                                                                             builtins.concatLists
                                                                                 [
@@ -1441,72 +1483,48 @@
                                                                                 init =
                                                                                     {
                                                                                         true =
-#                                                                                            jq.files_
+                                                                                            jq.files_ init-array_ false ;
+#                                                                                            jq.array
 #                                                                                                init-array
-#                                                                                                false
-#                                                                                                false
-#                                                                                                (
-#                                                                                                    let
-#                                                                                                        mapper =
-#                                                                                                            { index , seed , standard-output , targets , text } :
-#                                                                                                                {
-#                                                                                                                    channel = "valid-init" ;
-#                                                                                                                    payload =
+#                                                                                                [
+#                                                                                                    {
+#                                                                                                        log =
+#                                                                                                            let
+#                                                                                                                mapper =
+#                                                                                                                    { index , seed , standard-output , targets , text } :
 #                                                                                                                        {
-#                                                                                                                            arguments = [ ] ;
-#                                                                                                                            index = index ;
-#                                                                                                                            inputs = { } ;
-#                                                                                                                            seed = seed ;
-#                                                                                                                            standard-output = standard-output ;
-#                                                                                                                            targets = targets ;
-#                                                                                                                            temporary = false ;
-#                                                                                                                            text = text ;
+#                                                                                                                            channel = "valid-init" ;
+#                                                                                                                            payload =
+#                                                                                                                                {
+#                                                                                                                                    arguments = [ ] ;
+#                                                                                                                                    index = index ;
+#                                                                                                                                    inputs = { } ;
+#                                                                                                                                    seed = seed ;
+#                                                                                                                                    standard-output = standard-output ;
+#                                                                                                                                    targets = targets ;
+#                                                                                                                                    temporary = false ;
+#                                                                                                                                    text = text ;
+#                                                                                                                                } ;
+#                                                                                                                            type = "message" ;
 #                                                                                                                        } ;
-#                                                                                                                    type = "message" ;
-#                                                                                                                } ;
-#                                                                                                        in builtins.map mapper generic-parameters.init.action.messages
-#                                                                                                ) ;
-                                                                                            jq.array
-                                                                                                init-array
-                                                                                                [
-                                                                                                    {
-                                                                                                        log =
-                                                                                                            let
-                                                                                                                mapper =
-                                                                                                                    { index , seed , standard-output , targets , text } :
-                                                                                                                        {
-                                                                                                                            channel = "valid-init" ;
-                                                                                                                            payload =
-                                                                                                                                {
-                                                                                                                                    arguments = [ ] ;
-                                                                                                                                    index = index ;
-                                                                                                                                    inputs = { } ;
-                                                                                                                                    seed = seed ;
-                                                                                                                                    standard-output = standard-output ;
-                                                                                                                                    targets = targets ;
-                                                                                                                                    temporary = false ;
-                                                                                                                                    text = text ;
-                                                                                                                                } ;
-                                                                                                                            type = "message" ;
-                                                                                                                        } ;
-                                                                                                                in builtins.map mapper generic-parameters.init.action.messages ;
-                                                                                                        name = "/home/checker/resources/log.yaml" ;
-                                                                                                        stat = "-rw-r--r--" ;
-                                                                                                        type = "log file" ;
-                                                                                                    }
-                                                                                                    {
-                                                                                                        name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/${ builtins.head ( builtins.match ".*resources/'(.*)' *" generic-parameters.command ) }" }" ;
-                                                                                                        stat = "lrwxrwxrwx" ;
-                                                                                                        target = "/home/checker/resources/mounts/0000000000000000" ;
-                                                                                                        type = "symbolic link" ;
-                                                                                                    }
-                                                                                                    {
-                                                                                                        name = "/home/checker/resources/release/0000000000000000" ;
-                                                                                                        stat = "lrwxrwxrwx" ;
-                                                                                                        target = generic-parameters.release.script ;
-                                                                                                        type = "symbolic link" ;
-                                                                                                    }
-                                                                                                ] ;
+#                                                                                                                in builtins.map mapper generic-parameters.init.action.messages ;
+#                                                                                                        name = "/home/checker/resources/log.yaml" ;
+#                                                                                                        stat = "-rw-r--r--" ;
+#                                                                                                        type = "log file" ;
+#                                                                                                    }
+#                                                                                                    {
+#                                                                                                        name = "/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/${ builtins.head ( builtins.match ".*resources/'(.*)' *" generic-parameters.command ) }" }" ;
+#                                                                                                        stat = "lrwxrwxrwx" ;
+#                                                                                                        target = "/home/checker/resources/mounts/0000000000000000" ;
+#                                                                                                        type = "symbolic link" ;
+#                                                                                                    }
+#                                                                                                    {
+#                                                                                                        name = "/home/checker/resources/release/0000000000000000" ;
+#                                                                                                        stat = "lrwxrwxrwx" ;
+#                                                                                                        target = generic-parameters.release.script ;
+#                                                                                                        type = "symbolic link" ;
+#                                                                                                    }
+#                                                                                                ] ;
                                                                                         false =
                                                                                             jq.array
                                                                                                 (
@@ -1807,20 +1825,9 @@
                                                                                 array = json : extra : files ( builtins.concatLists [ json extra ] ) ;
                                                                                 files = files ;
                                                                                 files_ =
-                                                                                    base-array : corruption : log-file :
+                                                                                    base-array : corruption :
                                                                                         let
                                                                                             corrupted = builtins.filter ( t : ( ! corruption ) || ( t.type != "regular file" ) ) base-array ;
-                                                                                            directories =
-                                                                                                let
-                                                                                                    grouper = { name , stat , type } : name ;
-                                                                                                    mapper =
-                                                                                                        { cat , name , stat , type } :
-                                                                                                            {
-                                                                                                                name = builtins.dirOf name ;
-                                                                                                                stat = "drwxr-xr-x" ;
-                                                                                                                type = "directory" ;
-                                                                                                            } ;
-                                                                                                    in builtins.attrValues ( builtins.mapAttrs builtins.head ( builtins.groupBy grouper ( builtins.map mapper base-array ) ) ) ;
                                                                                             log =
                                                                                                 {
                                                                                                     log =
@@ -1875,7 +1882,6 @@
                                                                                                 builtins.concatLists
                                                                                                     [
                                                                                                         corrupted
-                                                                                                        directories
                                                                                                         [ log sequential symbolic-links.mount symbolic-links.release ]
                                                                                                     ] ;
                                                                                             in jq total ;
