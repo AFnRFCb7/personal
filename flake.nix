@@ -1447,6 +1447,31 @@
                                                                                 init =
                                                                                     {
                                                                                         true =
+#                                                                                            jq.files_
+#                                                                                                init-array
+#                                                                                                false
+#                                                                                                false
+#                                                                                                (
+#                                                                                                    let
+#                                                                                                        mapper =
+#                                                                                                            { index , seed , standard-output , targets , text } :
+#                                                                                                                {
+#                                                                                                                    channel = "valid-init" ;
+#                                                                                                                    payload =
+#                                                                                                                        {
+#                                                                                                                            arguments = [ ] ;
+#                                                                                                                            index = index ;
+#                                                                                                                            inputs = { } ;
+#                                                                                                                            seed = seed ;
+#                                                                                                                            standard-output = standard-output ;
+#                                                                                                                            targets = targets ;
+#                                                                                                                            temporary = false ;
+#                                                                                                                            text = text ;
+#                                                                                                                        } ;
+#                                                                                                                    type = "message" ;
+#                                                                                                                } ;
+#                                                                                                        in builtins.map mapper generic-parameters.init.action.messages
+#                                                                                                ) ;
                                                                                             jq.array
                                                                                                 init-array
                                                                                                 [
@@ -1788,25 +1813,13 @@
                                                                                 array = json : extra : files ( builtins.concatLists [ json extra ] ) ;
                                                                                 files = files ;
                                                                                 files_ =
-                                                                                    base-array : corrupt : event : directories :
+                                                                                    base-array : corruption : log-file :
                                                                                         jq
                                                                                             (
-                                                                                                builtins.filter
-                                                                                                    ( i : ( ! corrupt ) || ( i.type != "regular file" ) || ( i.name == "/home/checker/resources/sequential" ) )
-                                                                                                    (
-                                                                                                        builtins.concatLists
-                                                                                                            [
-                                                                                                                base-array
-                                                                                                                [
-                                                                                                                    {
-                                                                                                                        log = null ;
-                                                                                                                        name = "/home/checker/resources/log.yaml" ;
-                                                                                                                        stat = "-rw-r--r--" ;
-                                                                                                                        type = "log file" ;
-                                                                                                                    }
-                                                                                                                ]
-                                                                                                            ]
-                                                                                                    )
+                                                                                                builtins.concatLists
+                                                                                                    [
+                                                                                                        ( builtins.filter ( i : ( ! corruption ) || ( i.type != "regular file" ) ) base-array )
+                                                                                                    ]
                                                                                             ) ;
                                                                                 message = { channel , payload , type } : jq { channel = channel ; payload = payload ; type = type ; } ;
                                                                             } ;
