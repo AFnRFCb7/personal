@@ -1787,6 +1787,27 @@
                                                                             {
                                                                                 array = json : extra : files ( builtins.concatLists [ json extra ] ) ;
                                                                                 files = files ;
+                                                                                files_ =
+                                                                                    base-array : corrupt : event : directories :
+                                                                                        json
+                                                                                            (
+                                                                                                builtins.filter
+                                                                                                    ( i : ( ! corrupt ) || ( i.type != "regular file" ) || ( i.name == "/home/checker/resources/sequential" ) )
+                                                                                                    (
+                                                                                                        builtins.concatLists
+                                                                                                            [
+                                                                                                                base-array
+                                                                                                                [
+                                                                                                                    {
+                                                                                                                        log = null ;
+                                                                                                                        name = "/home/checker/resources/log.yaml" ;
+                                                                                                                        stat = "-rw-r--r--" ;
+                                                                                                                        type = "log file" ;
+                                                                                                                    }
+                                                                                                                ]
+                                                                                                            ]
+                                                                                                    )
+                                                                                            ) ;
                                                                                 message = { channel , payload , type } : jq { channel = channel ; payload = payload ; type = type ; } ;
                                                                             } ;
                                                                 messages =
