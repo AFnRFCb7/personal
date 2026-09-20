@@ -1511,7 +1511,7 @@
                                                                                             jq.array
                                                                                                 (
                                                                                                     builtins.filter
-                                                                                                        ( i : ( i.type != "regular file" || i.name == "/home/checker/resources/sequential" ) )
+                                                                                                        ( i : i.type != "regular file" )
                                                                                                         init-array
                                                                                                 )
                                                                                                 (
@@ -1630,7 +1630,7 @@
                                                                                                                 [
                                                                                                                     (
                                                                                                                         builtins.filter
-                                                                                                                            ( i : ( i.type != "regular file" || i.name == "/home/checker/resources/sequential" ) )
+                                                                                                                            ( i : i.type != "regular file" || i.name == "/home/checker/resources/sequential" )
                                                                                                                             init-array
                                                                                                                     )
                                                                                                                     [
