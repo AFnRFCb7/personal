@@ -61,6 +61,7 @@
                                     } ;
                             _sally = sally.lib
                                 {
+                                    failure = _failure.implementation ;
                                     lazy-shell-application = _lazy-shell-application.implementation ;
                                 } ;
                             _trump5000 = trump5000.lib
