@@ -3326,7 +3326,7 @@
                                                                                 findutils = pkgs.findutils ;
                                                                                 nixosTest = pkgs.nixosTest ;
                                                                                 nodes = { client = client ; github = github ; } ;
-                                                                                order = 5000 ;
+                                                                                order = 5001 ;
                                                                                 test-setup = [ ] ;
                                                                                 writeShellApplication = pkgs.writeShellApplication ;
                                                                             }
