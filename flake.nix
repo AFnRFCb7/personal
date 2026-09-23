@@ -973,8 +973,11 @@
                                 import nixpkgs
                                     {
                                         inherit system ;
-                                        allowUnfree = true ;
-                                        config.android_sdk.accept_license = true ;
+                                        config =
+                                            {
+                                                allowUnfree = true ;
+                                                android_sdk.accept_license = true ;
+                                            } ;
                                     } ;
                     in
                         {
