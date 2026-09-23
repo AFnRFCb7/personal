@@ -998,6 +998,7 @@
                                                                     in router.address ;
                                                             useDHCP = false ;
                                                         } ;
+                                                    nixpkgs.config.android_sdk.accept_license = true ;
                                                     personal =
                                                         {
                                                             agenix = "${ shared }/age/identity" ;
