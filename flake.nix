@@ -969,7 +969,12 @@
                                                             } ;
                                                     } ;
                                             } ;
-                            pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
+                            pkgs =
+                                import nixpkgs
+                                    {
+                                        inherit system;
+                                        config.android_sdk.accept_license = true ;
+                                    } ;
                     in
                         {
                             checks =
