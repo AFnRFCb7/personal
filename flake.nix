@@ -972,7 +972,8 @@
                             pkgs =
                                 import nixpkgs
                                     {
-                                        inherit system;
+                                        inherit system ;
+                                        allow.unfree = true ;
                                         config.android_sdk.accept_license = true ;
                                     } ;
                     in
