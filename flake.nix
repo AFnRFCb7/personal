@@ -39,6 +39,7 @@
                                         visitor = _visitor.implementation ;
                                         writeShellApplication = pkgs.writeShellApplication ;
                                     } ;
+                            _node-package = node-package.lib { } ;
                             _resource =
                                 resource.lib
                                     {
@@ -761,7 +762,12 @@
                                                                 password = config.personal.password ;
                                                             } ;
                                                     } ;
-                                                imports = [ _sally.implementation _trump5000.implementation ] ;
+                                                imports =
+                                                    [
+                                                        _sally.implementation
+                                                        _trump5000.implementation
+                                                        _node-package.implementation
+                                                    ] ;
                                                 options =
                                                     {
                                                         personal =
