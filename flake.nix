@@ -10,6 +10,7 @@
                         fixture ,
                         lazy-shell-application ,
                         nixpkgs ,
+                        node-package ,
                         private ,
                         resource ,
                         sally ,
