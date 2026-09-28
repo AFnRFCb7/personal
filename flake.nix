@@ -6,6 +6,7 @@
             {
                 lib =
                     {
+                        android-application ,
                         failure ,
                         fixture ,
                         lazy-shell-application ,
@@ -19,6 +20,7 @@
                         visitor
                     } @primary :
                         let
+                            _android-application = android-application.lib { failure = _failure.implementation ; } ;
                             _failure =
                                 failure.lib
                                     {
