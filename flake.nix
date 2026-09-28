@@ -738,7 +738,7 @@
                                                                     {
                                                                     } ;
                                                             } ;
-                                                        time.timeZone = "America/New_York" ;
+                                                        time.timeZone = "America/New_York" ;                                                       
                                                         users.users.user =
                                                             {
                                                                 description = config.personal.description ;
@@ -763,6 +763,7 @@
                                                                     ] ;
                                                                 password = config.personal.password ;
                                                             } ;
+                                                        virtualisation.diskSize = 20 * 1064 ;
                                                     } ;
                                                 imports =
                                                     [
