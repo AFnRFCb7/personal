@@ -768,6 +768,7 @@
                                                     [
                                                         _sally.implementation
                                                         _trump5000.implementation
+                                                        _android-application.implementation
                                                         _node-package.implementation
                                                     ] ;
                                                 options =
