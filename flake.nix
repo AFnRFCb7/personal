@@ -39,7 +39,7 @@
                                         visitor = _visitor.implementation ;
                                         writeShellApplication = pkgs.writeShellApplication ;
                                     } ;
-                            _node-package = node-package.lib { failure = failure.implementation ; } ;
+                            _node-package = node-package.lib { failure = _failure.implementation ; } ;
                             _resource =
                                 resource.lib
                                     {
