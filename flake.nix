@@ -17,6 +17,7 @@
                         sally ,
                         system ,
                         trump5000 ,
+                        visa ,
                         visitor
                     } @primary :
                         let
@@ -72,6 +73,7 @@
                                 {
                                     lazy-shell-application = _lazy-shell-application.implementation ;
                                 } ;
+                            _visa = visa.lib { } ;
                             _visitor = visitor.lib { } ;
                             implementation =
                                 { config , lib , pkgs , ... } :
@@ -763,7 +765,6 @@
                                                                     ] ;
                                                                 password = config.personal.password ;
                                                             } ;
-                                                        virtualisation.diskSize = 20 * 1064 ;
                                                     } ;
                                                 imports =
                                                     [
