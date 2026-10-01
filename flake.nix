@@ -3329,6 +3329,7 @@
                                                                             {
                                                                                 client = "client" ;
                                                                                 coreutils = pkgs.coreutils ;
+                                                                                failure = _failure.implementation ;
                                                                                 findutils = pkgs.findutils ;
                                                                                 nixosTest = pkgs.nixosTest ;
                                                                                 nodes = { client = client ; github = github ; } ;
