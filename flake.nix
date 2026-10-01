@@ -22,16 +22,7 @@
                     } @primary :
                         let
                             _android-application = android-application.lib { } ;
-                            _failure =
-                                failure.lib
-                                    {
-                                        coreutils = pkgs.coreutils ;
-                                        error-planned = 186 ;
-                                        error-unplanned = 135 ;
-                                        jq = pkgs.jq ;
-                                        visitor = _visitor.implementation ;
-                                        writeShellApplication = pkgs.writeShellApplication ;
-                                    } ;
+                            _failure = failure.lib { } ;
                             _lazy-shell-application =
                                 lazy-shell-application.lib
                                     {
