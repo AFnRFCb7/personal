@@ -2440,6 +2440,18 @@
                                                                                 standard-input = null ;
                                                                             }
                                                                     )
+                                                                    (
+                                                                        _visitor.check
+                                                                            {
+                                                                                nixosTest = pkgs.nixosTest ;
+                                                                                order = 2 ;
+                                                                            }
+                                                                            {
+                                                                                arguments = null ;
+                                                                                expected = null ;
+                                                                                visitors = { null = path : value : value ; } ;
+                                                                            }
+                                                                    )
 #                                                                    (
 #                                                                        _lazy-shell-application.check
 #                                                                            {
