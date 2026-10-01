@@ -2434,12 +2434,8 @@
                                                                     (
                                                                         _failure.check
                                                                             {
-                                                                                coreutils = pkgs.coreutils ;
-                                                                                diffutils = pkgs.diffutils ;
-                                                                                jq = pkgs.jq ;
                                                                                 nixosTest = pkgs.nixosTest ;
                                                                                 order = 1 ;
-                                                                                writeShellApplication = pkgs.writeShellApplication ;
                                                                             }
                                                                             {
                                                                                 compile-time-arguments = [ "6699768429138615" ] ;
