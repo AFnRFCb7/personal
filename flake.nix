@@ -2434,6 +2434,9 @@
                                                                     (
                                                                         _failure.check
                                                                             {
+                                                                                coreutils = pkgs.coreutils ;
+                                                                                diffutils = pkgs.diffutils ;
+                                                                                jq = pkgs.jq ;
                                                                                 nixosTest = pkgs.nixosTest ;
                                                                                 order = 1 ;
                                                                                 writeShellApplication = pkgs.writeShellApplication ;
