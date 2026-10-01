@@ -68,6 +68,7 @@
                                         __resource =
                                             _resource.implementation
                                                 {
+                                                    config = config ;
                                                     gc-roots-directory = "/home/${ config.personal.name }/.gc-roots" ;
                                                     resources-directory = "/home/${ config.personal.name }/resources" ;
                                                 } ;
