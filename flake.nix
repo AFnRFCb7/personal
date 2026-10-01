@@ -2443,12 +2443,14 @@
                                                                     (
                                                                         _visitor.check
                                                                             {
+                                                                                failure = _failure.implementation ;
                                                                                 nixosTest = pkgs.nixosTest ;
                                                                                 order = 2 ;
                                                                             }
                                                                             {
                                                                                 arguments = null ;
-                                                                                expected = null ;
+                                                                                success = true ;
+                                                                                value = null ;
                                                                                 visitors = { null = path : value : value ; } ;
                                                                             }
                                                                     )
