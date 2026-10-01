@@ -21,7 +21,7 @@
                         visitor
                     } @primary :
                         let
-                            _android-application = android-application.lib { failure = _failure.implementation ; } ;
+                            _android-application = android-application.lib { } ;
                             _failure =
                                 failure.lib
                                     {
@@ -37,12 +37,11 @@
                                     {
                                         buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                         coreutils = pkgs.coreutils ;
-                                        failure = _failure.implementation ;
                                         jq = pkgs.jq ;
                                         visitor = _visitor.implementation ;
                                         writeShellApplication = pkgs.writeShellApplication ;
                                     } ;
-                            _node-package = node-package.lib { failure = _failure.implementation ; } ;
+                            _node-package = node-package.lib { } ;
                             _resource =
                                 resource.lib
                                     {
@@ -66,14 +65,13 @@
                                     } ;
                             _sally = sally.lib
                                 {
-                                    failure = _failure.implementation ;
                                     lazy-shell-application = _lazy-shell-application.implementation ;
                                 } ;
                             _trump5000 = trump5000.lib
                                 {
                                     lazy-shell-application = _lazy-shell-application.implementation ;
                                 } ;
-                            _visa = visa.lib { failure = _failure.implementation ; lazy-shell-application = _lazy-shell-application.implementation ; } ;
+                            _visa = visa.lib { lazy-shell-application = _lazy-shell-application.implementation ; } ;
                             _visitor = visitor.lib { } ;
                             implementation =
                                 { config , lib , pkgs , ... } :
@@ -2436,13 +2434,16 @@
                                                                     (
                                                                         _failure.check
                                                                             {
-                                                                                diffutils = pkgs.diffutils ;
-                                                                                mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                                                nixosTest = pkgs.nixosTest ;
                                                                                 order = 1 ;
                                                                             }
                                                                             [ "6699768429138615" ]
                                                                             {
-                                                                                run-time-arguments = [ "7437964846613734" ] ;
+                                                                                compile-time-arguments = [ "6699768429138615" ] ;
+                                                                                shell-application = pkgs.writeShellApplication ;
+                                                                                planned-error = 182 ;
+                                                                                visitor = builtins.toJSON ;
+                                                                                unplanned-error = 162 ;
                                                                             }
                                                                     )
                                                                     (
