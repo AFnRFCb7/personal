@@ -3354,8 +3354,8 @@
 #                                                                                writeShellApplication = pkgs.writeShellApplication ;
 #                                                                            }
 #                                                                    )
-#                                                                ]
-#                                                        )
+                                                                ]
+                                                        )
                                                 ) ;
                                     implementation = implementation ;
                                 } ;
