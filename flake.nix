@@ -3296,8 +3296,8 @@
                                                                                                             status = 128 ;
                                                                                                         }
                                                                                                         { channel = "valid-release" ; index = "0000000000000001" ; standard-output = "" ; status = 0 ; }
-                                                                                                        { channel = "valid-release" ; index = "0000000000000003" ; standard-output = "" ; status = 0 ; }
                                                                                                         { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
+                                                                                                        { channel = "valid-release" ; index = "0000000000000003" ; standard-output = "" ; status = 0 ; }
                                                                                                     ] ;
                                                                                                 standard-output =
                                                                                                     ''
