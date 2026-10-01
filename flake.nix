@@ -29,7 +29,6 @@
                                         buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                         coreutils = pkgs.coreutils ;
                                         jq = pkgs.jq ;
-                                        visitor = _visitor.implementation ;
                                         writeShellApplication = pkgs.writeShellApplication ;
                                     } ;
                             _node-package = node-package.lib { } ;
@@ -51,7 +50,6 @@
                                         redis = pkgs.redis ;
                                         valid-init-channel = "valid-init" ;
                                         valid-release-channel = "valid-release" ;
-                                        visitor = _visitor.implementation ;
                                         writeShellApplication = pkgs.writeShellApplication ;
                                     } ;
                             _sally = sally.lib
@@ -758,6 +756,7 @@
                                                 imports =
                                                     [
                                                         _failure.implementation
+                                                        _visitor.implementation
                                                         # _sally.implementation
                                                         # _visa.implementation
                                                         # _trump5000.implementation
