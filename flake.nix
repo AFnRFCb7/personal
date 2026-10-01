@@ -121,40 +121,40 @@
                                                                 fi
                                                             '' ;
                                                     } ;
-                                        resources =
-                                            pkgs.stdenv.mkDerivation
-                                                {
-                                                    installPhase = ''resources "$out"'' ;
-                                                    name = "resources" ;
-                                                    nativeBuildInputs =
-                                                        [
-                                                            (
-                                                                pkgs.writeShellApplication
-                                                                    {
-                                                                        name = "resources" ;
-                                                                        runtimeInputs =
-                                                                            [
-                                                                            ] ;
-                                                                        text =
-                                                                            let
-                                                                                clean =
-                                                                                    [
-                                                                                        ''
-                                                                                            mkdir --parents "$1"
-                                                                                        ''
-                                                                                        ''
-                                                                                            ln --symbolic ${ __resource.clean } "$1/clean.sh"
-                                                                                        ''
-                                                                                    ] ;
-                                                                                release =
-                                                                                    [
-                                                                                        ''
-                                                                                            mkdir --parents "$1"
-                                                                                        ''
-                                                                                        ''
-                                                                                            ln --symbolic ${ __resource.release } "$1/release.sh"
-                                                                                        ''
-                                                                                    ] ;
+#                                        resources =
+#                                            pkgs.stdenv.mkDerivation
+#                                                {
+#                                                    installPhase = ''resources "$out"'' ;
+#                                                    name = "resources" ;
+#                                                    nativeBuildInputs =
+#                                                        [
+#                                                            (
+#                                                                pkgs.writeShellApplication
+#                                                                    {
+#                                                                        name = "resources" ;
+#                                                                        runtimeInputs =
+#                                                                            [
+#                                                                            ] ;
+#                                                                        text =
+#                                                                            let
+#                                                                                clean =
+#                                                                                    [
+#                                                                                        ''
+#                                                                                            mkdir --parents "$1"
+#                                                                                        ''
+#                                                                                        ''
+#                                                                                            ln --symbolic ${ __resource.clean } "$1/clean.sh"
+#                                                                                        ''
+#                                                                                    ] ;
+#                                                                                release =
+#                                                                                    [
+#                                                                                        ''
+#                                                                                            mkdir --parents "$1"
+#                                                                                        ''
+#                                                                                        ''
+#                                                                                            ln --symbolic ${ __resource.release } "$1/release.sh"
+#                                                                                        ''
+#                                                                                    ] ;
 #                                                                                resources =
 #                                                                                    _visitor.implementation
 #                                                                                        {
