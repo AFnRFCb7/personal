@@ -155,345 +155,345 @@
                                                                                             ln --symbolic ${ __resource.release } "$1/release.sh"
                                                                                         ''
                                                                                     ] ;
-                                                                                resources =
-                                                                                    _visitor.implementation
-                                                                                        {
-                                                                                            lambda =
-                                                                                                path : value :
-                                                                                                    [
-                                                                                                        ''
-                                                                                                            mkdir --parents "$1/resources"
-                                                                                                        ''
-                                                                                                        (
-                                                                                                            ''
-                                                                                                                ln --symbolic ${ __resource.resource ( { resources = ''"$RESORCES"'' ; seed = path ; } // ( value null ) ) } "$1"/resources/'${ builtins.toJSON path }'
-                                                                                                            ''
-                                                                                                        )
-                                                                                                    ] ;
-                                                                                            list = path : list : builtins.concatLists list ;
-                                                                                            set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
-                                                                                        }
-                                                                                        {
-                                                                                            production =
-                                                                                                {
-                                                                                                    dot-ssh =
-                                                                                                        {
-                                                                                                             config =
-                                                                                                                {
-                                                                                                                    github =
-                                                                                                                        ignore :
-                                                                                                                            {
-                                                                                                                                error = 195 ;
-                                                                                                                                init =
-                                                                                                                                    ignore :
-                                                                                                                                        {
-                                                                                                                                            action =
-                                                                                                                                                ignore :
-                                                                                                                                                    {
-                                                                                                                                                        targetPkgs =
-                                                                                                                                                            { pkgs , resources , ... } :
-                                                                                                                                                                [
-                                                                                                                                                                    (
-                                                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                                                            {
-                                                                                                                                                                                name = "dot-ssh-configure" ;
-                                                                                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                                                                                                text =
-                                                                                                                                                                                    ''
-                                                                                                                                                                                        # shellcheck disable=SC2288
-                                                                                                                                                                                        KNOWN_HOSTS="$( "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]' )" || exit 106
-                                                                                                                                                                                        ln --symbolic "$KNOWN_HOSTS" /gc-root/known-hosts
-                                                                                                                                                                                        # shellcheck disable=SC2288
-                                                                                                                                                                                        IDENTITY="$( "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' )" || exit 133
-                                                                                                                                                                                        ln --symbolic "$IDENTITY" /gc-root/identity
-                                                                                                                                                                                        cat > config.asc <<EOF
-                                                                                                                                                                                        Host github.com
-                                                                                                                                                                                            HostName ${ config.personal.secrets.host }
-                                                                                                                                                                                            User git
-                                                                                                                                                                                            IdentityFile $IDENTITY/identity.asc
-                                                                                                                                                                                            UserKnownHostsFile $KNOWN_HOSTS/known-hosts.asc
-                                                                                                                                                                                            StrictHostKeyChecking no
-                                                                                                                                                                                        EOF
-                                                                                                                                                                                        chmod 0400 config.asc
-                                                                                                                                                                                    '' ;
-                                                                                                                                                                            }
-                                                                                                                                                                    )
-                                                                                                                                                                ] ;
-                                                                                                                                                        text = "dot-ssh-configure" ;
-                                                                                                                                                    } ;
-                                                                                                                                            recovery =
-                                                                                                                                                {
-                                                                                                                                                    fail =
-                                                                                                                                                        ignore :
-                                                                                                                                                            {
-                                                                                                                                                                targetPkgs = pkgs : [ pkgs.coreutils ] ;
-                                                                                                                                                                text =
-                                                                                                                                                                    ''
-                                                                                                                                                                        echo 7179669781491843
-                                                                                                                                                                        exit 117
-                                                                                                                                                                    '' ;
-                                                                                                                                                            } ;
-                                                                                                                                                    pass =
-                                                                                                                                                        ignore :
-                                                                                                                                                            {
-                                                                                                                                                                targetPkgs = pkgs : [ pkgs.coreutils ] ;
-                                                                                                                                                                text =
-                                                                                                                                                                    ''
-                                                                                                                                                                        echo 8921335538452797
-                                                                                                                                                                    '' ;
-                                                                                                                                                            } ;
-                                                                                                                                                } ;
-                                                                                                                                        } ;
-                                                                                                                                release =
-                                                                                                                                    ignore :
-                                                                                                                                        {
-                                                                                                                                            action =
-                                                                                                                                                ignore :
-                                                                                                                                                    {
-                                                                                                                                                        targetPkgs = { pkgs , ... } : [ ] ;
-                                                                                                                                                        text =
-                                                                                                                                                            ''
-                                                                                                                                                            '' ;
-                                                                                                                                                    } ;
-                                                                                                                                            recovery =
-                                                                                                                                                {
-                                                                                                                                                    check =
-                                                                                                                                                        ignore :
-                                                                                                                                                            {
-                                                                                                                                                                targetPkgs = { pkgs , ... } : [ pkgs.coreutils  ] ;
-                                                                                                                                                                text =
-                                                                                                                                                                    ''
-                                                                                                                                                                        echo 9131352568195371
-                                                                                                                                                                    '' ;
-                                                                                                                                                            } ;
-                                                                                                                                                } ;
-                                                                                                                                        } ;
-                                                                                                                                targets = [ "config.asc" ] ;
-                                                                                                                                temporary = false ;
-                                                                                                                            } ;
-                                                                                                                } ;
-                                                                                                            identity =
-                                                                                                                {
-                                                                                                                    github =
-                                                                                                                        ignore :
-                                                                                                                            {
-                                                                                                                                error = 195 ;
-                                                                                                                                init =
-                                                                                                                                    ignore :
-                                                                                                                                        {
-                                                                                                                                            action =
-                                                                                                                                                ignore :
-                                                                                                                                                    {
-                                                                                                                                                        targetPkgs =
-                                                                                                                                                            { pkgs , ... } :
-                                                                                                                                                                [
-                                                                                                                                                                    (
-                                                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                                                            {
-                                                                                                                                                                                name = "identity" ;
-                                                                                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                                                                                                text =
-                                                                                                                                                                                    ''
-                                                                                                                                                                                        cat ${ config.personal.temporary.ssh.identity } > "identity.asc"
-                                                                                                                                                                                        chmod 0400 "identity.asc"
-                                                                                                                                                                                    '' ;
-                                                                                                                                                                            }
-                                                                                                                                                                    )
-                                                                                                                                                                ] ;
-                                                                                                                                                        text = "identity" ;
-                                                                                                                                                    } ;
-                                                                                                                                        } ;
-                                                                                                                                release =
-                                                                                                                                    ignore :
-                                                                                                                                        {
-                                                                                                                                            action =
-                                                                                                                                                ignore :
-                                                                                                                                                    {
-                                                                                                                                                        targetPkgs = { pkgs , ... } : [ ] ;
-                                                                                                                                                        text =
-                                                                                                                                                            ''
-                                                                                                                                                            '' ;
-                                                                                                                                                    } ;
-                                                                                                                                            recovery =
-                                                                                                                                                {
-                                                                                                                                                    check =
-                                                                                                                                                        ignore :
-                                                                                                                                                            {
-                                                                                                                                                                targetPkgs = { pkgs , ... } : [ pkgs.coreutils  ] ;
-                                                                                                                                                                text =
-                                                                                                                                                                    ''
-                                                                                                                                                                        echo 9131352568195371
-                                                                                                                                                                    '' ;
-                                                                                                                                                            } ;
-                                                                                                                                                } ;
-                                                                                                                                        } ;
-                                                                                                                                targets = [ "identity.asc" ] ;
-                                                                                                                                temporary = false ;
-                                                                                                                            } ;
-                                                                                                                } ;
-                                                                                                             known-hosts =
-                                                                                                                {
-                                                                                                                    github =
-                                                                                                                        ignore :
-                                                                                                                            {
-                                                                                                                                error = 195 ;
-                                                                                                                                init =
-                                                                                                                                    ignore :
-                                                                                                                                        {
-                                                                                                                                            action =
-                                                                                                                                                ignore :
-                                                                                                                                                    {
-                                                                                                                                                        targetPkgs =
-                                                                                                                                                            { pkgs , ... } :
-                                                                                                                                                                [
-                                                                                                                                                                    (
-                                                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                                                            {
-                                                                                                                                                                                name = "known-hosts" ;
-                                                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.openssh ] ;
-                                                                                                                                                                                text =
-                                                                                                                                                                                    _visitor.implementation
-                                                                                                                                                                                        {
-                                                                                                                                                                                            null =
-                                                                                                                                                                                                path : value :
-                                                                                                                                                                                                    ''
-                                                                                                                                                                                                        ssh-keyscan ${ config.personal.secrets.host } > "known-hosts.asc"
-                                                                                                                                                                                                        chmod 0400 "known-hosts.asc"
-                                                                                                                                                                                                    '' ;
-                                                                                                                                                                                            path =
-                                                                                                                                                                                                path : value :
-                                                                                                                                                                                                    ''
-                                                                                                                                                                                                        cat ${ value } > "known-hosts.asc"
-                                                                                                                                                                                                        chmod 0400 "known-hosts.asc"
-                                                                                                                                                                                                    '' ;
-                                                                                                                                                                                        }
-                                                                                                                                                                                        config.personal.secrets.known-hosts ;
-                                                                                                                                                                            }
-                                                                                                                                                                    )
-                                                                                                                                                                ] ;
-                                                                                                                                                        text = "known-hosts" ;
-                                                                                                                                                    } ;
-                                                                                                                                        } ;
-                                                                                                                                release =
-                                                                                                                                    ignore :
-                                                                                                                                        {
-                                                                                                                                            action =
-                                                                                                                                                ignore :
-                                                                                                                                                    {
-                                                                                                                                                        targetPkgs = { pkgs , ... } : [ ] ;
-                                                                                                                                                        text =
-                                                                                                                                                            ''
-                                                                                                                                                            '' ;
-                                                                                                                                                    } ;
-                                                                                                                                            recovery =
-                                                                                                                                                {
-                                                                                                                                                    check =
-                                                                                                                                                        ignore :
-                                                                                                                                                            {
-                                                                                                                                                                targetPkgs = { pkgs , ... } : [ pkgs.coreutils  ] ;
-                                                                                                                                                                text =
-                                                                                                                                                                    ''
-                                                                                                                                                                        echo 9131352568195371
-                                                                                                                                                                    '' ;
-                                                                                                                                                            } ;
-                                                                                                                                                } ;
-                                                                                                                                        } ;
-                                                                                                                                targets = [ "known-hosts.asc" ] ;
-                                                                                                                                temporary = false ;
-                                                                                                                            } ;
-                                                                                                                } ;
-                                                                                                        } ;
-                                                                                                    repository =
-                                                                                                        {
-                                                                                                            secrets =
-                                                                                                                ignore :
-                                                                                                                    {
-                                                                                                                        error = 195 ;
-                                                                                                                        init =
-                                                                                                                            ignore :
-                                                                                                                                {
-                                                                                                                                    action =
-                                                                                                                                        ignore :
-                                                                                                                                            {
-                                                                                                                                                targetPkgs =
-                                                                                                                                                    { pkgs , ... } :
-                                                                                                                                                        [
-                                                                                                                                                            pkgs.git
-                                                                                                                                                            (
-                                                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                                                    {
-                                                                                                                                                                        name = "configure-ssh" ;
-                                                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.openssh ] ;
-                                                                                                                                                                        text =
-                                                                                                                                                                            ''
-                                                                                                                                                                                ln --symbolic ${ pkgs.openssh } /gc-root/open-ssh
-                                                                                                                                                                                # shellcheck disable=SC2288
-                                                                                                                                                                                CONFIG="$( "$RESOURCES"/resources/'["production","dot-ssh","config","github"]' )" || exit 172
-                                                                                                                                                                                git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $CONFIG/config.asc"
-                                                                                                                                                                                ln --symbolic "$CONFIG" /gc-root/config
-                                                                                                                                                                             '' ;
-                                                                                                                                                                    }
-                                                                                                                                                            )
-                                                                                                                                                        ] ;
-                                                                                                                                                text =
-                                                                                                                                                    ''
-                                                                                                                                                        git init 2>&1
-                                                                                                                                                        configure-ssh
-                                                                                                                                                        git config user.email "${ config.personal.secrets.email }"
-                                                                                                                                                        git config user.name "${ config.personal.secrets.name }"
-                                                                                                                                                        git remote add origin "${ config.personal.secrets.remotes.ssh }"
-                                                                                                                                                        git fetch origin "${ config.personal.secrets.branch }" 2>&1
-                                                                                                                                                        git checkout "${ config.personal.secrets.branch }" 2>&1
-                                                                                                                                                    '' ;
-                                                                                                                                            } ;
-                                                                                                                                } ;
-                                                                                                                        release =
-                                                                                                                            ignore :
-                                                                                                                                {
-                                                                                                                                    action =
-                                                                                                                                        ignore :
-                                                                                                                                            {
-                                                                                                                                                targetPkgs = { pkgs , ... } : [ pkgs.coreutils pkgs.findutils pkgs.git ] ;
-                                                                                                                                                text =
-                                                                                                                                                    ''
-                                                                                                                                                        git push origin HEAD 2>&1
-                                                                                                                                                    '' ;
-                                                                                                                                            } ;
-                                                                                                                                    recovery =
-                                                                                                                                        {
-                                                                                                                                            recoverable =
-                                                                                                                                                ignore :
-                                                                                                                                                    {
-                                                                                                                                                        targetPkgs = { pkgs , ... } : [ pkgs.coreutils ] ;
-                                                                                                                                                        text =
-                                                                                                                                                            ''
-                                                                                                                                                                echo RECOVERABLE
-                                                                                                                                                            '' ;
-                                                                                                                                                    } ;
-                                                                                                                                            unrecoverable =
-                                                                                                                                                ignore :
-                                                                                                                                                    {
-                                                                                                                                                        targetPkgs = { pkgs , ... } : [ pkgs.coreutils ] ;
-                                                                                                                                                        text =
-                                                                                                                                                            ''
-                                                                                                                                                                echo UNRECOVERABLE >&2
-                                                                                                                                                                exit 110
-                                                                                                                                                            '' ;
-                                                                                                                                                    } ;
-                                                                                                                                        } ;
-                                                                                                                                } ;
-                                                                                                                        targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
-                                                                                                                        temporary = false ;
-                                                                                                                    } ;
-                                                                                                        } ;
-                                                                                                } ;
-                                                                                        } ;
-                                                                                in builtins.concatStringsSep "\n" ( builtins.concatLists [ clean release resources ] ) ;
-                                                                    }
-                                                            )
-                                                        ] ;
-                                                    src = ./. ;
-                                                } ;
+#                                                                                resources =
+#                                                                                    _visitor.implementation
+#                                                                                        {
+#                                                                                            lambda =
+#                                                                                                path : value :
+#                                                                                                    [
+#                                                                                                        ''
+#                                                                                                            mkdir --parents "$1/resources"
+#                                                                                                        ''
+#                                                                                                        (
+#                                                                                                            ''
+#                                                                                                                ln --symbolic ${ __resource.resource ( { resources = ''"$RESOURCES"'' ; seed = path ; } // ( value null ) ) } "$1"/resources/'${ builtins.toJSON path }'
+#                                                                                                            ''
+#                                                                                                        )
+#                                                                                                    ] ;
+#                                                                                            list = path : list : builtins.concatLists list ;
+#                                                                                            set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
+#                                                                                        }
+#                                                                                        {
+#                                                                                            production =
+#                                                                                                {
+#                                                                                                    dot-ssh =
+#                                                                                                        {
+#                                                                                                             config =
+#                                                                                                                {
+#                                                                                                                    github =
+#                                                                                                                        ignore :
+#                                                                                                                            {
+#                                                                                                                                error = 195 ;
+#                                                                                                                                init =
+#                                                                                                                                    ignore :
+#                                                                                                                                        {
+#                                                                                                                                            action =
+#                                                                                                                                                ignore :
+#                                                                                                                                                    {
+#                                                                                                                                                        targetPkgs =
+#                                                                                                                                                            { pkgs , resources , ... } :
+#                                                                                                                                                                [
+#                                                                                                                                                                    (
+#                                                                                                                                                                        pkgs.writeShellApplication
+#                                                                                                                                                                            {
+#                                                                                                                                                                                name = "dot-ssh-configure" ;
+#                                                                                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+#                                                                                                                                                                                text =
+#                                                                                                                                                                                    ''
+#                                                                                                                                                                                        # shellcheck disable=SC2288
+#                                                                                                                                                                                        KNOWN_HOSTS="$( "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]' )" || exit 106
+#                                                                                                                                                                                        ln --symbolic "$KNOWN_HOSTS" /gc-root/known-hosts
+#                                                                                                                                                                                        # shellcheck disable=SC2288
+#                                                                                                                                                                                        IDENTITY="$( "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' )" || exit 133
+#                                                                                                                                                                                        ln --symbolic "$IDENTITY" /gc-root/identity
+#                                                                                                                                                                                        cat > config.asc <<EOF
+#                                                                                                                                                                                        Host github.com
+#                                                                                                                                                                                            HostName ${ config.personal.secrets.host }
+#                                                                                                                                                                                            User git
+#                                                                                                                                                                                            IdentityFile $IDENTITY/identity.asc
+#                                                                                                                                                                                            UserKnownHostsFile $KNOWN_HOSTS/known-hosts.asc
+#                                                                                                                                                                                            StrictHostKeyChecking no
+#                                                                                                                                                                                        EOF
+#                                                                                                                                                                                        chmod 0400 config.asc
+#                                                                                                                                                                                    '' ;
+#                                                                                                                                                                            }
+#                                                                                                                                                                    )
+#                                                                                                                                                                ] ;
+#                                                                                                                                                        text = "dot-ssh-configure" ;
+#                                                                                                                                                    } ;
+#                                                                                                                                            recovery =
+#                                                                                                                                                {
+#                                                                                                                                                    fail =
+#                                                                                                                                                        ignore :
+#                                                                                                                                                            {
+#                                                                                                                                                                targetPkgs = pkgs : [ pkgs.coreutils ] ;
+#                                                                                                                                                                text =
+#                                                                                                                                                                    ''
+#                                                                                                                                                                        echo 7179669781491843
+#                                                                                                                                                                        exit 117
+#                                                                                                                                                                    '' ;
+#                                                                                                                                                            } ;
+#                                                                                                                                                    pass =
+#                                                                                                                                                        ignore :
+#                                                                                                                                                            {
+#                                                                                                                                                                targetPkgs = pkgs : [ pkgs.coreutils ] ;
+#                                                                                                                                                                text =
+#                                                                                                                                                                    ''
+#                                                                                                                                                                        echo 8921335538452797
+#                                                                                                                                                                    '' ;
+#                                                                                                                                                            } ;
+#                                                                                                                                                } ;
+#                                                                                                                                        } ;
+#                                                                                                                                release =
+#                                                                                                                                    ignore :
+#                                                                                                                                        {
+#                                                                                                                                            action =
+#                                                                                                                                                ignore :
+#                                                                                                                                                    {
+#                                                                                                                                                        targetPkgs = { pkgs , ... } : [ ] ;
+#                                                                                                                                                        text =
+#                                                                                                                                                            ''
+#                                                                                                                                                            '' ;
+#                                                                                                                                                    } ;
+#                                                                                                                                            recovery =
+#                                                                                                                                                {
+#                                                                                                                                                    check =
+#                                                                                                                                                        ignore :
+#                                                                                                                                                            {
+#                                                                                                                                                                targetPkgs = { pkgs , ... } : [ pkgs.coreutils  ] ;
+#                                                                                                                                                                text =
+#                                                                                                                                                                    ''
+#                                                                                                                                                                        echo 9131352568195371
+#                                                                                                                                                                    '' ;
+#                                                                                                                                                            } ;
+#                                                                                                                                                } ;
+#                                                                                                                                        } ;
+#                                                                                                                                targets = [ "config.asc" ] ;
+#                                                                                                                                temporary = false ;
+#                                                                                                                            } ;
+#                                                                                                                } ;
+#                                                                                                            identity =
+#                                                                                                                {
+#                                                                                                                    github =
+#                                                                                                                        ignore :
+#                                                                                                                            {
+#                                                                                                                                error = 195 ;
+#                                                                                                                                init =
+#                                                                                                                                    ignore :
+#                                                                                                                                        {
+#                                                                                                                                            action =
+#                                                                                                                                                ignore :
+#                                                                                                                                                    {
+#                                                                                                                                                        targetPkgs =
+#                                                                                                                                                            { pkgs , ... } :
+#                                                                                                                                                                [
+#                                                                                                                                                                    (
+#                                                                                                                                                                        pkgs.writeShellApplication
+#                                                                                                                                                                            {
+#                                                                                                                                                                                name = "identity" ;
+#                                                                                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+#                                                                                                                                                                                text =
+#                                                                                                                                                                                    ''
+#                                                                                                                                                                                        cat ${ config.personal.temporary.ssh.identity } > "identity.asc"
+#                                                                                                                                                                                        chmod 0400 "identity.asc"
+#                                                                                                                                                                                    '' ;
+#                                                                                                                                                                            }
+#                                                                                                                                                                    )
+#                                                                                                                                                                ] ;
+#                                                                                                                                                        text = "identity" ;
+#                                                                                                                                                    } ;
+#                                                                                                                                        } ;
+#                                                                                                                                release =
+#                                                                                                                                    ignore :
+#                                                                                                                                        {
+#                                                                                                                                            action =
+#                                                                                                                                                ignore :
+#                                                                                                                                                    {
+#                                                                                                                                                        targetPkgs = { pkgs , ... } : [ ] ;
+#                                                                                                                                                        text =
+#                                                                                                                                                            ''
+#                                                                                                                                                            '' ;
+#                                                                                                                                                    } ;
+#                                                                                                                                            recovery =
+#                                                                                                                                                {
+#                                                                                                                                                    check =
+#                                                                                                                                                        ignore :
+#                                                                                                                                                            {
+#                                                                                                                                                                targetPkgs = { pkgs , ... } : [ pkgs.coreutils  ] ;
+#                                                                                                                                                                text =
+#                                                                                                                                                                    ''
+#                                                                                                                                                                        echo 9131352568195371
+#                                                                                                                                                                    '' ;
+#                                                                                                                                                            } ;
+#                                                                                                                                                } ;
+#                                                                                                                                        } ;
+#                                                                                                                                targets = [ "identity.asc" ] ;
+#                                                                                                                                temporary = false ;
+#                                                                                                                            } ;
+#                                                                                                                } ;
+#                                                                                                             known-hosts =
+#                                                                                                                {
+#                                                                                                                    github =
+#                                                                                                                        ignore :
+#                                                                                                                            {
+#                                                                                                                                error = 195 ;
+#                                                                                                                                init =
+#                                                                                                                                    ignore :
+#                                                                                                                                        {
+#                                                                                                                                            action =
+#                                                                                                                                                ignore :
+#                                                                                                                                                    {
+#                                                                                                                                                        targetPkgs =
+#                                                                                                                                                            { pkgs , ... } :
+#                                                                                                                                                                [
+#                                                                                                                                                                    (
+#                                                                                                                                                                        pkgs.writeShellApplication
+#                                                                                                                                                                            {
+#                                                                                                                                                                                name = "known-hosts" ;
+#                                                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.openssh ] ;
+#                                                                                                                                                                                text =
+#                                                                                                                                                                                    _visitor.implementation
+#                                                                                                                                                                                        {
+#                                                                                                                                                                                            null =
+#                                                                                                                                                                                                path : value :
+#                                                                                                                                                                                                    ''
+#                                                                                                                                                                                                        ssh-keyscan ${ config.personal.secrets.host } > "known-hosts.asc"
+#                                                                                                                                                                                                        chmod 0400 "known-hosts.asc"
+#                                                                                                                                                                                                    '' ;
+#                                                                                                                                                                                            path =
+#                                                                                                                                                                                                path : value :
+#                                                                                                                                                                                                    ''
+#                                                                                                                                                                                                        cat ${ value } > "known-hosts.asc"
+#                                                                                                                                                                                                        chmod 0400 "known-hosts.asc"
+#                                                                                                                                                                                                    '' ;
+#                                                                                                                                                                                        }
+#                                                                                                                                                                                        config.personal.secrets.known-hosts ;
+#                                                                                                                                                                            }
+#                                                                                                                                                                    )
+#                                                                                                                                                                ] ;
+#                                                                                                                                                        text = "known-hosts" ;
+#                                                                                                                                                    } ;
+#                                                                                                                                        } ;
+#                                                                                                                                release =
+#                                                                                                                                    ignore :
+#                                                                                                                                        {
+#                                                                                                                                            action =
+#                                                                                                                                                ignore :
+#                                                                                                                                                    {
+#                                                                                                                                                        targetPkgs = { pkgs , ... } : [ ] ;
+#                                                                                                                                                        text =
+#                                                                                                                                                            ''
+#                                                                                                                                                            '' ;
+#                                                                                                                                                    } ;
+#                                                                                                                                            recovery =
+#                                                                                                                                                {
+#                                                                                                                                                    check =
+#                                                                                                                                                        ignore :
+#                                                                                                                                                            {
+#                                                                                                                                                                targetPkgs = { pkgs , ... } : [ pkgs.coreutils  ] ;
+#                                                                                                                                                                text =
+#                                                                                                                                                                    ''
+#                                                                                                                                                                        echo 9131352568195371
+#                                                                                                                                                                    '' ;
+#                                                                                                                                                            } ;
+#                                                                                                                                                } ;
+#                                                                                                                                        } ;
+#                                                                                                                                targets = [ "known-hosts.asc" ] ;
+#                                                                                                                                temporary = false ;
+#                                                                                                                            } ;
+#                                                                                                                } ;
+#                                                                                                        } ;
+#                                                                                                    repository =
+#                                                                                                        {
+#                                                                                                            secrets =
+#                                                                                                                ignore :
+#                                                                                                                    {
+#                                                                                                                        error = 195 ;
+#                                                                                                                        init =
+#                                                                                                                            ignore :
+#                                                                                                                                {
+#                                                                                                                                    action =
+#                                                                                                                                        ignore :
+#                                                                                                                                            {
+#                                                                                                                                                targetPkgs =
+#                                                                                                                                                    { pkgs , ... } :
+#                                                                                                                                                        [
+#                                                                                                                                                            pkgs.git
+#                                                                                                                                                            (
+#                                                                                                                                                                pkgs.writeShellApplication
+#                                                                                                                                                                    {
+#                                                                                                                                                                        name = "configure-ssh" ;
+#                                                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.openssh ] ;
+#                                                                                                                                                                        text =
+#                                                                                                                                                                            ''
+#                                                                                                                                                                                ln --symbolic ${ pkgs.openssh } /gc-root/open-ssh
+#                                                                                                                                                                                # shellcheck disable=SC2288
+#                                                                                                                                                                                CONFIG="$( "$RESOURCES"/resources/'["production","dot-ssh","config","github"]' )" || exit 172
+#                                                                                                                                                                                git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $CONFIG/config.asc"
+#                                                                                                                                                                                ln --symbolic "$CONFIG" /gc-root/config
+#                                                                                                                                                                             '' ;
+#                                                                                                                                                                    }
+#                                                                                                                                                            )
+#                                                                                                                                                        ] ;
+#                                                                                                                                                text =
+#                                                                                                                                                    ''
+#                                                                                                                                                        git init 2>&1
+#                                                                                                                                                        configure-ssh
+#                                                                                                                                                        git config user.email "${ config.personal.secrets.email }"
+#                                                                                                                                                        git config user.name "${ config.personal.secrets.name }"
+#                                                                                                                                                        git remote add origin "${ config.personal.secrets.remotes.ssh }"
+#                                                                                                                                                        git fetch origin "${ config.personal.secrets.branch }" 2>&1
+#                                                                                                                                                        git checkout "${ config.personal.secrets.branch }" 2>&1
+#                                                                                                                                                    '' ;
+#                                                                                                                                            } ;
+#                                                                                                                                } ;
+#                                                                                                                        release =
+#                                                                                                                            ignore :
+#                                                                                                                                {
+#                                                                                                                                    action =
+#                                                                                                                                        ignore :
+#                                                                                                                                            {
+#                                                                                                                                                targetPkgs = { pkgs , ... } : [ pkgs.coreutils pkgs.findutils pkgs.git ] ;
+#                                                                                                                                                text =
+#                                                                                                                                                    ''
+#                                                                                                                                                        git push origin HEAD 2>&1
+#                                                                                                                                                    '' ;
+#                                                                                                                                            } ;
+#                                                                                                                                    recovery =
+#                                                                                                                                        {
+#                                                                                                                                            recoverable =
+#                                                                                                                                                ignore :
+#                                                                                                                                                    {
+#                                                                                                                                                        targetPkgs = { pkgs , ... } : [ pkgs.coreutils ] ;
+#                                                                                                                                                        text =
+#                                                                                                                                                            ''
+#                                                                                                                                                                echo RECOVERABLE
+#                                                                                                                                                            '' ;
+#                                                                                                                                                    } ;
+#                                                                                                                                            unrecoverable =
+#                                                                                                                                                ignore :
+#                                                                                                                                                    {
+#                                                                                                                                                        targetPkgs = { pkgs , ... } : [ pkgs.coreutils ] ;
+#                                                                                                                                                        text =
+#                                                                                                                                                            ''
+#                                                                                                                                                                echo UNRECOVERABLE >&2
+#                                                                                                                                                                exit 110
+#                                                                                                                                                            '' ;
+#                                                                                                                                                    } ;
+#                                                                                                                                        } ;
+#                                                                                                                                } ;
+#                                                                                                                        targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
+#                                                                                                                        temporary = false ;
+#                                                                                                                    } ;
+#                                                                                                        } ;
+#                                                                                                } ;
+#                                                                                        } ;
+#                                                                                in builtins.concatStringsSep "\n" ( builtins.concatLists [ clean release resources ] ) ;
+#                                                                    }
+#                                                            )
+#                                                        ] ;
+#                                                    src = ./. ;
+#                                                } ;
                                         in
                                             {
                                                 config =
@@ -2440,889 +2440,889 @@
                                                                                 standard-input = null ;
                                                                             }
                                                                     )
-                                                                    (
-                                                                        _lazy-shell-application.check
-                                                                            {
-                                                                                client = "client" ;
-                                                                                coreutils = pkgs.coreutils ;
-                                                                                failure = _failure.implementation ;
-                                                                                findutils = pkgs.findutils ;
-                                                                                nixosTest = pkgs.nixosTest ;
-                                                                                nodes = { client = client ; github = github ; } ;
-                                                                                order = 2 ;
-                                                                                test-setup = [ ''client.succeed("echo -n 5635319875343792 > /tmp/drive")'' ] ;
-                                                                                writeShellApplication = pkgs.writeShellApplication ;
-                                                                            }
-                                                                            {
-                                                                                mounts = { drive = { source = "/tmp/drive" ; type = "ro-bind" ; } ; } ;
-                                                                                name = "test-application" ;
-                                                                                runtime-inputs = pkgs : [ pkgs.jq ] ;
-                                                                                text =
-                                                                                    ''
-                                                                                        cat /mounts/drive >&2
-                                                                                        echo -n "$1"
-                                                                                        exit 179
-                                                                                    '' ;
-                                                                            }
-                                                                            {
-                                                                                arguments = [ "5454671132583115" ] ;
-                                                                                standard-error = "5635319875343792" ;
-                                                                                standard-output = "5454671132583115" ;
-                                                                                status = 179 ;
-                                                                            }
-                                                                    )
-                                                                    (
-                                                                        tests.happy
-                                                                            {
-                                                                                command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","config","github"]' '' ;
-                                                                                exclusions =
-                                                                                    [
-                                                                                        "/home/checker/.gc-roots/0000000000000001"
-                                                                                        "/home/checker/.gc-roots/0000000000000002"
-                                                                                        ''/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/[\"production\",\"dot-ssh\",\"identity\",\"github\"]" }''
-                                                                                        ''/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/[\"production\",\"dot-ssh\",\"known-hosts\",\"github\"]" }''
-                                                                                        "/home/checker/resources/mounts/0000000000000001"
-                                                                                        "/home/checker/resources/mounts/0000000000000002"
-                                                                                        "/home/checker/resources/release/0000000000000001"
-                                                                                        "/home/checker/resources/release/0000000000000002"
-                                                                                    ] ;
-                                                                                init =
-                                                                                    {
-                                                                                        action =
-                                                                                            {
-                                                                                                files =
-                                                                                                    [
-                                                                                                        {
-                                                                                                            name = "/home/checker/.gc-roots/0000000000000000/identity" ;
-                                                                                                            stat = "lrwxrwxrwx" ;
-                                                                                                            target = "/home/checker/resources/mounts/0000000000000002" ;
-                                                                                                            type = "symbolic link" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            name = "/home/checker/.gc-roots/0000000000000000/known-hosts" ;
-                                                                                                            stat = "lrwxrwxrwx" ;
-                                                                                                            target = "/home/checker/resources/mounts/0000000000000001" ;
-                                                                                                            type = "symbolic link" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            cat =
-                                                                                                                ''
-                                                                                                                    Host github.com
-                                                                                                                        HostName 192.168.2.234
-                                                                                                                        User git
-                                                                                                                        IdentityFile /home/checker/resources/mounts/0000000000000002/identity.asc
-                                                                                                                        UserKnownHostsFile /home/checker/resources/mounts/0000000000000001/known-hosts.asc
-                                                                                                                        StrictHostKeyChecking no
-                                                                                                                '' ;
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/config.asc" ;
-                                                                                                            stat = "-r--------" ;
-                                                                                                            type = "regular file" ;
-                                                                                                        }
-                                                                                                    ]  ;
-                                                                                                messages =
-                                                                                                    [
-                                                                                                        {
-                                                                                                            index = "0000000000000001" ;
-                                                                                                            seed =
-                                                                                                                [
-                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
-                                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                                                ] ;
-                                                                                                            standard-output = "" ;
-                                                                                                            targets = [ "known-hosts.asc" ] ;
-                                                                                                            text = "known-hosts" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            index = "0000000000000002" ;
-                                                                                                            seed =
-                                                                                                                [
-                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "identity" ; }
-                                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                                                ] ;
-                                                                                                            standard-output = "" ;
-                                                                                                            targets = [ "identity.asc" ] ;
-                                                                                                            text = "identity" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            index = "0000000000000000" ;
-                                                                                                            seed =
-                                                                                                                [
-                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "config" ; }
-                                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                                                ] ;
-                                                                                                            standard-output = "" ;
-                                                                                                            targets = [ "config.asc" ] ;
-                                                                                                            text = "dot-ssh-configure" ;
-                                                                                                        }
-                                                                                                    ] ;
-                                                                                            } ;
-                                                                                    } ;
-                                                                                non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" ] ;
-                                                                                order = 5 ;
-                                                                                release =
-                                                                                    {
-                                                                                        action =
-                                                                                            {
-                                                                                                messages =
-                                                                                                    [
-                                                                                                        { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; }
-                                                                                                        { channel = "valid-release" ; index = "0000000000000001" ; standard-output = "" ; status = 0 ; }
-                                                                                                        { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
-                                                                                                    ] ;
-                                                                                            } ;
-                                                                                        recovery = { } ;
-                                                                                        script = builtins.readFile ''${ shared }/release/["production","dot-ssh","config","github"].sh'' ;
-                                                                                    } ;
-                                                                            }
-                                                                    )
-                                                                    (
-                                                                        tests.happy
-                                                                            {
-                                                                                command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
-                                                                                exclusions = [ ] ;
-                                                                                init =
-                                                                                    {
-                                                                                        action =
-                                                                                            {
-                                                                                                files =
-                                                                                                    [
-                                                                                                        {
-                                                                                                            cat = builtins.readFile "${ shared }/dot-ssh/identity.asc" ;
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/identity.asc" ;
-                                                                                                            stat = "-r--------" ;
-                                                                                                            type = "regular file" ;
-                                                                                                        }
-                                                                                                    ]  ;
-                                                                                                messages =
-                                                                                                    [
-                                                                                                        {
-                                                                                                            index = "0000000000000000" ;
-                                                                                                            seed =
-                                                                                                                [
-                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "identity" ; }
-                                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                                                ] ;
-                                                                                                            standard-output = "" ;
-                                                                                                            targets = [ "identity.asc" ] ;
-                                                                                                            text = "identity" ;
-                                                                                                        }
-                                                                                                    ] ;
-                                                                                            } ;
-                                                                                    } ;
-                                                                                non-deterministic-regular-files = [ ] ;
-                                                                                order = 3 ;
-                                                                                release =
-                                                                                    {
-                                                                                        action =
-                                                                                            {
-                                                                                                messages = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
-                                                                                            } ;
-                                                                                        recovery = { } ;
-                                                                                        script = builtins.readFile ''${ shared }/release/["production","dot-ssh","identity","github"].sh'' ;
-                                                                                    } ;
-                                                                            }
-                                                                    )
-                                                                    (
-                                                                        tests.happy
-                                                                            {
-                                                                                command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]' '' ;
-                                                                                exclusions = [ ] ;
-                                                                                init =
-                                                                                    {
-                                                                                        action =
-                                                                                            {
-                                                                                                files =
-                                                                                                    [
-                                                                                                        {
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ;
-                                                                                                            stat = "-r--------" ;
-                                                                                                            type = "non-deterministic regular file" ;
-                                                                                                        }
-                                                                                                    ] ;
-                                                                                                messages =
-                                                                                                    [
-                                                                                                        {
-                                                                                                            index = "0000000000000000" ;
-                                                                                                            seed =
-                                                                                                                [
-                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
-                                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                                                ] ;
-                                                                                                            standard-output = "" ;
-                                                                                                            targets = [ "known-hosts.asc" ] ;
-                                                                                                            text = "known-hosts" ;
-                                                                                                        }
-                                                                                                    ] ;
-                                                                                            } ;
-                                                                                    } ;
-                                                                                non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
-                                                                                order = 4 ;
-                                                                                release =
-                                                                                    {
-                                                                                        action =
-                                                                                            {
-                                                                                                messages = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
-                                                                                            } ;
-                                                                                        recovery = { } ;
-                                                                                        script = builtins.readFile ''${ shared }/release/["production","dot-ssh","known-hosts","github"].sh'' ;
-                                                                                    } ;
-                                                                            }
-                                                                    )
-                                                                    (
-                                                                        tests.happy
-                                                                            {
-                                                                                command = '' check-resource --expression "$RESOURCES"/resources/'["production","repository","secrets"]' '' ;
-                                                                                exclusions =
-                                                                                    [
-                                                                                        "/home/checker/.gc-roots/0000000000000001"
-                                                                                        "/home/checker/.gc-roots/0000000000000002"
-                                                                                        "/home/checker/.gc-roots/0000000000000003"
-                                                                                        ''/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/[\"production\",\"dot-ssh\",\"config\",\"github\"]" }''
-                                                                                        ''/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/[\"production\",\"dot-ssh\",\"identity\",\"github\"]" }''
-                                                                                        ''/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/[\"production\",\"dot-ssh\",\"known-hosts\",\"github\"]" }''
-                                                                                        "/home/checker/resources/mounts/0000000000000000/.git"
-                                                                                        "/home/checker/resources/mounts/0000000000000001"
-                                                                                        "/home/checker/resources/mounts/0000000000000002"
-                                                                                        "/home/checker/resources/mounts/0000000000000003"
-                                                                                        "/home/checker/resources/release/0000000000000001"
-                                                                                        "/home/checker/resources/release/0000000000000002"
-                                                                                        "/home/checker/resources/release/0000000000000003"
-                                                                                    ] ;
-                                                                                init =
-                                                                                    {
-                                                                                        action =
-                                                                                            {
-                                                                                                files =
-                                                                                                    [
-                                                                                                        {
-                                                                                                            name = "/home/checker/.gc-roots/0000000000000000/config" ;
-                                                                                                            stat = "lrwxrwxrwx" ;
-                                                                                                            target = "/home/checker/resources/mounts/0000000000000001" ;
-                                                                                                            type = "symbolic link" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            name = "/home/checker/.gc-roots/0000000000000000/open-ssh" ;
-                                                                                                            stat = "lrwxrwxrwx" ;
-                                                                                                            target = "/nix/store/9kfgh5k0frl2vkdvcvdmsfg0cmsm02nz-openssh-9.9p2" ;
-                                                                                                            type = "symbolic link" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg" ;
-                                                                                                            stat = "drwxr-xr-x" ;
-                                                                                                            type = "directory" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age" ;
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/ownertrust.asc.age" ;
-                                                                                                            stat = "-rw-r--r--" ;
-                                                                                                            type = "regular file" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age" ;
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/secret-keys.asc.age" ;
-                                                                                                            stat = "-rw-r--r--" ;
-                                                                                                            type = "regular file" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh" ;
-                                                                                                            stat = "drwxr-xr-x" ;
-                                                                                                            type = "directory" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile" ;
-                                                                                                            stat = "drwxr-xr-x" ;
-                                                                                                            type = "directory" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-ssh/mobile/identity.asc.age" ;
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile/identity.asc.age" ;
-                                                                                                            stat = "-rw-r--r--" ;
-                                                                                                            type = "regular file" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-ssh/mobile/known-hosts.asc.age" ;
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile/known-hosts.asc.age" ;
-                                                                                                            stat = "-rw-r--r--" ;
-                                                                                                            type = "regular file" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/github" ;
-                                                                                                            stat = "drwxr-xr-x" ;
-                                                                                                            type = "directory" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/github/token.asc.age" ;
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/github/token.asc.age" ;
-                                                                                                            stat = "-rw-r--r--" ;
-                                                                                                            type = "regular file" ;
-                                                                                                        }
-                                                                                                    ] ;
-                                                                                                messages =
-                                                                                                    [
-                                                                                                        {
-                                                                                                            index = "0000000000000002" ;
-                                                                                                            seed =
-                                                                                                                [
-                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
-                                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                                                ] ;
-                                                                                                            standard-output = "" ;
-                                                                                                            targets = [ "known-hosts.asc" ] ;
-                                                                                                            text = "known-hosts" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            index = "0000000000000003" ;
-                                                                                                            seed =
-                                                                                                                [
-                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "identity" ; }
-                                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                                                ] ;
-                                                                                                            standard-output = "" ;
-                                                                                                            targets = [ "identity.asc" ] ;
-                                                                                                            text = "identity" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            index = "0000000000000001" ;
-                                                                                                            seed =
-                                                                                                                [
-                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "config" ; }
-                                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                                                ] ;
-                                                                                                            standard-output = "" ;
-                                                                                                            targets = [ "config.asc" ] ;
-                                                                                                            text = "dot-ssh-configure" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            index = "0000000000000000" ;
-                                                                                                            seed =
-                                                                                                                [
-                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "repository" ; }
-                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "secrets" ; }
-                                                                                                                ] ;
-                                                                                                            standard-output =
-                                                                                                                let
-                                                                                                                    tab = "\t" ;
-                                                                                                                    in
-                                                                                                                        ''
-                                                                                                                            hint: Using 'master' as the name for the initial branch. This default branch name
-                                                                                                                            hint: is subject to change. To configure the initial branch name to use in all
-                                                                                                                            hint: of your new repositories, which will suppress this warning, call:
-                                                                                                                            hint:
-                                                                                                                            hint: ${ tab }git config --global init.defaultBranch <name>
-                                                                                                                            hint:
-                                                                                                                            hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
-                                                                                                                            hint: 'development'. The just-created branch can be renamed via this command:
-                                                                                                                            hint:
-                                                                                                                            hint: ${ tab }git branch -m <name>
-                                                                                                                            Initialized empty Git repository in /mount/.git/
-                                                                                                                            From github.com:AFnRFCb7/9ebf9ebc
-                                                                                                                             * branch            main       -> FETCH_HEAD
-                                                                                                                             * [new branch]      main       -> origin/main
-                                                                                                                            Switched to a new branch 'main'
-                                                                                                                            branch 'main' set up to track 'origin/main'.
-                                                                                                                        '' ;
-                                                                                                            targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    git init 2>&1
-                                                                                                                    configure-ssh
-                                                                                                                    git config user.email "emory.merryman@gmail.com"
-                                                                                                                    git config user.name "Emory Merryman"
-                                                                                                                    git remote add origin "git@github.com:AFnRFCb7/9ebf9ebc.git"
-                                                                                                                    git fetch origin "main" 2>&1
-                                                                                                                    git checkout "main" 2>&1
-                                                                                                                '' ;
-                                                                                                        }
-                                                                                                    ] ;
-                                                                                            } ;
-                                                                                    } ;
-                                                                                non-deterministic-regular-files = [ ] ;
-                                                                                order = 6 ;
-                                                                                release =
-                                                                                    {
-                                                                                        action =
-                                                                                            {
-                                                                                                messages =
-                                                                                                    [
-                                                                                                        {
-                                                                                                            channel = "valid-release" ;
-                                                                                                            index = "0000000000000000" ;
-                                                                                                            standard-output =
-                                                                                                                ''
-                                                                                                                    Everything up-to-date
-                                                                                                                '' ;
-                                                                                                            status = 0 ;
-                                                                                                        }
-                                                                                                        { channel = "valid-release" ; index = "0000000000000001" ; standard-output = "" ; status = 0 ; }
-                                                                                                        { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
-                                                                                                        { channel = "valid-release" ; index = "0000000000000003" ; standard-output = "" ; status = 0 ; }
-                                                                                                    ] ;
-                                                                                            } ;
-                                                                                        recovery = { } ;
-                                                                                        script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
-                                                                                    } ;
-                                                                            }
-                                                                    )
-                                                                    (
-                                                                        tests.release-unrecoverable
-                                                                            {
-                                                                                command = '' check-resource --expression "$RESOURCES"/resources/'["production","repository","secrets"]' '' ;
-                                                                                exclusions =
-                                                                                    [
-                                                                                        "/home/checker/.gc-roots/0000000000000001"
-                                                                                        "/home/checker/.gc-roots/0000000000000002"
-                                                                                        "/home/checker/.gc-roots/0000000000000003"
-                                                                                        ''/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/[\"production\",\"dot-ssh\",\"config\",\"github\"]" }''
-                                                                                        ''/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/[\"production\",\"dot-ssh\",\"identity\",\"github\"]" }''
-                                                                                        ''/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/[\"production\",\"dot-ssh\",\"known-hosts\",\"github\"]" }''
-                                                                                        "/home/checker/resources/mounts/0000000000000000/.git"
-                                                                                        "/home/checker/resources/mounts/0000000000000001"
-                                                                                        "/home/checker/resources/mounts/0000000000000002"
-                                                                                        "/home/checker/resources/mounts/0000000000000003"
-                                                                                        "/home/checker/resources/release/0000000000000001"
-                                                                                        "/home/checker/resources/release/0000000000000002"
-                                                                                        "/home/checker/resources/release/0000000000000003"
-                                                                                    ] ;
-                                                                                init =
-                                                                                    {
-                                                                                        action =
-                                                                                            {
-                                                                                                files =
-                                                                                                    [
-                                                                                                        {
-                                                                                                            name = "/home/checker/.gc-roots/0000000000000000/config" ;
-                                                                                                            stat = "lrwxrwxrwx" ;
-                                                                                                            target = "/home/checker/resources/mounts/0000000000000001" ;
-                                                                                                            type = "symbolic link" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            name = "/home/checker/.gc-roots/0000000000000000/open-ssh" ;
-                                                                                                            stat = "lrwxrwxrwx" ;
-                                                                                                            target = "/nix/store/9kfgh5k0frl2vkdvcvdmsfg0cmsm02nz-openssh-9.9p2" ;
-                                                                                                            type = "symbolic link" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg" ;
-                                                                                                            stat = "drwxr-xr-x" ;
-                                                                                                            type = "directory" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age" ;
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/ownertrust.asc.age" ;
-                                                                                                            stat = "-rw-r--r--" ;
-                                                                                                            type = "regular file" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age" ;
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/secret-keys.asc.age" ;
-                                                                                                            stat = "-rw-r--r--" ;
-                                                                                                            type = "regular file" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh" ;
-                                                                                                            stat = "drwxr-xr-x" ;
-                                                                                                            type = "directory" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile" ;
-                                                                                                            stat = "drwxr-xr-x" ;
-                                                                                                            type = "directory" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-ssh/mobile/identity.asc.age" ;
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile/identity.asc.age" ;
-                                                                                                            stat = "-rw-r--r--" ;
-                                                                                                            type = "regular file" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-ssh/mobile/known-hosts.asc.age" ;
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile/known-hosts.asc.age" ;
-                                                                                                            stat = "-rw-r--r--" ;
-                                                                                                            type = "regular file" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/github" ;
-                                                                                                            stat = "drwxr-xr-x" ;
-                                                                                                            type = "directory" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/github/token.asc.age" ;
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/github/token.asc.age" ;
-                                                                                                            stat = "-rw-r--r--" ;
-                                                                                                            type = "regular file" ;
-                                                                                                        }
-                                                                                                    ]  ;
-                                                                                                messages =
-                                                                                                    [
-                                                                                                        {
-                                                                                                            index = "0000000000000002" ;
-                                                                                                            seed =
-                                                                                                                [
-                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
-                                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                                                ] ;
-                                                                                                            standard-output = "" ;
-                                                                                                            targets = [ "known-hosts.asc" ] ;
-                                                                                                            text = "known-hosts" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            index = "0000000000000003" ;
-                                                                                                            seed =
-                                                                                                                [
-                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "identity" ; }
-                                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                                                ] ;
-                                                                                                            standard-output = "" ;
-                                                                                                            targets = [ "identity.asc" ] ;
-                                                                                                            text = "identity" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            index = "0000000000000001" ;
-                                                                                                            seed =
-                                                                                                                [
-                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "config" ; }
-                                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                                                ] ;
-                                                                                                            standard-output = "" ;
-                                                                                                            targets = [ "config.asc" ] ;
-                                                                                                            text = "dot-ssh-configure" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            index = "0000000000000000" ;
-                                                                                                            seed =
-                                                                                                                [
-                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "repository" ; }
-                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "secrets" ; }
-                                                                                                                ] ;
-                                                                                                            standard-output =
-                                                                                                                let
-                                                                                                                    tab = "\t" ;
-                                                                                                                    in
-                                                                                                                        ''
-                                                                                                                            hint: Using 'master' as the name for the initial branch. This default branch name
-                                                                                                                            hint: is subject to change. To configure the initial branch name to use in all
-                                                                                                                            hint: of your new repositories, which will suppress this warning, call:
-                                                                                                                            hint:
-                                                                                                                            hint: ${ tab }git config --global init.defaultBranch <name>
-                                                                                                                            hint:
-                                                                                                                            hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
-                                                                                                                            hint: 'development'. The just-created branch can be renamed via this command:
-                                                                                                                            hint:
-                                                                                                                            hint: ${ tab }git branch -m <name>
-                                                                                                                            Initialized empty Git repository in /mount/.git/
-                                                                                                                            From github.com:AFnRFCb7/9ebf9ebc
-                                                                                                                             * branch            main       -> FETCH_HEAD
-                                                                                                                             * [new branch]      main       -> origin/main
-                                                                                                                            Switched to a new branch 'main'
-                                                                                                                            branch 'main' set up to track 'origin/main'.
-                                                                                                                        '' ;
-                                                                                                            targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    git init 2>&1
-                                                                                                                    configure-ssh
-                                                                                                                    git config user.email "emory.merryman@gmail.com"
-                                                                                                                    git config user.name "Emory Merryman"
-                                                                                                                    git remote add origin "git@github.com:AFnRFCb7/9ebf9ebc.git"
-                                                                                                                    git fetch origin "main" 2>&1
-                                                                                                                    git checkout "main" 2>&1
-                                                                                                                '' ;
-                                                                                                        }
-                                                                                                    ] ;
-                                                                                            } ;
-                                                                                    } ;
-                                                                                non-deterministic-regular-files = [ ] ;
-                                                                                order = 7 ;
-                                                                                release =
-                                                                                    {
-                                                                                        action =
-                                                                                            {
-                                                                                                messages =
-                                                                                                    [
-                                                                                                        {
-                                                                                                            channel = "invalid-release" ;
-                                                                                                            index = "0000000000000000" ;
-                                                                                                            standard-output =
-                                                                                                                ''
-                                                                                                                    fatal: not a git repository (or any parent up to mount point /)
-                                                                                                                    Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
-                                                                                                                '' ;
-                                                                                                            status = 128 ;
-                                                                                                        }
-                                                                                                        { channel = "valid-release" ; index = "0000000000000001" ; standard-output = "" ; status = 0 ; }
-                                                                                                        { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
-                                                                                                        { channel = "valid-release" ; index = "0000000000000003" ; standard-output = "" ; status = 0 ; }
-                                                                                                    ] ;
-                                                                                                standard-output =
-                                                                                                    ''
-                                                                                                        fatal: not a git repository (or any parent up to mount point /)
-                                                                                                        Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
-                                                                                                    '' ;
-                                                                                                status = 128 ;
-                                                                                            } ;
-                                                                                        recovery =
-                                                                                            {
-                                                                                                standard-error =
-                                                                                                    ''
-                                                                                                        UNRECOVERABLE
-                                                                                                    '' ;
-                                                                                                standard-output = "" ;
-                                                                                                script = ''/home/checker/resources/invalid-release/0000000000000000/'["unrecoverable"]'.sh'' ;
-                                                                                                scripts =
-                                                                                                    [
-                                                                                                        { path = [ "recoverable" ] ; target = "/nix/store/706b8ki6cl322xxidvn7gnwzv51id6bn-recovery/bin/recovery" ; }
-                                                                                                        { path = [ "unrecoverable" ] ; target = "/nix/store/jnra5sj9wlh74jbw4kiz81n9v16bnz1w-recovery/bin/recovery" ; }
-                                                                                                    ] ;
-                                                                                            } ;
-                                                                                        script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
-                                                                                    } ;
-                                                                            }
-                                                                    )
-                                                                    (
-                                                                        tests.release-recovered
-                                                                            {
-                                                                                command = '' check-resource --expression "$RESOURCES"/resources/'["production","repository","secrets"]' '' ;
-                                                                                exclusions =
-                                                                                    [
-                                                                                        "/home/checker/.gc-roots/0000000000000001"
-                                                                                        "/home/checker/.gc-roots/0000000000000002"
-                                                                                        "/home/checker/.gc-roots/0000000000000003"
-                                                                                        ''/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/[\"production\",\"dot-ssh\",\"config\",\"github\"]" }''
-                                                                                        ''/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/[\"production\",\"dot-ssh\",\"identity\",\"github\"]" }''
-                                                                                        ''/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/[\"production\",\"dot-ssh\",\"known-hosts\",\"github\"]" }''
-                                                                                        "/home/checker/resources/mounts/0000000000000000/.git"
-                                                                                        "/home/checker/resources/mounts/0000000000000001"
-                                                                                        "/home/checker/resources/mounts/0000000000000002"
-                                                                                        "/home/checker/resources/mounts/0000000000000003"
-                                                                                        "/home/checker/resources/release/0000000000000001"
-                                                                                        "/home/checker/resources/release/0000000000000002"
-                                                                                        "/home/checker/resources/release/0000000000000003"
-                                                                                    ] ;
-                                                                                init =
-                                                                                    {
-                                                                                        action =
-                                                                                            {
-                                                                                                files =
-                                                                                                    [
-                                                                                                        {
-                                                                                                            name = "/home/checker/.gc-roots/0000000000000000/config" ;
-                                                                                                            stat = "lrwxrwxrwx" ;
-                                                                                                            target = "/home/checker/resources/mounts/0000000000000001" ;
-                                                                                                            type = "symbolic link" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            name = "/home/checker/.gc-roots/0000000000000000/open-ssh" ;
-                                                                                                            stat = "lrwxrwxrwx" ;
-                                                                                                            target = "/nix/store/9kfgh5k0frl2vkdvcvdmsfg0cmsm02nz-openssh-9.9p2" ;
-                                                                                                            type = "symbolic link" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg" ;
-                                                                                                            stat = "drwxr-xr-x" ;
-                                                                                                            type = "directory" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age" ;
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/ownertrust.asc.age" ;
-                                                                                                            stat = "-rw-r--r--" ;
-                                                                                                            type = "regular file" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age" ;
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/secret-keys.asc.age" ;
-                                                                                                            stat = "-rw-r--r--" ;
-                                                                                                            type = "regular file" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh" ;
-                                                                                                            stat = "drwxr-xr-x" ;
-                                                                                                            type = "directory" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile" ;
-                                                                                                            stat = "drwxr-xr-x" ;
-                                                                                                            type = "directory" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-ssh/mobile/identity.asc.age" ;
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile/identity.asc.age" ;
-                                                                                                            stat = "-rw-r--r--" ;
-                                                                                                            type = "regular file" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-ssh/mobile/known-hosts.asc.age" ;
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile/known-hosts.asc.age" ;
-                                                                                                            stat = "-rw-r--r--" ;
-                                                                                                            type = "regular file" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/github" ;
-                                                                                                            stat = "drwxr-xr-x" ;
-                                                                                                            type = "directory" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/github/token.asc.age" ;
-                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/github/token.asc.age" ;
-                                                                                                            stat = "-rw-r--r--" ;
-                                                                                                            type = "regular file" ;
-                                                                                                        }
-                                                                                                    ]  ;
-                                                                                                messages =
-                                                                                                    [
-                                                                                                        {
-                                                                                                            index = "0000000000000002" ;
-                                                                                                            seed =
-                                                                                                                [
-                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
-                                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                                                ] ;
-                                                                                                            standard-output = "" ;
-                                                                                                            targets = [ "known-hosts.asc" ] ;
-                                                                                                            text = "known-hosts" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            index = "0000000000000003" ;
-                                                                                                            seed =
-                                                                                                                [
-                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "identity" ; }
-                                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                                                ] ;
-                                                                                                            standard-output = "" ;
-                                                                                                            targets = [ "identity.asc" ] ;
-                                                                                                            text = "identity" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            index = "0000000000000001" ;
-                                                                                                            seed =
-                                                                                                                [
-                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
-                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "config" ; }
-                                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
-                                                                                                                ] ;
-                                                                                                            standard-output = "" ;
-                                                                                                            targets = [ "config.asc" ] ;
-                                                                                                            text = "dot-ssh-configure" ;
-                                                                                                        }
-                                                                                                        {
-                                                                                                            index = "0000000000000000" ;
-                                                                                                            seed =
-                                                                                                                [
-                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
-                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "repository" ; }
-                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "secrets" ; }
-                                                                                                                ] ;
-                                                                                                            standard-output =
-                                                                                                                let
-                                                                                                                    tab = "\t" ;
-                                                                                                                    in
-                                                                                                                        ''
-                                                                                                                            hint: Using 'master' as the name for the initial branch. This default branch name
-                                                                                                                            hint: is subject to change. To configure the initial branch name to use in all
-                                                                                                                            hint: of your new repositories, which will suppress this warning, call:
-                                                                                                                            hint:
-                                                                                                                            hint: ${ tab }git config --global init.defaultBranch <name>
-                                                                                                                            hint:
-                                                                                                                            hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
-                                                                                                                            hint: 'development'. The just-created branch can be renamed via this command:
-                                                                                                                            hint:
-                                                                                                                            hint: ${ tab }git branch -m <name>
-                                                                                                                            Initialized empty Git repository in /mount/.git/
-                                                                                                                            From github.com:AFnRFCb7/9ebf9ebc
-                                                                                                                             * branch            main       -> FETCH_HEAD
-                                                                                                                             * [new branch]      main       -> origin/main
-                                                                                                                            Switched to a new branch 'main'
-                                                                                                                            branch 'main' set up to track 'origin/main'.
-                                                                                                                        '' ;
-                                                                                                            targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    git init 2>&1
-                                                                                                                    configure-ssh
-                                                                                                                    git config user.email "emory.merryman@gmail.com"
-                                                                                                                    git config user.name "Emory Merryman"
-                                                                                                                    git remote add origin "git@github.com:AFnRFCb7/9ebf9ebc.git"
-                                                                                                                    git fetch origin "main" 2>&1
-                                                                                                                    git checkout "main" 2>&1
-                                                                                                                '' ;
-                                                                                                        }
-                                                                                                    ] ;
-                                                                                            } ;
-                                                                                    } ;
-                                                                                non-deterministic-regular-files = [ ] ;
-                                                                                order = 8 ;
-                                                                                release =
-                                                                                    {
-                                                                                        action =
-                                                                                            {
-                                                                                                messages =
-                                                                                                    [
-                                                                                                        {
-                                                                                                            channel = "invalid-release" ;
-                                                                                                            index = "0000000000000000" ;
-                                                                                                            standard-output =
-                                                                                                                ''
-                                                                                                                    fatal: not a git repository (or any parent up to mount point /)
-                                                                                                                    Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
-                                                                                                                '' ;
-                                                                                                            status = 128 ;
-                                                                                                        }
-                                                                                                        { channel = "valid-release" ; index = "0000000000000001" ; standard-output = "" ; status = 0 ; }
-                                                                                                        { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
-                                                                                                        { channel = "valid-release" ; index = "0000000000000003" ; standard-output = "" ; status = 0 ; }
-                                                                                                    ] ;
-                                                                                                standard-output =
-                                                                                                    ''
-                                                                                                        fatal: not a git repository (or any parent up to mount point /)
-                                                                                                        Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
-                                                                                                    '' ;
-                                                                                                status = 128 ;
-                                                                                            } ;
-                                                                                        recovery =
-                                                                                            {
-                                                                                                standard-output =
-                                                                                                    ''
-                                                                                                        RECOVERABLE
-                                                                                                    '' ;
-                                                                                                script = ''/home/checker/resources/invalid-release/0000000000000000/'["recoverable"]'.sh'' ;
-                                                                                                scripts =
-                                                                                                    [
-                                                                                                        { path = [ "recoverable" ] ; target = "/nix/store/706b8ki6cl322xxidvn7gnwzv51id6bn-recovery/bin/recovery" ; }
-                                                                                                        { path = [ "unrecoverable" ] ; target = "/nix/store/jnra5sj9wlh74jbw4kiz81n9v16bnz1w-recovery/bin/recovery" ; }
-                                                                                                    ] ;
-                                                                                            } ;
-                                                                                        script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
-                                                                                    } ;
-                                                                            }
-                                                                    )
+#                                                                    (
+#                                                                        _lazy-shell-application.check
+#                                                                            {
+#                                                                                client = "client" ;
+#                                                                                coreutils = pkgs.coreutils ;
+#                                                                                failure = _failure.implementation ;
+#                                                                                findutils = pkgs.findutils ;
+#                                                                                nixosTest = pkgs.nixosTest ;
+#                                                                                nodes = { client = client ; github = github ; } ;
+#                                                                                order = 2 ;
+#                                                                                test-setup = [ ''client.succeed("echo -n 5635319875343792 > /tmp/drive")'' ] ;
+#                                                                                writeShellApplication = pkgs.writeShellApplication ;
+#                                                                            }
+#                                                                            {
+#                                                                                mounts = { drive = { source = "/tmp/drive" ; type = "ro-bind" ; } ; } ;
+#                                                                                name = "test-application" ;
+#                                                                                runtime-inputs = pkgs : [ pkgs.jq ] ;
+#                                                                                text =
+#                                                                                    ''
+#                                                                                        cat /mounts/drive >&2
+#                                                                                        echo -n "$1"
+#                                                                                        exit 179
+#                                                                                    '' ;
+#                                                                            }
+#                                                                            {
+#                                                                                arguments = [ "5454671132583115" ] ;
+#                                                                                standard-error = "5635319875343792" ;
+#                                                                                standard-output = "5454671132583115" ;
+#                                                                                status = 179 ;
+#                                                                            }
+#                                                                    )
+#                                                                    (
+#                                                                        tests.happy
+#                                                                            {
+#                                                                                command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","config","github"]' '' ;
+#                                                                                exclusions =
+#                                                                                    [
+#                                                                                        "/home/checker/.gc-roots/0000000000000001"
+#                                                                                        "/home/checker/.gc-roots/0000000000000002"
+#                                                                                        ''/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/[\"production\",\"dot-ssh\",\"identity\",\"github\"]" }''
+#                                                                                        ''/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/[\"production\",\"dot-ssh\",\"known-hosts\",\"github\"]" }''
+#                                                                                        "/home/checker/resources/mounts/0000000000000001"
+#                                                                                        "/home/checker/resources/mounts/0000000000000002"
+#                                                                                        "/home/checker/resources/release/0000000000000001"
+#                                                                                        "/home/checker/resources/release/0000000000000002"
+#                                                                                    ] ;
+#                                                                                init =
+#                                                                                    {
+#                                                                                        action =
+#                                                                                            {
+#                                                                                                files =
+#                                                                                                    [
+#                                                                                                        {
+#                                                                                                            name = "/home/checker/.gc-roots/0000000000000000/identity" ;
+#                                                                                                            stat = "lrwxrwxrwx" ;
+#                                                                                                            target = "/home/checker/resources/mounts/0000000000000002" ;
+#                                                                                                            type = "symbolic link" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            name = "/home/checker/.gc-roots/0000000000000000/known-hosts" ;
+#                                                                                                            stat = "lrwxrwxrwx" ;
+#                                                                                                            target = "/home/checker/resources/mounts/0000000000000001" ;
+#                                                                                                            type = "symbolic link" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            cat =
+#                                                                                                                ''
+#                                                                                                                    Host github.com
+#                                                                                                                        HostName 192.168.2.234
+#                                                                                                                        User git
+#                                                                                                                        IdentityFile /home/checker/resources/mounts/0000000000000002/identity.asc
+#                                                                                                                        UserKnownHostsFile /home/checker/resources/mounts/0000000000000001/known-hosts.asc
+#                                                                                                                        StrictHostKeyChecking no
+#                                                                                                                '' ;
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/config.asc" ;
+#                                                                                                            stat = "-r--------" ;
+#                                                                                                            type = "regular file" ;
+#                                                                                                        }
+#                                                                                                    ]  ;
+#                                                                                                messages =
+#                                                                                                    [
+#                                                                                                        {
+#                                                                                                            index = "0000000000000001" ;
+#                                                                                                            seed =
+#                                                                                                                [
+#                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
+#                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+#                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
+#                                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
+#                                                                                                                ] ;
+#                                                                                                            standard-output = "" ;
+#                                                                                                            targets = [ "known-hosts.asc" ] ;
+#                                                                                                            text = "known-hosts" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            index = "0000000000000002" ;
+#                                                                                                            seed =
+#                                                                                                                [
+#                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
+#                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+#                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "identity" ; }
+#                                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
+#                                                                                                                ] ;
+#                                                                                                            standard-output = "" ;
+#                                                                                                            targets = [ "identity.asc" ] ;
+#                                                                                                            text = "identity" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            index = "0000000000000000" ;
+#                                                                                                            seed =
+#                                                                                                                [
+#                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
+#                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+#                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "config" ; }
+#                                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
+#                                                                                                                ] ;
+#                                                                                                            standard-output = "" ;
+#                                                                                                            targets = [ "config.asc" ] ;
+#                                                                                                            text = "dot-ssh-configure" ;
+#                                                                                                        }
+#                                                                                                    ] ;
+#                                                                                            } ;
+#                                                                                    } ;
+#                                                                                non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000001/known-hosts.asc" ] ;
+#                                                                                order = 5 ;
+#                                                                                release =
+#                                                                                    {
+#                                                                                        action =
+#                                                                                            {
+#                                                                                                messages =
+#                                                                                                    [
+#                                                                                                        { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; }
+#                                                                                                        { channel = "valid-release" ; index = "0000000000000001" ; standard-output = "" ; status = 0 ; }
+#                                                                                                        { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
+#                                                                                                    ] ;
+#                                                                                            } ;
+#                                                                                        recovery = { } ;
+#                                                                                        script = builtins.readFile ''${ shared }/release/["production","dot-ssh","config","github"].sh'' ;
+#                                                                                    } ;
+#                                                                            }
+#                                                                    )
+#                                                                    (
+#                                                                        tests.happy
+#                                                                            {
+#                                                                                command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","identity","github"]' '' ;
+#                                                                                exclusions = [ ] ;
+#                                                                                init =
+#                                                                                    {
+#                                                                                        action =
+#                                                                                            {
+#                                                                                                files =
+#                                                                                                    [
+#                                                                                                        {
+#                                                                                                            cat = builtins.readFile "${ shared }/dot-ssh/identity.asc" ;
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/identity.asc" ;
+#                                                                                                            stat = "-r--------" ;
+#                                                                                                            type = "regular file" ;
+#                                                                                                        }
+#                                                                                                    ]  ;
+#                                                                                                messages =
+#                                                                                                    [
+#                                                                                                        {
+#                                                                                                            index = "0000000000000000" ;
+#                                                                                                            seed =
+#                                                                                                                [
+#                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
+#                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+#                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "identity" ; }
+#                                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
+#                                                                                                                ] ;
+#                                                                                                            standard-output = "" ;
+#                                                                                                            targets = [ "identity.asc" ] ;
+#                                                                                                            text = "identity" ;
+#                                                                                                        }
+#                                                                                                    ] ;
+#                                                                                            } ;
+#                                                                                    } ;
+#                                                                                non-deterministic-regular-files = [ ] ;
+#                                                                                order = 3 ;
+#                                                                                release =
+#                                                                                    {
+#                                                                                        action =
+#                                                                                            {
+#                                                                                                messages = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
+#                                                                                            } ;
+#                                                                                        recovery = { } ;
+#                                                                                        script = builtins.readFile ''${ shared }/release/["production","dot-ssh","identity","github"].sh'' ;
+#                                                                                    } ;
+#                                                                            }
+#                                                                    )
+#                                                                    (
+#                                                                        tests.happy
+#                                                                            {
+#                                                                                command = '' check-resource --expression "$RESOURCES"/resources/'["production","dot-ssh","known-hosts","github"]' '' ;
+#                                                                                exclusions = [ ] ;
+#                                                                                init =
+#                                                                                    {
+#                                                                                        action =
+#                                                                                            {
+#                                                                                                files =
+#                                                                                                    [
+#                                                                                                        {
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ;
+#                                                                                                            stat = "-r--------" ;
+#                                                                                                            type = "non-deterministic regular file" ;
+#                                                                                                        }
+#                                                                                                    ] ;
+#                                                                                                messages =
+#                                                                                                    [
+#                                                                                                        {
+#                                                                                                            index = "0000000000000000" ;
+#                                                                                                            seed =
+#                                                                                                                [
+#                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
+#                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+#                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
+#                                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
+#                                                                                                                ] ;
+#                                                                                                            standard-output = "" ;
+#                                                                                                            targets = [ "known-hosts.asc" ] ;
+#                                                                                                            text = "known-hosts" ;
+#                                                                                                        }
+#                                                                                                    ] ;
+#                                                                                            } ;
+#                                                                                    } ;
+#                                                                                non-deterministic-regular-files = [ "/home/checker/resources/mounts/0000000000000000/known-hosts.asc" ] ;
+#                                                                                order = 4 ;
+#                                                                                release =
+#                                                                                    {
+#                                                                                        action =
+#                                                                                            {
+#                                                                                                messages = [ { channel = "valid-release" ; index = "0000000000000000" ; standard-output = "" ; status = 0 ; } ] ;
+#                                                                                            } ;
+#                                                                                        recovery = { } ;
+#                                                                                        script = builtins.readFile ''${ shared }/release/["production","dot-ssh","known-hosts","github"].sh'' ;
+#                                                                                    } ;
+#                                                                            }
+#                                                                    )
+#                                                                    (
+#                                                                        tests.happy
+#                                                                            {
+#                                                                                command = '' check-resource --expression "$RESOURCES"/resources/'["production","repository","secrets"]' '' ;
+#                                                                                exclusions =
+#                                                                                    [
+#                                                                                        "/home/checker/.gc-roots/0000000000000001"
+#                                                                                        "/home/checker/.gc-roots/0000000000000002"
+#                                                                                        "/home/checker/.gc-roots/0000000000000003"
+#                                                                                        ''/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/[\"production\",\"dot-ssh\",\"config\",\"github\"]" }''
+#                                                                                        ''/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/[\"production\",\"dot-ssh\",\"identity\",\"github\"]" }''
+#                                                                                        ''/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/[\"production\",\"dot-ssh\",\"known-hosts\",\"github\"]" }''
+#                                                                                        "/home/checker/resources/mounts/0000000000000000/.git"
+#                                                                                        "/home/checker/resources/mounts/0000000000000001"
+#                                                                                        "/home/checker/resources/mounts/0000000000000002"
+#                                                                                        "/home/checker/resources/mounts/0000000000000003"
+#                                                                                        "/home/checker/resources/release/0000000000000001"
+#                                                                                        "/home/checker/resources/release/0000000000000002"
+#                                                                                        "/home/checker/resources/release/0000000000000003"
+#                                                                                    ] ;
+#                                                                                init =
+#                                                                                    {
+#                                                                                        action =
+#                                                                                            {
+#                                                                                                files =
+#                                                                                                    [
+#                                                                                                        {
+#                                                                                                            name = "/home/checker/.gc-roots/0000000000000000/config" ;
+#                                                                                                            stat = "lrwxrwxrwx" ;
+#                                                                                                            target = "/home/checker/resources/mounts/0000000000000001" ;
+#                                                                                                            type = "symbolic link" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            name = "/home/checker/.gc-roots/0000000000000000/open-ssh" ;
+#                                                                                                            stat = "lrwxrwxrwx" ;
+#                                                                                                            target = "/nix/store/9kfgh5k0frl2vkdvcvdmsfg0cmsm02nz-openssh-9.9p2" ;
+#                                                                                                            type = "symbolic link" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg" ;
+#                                                                                                            stat = "drwxr-xr-x" ;
+#                                                                                                            type = "directory" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age" ;
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/ownertrust.asc.age" ;
+#                                                                                                            stat = "-rw-r--r--" ;
+#                                                                                                            type = "regular file" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age" ;
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/secret-keys.asc.age" ;
+#                                                                                                            stat = "-rw-r--r--" ;
+#                                                                                                            type = "regular file" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh" ;
+#                                                                                                            stat = "drwxr-xr-x" ;
+#                                                                                                            type = "directory" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile" ;
+#                                                                                                            stat = "drwxr-xr-x" ;
+#                                                                                                            type = "directory" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-ssh/mobile/identity.asc.age" ;
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile/identity.asc.age" ;
+#                                                                                                            stat = "-rw-r--r--" ;
+#                                                                                                            type = "regular file" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-ssh/mobile/known-hosts.asc.age" ;
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile/known-hosts.asc.age" ;
+#                                                                                                            stat = "-rw-r--r--" ;
+#                                                                                                            type = "regular file" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/github" ;
+#                                                                                                            stat = "drwxr-xr-x" ;
+#                                                                                                            type = "directory" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/github/token.asc.age" ;
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/github/token.asc.age" ;
+#                                                                                                            stat = "-rw-r--r--" ;
+#                                                                                                            type = "regular file" ;
+#                                                                                                        }
+#                                                                                                    ] ;
+#                                                                                                messages =
+#                                                                                                    [
+#                                                                                                        {
+#                                                                                                            index = "0000000000000002" ;
+#                                                                                                            seed =
+#                                                                                                                [
+#                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
+#                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+#                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
+#                                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
+#                                                                                                                ] ;
+#                                                                                                            standard-output = "" ;
+#                                                                                                            targets = [ "known-hosts.asc" ] ;
+#                                                                                                            text = "known-hosts" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            index = "0000000000000003" ;
+#                                                                                                            seed =
+#                                                                                                                [
+#                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
+#                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+#                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "identity" ; }
+#                                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
+#                                                                                                                ] ;
+#                                                                                                            standard-output = "" ;
+#                                                                                                            targets = [ "identity.asc" ] ;
+#                                                                                                            text = "identity" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            index = "0000000000000001" ;
+#                                                                                                            seed =
+#                                                                                                                [
+#                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
+#                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+#                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "config" ; }
+#                                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
+#                                                                                                                ] ;
+#                                                                                                            standard-output = "" ;
+#                                                                                                            targets = [ "config.asc" ] ;
+#                                                                                                            text = "dot-ssh-configure" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            index = "0000000000000000" ;
+#                                                                                                            seed =
+#                                                                                                                [
+#                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
+#                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "repository" ; }
+#                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "secrets" ; }
+#                                                                                                                ] ;
+#                                                                                                            standard-output =
+#                                                                                                                let
+#                                                                                                                    tab = "\t" ;
+#                                                                                                                    in
+#                                                                                                                        ''
+#                                                                                                                            hint: Using 'master' as the name for the initial branch. This default branch name
+#                                                                                                                            hint: is subject to change. To configure the initial branch name to use in all
+#                                                                                                                            hint: of your new repositories, which will suppress this warning, call:
+#                                                                                                                            hint:
+#                                                                                                                            hint: ${ tab }git config --global init.defaultBranch <name>
+#                                                                                                                            hint:
+#                                                                                                                            hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+#                                                                                                                            hint: 'development'. The just-created branch can be renamed via this command:
+#                                                                                                                            hint:
+#                                                                                                                            hint: ${ tab }git branch -m <name>
+#                                                                                                                            Initialized empty Git repository in /mount/.git/
+#                                                                                                                            From github.com:AFnRFCb7/9ebf9ebc
+#                                                                                                                             * branch            main       -> FETCH_HEAD
+#                                                                                                                             * [new branch]      main       -> origin/main
+#                                                                                                                            Switched to a new branch 'main'
+#                                                                                                                            branch 'main' set up to track 'origin/main'.
+#                                                                                                                        '' ;
+#                                                                                                            targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
+#                                                                                                            text =
+#                                                                                                                ''
+#                                                                                                                    git init 2>&1
+#                                                                                                                    configure-ssh
+#                                                                                                                    git config user.email "emory.merryman@gmail.com"
+#                                                                                                                    git config user.name "Emory Merryman"
+#                                                                                                                    git remote add origin "git@github.com:AFnRFCb7/9ebf9ebc.git"
+#                                                                                                                    git fetch origin "main" 2>&1
+#                                                                                                                    git checkout "main" 2>&1
+#                                                                                                                '' ;
+#                                                                                                        }
+#                                                                                                    ] ;
+#                                                                                            } ;
+#                                                                                    } ;
+#                                                                                non-deterministic-regular-files = [ ] ;
+#                                                                                order = 6 ;
+#                                                                                release =
+#                                                                                    {
+#                                                                                        action =
+#                                                                                            {
+#                                                                                                messages =
+#                                                                                                    [
+#                                                                                                        {
+#                                                                                                            channel = "valid-release" ;
+#                                                                                                            index = "0000000000000000" ;
+#                                                                                                            standard-output =
+#                                                                                                                ''
+#                                                                                                                    Everything up-to-date
+#                                                                                                                '' ;
+#                                                                                                            status = 0 ;
+#                                                                                                        }
+#                                                                                                        { channel = "valid-release" ; index = "0000000000000001" ; standard-output = "" ; status = 0 ; }
+#                                                                                                        { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
+#                                                                                                        { channel = "valid-release" ; index = "0000000000000003" ; standard-output = "" ; status = 0 ; }
+#                                                                                                    ] ;
+#                                                                                            } ;
+#                                                                                        recovery = { } ;
+#                                                                                        script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
+#                                                                                    } ;
+#                                                                            }
+#                                                                    )
+#                                                                    (
+#                                                                        tests.release-unrecoverable
+#                                                                            {
+#                                                                                command = '' check-resource --expression "$RESOURCES"/resources/'["production","repository","secrets"]' '' ;
+#                                                                                exclusions =
+#                                                                                    [
+#                                                                                        "/home/checker/.gc-roots/0000000000000001"
+#                                                                                        "/home/checker/.gc-roots/0000000000000002"
+#                                                                                        "/home/checker/.gc-roots/0000000000000003"
+#                                                                                        ''/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/[\"production\",\"dot-ssh\",\"config\",\"github\"]" }''
+#                                                                                        ''/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/[\"production\",\"dot-ssh\",\"identity\",\"github\"]" }''
+#                                                                                        ''/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/[\"production\",\"dot-ssh\",\"known-hosts\",\"github\"]" }''
+#                                                                                        "/home/checker/resources/mounts/0000000000000000/.git"
+#                                                                                        "/home/checker/resources/mounts/0000000000000001"
+#                                                                                        "/home/checker/resources/mounts/0000000000000002"
+#                                                                                        "/home/checker/resources/mounts/0000000000000003"
+#                                                                                        "/home/checker/resources/release/0000000000000001"
+#                                                                                        "/home/checker/resources/release/0000000000000002"
+#                                                                                        "/home/checker/resources/release/0000000000000003"
+#                                                                                    ] ;
+#                                                                                init =
+#                                                                                    {
+#                                                                                        action =
+#                                                                                            {
+#                                                                                                files =
+#                                                                                                    [
+#                                                                                                        {
+#                                                                                                            name = "/home/checker/.gc-roots/0000000000000000/config" ;
+#                                                                                                            stat = "lrwxrwxrwx" ;
+#                                                                                                            target = "/home/checker/resources/mounts/0000000000000001" ;
+#                                                                                                            type = "symbolic link" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            name = "/home/checker/.gc-roots/0000000000000000/open-ssh" ;
+#                                                                                                            stat = "lrwxrwxrwx" ;
+#                                                                                                            target = "/nix/store/9kfgh5k0frl2vkdvcvdmsfg0cmsm02nz-openssh-9.9p2" ;
+#                                                                                                            type = "symbolic link" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg" ;
+#                                                                                                            stat = "drwxr-xr-x" ;
+#                                                                                                            type = "directory" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age" ;
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/ownertrust.asc.age" ;
+#                                                                                                            stat = "-rw-r--r--" ;
+#                                                                                                            type = "regular file" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age" ;
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/secret-keys.asc.age" ;
+#                                                                                                            stat = "-rw-r--r--" ;
+#                                                                                                            type = "regular file" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh" ;
+#                                                                                                            stat = "drwxr-xr-x" ;
+#                                                                                                            type = "directory" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile" ;
+#                                                                                                            stat = "drwxr-xr-x" ;
+#                                                                                                            type = "directory" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-ssh/mobile/identity.asc.age" ;
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile/identity.asc.age" ;
+#                                                                                                            stat = "-rw-r--r--" ;
+#                                                                                                            type = "regular file" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-ssh/mobile/known-hosts.asc.age" ;
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile/known-hosts.asc.age" ;
+#                                                                                                            stat = "-rw-r--r--" ;
+#                                                                                                            type = "regular file" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/github" ;
+#                                                                                                            stat = "drwxr-xr-x" ;
+#                                                                                                            type = "directory" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/github/token.asc.age" ;
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/github/token.asc.age" ;
+#                                                                                                            stat = "-rw-r--r--" ;
+#                                                                                                            type = "regular file" ;
+#                                                                                                        }
+#                                                                                                    ]  ;
+#                                                                                                messages =
+#                                                                                                    [
+#                                                                                                        {
+#                                                                                                            index = "0000000000000002" ;
+#                                                                                                            seed =
+#                                                                                                                [
+#                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
+#                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+#                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
+#                                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
+#                                                                                                                ] ;
+#                                                                                                            standard-output = "" ;
+#                                                                                                            targets = [ "known-hosts.asc" ] ;
+#                                                                                                            text = "known-hosts" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            index = "0000000000000003" ;
+#                                                                                                            seed =
+#                                                                                                                [
+#                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
+#                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+#                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "identity" ; }
+#                                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
+#                                                                                                                ] ;
+#                                                                                                            standard-output = "" ;
+#                                                                                                            targets = [ "identity.asc" ] ;
+#                                                                                                            text = "identity" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            index = "0000000000000001" ;
+#                                                                                                            seed =
+#                                                                                                                [
+#                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
+#                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+#                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "config" ; }
+#                                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
+#                                                                                                                ] ;
+#                                                                                                            standard-output = "" ;
+#                                                                                                            targets = [ "config.asc" ] ;
+#                                                                                                            text = "dot-ssh-configure" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            index = "0000000000000000" ;
+#                                                                                                            seed =
+#                                                                                                                [
+#                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
+#                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "repository" ; }
+#                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "secrets" ; }
+#                                                                                                                ] ;
+#                                                                                                            standard-output =
+#                                                                                                                let
+#                                                                                                                    tab = "\t" ;
+#                                                                                                                    in
+#                                                                                                                        ''
+#                                                                                                                            hint: Using 'master' as the name for the initial branch. This default branch name
+#                                                                                                                            hint: is subject to change. To configure the initial branch name to use in all
+#                                                                                                                            hint: of your new repositories, which will suppress this warning, call:
+#                                                                                                                            hint:
+#                                                                                                                            hint: ${ tab }git config --global init.defaultBranch <name>
+#                                                                                                                            hint:
+#                                                                                                                            hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+#                                                                                                                            hint: 'development'. The just-created branch can be renamed via this command:
+#                                                                                                                            hint:
+#                                                                                                                            hint: ${ tab }git branch -m <name>
+#                                                                                                                            Initialized empty Git repository in /mount/.git/
+#                                                                                                                            From github.com:AFnRFCb7/9ebf9ebc
+#                                                                                                                             * branch            main       -> FETCH_HEAD
+#                                                                                                                             * [new branch]      main       -> origin/main
+#                                                                                                                            Switched to a new branch 'main'
+#                                                                                                                            branch 'main' set up to track 'origin/main'.
+#                                                                                                                        '' ;
+#                                                                                                            targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
+#                                                                                                            text =
+#                                                                                                                ''
+#                                                                                                                    git init 2>&1
+#                                                                                                                    configure-ssh
+#                                                                                                                    git config user.email "emory.merryman@gmail.com"
+#                                                                                                                    git config user.name "Emory Merryman"
+#                                                                                                                    git remote add origin "git@github.com:AFnRFCb7/9ebf9ebc.git"
+#                                                                                                                    git fetch origin "main" 2>&1
+#                                                                                                                    git checkout "main" 2>&1
+#                                                                                                                '' ;
+#                                                                                                        }
+#                                                                                                    ] ;
+#                                                                                            } ;
+#                                                                                    } ;
+#                                                                                non-deterministic-regular-files = [ ] ;
+#                                                                                order = 7 ;
+#                                                                                release =
+#                                                                                    {
+#                                                                                        action =
+#                                                                                            {
+#                                                                                                messages =
+#                                                                                                    [
+#                                                                                                        {
+#                                                                                                            channel = "invalid-release" ;
+#                                                                                                            index = "0000000000000000" ;
+#                                                                                                            standard-output =
+#                                                                                                                ''
+#                                                                                                                    fatal: not a git repository (or any parent up to mount point /)
+#                                                                                                                    Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+#                                                                                                                '' ;
+#                                                                                                            status = 128 ;
+#                                                                                                        }
+#                                                                                                        { channel = "valid-release" ; index = "0000000000000001" ; standard-output = "" ; status = 0 ; }
+#                                                                                                        { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
+#                                                                                                        { channel = "valid-release" ; index = "0000000000000003" ; standard-output = "" ; status = 0 ; }
+#                                                                                                    ] ;
+#                                                                                                standard-output =
+#                                                                                                    ''
+#                                                                                                        fatal: not a git repository (or any parent up to mount point /)
+#                                                                                                        Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+#                                                                                                    '' ;
+#                                                                                                status = 128 ;
+#                                                                                            } ;
+#                                                                                        recovery =
+#                                                                                            {
+#                                                                                                standard-error =
+#                                                                                                    ''
+#                                                                                                        UNRECOVERABLE
+#                                                                                                    '' ;
+#                                                                                                standard-output = "" ;
+#                                                                                                script = ''/home/checker/resources/invalid-release/0000000000000000/'["unrecoverable"]'.sh'' ;
+#                                                                                                scripts =
+#                                                                                                    [
+#                                                                                                        { path = [ "recoverable" ] ; target = "/nix/store/706b8ki6cl322xxidvn7gnwzv51id6bn-recovery/bin/recovery" ; }
+#                                                                                                        { path = [ "unrecoverable" ] ; target = "/nix/store/jnra5sj9wlh74jbw4kiz81n9v16bnz1w-recovery/bin/recovery" ; }
+#                                                                                                    ] ;
+#                                                                                            } ;
+#                                                                                        script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
+#                                                                                    } ;
+#                                                                            }
+#                                                                    )
+#                                                                    (
+#                                                                        tests.release-recovered
+#                                                                            {
+#                                                                                command = '' check-resource --expression "$RESOURCES"/resources/'["production","repository","secrets"]' '' ;
+#                                                                                exclusions =
+#                                                                                    [
+#                                                                                        "/home/checker/.gc-roots/0000000000000001"
+#                                                                                        "/home/checker/.gc-roots/0000000000000002"
+#                                                                                        "/home/checker/.gc-roots/0000000000000003"
+#                                                                                        ''/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/[\"production\",\"dot-ssh\",\"config\",\"github\"]" }''
+#                                                                                        ''/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/[\"production\",\"dot-ssh\",\"identity\",\"github\"]" }''
+#                                                                                        ''/home/checker/resources/canonical/${ builtins.readFile "${ shared }/hashes/[\"production\",\"dot-ssh\",\"known-hosts\",\"github\"]" }''
+#                                                                                        "/home/checker/resources/mounts/0000000000000000/.git"
+#                                                                                        "/home/checker/resources/mounts/0000000000000001"
+#                                                                                        "/home/checker/resources/mounts/0000000000000002"
+#                                                                                        "/home/checker/resources/mounts/0000000000000003"
+#                                                                                        "/home/checker/resources/release/0000000000000001"
+#                                                                                        "/home/checker/resources/release/0000000000000002"
+#                                                                                        "/home/checker/resources/release/0000000000000003"
+#                                                                                    ] ;
+#                                                                                init =
+#                                                                                    {
+#                                                                                        action =
+#                                                                                            {
+#                                                                                                files =
+#                                                                                                    [
+#                                                                                                        {
+#                                                                                                            name = "/home/checker/.gc-roots/0000000000000000/config" ;
+#                                                                                                            stat = "lrwxrwxrwx" ;
+#                                                                                                            target = "/home/checker/resources/mounts/0000000000000001" ;
+#                                                                                                            type = "symbolic link" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            name = "/home/checker/.gc-roots/0000000000000000/open-ssh" ;
+#                                                                                                            stat = "lrwxrwxrwx" ;
+#                                                                                                            target = "/nix/store/9kfgh5k0frl2vkdvcvdmsfg0cmsm02nz-openssh-9.9p2" ;
+#                                                                                                            type = "symbolic link" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg" ;
+#                                                                                                            stat = "drwxr-xr-x" ;
+#                                                                                                            type = "directory" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-gnupg/ownertrust.asc.age" ;
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/ownertrust.asc.age" ;
+#                                                                                                            stat = "-rw-r--r--" ;
+#                                                                                                            type = "regular file" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-gnupg/secret-keys.asc.age" ;
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-gnupg/secret-keys.asc.age" ;
+#                                                                                                            stat = "-rw-r--r--" ;
+#                                                                                                            type = "regular file" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh" ;
+#                                                                                                            stat = "drwxr-xr-x" ;
+#                                                                                                            type = "directory" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile" ;
+#                                                                                                            stat = "drwxr-xr-x" ;
+#                                                                                                            type = "directory" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-ssh/mobile/identity.asc.age" ;
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile/identity.asc.age" ;
+#                                                                                                            stat = "-rw-r--r--" ;
+#                                                                                                            type = "regular file" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/dot-ssh/mobile/known-hosts.asc.age" ;
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/dot-ssh/mobile/known-hosts.asc.age" ;
+#                                                                                                            stat = "-rw-r--r--" ;
+#                                                                                                            type = "regular file" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/github" ;
+#                                                                                                            stat = "drwxr-xr-x" ;
+#                                                                                                            type = "directory" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            cat = builtins.readFile "${ shared }/repository/secrets/ciphertext/github/token.asc.age" ;
+#                                                                                                            name = "/home/checker/resources/mounts/0000000000000000/github/token.asc.age" ;
+#                                                                                                            stat = "-rw-r--r--" ;
+#                                                                                                            type = "regular file" ;
+#                                                                                                        }
+#                                                                                                    ]  ;
+#                                                                                                messages =
+#                                                                                                    [
+#                                                                                                        {
+#                                                                                                            index = "0000000000000002" ;
+#                                                                                                            seed =
+#                                                                                                                [
+#                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
+#                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+#                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "known-hosts" ; }
+#                                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
+#                                                                                                                ] ;
+#                                                                                                            standard-output = "" ;
+#                                                                                                            targets = [ "known-hosts.asc" ] ;
+#                                                                                                            text = "known-hosts" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            index = "0000000000000003" ;
+#                                                                                                            seed =
+#                                                                                                                [
+#                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
+#                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+#                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "identity" ; }
+#                                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
+#                                                                                                                ] ;
+#                                                                                                            standard-output = "" ;
+#                                                                                                            targets = [ "identity.asc" ] ;
+#                                                                                                            text = "identity" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            index = "0000000000000001" ;
+#                                                                                                            seed =
+#                                                                                                                [
+#                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
+#                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "dot-ssh" ; }
+#                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "config" ; }
+#                                                                                                                    { path = [ 3 ] ; type = "string" ; value = "github" ; }
+#                                                                                                                ] ;
+#                                                                                                            standard-output = "" ;
+#                                                                                                            targets = [ "config.asc" ] ;
+#                                                                                                            text = "dot-ssh-configure" ;
+#                                                                                                        }
+#                                                                                                        {
+#                                                                                                            index = "0000000000000000" ;
+#                                                                                                            seed =
+#                                                                                                                [
+#                                                                                                                    { path = [ 0 ] ; type = "string" ; value = "production" ; }
+#                                                                                                                    { path = [ 1 ] ; type = "string" ; value = "repository" ; }
+#                                                                                                                    { path = [ 2 ] ; type = "string" ; value = "secrets" ; }
+#                                                                                                                ] ;
+#                                                                                                            standard-output =
+#                                                                                                                let
+#                                                                                                                    tab = "\t" ;
+#                                                                                                                    in
+#                                                                                                                        ''
+#                                                                                                                            hint: Using 'master' as the name for the initial branch. This default branch name
+#                                                                                                                            hint: is subject to change. To configure the initial branch name to use in all
+#                                                                                                                            hint: of your new repositories, which will suppress this warning, call:
+#                                                                                                                            hint:
+#                                                                                                                            hint: ${ tab }git config --global init.defaultBranch <name>
+#                                                                                                                            hint:
+#                                                                                                                            hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+#                                                                                                                            hint: 'development'. The just-created branch can be renamed via this command:
+#                                                                                                                            hint:
+#                                                                                                                            hint: ${ tab }git branch -m <name>
+#                                                                                                                            Initialized empty Git repository in /mount/.git/
+#                                                                                                                            From github.com:AFnRFCb7/9ebf9ebc
+#                                                                                                                             * branch            main       -> FETCH_HEAD
+#                                                                                                                             * [new branch]      main       -> origin/main
+#                                                                                                                            Switched to a new branch 'main'
+#                                                                                                                            branch 'main' set up to track 'origin/main'.
+#                                                                                                                        '' ;
+#                                                                                                            targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
+#                                                                                                            text =
+#                                                                                                                ''
+#                                                                                                                    git init 2>&1
+#                                                                                                                    configure-ssh
+#                                                                                                                    git config user.email "emory.merryman@gmail.com"
+#                                                                                                                    git config user.name "Emory Merryman"
+#                                                                                                                    git remote add origin "git@github.com:AFnRFCb7/9ebf9ebc.git"
+#                                                                                                                    git fetch origin "main" 2>&1
+#                                                                                                                    git checkout "main" 2>&1
+#                                                                                                                '' ;
+#                                                                                                        }
+#                                                                                                    ] ;
+#                                                                                            } ;
+#                                                                                    } ;
+#                                                                                non-deterministic-regular-files = [ ] ;
+#                                                                                order = 8 ;
+#                                                                                release =
+#                                                                                    {
+#                                                                                        action =
+#                                                                                            {
+#                                                                                                messages =
+#                                                                                                    [
+#                                                                                                        {
+#                                                                                                            channel = "invalid-release" ;
+#                                                                                                            index = "0000000000000000" ;
+#                                                                                                            standard-output =
+#                                                                                                                ''
+#                                                                                                                    fatal: not a git repository (or any parent up to mount point /)
+#                                                                                                                    Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+#                                                                                                                '' ;
+#                                                                                                            status = 128 ;
+#                                                                                                        }
+#                                                                                                        { channel = "valid-release" ; index = "0000000000000001" ; standard-output = "" ; status = 0 ; }
+#                                                                                                        { channel = "valid-release" ; index = "0000000000000002" ; standard-output = "" ; status = 0 ; }
+#                                                                                                        { channel = "valid-release" ; index = "0000000000000003" ; standard-output = "" ; status = 0 ; }
+#                                                                                                    ] ;
+#                                                                                                standard-output =
+#                                                                                                    ''
+#                                                                                                        fatal: not a git repository (or any parent up to mount point /)
+#                                                                                                        Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+#                                                                                                    '' ;
+#                                                                                                status = 128 ;
+#                                                                                            } ;
+#                                                                                        recovery =
+#                                                                                            {
+#                                                                                                standard-output =
+#                                                                                                    ''
+#                                                                                                        RECOVERABLE
+#                                                                                                    '' ;
+#                                                                                                script = ''/home/checker/resources/invalid-release/0000000000000000/'["recoverable"]'.sh'' ;
+#                                                                                                scripts =
+#                                                                                                    [
+#                                                                                                        { path = [ "recoverable" ] ; target = "/nix/store/706b8ki6cl322xxidvn7gnwzv51id6bn-recovery/bin/recovery" ; }
+#                                                                                                        { path = [ "unrecoverable" ] ; target = "/nix/store/jnra5sj9wlh74jbw4kiz81n9v16bnz1w-recovery/bin/recovery" ; }
+#                                                                                                    ] ;
+#                                                                                            } ;
+#                                                                                        script = builtins.readFile ''${ shared }/release/["production","repository","secrets"].sh'' ;
+#                                                                                    } ;
+#                                                                            }
+#                                                                    )
 #                                                                    (
 #                                                                        _trump5000.check
 #                                                                            _lazy-shell-application.check
