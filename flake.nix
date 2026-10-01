@@ -2436,14 +2436,18 @@
                                                                             {
                                                                                 nixosTest = pkgs.nixosTest ;
                                                                                 order = 1 ;
+                                                                                writeShellApplication = pkgs.writeShellApplication ;
                                                                             }
-                                                                            [ "6699768429138615" ]
                                                                             {
                                                                                 compile-time-arguments = [ "6699768429138615" ] ;
                                                                                 shell-application = pkgs.writeShellApplication ;
                                                                                 planned-error = 182 ;
                                                                                 visitor = builtins.toJSON ;
                                                                                 unplanned-error = 162 ;
+                                                                            }
+                                                                            {
+                                                                                run-time-arguments = [ "9641181236542922" ] ;
+                                                                                standard-input = null ;
                                                                             }
                                                                     )
                                                                     (
