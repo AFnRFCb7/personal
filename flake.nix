@@ -2434,7 +2434,7 @@
                                                                                             closure =
                                                                                                 builtins.concatLists
                                                                                                     [
-                                                                                                        [ current.dependencies ]
+                                                                                                        current.dependencies
                                                                                                         (
                                                                                                             builtins.map
                                                                                                                 ( p : p.dependencies )
