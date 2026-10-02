@@ -2418,13 +2418,10 @@
                                                             builtins.sort
                                                                 (
                                                                     a : b :
-                                                                        builtins.trace "6420702539896182"
-                                                                            (
-                                                                                if builtins.elem a.type b.obviated-by && builtins.elem b.type a.obviated-by then builtins.throw "circular dependency"
-                                                                                else if builtins.elem a.type b.obviated-by then false
-                                                                                else if builtins.elem b.type a.obviated-by then true
-                                                                                else "${ a.test }" < "${ b.test }"
-                                                                            )
+                                                                        if builtins.elem a.type b.obviated-by && builtins.elem b.type a.obviated-by then builtins.throw "circular dependency"
+                                                                        else if builtins.elem a.type b.obviated-by then false
+                                                                        else if builtins.elem b.type a.obviated-by then true
+                                                                        else "${ a.test }" < "${ b.test }"
                                                                 )
                                                                 (
                                                                     builtins.foldl'
