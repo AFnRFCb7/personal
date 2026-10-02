@@ -2446,28 +2446,32 @@
                                                                                                         )
                                                                                                     ] ;
                                                                                             in
-                                                                                                builtins.concatLists
-                                                                                                    [
-                                                                                                        (
-                                                                                                            builtins.map
+                                                                                                builtins.trace
+                                                                                                    "7336107749951981"
+                                                                                                    (
+                                                                                                        builtins.concatLists
+                                                                                                            [
                                                                                                                 (
-                                                                                                                    p :
-                                                                                                                        {
-                                                                                                                            dependencies = builtins.concatLists [ p.dependencies ( if builtins.elem p.dependencies current.type then closure else [ ] ) ] ;
-                                                                                                                            test = p.test ;
-                                                                                                                            type = p.type ;
-                                                                                                                        }
+                                                                                                                    builtins.map
+                                                                                                                        (
+                                                                                                                            p :
+                                                                                                                                {
+                                                                                                                                    dependencies = builtins.concatLists [ p.dependencies ( if builtins.elem p.dependencies current.type then closure else [ ] ) ] ;
+                                                                                                                                    test = p.test ;
+                                                                                                                                    type = p.type ;
+                                                                                                                                }
+                                                                                                                        )
+                                                                                                                        previous
                                                                                                                 )
-                                                                                                                previous
-                                                                                                        )
-                                                                                                        [
-                                                                                                            {
-                                                                                                                dependencies = closure ;
-                                                                                                                test = current.test ;
-                                                                                                                type = current.type ;
-                                                                                                            }
-                                                                                                        ]
-                                                                                                    ]
+                                                                                                                [
+                                                                                                                    {
+                                                                                                                        dependencies = closure ;
+                                                                                                                        test = current.test ;
+                                                                                                                        type = current.type ;
+                                                                                                                    }
+                                                                                                                ]
+                                                                                                            ]
+                                                                                                    )
                                                                                 )
                                                                                 [ ]
                                                                                 [
