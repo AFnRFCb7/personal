@@ -2413,7 +2413,7 @@
                                                                         [
                                                                             {
                                                                                 name = current.name ;
-                                                                                value = current.value ( builtins.map ( p : p.value ) previous ) ;
+                                                                                value = current.value ;
                                                                             }
                                                                         ]
                                                                     ]
