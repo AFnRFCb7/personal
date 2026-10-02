@@ -2424,8 +2424,8 @@
                                                                                 builtins.trace "6420702539896182"
                                                                                     (
                                                                                         if builtins.elem a.type b.dependencies && builtins.elem b.type a.dependencies then builtins.throw "circular dependency"
-                                                                                        else if builtins.elem a.type b.dependencies then -1
-                                                                                        else if builtins.elem b.type a.dependencies then 1
+                                                                                        else if builtins.elem a.type b.dependencies then false
+                                                                                        else if builtins.elem b.type a.dependencies then true
                                                                                         else "${ a.test }" < "${ b.test }"
                                                                                     )
                                                                         )
