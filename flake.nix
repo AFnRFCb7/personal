@@ -2408,7 +2408,7 @@
                                                         generator =
                                                             index :
                                                                 let
-                                                                    l = builtins.elementAt list index ;
+                                                                    l = builtins.elemAt list index ;
                                                                     in
                                                                         {
                                                                             name = builtins.concatStringsSep "-" [ "check" ( builtins.toString index ) ] ;
@@ -2423,9 +2423,9 @@
                                                                             a : b :
                                                                                 builtins.trace "6420702539896182"
                                                                                     (
-                                                                                        if builtins.elem a.type b.dependencies && builtins.elem b.type a.dependencies then builtins.throw "circular dependency"
-                                                                                        else if builtins.elem a.type b.dependencies then false
-                                                                                        else if builtins.elem b.type a.dependencies then true
+                                                                                        if builtins.elem a.type b.obviated-by && builtins.elem b.type a.obviated-by then builtins.throw "circular dependency"
+                                                                                        else if builtins.elem a.type b.obviated-by then false
+                                                                                        else if builtins.elem b.type a.obviated-by then true
                                                                                         else "${ a.test }" < "${ b.test }"
                                                                                     )
                                                                         )
@@ -2437,13 +2437,13 @@
                                                                                             closure =
                                                                                                 builtins.concatLists
                                                                                                     [
-                                                                                                        current.dependencies
+                                                                                                        current.obviated-by
                                                                                                         (
                                                                                                             builtins.map
-                                                                                                                ( p : p.dependencies )
+                                                                                                                ( p : p.obviated-by )
                                                                                                                 (
                                                                                                                     builtins.filter
-                                                                                                                        ( p : builtins.elem p.type current.dependencies )
+                                                                                                                        ( p : builtins.elem p.type current.obviated-by )
                                                                                                                         previous
                                                                                                                 )
                                                                                                         )
@@ -2459,7 +2459,7 @@
                                                                                                                         (
                                                                                                                             p :
                                                                                                                                 {
-                                                                                                                                    dependencies = builtins.concatLists [ p.dependencies ( if builtins.elem current.type p.dependencies then closure else [ ] ) ] ;
+                                                                                                                                    obviated-by = builtins.concatLists [ p.obviated-by ( if builtins.elem current.type p.obviated-by then closure else [ ] ) ] ;
                                                                                                                                     test = p.test ;
                                                                                                                                     type = p.type ;
                                                                                                                                 }
@@ -2468,7 +2468,7 @@
                                                                                                                 )
                                                                                                                 [
                                                                                                                     {
-                                                                                                                        dependencies = closure ;
+                                                                                                                        obviated-by = closure ;
                                                                                                                         test = current.test ;
                                                                                                                         type = current.type ;
                                                                                                                     }
@@ -2481,7 +2481,7 @@
                                                                                     (
                                                                                         _failure.check
                                                                                             {
-                                                                                                dependencies = [ ] ;
+                                                                                                obviated-by = [ ] ;
                                                                                                 nixosTest = pkgs.nixosTest ;
                                                                                             }
                                                                                             {
@@ -2499,7 +2499,7 @@
                                                                                     (
                                                                                         _visitor.check
                                                                                             {
-                                                                                                dependencies = [ "failure" ] ;
+                                                                                                obviated-by = [ "failure" ] ;
                                                                                                 failure = _failure.implementation ;
                                                                                                 nixosTest = pkgs.nixosTest ;
                                                                                             }
