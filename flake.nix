@@ -2412,6 +2412,7 @@
                                                                     in
                                                                         {
                                                                             name = builtins.concatStringsSep "-" [ "check" ( builtins.toString index ) ] ;
+                                                                            value = l.test ;
                                                                         } ;
                                                         list =
                                                             builtins.sort
