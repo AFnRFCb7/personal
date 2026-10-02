@@ -2447,7 +2447,7 @@
                                                                                                     ] ;
                                                                                             in
                                                                                                 builtins.trace
-                                                                                                    "7336107749951981 ${ builtins.typeOf previous } ${ builtins.typeOf current } ${ builtins.toJSON previous }"
+                                                                                                    "7336107749951981 ${ builtins.typeOf previous } ${ builtins.typeOf current } ${ builtins.toJSON previous } 5677588895931475 ${ builtins.toJSON current }"
                                                                                                     (
                                                                                                         builtins.concatLists
                                                                                                             [
