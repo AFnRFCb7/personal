@@ -2411,7 +2411,7 @@
                                                                     l = builtins.elemAt list index ;
                                                                     in
                                                                         {
-                                                                            name = builtins.concatStringsSep "-" [ "check" ( builtins.toString index ) ] ;
+                                                                            name = builtins.concatStringsSep "-" [ "check" ( builtins.toString ( index + 1 ) ) ] ;
                                                                             value = l.test ;
                                                                         } ;
                                                         list =
