@@ -2440,7 +2440,7 @@
                                                                                                                 ( p : p.dependencies )
                                                                                                                 (
                                                                                                                     builtins.filter
-                                                                                                                        ( p : builtins.elem p.type current.dependencies )
+                                                                                                                        ( p : builtins.elem current.dependencies p.type )
                                                                                                                         previous
                                                                                                                 )
                                                                                                         )
@@ -2456,6 +2456,7 @@
                                                                                                                         (
                                                                                                                             p :
                                                                                                                                 {
+                                                                                                                                    closure = closure ;
                                                                                                                                     dependencies = builtins.concatLists [ p.dependencies ( if builtins.elem p.dependencies current.type then closure else [ ] ) ] ;
                                                                                                                                     test = p.test ;
                                                                                                                                     type = p.type ;
