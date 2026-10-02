@@ -2507,7 +2507,7 @@
                                                                                                 arguments = null ;
                                                                                                 success = true ;
                                                                                                 value = null ;
-                                                                                                visitors = { null = path : value : value ; } ;
+                                                                                                visitors = { null = path : value : builtins.trace "8520687418790659" value ; } ;
                                                                                             }
                                                                                     )
                         #                                                                    (
