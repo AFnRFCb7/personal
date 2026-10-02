@@ -2408,7 +2408,7 @@
                                                         generator =
                                                             index :
                                                                 let
-                                                                    l = builtins.elementAt list index ;
+                                                                    l = builtins.elementAt ( builtins.trace ( builtins.typeOf list ) list ) index ;
                                                                     in
                                                                         {
                                                                             name = builtins.concatStringsSep "-" [ "check" ( builtins.toString index ) ] ;
