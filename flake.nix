@@ -2443,32 +2443,28 @@
                                                                                                 )
                                                                                             ] ;
                                                                                     in
-                                                                                        builtins.trace
-                                                                                            "7336107749951981 ${ builtins.typeOf previous } ${ builtins.typeOf current } ${ builtins.toJSON previous } 5677588895931475 ${ builtins.toJSON current }"
-                                                                                            (
-                                                                                                builtins.concatLists
-                                                                                                    [
+                                                                                        builtins.concatLists
+                                                                                            [
+                                                                                                (
+                                                                                                    builtins.map
                                                                                                         (
-                                                                                                            builtins.map
-                                                                                                                (
-                                                                                                                    p :
-                                                                                                                        {
-                                                                                                                            obviated-by = builtins.concatLists [ p.obviated-by ( if builtins.elem current.type p.obviated-by then closure else [ ] ) ] ;
-                                                                                                                            test = p.test ;
-                                                                                                                            type = p.type ;
-                                                                                                                        }
-                                                                                                                )
-                                                                                                                previous
+                                                                                                            p :
+                                                                                                                {
+                                                                                                                    obviated-by = builtins.concatLists [ p.obviated-by ( if builtins.elem current.type p.obviated-by then closure else [ ] ) ] ;
+                                                                                                                    test = p.test ;
+                                                                                                                    type = p.type ;
+                                                                                                                }
                                                                                                         )
-                                                                                                        [
-                                                                                                            {
-                                                                                                                obviated-by = closure ;
-                                                                                                                test = current.test ;
-                                                                                                                type = current.type ;
-                                                                                                            }
-                                                                                                        ]
-                                                                                                    ]
-                                                                                            )
+                                                                                                        previous
+                                                                                                )
+                                                                                                [
+                                                                                                    {
+                                                                                                        obviated-by = closure ;
+                                                                                                        test = current.test ;
+                                                                                                        type = current.type ;
+                                                                                                    }
+                                                                                                ]
+                                                                                            ]
                                                                         )
                                                                         [ ]
                                                                         [
@@ -2501,7 +2497,7 @@
                                                                                         arguments = null ;
                                                                                         success = true ;
                                                                                         value = null ;
-                                                                                        visitors = { null = path : value : builtins.trace "8520687418790659" value ; } ;
+                                                                                        visitors = { null = path : value : value ; } ;
                                                                                     }
                                                                             )
                 #                                                                    (
