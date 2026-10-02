@@ -2440,7 +2440,7 @@
                                                                                                                 ( p : p.dependencies )
                                                                                                                 (
                                                                                                                     builtins.filter
-                                                                                                                        ( p : builtins.elem current.dependencies p.type )
+                                                                                                                        ( p : builtins.elem p.type current.dependencies )
                                                                                                                         previous
                                                                                                                 )
                                                                                                         )
