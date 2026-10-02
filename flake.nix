@@ -2457,7 +2457,7 @@
                                                                                                                             p :
                                                                                                                                 {
                                                                                                                                     closure = closure ;
-                                                                                                                                    dependencies = builtins.concatLists [ p.dependencies ( if builtins.elem p.dependencies current.type then closure else [ ] ) ] ;
+                                                                                                                                    dependencies = builtins.concatLists [ [  null ] p.dependencies ( if builtins.elem p.dependencies current.type then closure else [ ] ) ] ;
                                                                                                                                     test = p.test ;
                                                                                                                                     type = p.type ;
                                                                                                                                 }
