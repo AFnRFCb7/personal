@@ -2483,7 +2483,6 @@
                                                                                     }
                                                                                     {
                                                                                         run-time-arguments = [ "9641181236542922" ] ;
-                                                                                        standard-input = null ;
                                                                                     }
                                                                             )
 #                                                                            (
