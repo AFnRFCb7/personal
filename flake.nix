@@ -2419,8 +2419,8 @@
                                                                 (
                                                                     a : b :
                                                                         if builtins.elem a.type b.obviated-by && builtins.elem b.type a.obviated-by then builtins.throw "circular dependency"
-                                                                        else if builtins.elem a.type b.obviated-by then false
-                                                                        else if builtins.elem b.type a.obviated-by then true
+                                                                        else if builtins.elem a.type b.obviated-by then true
+                                                                        else if builtins.elem b.type a.obviated-by then false
                                                                         else "${ a.test }" < "${ b.test }"
                                                                 )
                                                                 (
