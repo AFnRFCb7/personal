@@ -2475,6 +2475,10 @@
                                                                                         nixosTest = pkgs.nixosTest ;
                                                                                     }
                                                                                     {
+                                                                                        default = path : value : builtins.throw "default" ;
+                                                                                        unknown = path : value : builtins.throw "unknown" ;
+                                                                                    }
+                                                                                    {
                                                                                         compile-time-arguments = [ "6699768429138615" ] ;
                                                                                         shell-application = pkgs.writeShellApplication ;
                                                                                         planned-error = 182 ;
