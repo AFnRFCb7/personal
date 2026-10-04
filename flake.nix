@@ -2503,7 +2503,7 @@
                                                                                             {
                                                                                                 test-3727269441937947 = { source = "" ; type = "ro-bind" ; } ;
                                                                                                 test-7115328188030250 = { source = "/build/test-6439766751988115" ; type = "bind" ; } ;
-                                                                                                test-7482109308014871 = { type = "/build/test-7929034698529557" ; type = "tmp" ; } ;
+                                                                                                test-7482109308014871 = { source = "/build/test-7929034698529557" ; type = "tmp" ; } ;
                                                                                             } ;
                                                                                         name = "test" ;
                                                                                         runtime-inputs = pkgs : [ pkgs.coreutils pkgs.which pkgs.yq ] ;
