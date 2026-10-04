@@ -2496,6 +2496,7 @@
                                                                                         failure = _failure.implementation ;
                                                                                         obviated-by = [ "failure" "visitor" ] ;
                                                                                         nixosTest = pkgs.nixosTest ;
+                                                                                        visitor = _visitor.implementation ;
                                                                                     }
                                                                                     {
                                                                                         mounts =
