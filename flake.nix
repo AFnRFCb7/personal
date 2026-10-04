@@ -689,37 +689,6 @@
                                                                     } ;
                                                                 stateVersion = "23.05" ;
                                                             } ;
-                                                        systemd =
-                                                            {
-                                                                services =
-                                                                    {
-                                                                        log =
-                                                                            {
-                                                                                after = [ "network.target" "redis.service" ] ;
-                                                                                serviceConfig =
-                                                                                    {
-                                                                                        ExecStart = __resource.log ;
-                                                                                        Restart = "always";
-                                                                                        User = config.personal.name ;
-                                                                                    } ;
-                                                                                wantedBy = [ "multi-user.target" ];
-                                                                            } ;
-                                                                        release =
-                                                                            {
-                                                                                after = [ "network.target" "redis.service" ];
-                                                                                serviceConfig =
-                                                                                    {
-                                                                                        ExecStart = __resource.release ;
-                                                                                        Restart = "always";
-                                                                                        User = config.personal.name ;
-                                                                                    } ;
-                                                                                wantedBy = [ "multi-user.target" ];
-                                                                            } ;
-                                                                    } ;
-                                                                timers =
-                                                                    {
-                                                                    } ;
-                                                            } ;
                                                         time.timeZone = "America/New_York" ;                                                       
                                                         users.users.user =
                                                             {
