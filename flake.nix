@@ -2497,6 +2497,24 @@
                                                                                         visitors = { null = path : value : value ; } ;
                                                                                     }
                                                                             )
+                                                                            (
+                                                                                lazy-shell-application.check
+                                                                                    {
+                                                                                        obviated-by = [ "failure" "visitor" ] ;
+                                                                                        nixosTest = pkgs.nixosText ;
+                                                                                    }
+                                                                                    {
+                                                                                        mounts =
+                                                                                            {
+
+                                                                                            } ;
+                                                                                        name = "" ;
+                                                                                        runtime-inputs = pkgs : [ ] ;
+                                                                                        text =
+                                                                                            ''
+                                                                                            '' ;
+                                                                                    }
+                                                                            )
                                                                         ]
                                                                 ) ;
                                                     in builtins.genList generator ( builtins.length list )
