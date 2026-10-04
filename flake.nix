@@ -2493,8 +2493,8 @@
                                                                                         nixosTest = pkgs.nixosTest ;
                                                                                         test-setup =
                                                                                             ''
-                                                                                                echo 4899124582768405 > /build/test-6439766751988115
-                                                                                                echo 1690621093050334 > /build/test-7929034698529557
+                                                                                                echo 4899124582768405 > /tmp/test-6439766751988115
+                                                                                                echo 1690621093050334 > /tmp/test-7929034698529557
                                                                                             '' ;
                                                                                         visitor = _visitor.implementation ;
                                                                                     }
@@ -2502,8 +2502,8 @@
                                                                                         mounts =
                                                                                             {
                                                                                                 test-3727269441937947 = { source = "" ; type = "ro-bind" ; } ;
-                                                                                                test-7115328188030250 = { source = "/build/test-6439766751988115" ; type = "bind" ; } ;
-                                                                                                test-7482109308014871 = { source = "/build/test-7929034698529557" ; type = "tmp" ; } ;
+                                                                                                test-7115328188030250 = { source = "/tmp/test-6439766751988115" ; type = "bind" ; } ;
+                                                                                                test-7482109308014871 = { source = "/tmp/test-7929034698529557" ; type = "tmp" ; } ;
                                                                                             } ;
                                                                                         name = "test" ;
                                                                                         runtime-inputs = pkgs : [ pkgs.coreutils pkgs.which pkgs.yq ] ;
