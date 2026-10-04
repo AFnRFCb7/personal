@@ -53,7 +53,7 @@
                                 {
                                     lazy-shell-application = _lazy-shell-application.implementation ;
                                 } ;
-                            _visa = visa.lib { lazy-shell-application = _lazy-shell-application.implementation ; } ;
+                            _visa = visa.lib { } ;
                             _visitor = visitor.lib { } ;
                             implementation =
                                 { config , lib , pkgs , ... } :
@@ -751,6 +751,8 @@
                                                         _failure.implementation
                                                         _visitor.implementation
                                                         _lazy-shell-application.implementation
+                                                        _visa.implementation
+                                                        _node-package.implementation
                                                     ] ;
                                                 options =
                                                     {
