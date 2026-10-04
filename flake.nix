@@ -2478,7 +2478,6 @@
                                                                                         compile-time-arguments = [ "6699768429138615" ] ;
                                                                                         shell-application = pkgs.writeShellApplication ;
                                                                                         planned-error = 182 ;
-                                                                                        visitor = builtins.toJSON ;
                                                                                         unplanned-error = 162 ;
                                                                                     }
                                                                                     {
