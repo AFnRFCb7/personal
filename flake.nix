@@ -2519,10 +2519,7 @@
                                                                                         arguments = [ "8153426608580965" ] ;
                                                                                         standard-error = "" ;
                                                                                         standard-input = null ;
-                                                                                        standard-output =
-                                                                                            ''
-                                                                                                8153426608580965
-                                                                                            '' ;
+                                                                                        standard-output = "8153426608580965" ;
                                                                                         status = 120 ;
                                                                                     }
                                                                             )
