@@ -2502,15 +2502,15 @@
                                                                                                 test-7482109308014871 = { type = "tmp" ; } ;
                                                                                             } ;
                                                                                         name = "test" ;
-                                                                                        runtime-inputs = pkgs : [ pkgs.which pkgs.yq ] ;
+                                                                                        runtime-inputs = pkgs : [ pkgs.coreutils pkgs.which pkgs.yq ] ;
                                                                                         post = null ;
                                                                                         text =
                                                                                             ''
-                                                                                                which yq
+                                                                                                echo "$1"
                                                                                             '' ;
                                                                                     }
                                                                                     {
-                                                                                        arguments = [ ] ;
+                                                                                        arguments = [ "8153426608580965" ] ;
                                                                                         standard-error = "" ;
                                                                                         standard-input = null ;
                                                                                         standard-output = "" ;
