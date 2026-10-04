@@ -2493,6 +2493,7 @@
                                                                             (
                                                                                 _lazy-shell-application.check
                                                                                     {
+                                                                                        failure = _failure.implementation ;
                                                                                         obviated-by = [ "failure" "visitor" ] ;
                                                                                         nixosTest = pkgs.nixosTest ;
                                                                                     }
