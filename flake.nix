@@ -23,14 +23,7 @@
                         let
                             _android-application = android-application.lib { } ;
                             _failure = failure.lib { } ;
-                            _lazy-shell-application =
-                                lazy-shell-application.lib
-                                    {
-                                        buildFHSUserEnv = pkgs.buildFHSUserEnv ;
-                                        coreutils = pkgs.coreutils ;
-                                        jq = pkgs.jq ;
-                                        writeShellApplication = pkgs.writeShellApplication ;
-                                    } ;
+                            _lazy-shell-application = lazy-shell-application.lib { } ;
                             _node-package = node-package.lib { } ;
                             _resource =
                                 resource.lib
