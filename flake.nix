@@ -23,7 +23,7 @@
                         let
                             _android-application = android-application.lib { } ;
                             _failure = failure.lib { } ;
-                            _lazy-shell-application = lazy-shell-application.lib { } ;
+                            _lazy-shell-application = lazy-shell-application.lib { visitor = _visitor.implementation ; } ;
                             _node-package = node-package.lib { } ;
                             _resource =
                                 resource.lib
