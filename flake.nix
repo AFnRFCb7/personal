@@ -2506,13 +2506,22 @@
                                                                                     {
                                                                                         mounts =
                                                                                             {
-
+                                                                                                test-7482109308014871 = { type = "tmp" ; } ;
                                                                                             } ;
-                                                                                        name = "" ;
-                                                                                        runtime-inputs = pkgs : [ ] ;
+                                                                                        name = "test" ;
+                                                                                        runtime-inputs = pkgs : [ pkgs.which pkgs.yq ] ;
+                                                                                        post = null ;
                                                                                         text =
                                                                                             ''
+                                                                                                which yq
                                                                                             '' ;
+                                                                                    }
+                                                                                    {
+                                                                                        arguments = [ ] ;
+                                                                                        standard-error = "" ;
+                                                                                        standard-input = null ;
+                                                                                        standard-output = "" ;
+                                                                                        status = 0 ;
                                                                                     }
                                                                             )
                                                                         ]
