@@ -2494,7 +2494,7 @@
                                                                                 _lazy-shell-application.check
                                                                                     {
                                                                                         obviated-by = [ "failure" "visitor" ] ;
-                                                                                        nixosTest = pkgs.nixosText ;
+                                                                                        nixosTest = pkgs.nixosTest ;
                                                                                     }
                                                                                     {
                                                                                         mounts =
