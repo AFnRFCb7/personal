@@ -2493,8 +2493,8 @@
                                                                                         nixosTest = pkgs.nixosTest ;
                                                                                         test-setup =
                                                                                             ''
-                                                                                                echo 4899124582768405 > /tmp/test-6439766751988115
-                                                                                                echo 1690621093050334 > /tmp/test-7929034698529557
+                                                                                                echo -n 4899124582768405 > /tmp/test-6439766751988115
+                                                                                                echo -n 1690621093050334 > /tmp/test-7929034698529557
                                                                                             '' ;
                                                                                         visitor = _visitor.implementation ;
                                                                                     }
@@ -2510,7 +2510,7 @@
                                                                                         post = null ;
                                                                                         text =
                                                                                             ''
-                                                                                                echo "$1"
+                                                                                                echo -n "$1"
                                                                                                 exit 120
                                                                                             '' ;
                                                                                     }
