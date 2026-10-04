@@ -2498,7 +2498,7 @@
                                                                                     }
                                                                             )
                                                                             (
-                                                                                lazy-shell-application.check
+                                                                                _lazy-shell-application.check
                                                                                     {
                                                                                         obviated-by = [ "failure" "visitor" ] ;
                                                                                         nixosTest = pkgs.nixosText ;
