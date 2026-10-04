@@ -525,7 +525,6 @@
                                                                         LC_TIME = "en_US.UTF-8" ;
                                                                     } ;
                                                             } ;
-                                                        # imports = [ _trump5000.implementation ] ;
                                                         networking =
                                                             {
                                                                 wireless =
@@ -751,11 +750,7 @@
                                                     [
                                                         _failure.implementation
                                                         _visitor.implementation
-                                                        # _sally.implementation
-                                                        # _visa.implementation
-                                                        # _trump5000.implementation
-                                                        # _android-application.implementation
-                                                        # _node-package.implementation
+                                                        _lazy-shell-application.implementation
                                                     ] ;
                                                 options =
                                                     {
