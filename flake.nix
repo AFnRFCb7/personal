@@ -2491,12 +2491,19 @@
                                                                                         failure = _failure.implementation ;
                                                                                         obviated-by = [ "failure" "visitor" ] ;
                                                                                         nixosTest = pkgs.nixosTest ;
+                                                                                        test-setup =
+                                                                                            ''
+                                                                                                echo 4899124582768405 > /build/test-6439766751988115
+                                                                                                echo 1690621093050334 > /build/test-7929034698529557
+                                                                                            '' ;
                                                                                         visitor = _visitor.implementation ;
                                                                                     }
                                                                                     {
                                                                                         mounts =
                                                                                             {
-                                                                                                test-7482109308014871 = { type = "tmp" ; } ;
+                                                                                                test-3727269441937947 = { source = "" ; type = "ro-bind" ; } ;
+                                                                                                test-7115328188030250 = { source = "/build/test-6439766751988115" ; type = "bind" ; } ;
+                                                                                                test-7482109308014871 = { type = "/build/test-7929034698529557" ; type = "tmp" ; } ;
                                                                                             } ;
                                                                                         name = "test" ;
                                                                                         runtime-inputs = pkgs : [ pkgs.coreutils pkgs.which pkgs.yq ] ;
@@ -2504,14 +2511,18 @@
                                                                                         text =
                                                                                             ''
                                                                                                 echo "$1"
+                                                                                                exit 120
                                                                                             '' ;
                                                                                     }
                                                                                     {
                                                                                         arguments = [ "8153426608580965" ] ;
                                                                                         standard-error = "" ;
                                                                                         standard-input = null ;
-                                                                                        standard-output = "" ;
-                                                                                        status = 0 ;
+                                                                                        standard-output =
+                                                                                            ''
+                                                                                                8153426608580965
+                                                                                            '' ;
+                                                                                        status = 120 ;
                                                                                     }
                                                                             )
                                                                         ]
