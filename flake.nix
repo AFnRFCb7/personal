@@ -719,7 +719,7 @@
                                                     [
                                                         _failure.implementation
                                                         _visitor.implementation
-#                                                        _lazy-shell-application.implementation
+                                                        _lazy-shell-application.implementation
 #                                                        _visa.implementation
 #                                                        _node-package.implementation
                                                     ] ;
