@@ -2457,53 +2457,53 @@
                                                                                         visitors = { null = path : value : value ; } ;
                                                                                     }
                                                                             )
-                                                                            (
-                                                                                _lazy-shell-application.check
-                                                                                    {
-                                                                                        failure = _failure.implementation ;
-                                                                                        obviated-by = [ "failure" "visitor" ] ;
-                                                                                        nixosTest = pkgs.nixosTest ;
-                                                                                        test-setup =
-                                                                                            ''
-                                                                                                echo -n 4899124582768405 > /tmp/test-6439766751988115
-                                                                                                echo -n 1690621093050334 > /tmp/test-7929034698529557
-                                                                                            '' ;
-                                                                                        visitor = _visitor.implementation ;
-                                                                                    }
-                                                                                    {
-                                                                                        mounts =
-                                                                                            {
-                                                                                                test-3727269441937947 = { type = "tmp" ; } ;
-                                                                                                test-7115328188030250 = { source = "/tmp/test-6439766751988115" ; type = "bind" ; } ;
-                                                                                                test-7482109308014871 = { source = "/tmp/test-7929034698529557" ; type = "ro-bind" ; } ;
-                                                                                            } ;
-                                                                                        name = "test-application" ;
-                                                                                        runtime-inputs = pkgs : [ pkgs.coreutils pkgs.which pkgs.yq ] ;
-                                                                                        post = null ;
-                                                                                        text =
-                                                                                            ''
-                                                                                                echo -n "$1"
-                                                                                                exit 120
-                                                                                            '' ;
-                                                                                    }
-                                                                                    {
-                                                                                        arguments = [ "8153426608580965" ] ;
-                                                                                        standard-error = "" ;
-                                                                                        standard-input = null ;
-                                                                                        standard-output = "8153426608580965" ;
-                                                                                        status = 120 ;
-                                                                                    }
-                                                                            )
 #                                                                            (
-#                                                                                _visa.check
+#                                                                                _lazy-shell-application.check
 #                                                                                    {
 #                                                                                        failure = _failure.implementation ;
-#                                                                                        lazy-shell-application = _lazy-shell-application.implementation ;
-#                                                                                        nixos-package = _nixos-package.implementation ;
-#                                                                                        obviated-by = [ "failure" "lazy-shell-application" "node-package" ] ;
+#                                                                                        obviated-by = [ "failure" "visitor" ] ;
 #                                                                                        nixosTest = pkgs.nixosTest ;
+#                                                                                        test-setup =
+#                                                                                            ''
+#                                                                                                echo -n 4899124582768405 > /tmp/test-6439766751988115
+#                                                                                                echo -n 1690621093050334 > /tmp/test-7929034698529557
+#                                                                                            '' ;
+#                                                                                        visitor = _visitor.implementation ;
+#                                                                                    }
+#                                                                                    {
+#                                                                                        mounts =
+#                                                                                            {
+#                                                                                                test-3727269441937947 = { type = "tmp" ; } ;
+#                                                                                                test-7115328188030250 = { source = "/tmp/test-6439766751988115" ; type = "bind" ; } ;
+#                                                                                                test-7482109308014871 = { source = "/tmp/test-7929034698529557" ; type = "ro-bind" ; } ;
+#                                                                                            } ;
+#                                                                                        name = "test-application" ;
+#                                                                                        runtime-inputs = pkgs : [ pkgs.coreutils pkgs.which pkgs.yq ] ;
+#                                                                                        post = null ;
+#                                                                                        text =
+#                                                                                            ''
+#                                                                                                echo -n "$1"
+#                                                                                                exit 120
+#                                                                                            '' ;
+#                                                                                    }
+#                                                                                    {
+#                                                                                        arguments = [ "8153426608580965" ] ;
+#                                                                                        standard-error = "" ;
+#                                                                                        standard-input = null ;
+#                                                                                        standard-output = "8153426608580965" ;
+#                                                                                        status = 120 ;
 #                                                                                    }
 #                                                                            )
+                                                                            (
+                                                                                _visa.check
+                                                                                    {
+                                                                                        failure = _failure.implementation ;
+                                                                                        lazy-shell-application = _lazy-shell-application.implementation ;
+                                                                                        nixos-package = _nixos-package.implementation ;
+                                                                                        obviated-by = [ "failure" "lazy-shell-application" "node-package" ] ;
+                                                                                        nixosTest = pkgs.nixosTest ;
+                                                                                    }
+                                                                            )
                                                                         ]
                                                                 ) ;
                                                     in builtins.genList generator ( builtins.length list )
