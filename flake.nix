@@ -1015,7 +1015,7 @@
                                                                 (
                                                                     {
                                                                         obviated-by = [ ] ;
-                                                                        test = pkgs.nixosTest { name = "aaaa" ; nodes = [ ] ; testScript = "" ; } ;
+                                                                        test = pkgs.nixosTest { name = "aaaa" ; nodes = { } ; testScript = "" ; } ;
                                                                         type = "easy" ;
                                                                     }
                                                                 )
