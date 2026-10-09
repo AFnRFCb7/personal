@@ -2499,7 +2499,7 @@
                                                                                     {
                                                                                         failure = _failure.implementation ;
                                                                                         lazy-shell-application = _lazy-shell-application.implementation ;
-                                                                                        nixos-package = _nixos-package.implementation ;
+                                                                                        node-package = _node-package.implementation ;
                                                                                         obviated-by = [ "failure" "lazy-shell-application" "node-package" ] ;
                                                                                         nixosTest = pkgs.nixosTest ;
                                                                                     }
