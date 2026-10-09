@@ -1093,6 +1093,7 @@
                                                                             nixosTest = pkgs.nixosTest ;
                                                                             node-package = _node-package.implementation ;
                                                                             obviated-by = [ "easy" "failure" "lazy-shell-application" "node-package" ] ;
+                                                                            visitor = _visitor.implementation ;
                                                                         }
                                                                 )
                                                             ]
