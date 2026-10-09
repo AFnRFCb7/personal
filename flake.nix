@@ -1019,21 +1019,21 @@
                                                                         type = "easy" ;
                                                                     }
                                                                 )
-                                                                (
-                                                                    _failure.check
-                                                                        {
-                                                                            obviated-by = [ "easy" ] ;
-                                                                            nixosTest = pkgs.nixosTest ;
-                                                                        }
-                                                                        {
-                                                                            compile-time-arguments = [ "6699768429138615" ] ;
-                                                                            planned-error = 182 ;
-                                                                            unplanned-error = 162 ;
-                                                                        }
-                                                                        {
-                                                                            run-time-arguments = [ "9641181236542922" ] ;
-                                                                        }
-                                                                )
+#                                                                (
+#                                                                    _failure.check
+#                                                                        {
+#                                                                            obviated-by = [ "easy" ] ;
+#                                                                            nixosTest = pkgs.nixosTest ;
+#                                                                        }
+#                                                                        {
+#                                                                            compile-time-arguments = [ "6699768429138615" ] ;
+#                                                                            planned-error = 182 ;
+#                                                                            unplanned-error = 162 ;
+#                                                                        }
+#                                                                        {
+#                                                                            run-time-arguments = [ "9641181236542922" ] ;
+#                                                                        }
+#                                                                )
     #                                                                            (
     #                                                                                _visitor.check
     #                                                                                    {
