@@ -1034,20 +1034,20 @@
                                                                             run-time-arguments = [ "9641181236542922" ] ;
                                                                         }
                                                                 )
-    #                                                                            (
-    #                                                                                _visitor.check
-    #                                                                                    {
-    #                                                                                        obviated-by = [ "failure" ] ;
-    #                                                                                        failure = _failure.implementation ;
-    #                                                                                        nixosTest = pkgs.nixosTest ;
-    #                                                                                    }
-    #                                                                                    {
-    #                                                                                        arguments = null ;
-    #                                                                                        success = true ;
-    #                                                                                        value = null ;
-    #                                                                                        visitors = { null = path : value : value ; } ;
-    #                                                                                    }
-    #                                                                            )
+                                                                (
+                                                                    _visitor.check
+                                                                        {
+                                                                            obviated-by = [ "failure" ] ;
+                                                                            failure = _failure.implementation ;
+                                                                            nixosTest = pkgs.nixosTest ;
+                                                                        }
+                                                                        {
+                                                                            arguments = null ;
+                                                                            success = true ;
+                                                                            value = null ;
+                                                                            visitors = { null = path : value : value ; } ;
+                                                                        }
+                                                                )
     #                                                                            (
     #                                                                                _lazy-shell-application.check
     #                                                                                    {
