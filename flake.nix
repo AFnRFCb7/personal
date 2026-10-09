@@ -1013,9 +1013,16 @@
                                                             [ ]
                                                             [
                                                                 (
+                                                                    {
+                                                                        obviated-by = [ ] ;
+                                                                        test = pkgs.nixosTest { name = "aaaa" ; nodes = [ ] ; testScript = "" ; } ;
+                                                                        type = "easy" ;
+                                                                    }
+                                                                )
+                                                                (
                                                                     _failure.check
                                                                         {
-                                                                            obviated-by = [ ] ;
+                                                                            obviated-by = [ "easy" ] ;
                                                                             nixosTest = pkgs.nixosTest ;
                                                                         }
                                                                         {
