@@ -1037,7 +1037,7 @@
                                                                 (
                                                                     _visitor.check
                                                                         {
-                                                                            obviated-by = [ "failure" ] ;
+                                                                            obviated-by = [ "easy" "failure" ] ;
                                                                             failure = _failure.implementation ;
                                                                             nixosTest = pkgs.nixosTest ;
                                                                         }
@@ -1052,7 +1052,7 @@
                                                                     _lazy-shell-application.check
                                                                         {
                                                                             failure = _failure.implementation ;
-                                                                            obviated-by = [ "failure" "visitor" ] ;
+                                                                            obviated-by = [ "easy" "failure" "visitor" ] ;
                                                                             nixosTest = pkgs.nixosTest ;
                                                                             test-setup =
                                                                                 ''
@@ -1085,16 +1085,16 @@
                                                                             status = 120 ;
                                                                         }
                                                                 )
-    #                                                                            (
-    #                                                                                _visa.check
-    #                                                                                    {
-    #                                                                                        failure = _failure.implementation ;
-    #                                                                                        lazy-shell-application = _lazy-shell-application.implementation ;
-    #                                                                                        node-package = _node-package.implementation ;
-    #                                                                                        obviated-by = [ "failure" "lazy-shell-application" "node-package" ] ;
-    #                                                                                        nixosTest = pkgs.nixosTest ;
-    #                                                                                    }
-    #                                                                            )
+                                                                (
+                                                                    _visa.check
+                                                                        {
+                                                                            failure = _failure.implementation ;
+                                                                            lazy-shell-application = _lazy-shell-application.implementation ;
+                                                                            node-package = _node-package.implementation ;
+                                                                            obviated-by = [ "easy" "failure" "lazy-shell-application" "node-package" ] ;
+                                                                            nixosTest = pkgs.nixosTest ;
+                                                                        }
+                                                                )
                                                             ]
                                                     ) ;
                                         in builtins.genList generator ( builtins.length list )
