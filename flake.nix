@@ -12,6 +12,7 @@
                         lazy-shell-application ,
                         nixpkgs ,
                         node-package ,
+                        portal ,
                         private ,
                         resource ,
                         sally ,
