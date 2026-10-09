@@ -1085,16 +1085,16 @@
 #                                                                            status = 120 ;
 #                                                                        }
 #                                                                )
-                                                                (
-                                                                    _visa.check
-                                                                        {
-                                                                            failure = _failure.implementation ;
-                                                                            lazy-shell-application = _lazy-shell-application.implementation ;
-                                                                            node-package = _node-package.implementation ;
-                                                                            obviated-by = [ "easy" "failure" "lazy-shell-application" "node-package" ] ;
-                                                                            nixosTest = pkgs.nixosTest ;
-                                                                        }
-                                                                )
+#                                                                (
+#                                                                    _visa.check
+#                                                                        {
+#                                                                            failure = _failure.implementation ;
+#                                                                            lazy-shell-application = _lazy-shell-application.implementation ;
+#                                                                            node-package = _node-package.implementation ;
+#                                                                            obviated-by = [ "easy" "failure" "lazy-shell-application" "node-package" ] ;
+#                                                                            nixosTest = pkgs.nixosTest ;
+#                                                                        }
+#                                                                )
                                                             ]
                                                     ) ;
                                         in builtins.genList generator ( builtins.length list )
