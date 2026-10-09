@@ -1077,14 +1077,14 @@
                                                                                     exit 120
                                                                                 '' ;
                                                                         }
-#                                                                        {
-#                                                                            arguments = [ "8153426608580965" ] ;
-#                                                                            standard-error = "" ;
-#                                                                            standard-input = null ;
-#                                                                            standard-output = "8153426608580965" ;
-#                                                                            status = 120 ;
-#                                                                        }
-#                                                                )
+                                                                        {
+                                                                            arguments = [ "8153426608580965" ] ;
+                                                                            standard-error = "" ;
+                                                                            standard-input = null ;
+                                                                            standard-output = "8153426608580965" ;
+                                                                            status = 120 ;
+                                                                        }
+                                                                )
 #                                                                (
 #                                                                    _visa.check
 #                                                                        {
