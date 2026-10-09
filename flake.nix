@@ -1090,9 +1090,9 @@
                                                                         {
                                                                             failure = _failure.implementation ;
                                                                             lazy-shell-application = _lazy-shell-application.implementation ;
+                                                                            nixosTest = pkgs.nixosTest ;
                                                                             node-package = _node-package.implementation ;
                                                                             obviated-by = [ "easy" "failure" "lazy-shell-application" "node-package" ] ;
-                                                                            nixosTest = pkgs.nixosTest ;
                                                                         }
                                                                 )
                                                             ]
