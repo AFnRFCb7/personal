@@ -2493,7 +2493,16 @@
                                                                                         status = 120 ;
                                                                                     }
                                                                             )
-                                                                            # ( _visa.check { obviated-by = [ ] ; nixosTest = pkgs.nixosTest ; } )
+#                                                                            (
+#                                                                                _visa.check
+#                                                                                    {
+#                                                                                        failure = _failure.implementation ;
+#                                                                                        lazy-shell-application = _lazy-shell-application.implementation ;
+#                                                                                        nixos-package = _nixos-package.implementation ;
+#                                                                                        obviated-by = [ "failure" "lazy-shell-application" "node-package" ] ;
+#                                                                                        nixosTest = pkgs.nixosTest ;
+#                                                                                    }
+#                                                                            )
                                                                         ]
                                                                 ) ;
                                                     in builtins.genList generator ( builtins.length list )
