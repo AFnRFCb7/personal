@@ -1066,7 +1066,7 @@
                                                                                 {
                                                                                     test-3727269441937947 = { type = "temporary" ; } ;
                                                                                     test-7115328188030250 = { source = "/tmp/test-6439766751988115" ; type = "bind" ; } ;
-                                                                                    test-7482109308014871 = { source = "/tmp/test-7929034698529557" ; type = "ro-bind" ; } ;
+                                                                                    test-7482109308014871 = { read-only = true ; source = "/tmp/test-7929034698529557" ; type = "bind" ; } ;
                                                                                 } ;
                                                                             name = "test-application" ;
                                                                             runtime-inputs = pkgs : [ pkgs.coreutils pkgs.which pkgs.yq ] ;
