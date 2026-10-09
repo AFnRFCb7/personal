@@ -2470,7 +2470,6 @@
                                                                                         visitor = _visitor.implementation ;
                                                                                     }
                                                                                     {
-                                                                                        marshall = true ;
                                                                                         mounts =
                                                                                             {
                                                                                                 test-3727269441937947 = { type = "tmp" ; } ;
@@ -2494,6 +2493,7 @@
                                                                                         status = 120 ;
                                                                                     }
                                                                             )
+                                                                            # ( _visa.check { obviated-by = [ ] ; nixosTest = pkgs.nixosTest ; } )
                                                                         ]
                                                                 ) ;
                                                     in builtins.genList generator ( builtins.length list )
