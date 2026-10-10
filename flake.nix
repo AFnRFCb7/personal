@@ -721,9 +721,8 @@
                                                         _failure.implementation
                                                         _visitor.implementation
                                                         _lazy-shell-application.implementation
-#                                                        _visa.implementation
-#                                                        _node-package.implementation
-                                                        _visitor.implementation
+                                                        _node-package.implementation
+                                                        _visa.implementation
                                                     ] ;
                                                 options =
                                                     {
