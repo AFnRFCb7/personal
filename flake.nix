@@ -1072,6 +1072,7 @@
                                                                             post = null ;
                                                                             text =
                                                                                 ''
+                                                                                    if true ; then exit 98 ; fi
                                                                                     echo -n "$1"
                                                                                     exit 120
                                                                                 '' ;
