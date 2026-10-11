@@ -728,7 +728,6 @@
                                                         _node-fetch.implementation
                                                         _node-package.implementation
                                                         _visa.implementation
-                                                        _visitor.implementation
                                                     ] ;
                                                 options =
                                                     {
