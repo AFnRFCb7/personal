@@ -18,6 +18,7 @@
                         resource ,
                         sally ,
                         system ,
+                        tree-serialization ,
                         trump5000 ,
                         visa ,
                         visitor
