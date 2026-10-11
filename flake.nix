@@ -11,6 +11,7 @@
                         fixture ,
                         lazy-shell-application ,
                         nixpkgs ,
+                        node-fetch ,
                         node-package ,
                         portal ,
                         private ,
