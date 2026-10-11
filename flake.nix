@@ -53,6 +53,7 @@
                                 {
                                     lazy-shell-application = _lazy-shell-application.implementation ;
                                 } ;
+                            _tree-serialization = tree-serialization.lib { } ;
                             _trump5000 = trump5000.lib
                                 {
                                     lazy-shell-application = _lazy-shell-application.implementation ;
@@ -1097,6 +1098,21 @@
                                                                             standard-input = null ;
                                                                             standard-output = "8153426608580965" ;
                                                                             status = 120 ;
+                                                                        }
+                                                                )
+                                                                (
+                                                                    _tree-serialization.check
+                                                                        {
+                                                                            failure = _failure.implementation ;
+                                                                            lazy-shell-application = _lazy-shell-application.implementation ;
+                                                                            nixosTest = pkgs.nixosTest ;
+                                                                            obviated-by = [ "easy" "failure" "lazy-shell-application" ] ;
+                                                                            observed = "/build/observed" ;
+                                                                        }
+                                                                        {
+                                                                            bytes = "1m" ;
+                                                                            expected = pkgs.coreutils ;
+                                                                            output = "/build/observed" ;
                                                                         }
                                                                 )
                                                                 (
