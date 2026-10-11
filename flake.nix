@@ -1123,7 +1123,7 @@
                                                                             nixosTest = pkgs.nixosTest ;
                                                                             node-fetch = _node-fetch.implementation ;
                                                                             node-package = _node-package.implementation ;
-                                                                            obviated-by = [ "easy" "failure" "lazy-shell-application" "node-package" ] ;
+                                                                            obviated-by = [ "easy" "failure" "lazy-shell-application" "tree-serialization" "node-package" ] ;
                                                                             visitor = _visitor.implementation ;
                                                                         }
                                                                 )
