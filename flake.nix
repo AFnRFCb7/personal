@@ -1053,7 +1053,15 @@
                                                                             failure = _failure.implementation ;
                                                                             obviated-by = [ "easy" "failure" "visitor" ] ;
                                                                             nixosTest = pkgs.nixosTest ;
-                                                                            test-setup =
+                                                                            post-test =
+                                                                                ''
+                                                                                    TEST="$( cat /build/7049093808477668 )" || failure 2081394149353800
+                                                                                    if [[ "$TEST" != "7102615289766215" ]]
+                                                                                    then
+                                                                                        failure 0270982783716055
+                                                                                    fi
+                                                                                '' ;
+                                                                            pre-test =
                                                                                 ''
                                                                                     echo -n 4899124582768405 > /tmp/test-6439766751988115
                                                                                     echo -n 1690621093050334 > /tmp/test-7929034698529557
@@ -1069,7 +1077,10 @@
                                                                                 } ;
                                                                             name = "test-application" ;
                                                                             runtime-inputs = pkgs : [ pkgs.coreutils pkgs.which pkgs.yq ] ;
-                                                                            post = null ;
+                                                                            post =
+                                                                                ''
+                                                                                    echo 7102615289766215 > /build/7049093808477668
+                                                                                '' ;
                                                                             text =
                                                                                 ''
                                                                                     echo -n "$1"
