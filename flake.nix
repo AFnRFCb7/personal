@@ -1108,6 +1108,7 @@
                                                                             nixosTest = pkgs.nixosTest ;
                                                                             obviated-by = [ "easy" "failure" "lazy-shell-application" ] ;
                                                                             observed = "/build/observed" ;
+                                                                            visitor = _visitor.implementation ;
                                                                         }
                                                                         {
                                                                             bytes = "1m" ;
