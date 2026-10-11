@@ -1107,13 +1107,11 @@
                                                                             lazy-shell-application = _lazy-shell-application.implementation ;
                                                                             nixosTest = pkgs.nixosTest ;
                                                                             obviated-by = [ "easy" "failure" "lazy-shell-application" ] ;
-                                                                            observed = "/build/observed" ;
                                                                             visitor = _visitor.implementation ;
                                                                         }
                                                                         {
                                                                             bytes = "1m" ;
                                                                             expected = pkgs.coreutils ;
-                                                                            output = "/build/observed" ;
                                                                         }
                                                                 )
                                                                 (
