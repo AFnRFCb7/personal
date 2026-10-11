@@ -508,6 +508,7 @@
 #                                                                        RESOURCES = "${ builtins.toString resources }" ;
                                                                         IS_NIX_FLAKE_CHECK= "false" ;
                                                                     } ;
+                                                                variables = { TEMPDIR = "$( mktemp --directory )" ; } ;
                                                             } ;
                                                         hardware.pulseaudio =
                                                             {
