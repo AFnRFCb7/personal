@@ -1112,7 +1112,7 @@
                                                                         }
                                                                         {
                                                                             bytes = "1m" ;
-                                                                            expected = pkgs.hello ;
+                                                                            expected = pkgs.writeShellApplication { name = "test" ; runtimeInputs = [ pkgs.coreutils ] ; text = "echo hi" ; } ;
                                                                         }
                                                                 )
                                                                 (
