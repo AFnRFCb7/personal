@@ -1125,6 +1125,7 @@
                                                                             node-fetch = _node-fetch.implementation ;
                                                                             node-package = _node-package.implementation ;
                                                                             obviated-by = [ "easy" "failure" "lazy-shell-application" "tree-serialization" "node-package" ] ;
+                                                                            tree-serialization = _tree-serialization.implementation ;
                                                                             visitor = _visitor.implementation ;
                                                                         }
                                                                 )
