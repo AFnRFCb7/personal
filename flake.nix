@@ -1112,7 +1112,7 @@
                                                                         }
                                                                         {
                                                                             bytes = "1m" ;
-                                                                            expected = pkgs.coreutils ;
+                                                                            expected = pkgs.jq ;
                                                                         }
                                                                 )
                                                                 (
