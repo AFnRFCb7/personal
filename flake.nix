@@ -55,7 +55,7 @@
                                     lazy-shell-application = _lazy-shell-application.implementation ;
                                 } ;
                             _tree-serialization = tree-serialization.lib { } ;
-                            _trip = trib.lib { } ;
+                            _trip = trip.lib { } ;
                             _trump5000 = trump5000.lib
                                 {
                                     lazy-shell-application = _lazy-shell-application.implementation ;
