@@ -727,6 +727,7 @@
                                                     [
                                                         _failure.implementation
                                                         _visitor.implementation
+                                                        _trip.implementation
                                                         _lazy-shell-application.implementation
                                                         _node-fetch.implementation
                                                         _node-package.implementation
@@ -970,7 +971,7 @@
                                                 builtins.sort
                                                     (
                                                         a : b :
-                                                            if builtins.elem a.type b.obviated-by && builtins.elem b.type a.obviated-by then builtins.throw "circular dependency"
+                                                            if builtins.elem a.type b.obviated-by && builtins.elem b.type a.obviated-by then _trip.implementation "circular dependency"
                                                             else if builtins.elem a.type b.obviated-by then true
                                                             else if builtins.elem b.type a.obviated-by then false
                                                             else "${ a.test }" < "${ b.test }"
@@ -1070,7 +1071,7 @@
                                                                     _lazy-shell-application.check
                                                                         {
                                                                             failure = _failure.implementation ;
-                                                                            obviated-by = [ "easy" "failure" "visitor" ] ;
+                                                                            obviated-by = [ "easy" "failure" "trip" "visitor" ] ;
                                                                             nixosTest = pkgs.nixosTest ;
                                                                             post-test =
                                                                                 ''
@@ -1085,6 +1086,7 @@
                                                                                     echo -n 4899124582768405 > /tmp/test-6439766751988115
                                                                                     echo -n 1690621093050334 > /tmp/test-7929034698529557
                                                                                 '' ;
+                                                                            trip = _trip.implementation ;
                                                                             visitor = _visitor.implementation ;
                                                                         }
                                                                         {
