@@ -1043,6 +1043,16 @@
                                                                         }
                                                                 )
                                                                 (
+                                                                    _trip.check
+                                                                        {
+                                                                            obviated-by = [ "easy" ] ;
+                                                                            nixosTest = pkgs.nixosTest ;
+                                                                        }
+                                                                        {
+                                                                            uuid = 4512844241004732 ;
+                                                                        }
+                                                                )
+                                                                (
                                                                     _visitor.check
                                                                         {
                                                                             obviated-by = [ "easy" "failure" ] ;
