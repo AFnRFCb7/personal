@@ -1081,6 +1081,7 @@
                                                                             initial = null ;
                                                                             expected = 1 ;
                                                                             sequential-file = "/sequential.txt" ;
+                                                                            sequential-lock = "/sequential.lock" ;
                                                                         }
                                                                 )
                                                                 (
@@ -1095,6 +1096,7 @@
                                                                             initial = 6786129628968017 ;
                                                                             expected = 6786129628968018 ;
                                                                             sequential-file = "/sequential.txt" ;
+                                                                            sequential-lock = "/sequential.lock" ;
                                                                         }
                                                                 )
                                                                 (
@@ -1109,6 +1111,7 @@
                                                                             initial = 9999999999999999 ;
                                                                             expected = 0 ;
                                                                             sequential-file = "/sequential.txt" ;
+                                                                            sequential-lock = "/sequential.lock" ;
                                                                         }
                                                                 )
                                                                 (
