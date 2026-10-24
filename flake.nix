@@ -17,6 +17,7 @@
                         private ,
                         resource ,
                         sally ,
+                        sequential ,
                         system ,
                         tree-serialization ,
                         trip ,
@@ -54,6 +55,7 @@
                                 {
                                     lazy-shell-application = _lazy-shell-application.implementation ;
                                 } ;
+                            _sequential = sequential.lib { } ;
                             _tree-serialization = tree-serialization.lib { } ;
                             _trip = trip.lib { } ;
                             _trump5000 = trump5000.lib
@@ -1065,6 +1067,48 @@
                                                                             success = true ;
                                                                             value = null ;
                                                                             visitors = { null = path : value : value ; } ;
+                                                                        }
+                                                                )
+                                                                (
+                                                                    _sequential.check
+                                                                        {
+                                                                            failure = _failure.implementation ;
+                                                                            nixosText = pkgs.nixosTest ;
+                                                                            obviated-by = [ "failure" "visitor" ] ;
+                                                                            visitor = _visitor.implementation ;
+                                                                        }
+                                                                        {
+                                                                            initial = null ;
+                                                                            expected = 1 ;
+                                                                            sequential-file = "/sequential.txt" ;
+                                                                        }
+                                                                )
+                                                                (
+                                                                    _sequential.check
+                                                                        {
+                                                                            failure = _failure.implementation ;
+                                                                            nixosText = pkgs.nixosTest ;
+                                                                            obviated-by = [ "failure" "visitor" ] ;
+                                                                            visitor = _visitor.implementation ;
+                                                                        }
+                                                                        {
+                                                                            initial = 6786129628968017 ;
+                                                                            expected = 6786129628968018 ;
+                                                                            sequential-file = "/sequential.txt" ;
+                                                                        }
+                                                                )
+                                                                (
+                                                                    _sequential.check
+                                                                        {
+                                                                            failure = _failure.implementation ;
+                                                                            nixosText = pkgs.nixosTest ;
+                                                                            obviated-by = [ "failure" "visitor" ] ;
+                                                                            visitor = _visitor.implementation ;
+                                                                        }
+                                                                        {
+                                                                            initial = 9999999999999999 ;
+                                                                            expected = 0 ;
+                                                                            sequential-file = "/sequential.txt" ;
                                                                         }
                                                                 )
                                                                 (
