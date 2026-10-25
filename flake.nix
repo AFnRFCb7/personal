@@ -23,7 +23,8 @@
                         trip ,
                         trump5000 ,
                         visa ,
-                        visitor
+                        visitor ,
+                        wrap
                     } @primary :
                         let
                             _android-application = android-application.lib { } ;
@@ -64,6 +65,7 @@
                                 } ;
                             _visa = visa.lib { } ;
                             _visitor = visitor.lib { } ;
+                            _wrap = wrap.lib { } ;
                             implementation =
                                 { config , lib , pkgs , ... } :
                                     let
@@ -1067,6 +1069,19 @@
                                                                             success = true ;
                                                                             value = null ;
                                                                             visitors = { null = path : value : value ; } ;
+                                                                        }
+                                                                )
+                                                                (
+                                                                    _wrap.check
+                                                                        {
+                                                                            nixosTest = pkgs.nixosTest ;
+                                                                            obviated-by = [ "easy" ] ;
+                                                                        }
+                                                                        {
+                                                                            initialization = "2578689542706390$HELLO7773662063242836" ;
+                                                                            invocation = input-file : output-file : "wrap ${ input-file } ${ output-file } 0400 --replace HOME 2808735656835421" ;
+                                                                            expected-content = "257868954270639028087356568354217773662063242836" ;
+                                                                            expected-permission = 0400 ;
                                                                         }
                                                                 )
                                                                 (
