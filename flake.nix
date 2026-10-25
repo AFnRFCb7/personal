@@ -1073,7 +1073,7 @@
                                                                     _sequential.check
                                                                         {
                                                                             failure = _failure.implementation ;
-                                                                            nixosText = pkgs.nixosTest ;
+                                                                            nixosTest = pkgs.nixosTest ;
                                                                             obviated-by = [ "failure" "visitor" ] ;
                                                                             visitor = _visitor.implementation ;
                                                                         }
@@ -1088,7 +1088,7 @@
                                                                     _sequential.check
                                                                         {
                                                                             failure = _failure.implementation ;
-                                                                            nixosText = pkgs.nixosTest ;
+                                                                            nixosTest = pkgs.nixosTest ;
                                                                             obviated-by = [ "failure" "visitor" ] ;
                                                                             visitor = _visitor.implementation ;
                                                                         }
@@ -1103,7 +1103,7 @@
                                                                     _sequential.check
                                                                         {
                                                                             failure = _failure.implementation ;
-                                                                            nixosText = pkgs.nixosTest ;
+                                                                            nixosTest = pkgs.nixosTest ;
                                                                             obviated-by = [ "failure" "visitor" ] ;
                                                                             visitor = _visitor.implementation ;
                                                                         }
