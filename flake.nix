@@ -1168,7 +1168,7 @@
                                                                             resources-directory = "/build/resources" ;
                                                                         }
                                                                         {
-                                                                            "temporary-directory" =
+                                                                            "easy" =
                                                                                 {
                                                                                     error = 164 ;
                                                                                     init = null ;
@@ -1177,7 +1177,7 @@
                                                                         }
                                                                         [
                                                                             {
-                                                                                command = "temporary-directory" ;
+                                                                                command = "easy" ;
                                                                                 name = "temporary" ;
                                                                                 standard-error = "" ;
                                                                                 standard-output = "/build/resources/mounts/0000000000000000" ;
