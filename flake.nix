@@ -1164,7 +1164,7 @@
                                                                             visitor = _visitor.implementation ;
                                                                         }
                                                                         {
-                                                                            gc-root-directory = "/build/gc-root" ;
+                                                                            gc-roots-directory = "/build/gc-root" ;
                                                                             resources-directory = "/build/resources" ;
                                                                         }
                                                                         {
