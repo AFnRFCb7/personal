@@ -1174,12 +1174,12 @@
                                                                             name = "resource" ;
                                                                         }
                                                                         [
-                                                                            {
-                                                                                command = "resource" ;
-                                                                                standard-error = "" ;
-                                                                                standard-output = "/build/resources/mounts/0000000000000000" ;
-                                                                                status = 0 ;
-                                                                            }
+#                                                                            {
+#                                                                                command = "resource" ;
+#                                                                                standard-error = "" ;
+#                                                                                standard-output = "/build/resources/mounts/0000000000000000" ;
+#                                                                                status = 0 ;
+#                                                                            }
                                                                         ]
                                                                 )
                                                                 (
