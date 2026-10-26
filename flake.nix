@@ -32,26 +32,6 @@
                             _lazy-shell-application = lazy-shell-application.lib { } ;
                             _node-fetch = node-fetch.lib { } ;
                             _node-package = node-package.lib { } ;
-                            _resource =
-                                resource.lib
-                                    {
-                                        buildFHSUserEnv = pkgs.buildFHSUserEnv ;
-                                        coreutils = pkgs.coreutils ;
-                                        error-code = 111 ;
-                                        findutils = pkgs.findutils ;
-                                        invalid-init-channel = "invalid-init" ;
-                                        invalid-release-channel = "invalid-release" ;
-                                        flock = pkgs.flock ;
-                                        gnused = pkgs.gnused ;
-                                        log-channel = "log" ;
-                                        mkDerivation = pkgs.stdenv.mkDerivation ;
-                                        jq = pkgs.jq ;
-                                        pstree = pkgs.pstree ;
-                                        redis = pkgs.redis ;
-                                        valid-init-channel = "valid-init" ;
-                                        valid-release-channel = "valid-release" ;
-                                        writeShellApplication = pkgs.writeShellApplication ;
-                                    } ;
                             _sally = sally.lib
                                 {
                                     lazy-shell-application = _lazy-shell-application.implementation ;
@@ -69,13 +49,6 @@
                             implementation =
                                 { config , lib , pkgs , ... } :
                                     let
-                                        __resource =
-                                            _resource.implementation
-                                                {
-                                                    config = config ;
-                                                    gc-roots-directory = "/home/${ config.personal.name }/.gc-roots" ;
-                                                    resources-directory = "/home/${ config.personal.name }/resources" ;
-                                                } ;
                                         identity =
                                             pkgs.stdenv.mkDerivation
                                                 {
