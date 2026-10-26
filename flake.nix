@@ -1164,22 +1164,24 @@
                                                                             visitor = _visitor.implementation ;
                                                                         }
                                                                         {
-                                                                            init = null ;
-                                                                            gc-roots-directory = "/build/gc-root" ;
-                                                                            release = null ;
+                                                                            gc-root-directory = "/build/gc-root" ;
                                                                             resources-directory = "/build/resources" ;
                                                                         }
                                                                         {
-                                                                            error = 161 ;
-                                                                            name = "resource" ;
+                                                                            "temporary-directory" =
+                                                                                {
+                                                                                    init = null ;
+                                                                                    release = null ;
+                                                                                } ;
                                                                         }
                                                                         [
-#                                                                            {
-#                                                                                command = "resource" ;
-#                                                                                standard-error = "" ;
-#                                                                                standard-output = "/build/resources/mounts/0000000000000000" ;
-#                                                                                status = 0 ;
-#                                                                            }
+                                                                            {
+                                                                                command = "resource" ;
+                                                                                name = "temporary" ;
+                                                                                standard-error = "" ;
+                                                                                standard-output = "/build/resources/mounts/0000000000000000" ;
+                                                                                status = 0 ;
+                                                                            }
                                                                         ]
                                                                 )
                                                                 (
