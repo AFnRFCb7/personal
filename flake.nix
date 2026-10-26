@@ -1166,7 +1166,7 @@
                                                                         {
                                                                             error = 101 ;
                                                                             init = null ;
-                                                                            gc-root-directory = "/build/gc-root" ;
+                                                                            gc-roots-directory = "/build/gc-root" ;
                                                                             release = null ;
                                                                             resources-directory = "/build/resources" ;
                                                                         }
