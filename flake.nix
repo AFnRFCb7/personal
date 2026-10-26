@@ -1074,6 +1074,7 @@
                                                                 (
                                                                     _wrap.check
                                                                         {
+                                                                            failure = _failure.implementation ;
                                                                             nixosTest = pkgs.nixosTest ;
                                                                             obviated-by = [ "easy" "failure" ] ;
                                                                         }
