@@ -1163,6 +1163,13 @@
                                                                             trip = _trip.implementation ;
                                                                             visitor = _visitor.implementation ;
                                                                         }
+                                                                        {
+                                                                            error = 101 ;
+                                                                            init = null ;
+                                                                            gc-root-directory = "/build/gc-root" ;
+                                                                            release = null ;
+                                                                            resources-directory = "/build/resources" ;
+                                                                        }
                                                                         [
 #                                                                            {
 #                                                                                command =
