@@ -1170,13 +1170,17 @@
                                                                             release = null ;
                                                                             resources-directory = "/build/resources" ;
                                                                         }
+                                                                        {
+                                                                            error = 161 ;
+                                                                            name = "resource" ;
+                                                                        }
                                                                         [
-#                                                                            {
-#                                                                                command =
-#                                                                                standard-error = "" ;
-#                                                                                standard-output = "" ;
-#                                                                                status = 0 ;
-#                                                                            }
+                                                                            {
+                                                                                command = "resource" ;
+                                                                                standard-error = "" ;
+                                                                                standard-output = "" ;
+                                                                                status = 0 ;
+                                                                            }
                                                                         ]
                                                                 )
                                                                 (
