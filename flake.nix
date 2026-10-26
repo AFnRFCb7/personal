@@ -1169,11 +1169,33 @@
                                                                             resources-directory = "/build/resources" ;
                                                                         }
                                                                         {
-                                                                            "easy" =
+                                                                            easy =
                                                                                 {
                                                                                     error = 164 ;
                                                                                     init = null ;
                                                                                     release = null ;
+                                                                                } ;
+                                                                            hard =
+                                                                                {
+                                                                                    error = 182 ;
+                                                                                    init =
+                                                                                        ignore :
+                                                                                            {
+                                                                                                runtime-inputs = pkgs : [ ] ;
+                                                                                                targets = [ "4660671719017078" ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        touch /mounts/mount/4660671719017078
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    release =
+                                                                                        ignore :
+                                                                                            {
+                                                                                                runtime-inputs = pkgs : [ ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                    '' ;
+                                                                                            } ;
                                                                                 } ;
                                                                         }
                                                                         [
