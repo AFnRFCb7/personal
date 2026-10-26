@@ -1172,7 +1172,6 @@
                                                                                 {
                                                                                     init = null ;
                                                                                     error = 161 ;
-                                                                                    name = "resource" ;
                                                                                     release = null ;
                                                                                 } ;
                                                                         }
