@@ -1080,7 +1080,7 @@
                                                                         }
                                                                         {
                                                                             initialization = "2578689542706390$HELLO7773662063242836" ;
-                                                                            invocation = input-file : output-file : "wrap ${ input-file } ${ output-file } 0400 --replace HOME 2808735656835421" ;
+                                                                            invocation = input-file : output-file : ''wrap ${ input-file } "${ output-file }" 0400 --replace HOME 2808735656835421'' ;
                                                                             expected-content = "257868954270639028087356568354217773662063242836" ;
                                                                             expected-permissions = 0400 ;
                                                                         }
