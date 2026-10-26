@@ -1075,7 +1075,7 @@
                                                                     _wrap.check
                                                                         {
                                                                             nixosTest = pkgs.nixosTest ;
-                                                                            obviated-by = [ "easy" ] ;
+                                                                            obviated-by = [ "easy" "failure" ] ;
                                                                         }
                                                                         {
                                                                             initialization = "2578689542706390$HELLO7773662063242836" ;
