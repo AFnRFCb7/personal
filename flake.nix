@@ -1176,7 +1176,7 @@
                                                                         }
                                                                         [
                                                                             {
-                                                                                command = "resource" ;
+                                                                                command = "temporary-directory" ;
                                                                                 name = "temporary" ;
                                                                                 standard-error = "" ;
                                                                                 standard-output = "/build/resources/mounts/0000000000000000" ;
