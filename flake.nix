@@ -1177,7 +1177,7 @@
                                                                             {
                                                                                 command = "resource" ;
                                                                                 standard-error = "" ;
-                                                                                standard-output = "" ;
+                                                                                standard-output = "/build/resources/mounts/0000000000000000" ;
                                                                                 status = 0 ;
                                                                             }
                                                                         ]
