@@ -1158,10 +1158,19 @@
                                                                         {
                                                                             failure = _failure.implementation ;
                                                                             nixosTest = pkgs.nixosTest ;
-                                                                            obviated-by = [ "easy" "failure" "lazy-shell-application" ] ;
+                                                                            obviated-by = [ "easy" "failure" "lazy-shell-application" "trip" "visitor" ] ;
                                                                             lazy-shell-application = _lazy-shell-application.implementation ;
+                                                                            trip = _trip.implementation ;
+                                                                            visitor = _visitor.implementation ;
                                                                         }
-                                                                        [ ]
+                                                                        [
+#                                                                            {
+#                                                                                command =
+#                                                                                standard-error = "" ;
+#                                                                                standard-output = "" ;
+#                                                                                status = 0 ;
+#                                                                            }
+                                                                        ]
                                                                 )
                                                                 (
                                                                     _tree-serialization.check
