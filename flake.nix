@@ -1164,18 +1164,21 @@
                                                                             visitor = _visitor.implementation ;
                                                                         }
                                                                         {
-                                                                            init = null ;
                                                                             gc-roots-directory = "/build/gc-root" ;
-                                                                            release = null ;
                                                                             resources-directory = "/build/resources" ;
                                                                         }
                                                                         {
-                                                                            error = 161 ;
-                                                                            name = "resource" ;
+                                                                            easy =
+                                                                                {
+                                                                                    init = null ;
+                                                                                    error = 161 ;
+                                                                                    name = "resource" ;
+                                                                                    release = null ;
+                                                                                } ;
                                                                         }
                                                                         [
 #                                                                            {
-#                                                                                command = "resource" ;
+#                                                                                command = ''easy'' ;
 #                                                                                standard-error = "" ;
 #                                                                                standard-output = "/build/resources/mounts/0000000000000000" ;
 #                                                                                status = 0 ;
