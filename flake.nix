@@ -1164,7 +1164,6 @@
                                                                             visitor = _visitor.implementation ;
                                                                         }
                                                                         {
-                                                                            error = 101 ;
                                                                             init = null ;
                                                                             gc-roots-directory = "/build/gc-root" ;
                                                                             release = null ;
