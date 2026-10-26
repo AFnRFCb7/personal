@@ -1153,6 +1153,16 @@
                                                                         }
                                                                 )
                                                                 (
+                                                                    _lazy-shell-resource.check
+                                                                        {
+                                                                            failure = _failure.implementation ;
+                                                                            nixosTest = pkgs.nixosTest ;
+                                                                            obviated-by = [ "easy" "failure" "lazy-shell-application" ] ;
+                                                                            lazy-shell-application = _lazy-shell-application.implementation ;
+                                                                        }
+                                                                        [ ]
+                                                                )
+                                                                (
                                                                     _tree-serialization.check
                                                                         {
                                                                             failure = _failure.implementation ;
