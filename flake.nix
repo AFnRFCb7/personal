@@ -30,6 +30,7 @@
                             _android-application = android-application.lib { } ;
                             _failure = failure.lib { } ;
                             _lazy-shell-application = lazy-shell-application.lib { } ;
+                            _lazy-shell-resource = lazy-shell-resource.lib { } ;
                             _node-fetch = node-fetch.lib { } ;
                             _node-package = node-package.lib { } ;
                             _sally = sally.lib
