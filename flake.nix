@@ -1177,7 +1177,9 @@
                                                                                 } ;
                                                                             hard =
                                                                                 {
-                                                                                    error =
+                                                                                    error = 164 ;
+                                                                                    init = null ;
+                                                                                    release = null ;
                                                                                 } ;
                                                                         }
                                                                         [
