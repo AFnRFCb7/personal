@@ -1177,17 +1177,14 @@
                                                                                 } ;
                                                                         }
                                                                         [
-#                                                                            {
-#                                                                                runtimeInputs = [ pkgs.coreutils ] ;
-#                                                                                standard-error = "" ;
-#                                                                                standard-output = "/build/resources/mounts/0000000000000000" ;
-#                                                                                status = 0 ;
-#                                                                                text =
-#                                                                                    ''
-#                                                                                        RESOURCE="$( easy )"
-#                                                                                        echo "$RESOURCE"
-#                                                                                    '' ;
-#                                                                            }
+                                                                            {
+                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                text =
+                                                                                    ''
+                                                                                        RESOURCE="$( easy )"
+                                                                                        echo "$RESOURCE"
+                                                                                    '' ;
+                                                                            }
                                                                         ]
                                                                 )
                                                                 (
