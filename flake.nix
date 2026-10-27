@@ -1176,6 +1176,22 @@
                                                                                     init = null ;
                                                                                     release = null ;
                                                                                 } ;
+                                                                            hard =
+                                                                                {
+                                                                                    error = 172 ;
+                                                                                    init =
+                                                                                        ignore :
+                                                                                            {
+                                                                                                runtime-inputs = pkgs : [ pkgs.coreutils ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        RESOURCE="$( easy )" || failure 3914858517169326
+                                                                                                        touch 5091107226695344
+                                                                                                        echo -n 4622187892492581
+                                                                                                    '' ;
+                                                                                                targets = [ "5091107226695344" ] ;
+                                                                                            } ;
+                                                                                } ;
                                                                         }
                                                                         [
                                                                             {
@@ -1183,12 +1199,27 @@
                                                                                 text =
                                                                                     ''
                                                                                         # shellcheck disable=SC2034
-                                                                                        RESOURCE="$( easy )" || failure 0383828707683387
+                                                                                        RESOURCE="$( hard )" || failure 0383828707683387
                                                                                         jq \
                                                                                             --null-input \
-                                                                                            '{
-                                                                                                "type" : "valid-init"
-                                                                                            }' | check-log --order 1
+                                                                                            '[
+                                                                                                { "type" : "valid-init" } ,
+                                                                                                {
+                                                                                                    "inputs" :
+                                                                                                        {
+                                                                                                            arguments : [ ] ,
+                                                                                                            inputs : { }
+                                                                                                        } ,
+                                                                                                    "output" :
+                                                                                                        {
+                                                                                                            "outputs" :
+                                                                                                                {
+                                                                                                                    "standard-output" : "4622187892492581"
+                                                                                                                }
+                                                                                                        }
+                                                                                                    "type" : "valid-init"
+                                                                                                }
+                                                                                            ]' | check-log --order 1 2
                                                                                     '' ;
                                                                             }
                                                                         ]
