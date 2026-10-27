@@ -1178,7 +1178,19 @@
                                                                             hard =
                                                                                 {
                                                                                     error = 164 ;
-                                                                                    init = null ;
+                                                                                    init =
+                                                                                        ignore :
+                                                                                            {
+                                                                                                action =
+                                                                                                    {
+                                                                                                        runtime-inputs = pkgs : [ ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                                recovery = null ;
+                                                                                                targets = [ ] ;
+                                                                                            } ;
                                                                                     release = null ;
                                                                                 } ;
                                                                         }
