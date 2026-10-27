@@ -1183,8 +1183,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         # shellcheck disable=SC2034
-                                                                                        RESOURCE="$( easy )"
-                                                                                        export RESOURCE
+                                                                                        RESOURCE="$( easy )" || failure 0383828707683387
                                                                                         jq \
                                                                                             --null-input \
                                                                                             '{
