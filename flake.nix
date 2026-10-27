@@ -1169,12 +1169,12 @@
                                                                             resources-directory = "/build/resources" ;
                                                                         }
                                                                         {
-#                                                                            easy =
-#                                                                                {
-#                                                                                    error = 161 ;
-#                                                                                    init = null ;
-#                                                                                    release = null ;
-#                                                                                } ;
+                                                                            easy =
+                                                                                {
+                                                                                    error = 161 ;
+                                                                                    init = null ;
+                                                                                    release = null ;
+                                                                                } ;
                                                                         }
                                                                         [
 #                                                                            {
