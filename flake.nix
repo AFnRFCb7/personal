@@ -1183,7 +1183,11 @@
                                                                                 text =
                                                                                     ''
                                                                                         RESOURCE="$( easy )"
-                                                                                        echo "$RESOURCE"
+                                                                                        jq \
+                                                                                            --null-input \
+                                                                                            '{
+                                                                                                "WTF" : 7998456199654908
+                                                                                            }' | check-log --order 1
                                                                                     '' ;
                                                                             }
                                                                         ]
