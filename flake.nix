@@ -1182,7 +1182,9 @@
                                                                                 runtime-inputs = { config , pkgs } : [ pkgs.coreutils ] ;
                                                                                 text =
                                                                                     ''
+                                                                                        # shellcheck disable=SC2034
                                                                                         RESOURCE="$( easy )"
+                                                                                        export RESOURCE
                                                                                         jq \
                                                                                             --null-input \
                                                                                             '{
