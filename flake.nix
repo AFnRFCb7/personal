@@ -1158,11 +1158,12 @@
                                                                         {
                                                                             failure = _failure.implementation ;
                                                                             nixosTest = pkgs.nixosTest ;
-                                                                            obviated-by = [ "easy" "failure" "lazy-shell-application" "sequential" "trip" "visitor" ] ;
+                                                                            obviated-by = [ "easy" "failure" "lazy-shell-application" "sequential" "trip" "visitor" "wrap" ] ;
                                                                             lazy-shell-application = _lazy-shell-application.implementation ;
                                                                             sequential = _sequential.implementation ;
                                                                             trip = _trip.implementation ;
                                                                             visitor = _visitor.implementation ;
+                                                                            wrap = _wrap.implementation ;
                                                                         }
                                                                         {
                                                                             gc-roots-directory = "/build/gc-root" ;
