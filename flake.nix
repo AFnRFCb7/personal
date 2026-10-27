@@ -1175,6 +1175,10 @@
                                                                                     init = null ;
                                                                                     release = null ;
                                                                                 } ;
+                                                                            hard =
+                                                                                {
+                                                                                    error =
+                                                                                } ;
                                                                         }
                                                                         [
                                                                             {
