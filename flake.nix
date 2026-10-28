@@ -1134,7 +1134,7 @@
                                                                                     test-7482109308014871 = { is-directory = false ; read-only = true ; source = "/tmp/test-7929034698529557" ; type = "bind" ; } ;
                                                                                 } ;
                                                                             name = "test-application" ;
-                                                                            runtime-inputs = pkgs : [ pkgs.coreutils pkgs.which pkgs.yq ] ;
+                                                                            runtime-inputs = { pkgs , ... } : [ pkgs.coreutils pkgs.which pkgs.yq ] ;
                                                                             post =
                                                                                 ''
                                                                                     echo 7102615289766215 > /build/7049093808477668
@@ -1196,7 +1196,7 @@
                                                                         }
                                                                         [
                                                                             {
-                                                                                runtime-inputs = { config , pkgs } : [ pkgs.coreutils ] ;
+                                                                                runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils ] ;
                                                                                 text =
                                                                                     ''
                                                                                         # shellcheck disable=SC2034
