@@ -28,7 +28,7 @@
                         let
                             _android-application = android-application.lib { } ;
                             _failure = failure.lib { } ;
-                            _lazy-shell-application = lazy-shell-application.lib null { } ;
+                            _lazy-shell-application = lazy-shell-application.lib null null ;
                             _lazy-shell-resource = lazy-shell-resource.lib null null ;
                             _node-fetch = node-fetch.lib { } ;
                             _node-package = node-package.lib { } ;
