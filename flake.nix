@@ -31,7 +31,6 @@
                             _failure = failure.lib { } ;
                             _lazy-shell-application = lazy-shell-application.lib null null ;
                             _lazy-shell-resource = lazy-shell-resource.lib null null ;
-                            _node-fetch = node-fetch.lib { } ;
                             _node-package = node-package.lib { } ;
                             _sally = sally.lib
                                 {
@@ -707,7 +706,6 @@
                                                         _visitor.implementation
                                                         _trip.implementation
                                                         _lazy-shell-application.implementation
-                                                        _node-fetch.implementation
                                                         _node-package.implementation
                                                         _tree-serialization.implementation
                                                         _visa.implementation
@@ -1228,7 +1226,6 @@
                                                                             failure = _failure.implementation ;
                                                                             lazy-shell-application = _lazy-shell-application.implementation ;
                                                                             nixosTest = pkgs.nixosTest ;
-                                                                            node-fetch = _node-fetch.implementation ;
                                                                             node-package = _node-package.implementation ;
                                                                             obviated-by = [ "easy" "failure" "lazy-shell-application" "tree-serialization" "node-package" ] ;
                                                                             tree-serialization = _tree-serialization.implementation ;
