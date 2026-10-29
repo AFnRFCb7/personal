@@ -700,7 +700,7 @@
                                                                 password = config.personal.password ;
                                                             } ;
                                                     } ;
-                                                imports = builtins.attrValue ( builtins.mapAttrs ( name : value : builtins.getAttr "implementation" value ) flakes ) ;
+                                                imports = builtins.attrValues ( builtins.mapAttrs ( name : value : builtins.getAttr "implementation" value ) flakes ) ;
                                                 options =
                                                     {
                                                         personal =
