@@ -1077,6 +1077,23 @@
                                                                                 }
                                                                         )
                                                                         (
+                                                                            checks.gc-root
+                                                                                {
+                                                                                    failure = implementations.failure ;
+                                                                                    nixosTest = pkgs.nixosTest ;
+                                                                                    obviated-by = [ "easy" "failure" "sequential" ] ;
+                                                                                    sequential = implementations.sequential ;
+                                                                                }
+                                                                                {
+                                                                                    pre-test = "" ;
+                                                                                    expected = 0 ;
+                                                                                }
+                                                                                {
+                                                                                    index = 0 ;
+                                                                                    target = pkgs.coreutils ;
+                                                                                }
+                                                                        )
+                                                                        (
                                                                             checks.wrap
                                                                                 {
                                                                                     nixosTest = pkgs.nixosTest ;
