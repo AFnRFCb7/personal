@@ -1265,7 +1265,18 @@
                                                                             pkgs.nixosTest
                                                                                 {
                                                                                     name = "nixos-test" ;
-                                                                                    nodes = { } ;
+                                                                                    nodes.client =
+                                                                                        { ... } @module :
+                                                                                            let
+                                                                                                identified =
+                                                                                                    if builtins.typeOf input == "lambda" then input module
+                                                                                                    else if builtins.typeOf input == "null" then module
+                                                                                                    else builtins.throw "7234317096189800" ;
+                                                                                                in
+                                                                                                    with identified ;
+                                                                                                        {
+                                                                                                        } ;
+                                                                                            } ;
                                                                                     testScript =
                                                                                         ''
                                                                                         '' ;
