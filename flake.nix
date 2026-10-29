@@ -22,7 +22,7 @@
                         sequential ,
                         tree-serialization ,
                         trip ,
-                        trump5000 ,
+                        # trump5000 ,
                         visa ,
                         visitor ,
                         wrap
@@ -39,10 +39,10 @@
                             _sequential = sequential.lib { } ;
                             _tree-serialization = tree-serialization.lib { } ;
                             _trip = trip.lib { } ;
-                            _trump5000 = trump5000.lib
-                                {
-                                    lazy-shell-application = _lazy-shell-application.implementation ;
-                                } ;
+#                            _trump5000 = trump5000.lib
+#                                {
+#                                    lazy-shell-application = _lazy-shell-application.implementation ;
+#                                } ;
                             _visa = visa.lib { } ;
                             _visitor = visitor.lib { } ;
                             _wrap = wrap.lib { } ;
