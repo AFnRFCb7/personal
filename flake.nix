@@ -28,24 +28,6 @@
                         wrap
                     } @flakes :
                         let
-                            # _android-application = android-application.lib { } ;
-                            _failure = failure.lib { } ;
-                            _lazy-shell-application = lazy-shell-application.lib { } ;
-                            _lazy-shell-resource = lazy-shell-resource.lib { } ;
-#                            _sally = sally.lib
-#                                {
-#                                    lazy-shell-application = _lazy-shell-application.implementation ;
-#                                } ;
-                            _sequential = sequential.lib { } ;
-                            _tree-serialization = tree-serialization.lib { } ;
-                            _trip = trip.lib { } ;
-#                            _trump5000 = trump5000.lib
-#                                {
-#                                    lazy-shell-application = _lazy-shell-application.implementation ;
-#                                } ;
-                            _visa = visa.lib { } ;
-                            _visitor = visitor.lib { } ;
-                            _wrap = wrap.lib { } ;
                             implementation =
                                 { config , lib , pkgs , ... } :
                                     let
