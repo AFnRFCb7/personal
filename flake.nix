@@ -700,15 +700,7 @@
                                                                 password = config.personal.password ;
                                                             } ;
                                                     } ;
-                                                imports =
-                                                    [
-                                                        _failure.implementation
-                                                        _visitor.implementation
-                                                        _trip.implementation
-                                                        _lazy-shell-application.implementation
-                                                        _tree-serialization.implementation
-                                                        _visa.implementation
-                                                    ] ;
+                                                imports = builtins.attrValue ( builtins.mapAttrs ( name : value : builtins.getAttr "implementation" value ) flakes ) ;
                                                 options =
                                                     {
                                                         personal =
