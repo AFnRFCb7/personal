@@ -970,6 +970,16 @@
                                                         in val.check
                                             )
                                             flakes ;
+                                    implementation =
+                                        builtins.mapAttrs
+                                            (
+                                                name : value :
+                                                    let
+                                                        lib = builtins.getAttr "lib" value ;
+                                                        val = lib { } ;
+                                                        in val.implementation
+                                            )
+                                            flakes ;
                                     in
                                         builtins.listToAttrs
                                             (
@@ -1073,7 +1083,6 @@
                                                                             checks.visitor
                                                                                 {
                                                                                     obviated-by = [ "easy" "trip" ] ;
-                                                                                    failure = _failure.implementation ;
                                                                                     nixosTest = pkgs.nixosTest ;
                                                                                 }
                                                                                 {
@@ -1086,7 +1095,6 @@
                                                                         (
                                                                             checks.wrap
                                                                                 {
-                                                                                    failure = _failure.implementation ;
                                                                                     nixosTest = pkgs.nixosTest ;
                                                                                     obviated-by = [ "easy" "failure" ] ;
                                                                                 }
@@ -1100,10 +1108,10 @@
                                                                         (
                                                                             checks.sequential
                                                                                 {
-                                                                                    failure = _failure.implementation ;
+                                                                                    failure = implementations.failure ;
                                                                                     nixosTest = pkgs.nixosTest ;
                                                                                     obviated-by = [ "failure" "visitor" ] ;
-                                                                                    visitor = _visitor.implementation ;
+                                                                                    visitor = implementations.visitor ;
                                                                                 }
                                                                                 {
                                                                                     initial = null ;
@@ -1115,10 +1123,10 @@
                                                                         (
                                                                             checks.sequential
                                                                                 {
-                                                                                    failure = _failure.implementation ;
+                                                                                    failure = implementations.failure ;
                                                                                     nixosTest = pkgs.nixosTest ;
                                                                                     obviated-by = [ "failure" "visitor" ] ;
-                                                                                    visitor = _visitor.implementation ;
+                                                                                    visitor = implementations.visitor ;
                                                                                 }
                                                                                 {
                                                                                     initial = 6786129628968017 ;
@@ -1130,10 +1138,10 @@
                                                                         (
                                                                             checks.sequential
                                                                                 {
-                                                                                    failure = _failure.implementation ;
+                                                                                    failure = implementation.failure ;
                                                                                     nixosTest = pkgs.nixosTest ;
                                                                                     obviated-by = [ "failure" "visitor" ] ;
-                                                                                    visitor = _visitor.implementation ;
+                                                                                    visitor = implementations.visitor ;
                                                                                 }
                                                                                 {
                                                                                     initial = 9999999999999999 ;
@@ -1145,7 +1153,7 @@
                                                                         (
                                                                             checks.lazy-shell-application
                                                                                 {
-                                                                                    failure = _failure.implementation ;
+                                                                                    failure = implementation.failure ;
                                                                                     obviated-by = [ "easy" "failure" "trip" "visitor" ] ;
                                                                                     nixosTest = pkgs.nixosTest ;
                                                                                     post-test =
@@ -1162,7 +1170,7 @@
                                                                                             echo -n 1690621093050334 > /tmp/test-7929034698529557
                                                                                         '' ;
                                                                                     trip = _trip.implementation ;
-                                                                                    visitor = _visitor.implementation ;
+                                                                                    visitor = implementations.visitor ;
                                                                                 }
                                                                                 {
                                                                                     mounts =
@@ -1194,16 +1202,16 @@
                                                                         (
                                                                             checks.lazy-shell-resource
                                                                                 {
-                                                                                    failure = _failure.implementation ;
+                                                                                    failure = implementation.failure ;
                                                                                     nixosTest = pkgs.nixosTest ;
                                                                                     obviated-by = [ ] ;
                                                                                     # obviated-by = [ "easy" "failure" "lazy-shell-application" "sequential" "trip" "visitor" "wrap" ] ;
-                                                                                    lazy-shell-application = _lazy-shell-application.implementation ;
+                                                                                    lazy-shell-application = implementation.lazy-shell-application ;
                                                                                     process-lock = "/build/process.lock" ;
-                                                                                    sequential = _sequential.implementation ;
-                                                                                    trip = _trip.implementation ;
-                                                                                    visitor = _visitor.implementation ;
-                                                                                    wrap = _wrap.implementation ;
+                                                                                    sequential = implementations.sequential ;
+                                                                                    trip = implementations.trip ;
+                                                                                    visitor = implementation.visitor ;
+                                                                                    wrap = implementation.wrap ;
                                                                                 }
                                                                                 {
                                                                                     gc-roots-directory = "/build/gc-root" ;
@@ -1248,11 +1256,11 @@
                                                                         (
                                                                             checks.tree-serialization
                                                                                 {
-                                                                                    failure = _failure.implementation ;
-                                                                                    lazy-shell-application = _lazy-shell-application.implementation ;
+                                                                                    failure = implementation.failure ;
+                                                                                    lazy-shell-application = implementations.lazy-shell-application ;
                                                                                     nixosTest = pkgs.nixosTest ;
                                                                                     obviated-by = [ "easy" "failure" "lazy-shell-application" ] ;
-                                                                                    visitor = _visitor.implementation ;
+                                                                                    visitor = implementations.visitor ;
                                                                                 }
                                                                                 {
                                                                                     bytes = "1m" ;
@@ -1262,12 +1270,12 @@
                                                                         (
                                                                             checks.visa
                                                                                 {
-                                                                                    failure = _failure.implementation ;
-                                                                                    lazy-shell-application = _lazy-shell-application.implementation ;
+                                                                                    failure = implementation.failure ;
+                                                                                    lazy-shell-application = implementations.lazy-shell-application ;
                                                                                     nixosTest = pkgs.nixosTest ;
                                                                                     obviated-by = [ "easy" "failure" "lazy-shell-application" "tree-serialization" ] ;
-                                                                                    tree-serialization = _tree-serialization.implementation ;
-                                                                                    visitor = _visitor.implementation ;
+                                                                                    tree-serialization = implementations.tree-serialization ;
+                                                                                    visitor = implementations.visitor ;
                                                                                 }
                                                                         )
                                                                         (
