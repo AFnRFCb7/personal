@@ -1065,7 +1065,6 @@
                                                                         (
                                                                             checks.visitor
                                                                                 {
-
                                                                                     obviated-by = [ "easy" "trip" ] ;
                                                                                     nixosTest = pkgs.nixosTest ;
                                                                                 }
@@ -1293,7 +1292,7 @@
                                                                                                             else if builtins.typeOf input == "null" then module
                                                                                                             else builtins.throw "7234317096189800" ;
                                                                                                         in
-                                                                                                            # with identified ;
+                                                                                                            with identified ;
                                                                                                                 {
                                                                                                                 } ;
                                                                                             testScript =
