@@ -997,7 +997,7 @@
                                                         builtins.sort
                                                             (
                                                                 a : b :
-                                                                    if builtins.elem a.type b.obviated-by && builtins.elem b.type a.obviated-by then _trip.implementation "circular dependency"
+                                                                    if builtins.elem a.type b.obviated-by && builtins.elem b.type a.obviated-by then builtins.throw "9666594862918105"
                                                                     else if builtins.elem a.type b.obviated-by then true
                                                                     else if builtins.elem b.type a.obviated-by then false
                                                                     else "${ a.test }" < "${ b.test }"
