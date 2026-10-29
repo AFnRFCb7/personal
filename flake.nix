@@ -1186,6 +1186,7 @@
                                                                             obviated-by = [ ] ;
                                                                             # obviated-by = [ "easy" "failure" "lazy-shell-application" "sequential" "trip" "visitor" "wrap" ] ;
                                                                             lazy-shell-application = _lazy-shell-application.implementation ;
+                                                                            process-lock = "/build/process.lock" ;
                                                                             sequential = _sequential.implementation ;
                                                                             trip = _trip.implementation ;
                                                                             visitor = _visitor.implementation ;
