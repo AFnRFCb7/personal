@@ -706,8 +706,6 @@
                                                         _visitor.implementation
                                                         _trip.implementation
                                                         _lazy-shell-application.implementation
-                                                        _node-fetch.implementation
-                                                        _node-package.implementation
                                                         _tree-serialization.implementation
                                                         _visa.implementation
                                                     ] ;
