@@ -1059,7 +1059,7 @@
                                                                 (
                                                                     _visitor.check
                                                                         {
-                                                                            obviated-by = [ "easy" "failure" ] ;
+                                                                            obviated-by = [ "easy" "trip" ] ;
                                                                             failure = _failure.implementation ;
                                                                             nixosTest = pkgs.nixosTest ;
                                                                         }
@@ -1254,10 +1254,25 @@
                                                                             nixosTest = pkgs.nixosTest ;
                                                                             node-fetch = _node-fetch.implementation ;
                                                                             node-package = _node-package.implementation ;
-                                                                            obviated-by = [ "easy" "failure" "lazy-shell-application" "tree-serialization" "node-package" ] ;
+                                                                            obviated-by = [ "easy" "failure" "lazy-shell-application" "tree-serialization" ] ;
                                                                             tree-serialization = _tree-serialization.implementation ;
                                                                             visitor = _visitor.implementation ;
                                                                         }
+                                                                )
+                                                                (
+                                                                    {
+                                                                        obviated-by = [ "easy" "failure" "lazy-shell-application" "lazy-shell-resource" "tree-serialization" "visa" ] ;
+                                                                        test =
+                                                                            pkgs.nixosTest
+                                                                                {
+                                                                                    name = "nixos-test" ;
+                                                                                    nodes = { } ;
+                                                                                    testScript =
+                                                                                        ''
+                                                                                        '' ;
+                                                                                } ;
+                                                                        type = "personal" ;
+                                                                    }
                                                                 )
                                                             ]
                                                     ) ;
