@@ -1201,23 +1201,23 @@
                                                                                     init = null ;
                                                                                     release = null ;
                                                                                 } ;
-#                                                                            hard =
-#                                                                                {
-#                                                                                    error = 172 ;
-#                                                                                    init =
-#                                                                                        ignore :
-#                                                                                            {
-#                                                                                                runtime-inputs = pkgs : [ pkgs.coreutils ] ;
-#                                                                                                text =
-#                                                                                                    ''
-#                                                                                                        RESOURCE="$( easy )" || failure 3914858517169326
-#                                                                                                        touch 5091107226695344
-#                                                                                                        echo -n 4622187892492581
-#                                                                                                    '' ;
-#                                                                                                targets = [ "5091107226695344" ] ;
-#                                                                                            } ;
-#                                                                                    release = null ;
-#                                                                                } ;
+                                                                            hard =
+                                                                                {
+                                                                                    error = 172 ;
+                                                                                    init =
+                                                                                        ignore :
+                                                                                            {
+                                                                                                runtime-inputs = { pkgs , ... } : [ pkgs.coreutils ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        RESOURCE="$( easy )" || failure 3914858517169326
+                                                                                                        touch 5091107226695344
+                                                                                                        echo -n 4622187892492581
+                                                                                                    '' ;
+                                                                                                targets = [ "5091107226695344" ] ;
+                                                                                            } ;
+                                                                                    release = null ;
+                                                                                } ;
                                                                         }
                                                                         [
                                                                             {
