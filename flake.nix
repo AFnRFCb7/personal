@@ -6,19 +6,23 @@
             {
                 lib =
                     {
+                        input ? null ,
+                        nixpkgs ,
+                        output ? null ,
+                        system
+                    } :
+                    {
                         android-application ,
                         failure ,
                         fixture ,
                         lazy-shell-application ,
                         lazy-shell-resource ,
-                        nixpkgs ,
                         node-fetch ,
                         node-package ,
                         portal ,
                         private ,
                         sally ,
                         sequential ,
-                        system ,
                         tree-serialization ,
                         trip ,
                         trump5000 ,
