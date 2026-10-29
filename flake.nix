@@ -1065,7 +1065,7 @@
                                                                         (
                                                                             checks.visitor
                                                                                 {
-                                                                                    obviated-by = [ "easy" "trip" ] ;
+                                                                                    obviated-by = [ "easy" "failure"  "trip" ] ;
                                                                                     nixosTest = pkgs.nixosTest ;
                                                                                 }
                                                                                 {
