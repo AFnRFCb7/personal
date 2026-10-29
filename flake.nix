@@ -970,7 +970,7 @@
                                                         in val.check
                                             )
                                             flakes ;
-                                    implementation =
+                                    implementations =
                                         builtins.mapAttrs
                                             (
                                                 name : value :
