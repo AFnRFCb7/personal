@@ -1079,7 +1079,6 @@
                                                                             checks.gc-root
                                                                                 {
                                                                                     failure = implementations.failure ;
-                                                                                    lazy-shell-application = implementations.lazy-shell-application ;
                                                                                     nixosTest = pkgs.nixosTest ;
                                                                                     obviated-by = [ "easy" "failure" "sequential" ] ;
                                                                                     sequential = implementations.sequential ;
