@@ -1276,7 +1276,6 @@
                                                                                                     with identified ;
                                                                                                         {
                                                                                                         } ;
-                                                                                            } ;
                                                                                     testScript =
                                                                                         ''
                                                                                         '' ;
