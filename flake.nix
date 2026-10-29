@@ -1277,7 +1277,10 @@
                                                     ) ;
                                         in builtins.genList generator ( builtins.length list )
                                     ) ;
-                                    implementation = implementation ;
+                                    implementation =
+                                        if builtins.typeOf output == "lambda" then output implementation
+                                        else if builtins.typeOf output == "null" then implementation
+                                        else builtins.throw "0897633832335522" ;
                                 } ;
             } ;
 }
