@@ -1249,8 +1249,6 @@
                                                                             failure = _failure.implementation ;
                                                                             lazy-shell-application = _lazy-shell-application.implementation ;
                                                                             nixosTest = pkgs.nixosTest ;
-                                                                            node-fetch = _node-fetch.implementation ;
-                                                                            node-package = _node-package.implementation ;
                                                                             obviated-by = [ "easy" "failure" "lazy-shell-application" "tree-serialization" ] ;
                                                                             tree-serialization = _tree-serialization.implementation ;
                                                                             visitor = _visitor.implementation ;
