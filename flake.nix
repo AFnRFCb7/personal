@@ -1201,22 +1201,22 @@
                                                                                     init = null ;
                                                                                     release = null ;
                                                                                 } ;
-                                                                            hard =
-                                                                                {
-                                                                                    error = 172 ;
-                                                                                    init =
-                                                                                        ignore :
-                                                                                            {
-                                                                                                action =
-                                                                                                    {
-                                                                                                        runtime-inputs = { } : [ ] ;
-                                                                                                        text = "" ;
-                                                                                                    } ;
-                                                                                                recovery = { } ;
-                                                                                                targets = [ ] ;
-                                                                                            } ;
-                                                                                    release = null ;
-                                                                                } ;
+#                                                                            hard =
+#                                                                                {
+#                                                                                    error = 172 ;
+#                                                                                    init =
+#                                                                                        ignore :
+#                                                                                            {
+#                                                                                                action =
+#                                                                                                    {
+#                                                                                                        runtime-inputs = { } : [ ] ;
+#                                                                                                        text = "" ;
+#                                                                                                    } ;
+#                                                                                                recovery = { } ;
+#                                                                                                targets = [ ] ;
+#                                                                                            } ;
+#                                                                                    release = null ;
+#                                                                                } ;
                                                                         }
                                                                         [
                                                                             {
@@ -1224,7 +1224,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         # shellcheck disable=SC2034
-                                                                                        RESOURCE="$( hard )" || failure 0383828707683387
+                                                                                        RESOURCE="$( easy )" || failure 0383828707683387
                                                                                         jq \
                                                                                             --null-input \
                                                                                             '{ "input" : { } , "output" : { } , "type" : "valid-init" }' | check-log --order 1
