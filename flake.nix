@@ -15,6 +15,7 @@
                     {
                         # android-application ,
                         failure ,
+                        gc-root ,
                         lazy-shell-application ,
                         lazy-shell-resource ,
                         portal ,
