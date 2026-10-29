@@ -707,11 +707,11 @@
                                                                 (
                                                                     name : value :
                                                                         let
-                                                                            lib = builtins.getAttr "lib" value ;
+                                                                            lib = builtins.getAttr "lib" ( builtins.trace "3858103350374483" value ) ;
                                                                             val = lib { } ;
                                                                             in val.implementation
                                                                 )
-                                                            flakes
+                                                                flakes
                                                         ) ;
                                                 options =
                                                     {
