@@ -700,19 +700,19 @@
                                                                 password = config.personal.password ;
                                                             } ;
                                                     } ;
-                                                imports =
-                                                    builtins.attrValues
-                                                        (
-                                                            builtins.mapAttrs
-                                                                (
-                                                                    name : value :
-                                                                        let
-                                                                            lib = builtins.getAttr "lib" value ;
-                                                                            val = lib { } ;
-                                                                            in val.implementation
-                                                                )
-                                                                flakes
-                                                        ) ;
+#                                                imports =
+#                                                    builtins.attrValues
+#                                                        (
+#                                                            builtins.mapAttrs
+#                                                                (
+#                                                                    name : value :
+#                                                                        let
+#                                                                            lib = builtins.getAttr "lib" value ;
+#                                                                            val = lib { } ;
+#                                                                            in val.implementation
+#                                                                )
+#                                                                flakes
+#                                                        ) ;
                                                 options =
                                                     {
                                                         personal =
