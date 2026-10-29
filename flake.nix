@@ -1082,7 +1082,6 @@
                                                                         (
                                                                             checks.visitor
                                                                                 {
-                                                                                    failure = implementations.failure ;
                                                                                     obviated-by = [ "easy" "trip" ] ;
                                                                                     nixosTest = pkgs.nixosTest ;
                                                                                 }
