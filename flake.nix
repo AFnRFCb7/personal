@@ -1079,6 +1079,7 @@
                                                                             checks.gc-root
                                                                                 {
                                                                                     failure = implementations.failure ;
+                                                                                    lazy-shell-application = implementations.lazy-shell-application ;
                                                                                     nixosTest = pkgs.nixosTest ;
                                                                                     obviated-by = [ "easy" "failure" "sequential" ] ;
                                                                                     sequential = implementations.sequential ;
@@ -1242,14 +1243,21 @@
                                                                                 }
                                                                                 [
                                                                                     {
-                                                                                        runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils ] ;
+                                                                                        runtime-inputs = { config , pkgs , ... } : [ ( config.failure { } ) pkgs.jq ] ;
                                                                                         text =
                                                                                             ''
                                                                                                 # shellcheck disable=SC2034
                                                                                                 RESOURCE="$( easy )" || failure 0383828707683387
-                                                                                                jq --sort-keys "." ${ builtins.toFile "valid-init.json" ( builtins.toJSON { type = "valid-init" ; } ) } | check-log --order 1
+                                                                                                jq "." ${ builtins.toFile "valid-init.json" ( builtins.toJSON { type = "valid-init" ; } ) } | check-log --order 1
                                                                                             '' ;
                                                                                     }
+#                                                                                    {
+#                                                                                        runtime-inputs = { pkgs , ... } : [ ( pkgs.jq ) ] ;
+#                                                                                        text =
+#                                                                                            ''
+#                                                                                                jq "." ${ builtins.toFile "valid-release.json" ( builtins.toJSON { type = "valid-release" ; } ) } | check-log --order 1
+#                                                                                            '' ;
+#                                                                                    }
                                                                                 ]
                                                                         )
                                                                         (
