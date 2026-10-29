@@ -1047,7 +1047,7 @@
                                                                                     }
                                                                                 )
                                                                                 (
-                                                                                    _failure.check
+                                                                                    failure
                                                                                         {
                                                                                             obviated-by = [ "easy" ] ;
                                                                                             nixosTest = pkgs.nixosTest ;
@@ -1062,7 +1062,7 @@
                                                                                         }
                                                                                 )
                                                                                 (
-                                                                                    _trip.check
+                                                                                    trip
                                                                                         {
                                                                                             obviated-by = [ "easy" ] ;
                                                                                             nixosTest = pkgs.nixosTest ;
@@ -1072,7 +1072,7 @@
                                                                                         }
                                                                                 )
                                                                                 (
-                                                                                    _visitor.check
+                                                                                    visitor
                                                                                         {
                                                                                             obviated-by = [ "easy" "trip" ] ;
                                                                                             failure = _failure.implementation ;
@@ -1086,7 +1086,7 @@
                                                                                         }
                                                                                 )
                                                                                 (
-                                                                                    _wrap.check
+                                                                                    wrap
                                                                                         {
                                                                                             failure = _failure.implementation ;
                                                                                             nixosTest = pkgs.nixosTest ;
@@ -1100,7 +1100,7 @@
                                                                                         }
                                                                                 )
                                                                                 (
-                                                                                    _sequential.check
+                                                                                    sequential
                                                                                         {
                                                                                             failure = _failure.implementation ;
                                                                                             nixosTest = pkgs.nixosTest ;
@@ -1115,7 +1115,7 @@
                                                                                         }
                                                                                 )
                                                                                 (
-                                                                                    _sequential.check
+                                                                                    sequential
                                                                                         {
                                                                                             failure = _failure.implementation ;
                                                                                             nixosTest = pkgs.nixosTest ;
@@ -1130,7 +1130,7 @@
                                                                                         }
                                                                                 )
                                                                                 (
-                                                                                    _sequential.check
+                                                                                    sequential
                                                                                         {
                                                                                             failure = _failure.implementation ;
                                                                                             nixosTest = pkgs.nixosTest ;
@@ -1145,7 +1145,7 @@
                                                                                         }
                                                                                 )
                                                                                 (
-                                                                                    _lazy-shell-application.check
+                                                                                    lazy-shell-application
                                                                                         {
                                                                                             failure = _failure.implementation ;
                                                                                             obviated-by = [ "easy" "failure" "trip" "visitor" ] ;
@@ -1194,7 +1194,7 @@
                                                                                         }
                                                                                 )
                                                                                 (
-                                                                                    _lazy-shell-resource.check
+                                                                                    lazy-shell-resource
                                                                                         {
                                                                                             failure = _failure.implementation ;
                                                                                             nixosTest = pkgs.nixosTest ;
@@ -1248,7 +1248,7 @@
                                                                                         ]
                                                                                 )
                                                                                 (
-                                                                                    _tree-serialization.check
+                                                                                    tree-serialization
                                                                                         {
                                                                                             failure = _failure.implementation ;
                                                                                             lazy-shell-application = _lazy-shell-application.implementation ;
@@ -1262,7 +1262,7 @@
                                                                                         }
                                                                                 )
                                                                                 (
-                                                                                    _visa.check
+                                                                                    visa
                                                                                         {
                                                                                             failure = _failure.implementation ;
                                                                                             lazy-shell-application = _lazy-shell-application.implementation ;
