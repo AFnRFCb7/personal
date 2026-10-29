@@ -1222,7 +1222,7 @@
 #                                                                                            } ;
 #                                                                                    release = null ;
 #                                                                                } ;
-#                                                                        }
+                                                                        }
                                                                         [
                                                                             {
                                                                                 runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils ] ;
