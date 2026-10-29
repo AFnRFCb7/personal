@@ -1224,10 +1224,10 @@
                                                                                 text =
                                                                                     ''
                                                                                         # shellcheck disable=SC2034
-                                                                                        RESOURCE="$( easy )" || failure 0383828707683387
+                                                                                        RESOURCE="$( hard )" || failure 0383828707683387
                                                                                         jq \
                                                                                             --null-input \
-                                                                                            '{ type : "valid-init" }' | check-log --order 1 2
+                                                                                            '{ "input" : { } , "output" : { } , "type" : "valid-init" }' | check-log --order 1 2
                                                                                     '' ;
                                                                             }
                                                                         ]
