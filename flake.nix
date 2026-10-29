@@ -1084,7 +1084,7 @@
                                                                                     sequential = implementations.sequential ;
                                                                                 }
                                                                                 {
-                                                                                    pre-test = sequential-file : sequential-lock : "touch ${ sequential-file }" ;
+                                                                                    pre-test = sequential-file : sequential-lock : "echo ${ sequential-file } ${ sequential-lock }" ;
                                                                                     expected = 0 ;
                                                                                 }
                                                                                 {
