@@ -9,19 +9,16 @@
                         input ? null ,
                         nixpkgs ,
                         output ? null ,
+                        private ,
                         system
                     } :
                     {
-                        android-application ,
+                        # android-application ,
                         failure ,
-                        fixture ,
                         lazy-shell-application ,
                         lazy-shell-resource ,
-                        node-fetch ,
-                        node-package ,
                         portal ,
-                        private ,
-                        sally ,
+                        # sally ,
                         sequential ,
                         tree-serialization ,
                         trip ,
@@ -29,7 +26,7 @@
                         visa ,
                         visitor ,
                         wrap
-                    } @primary :
+                    } @flakes :
                         let
                             _android-application = android-application.lib { } ;
                             _failure = failure.lib { } ;
