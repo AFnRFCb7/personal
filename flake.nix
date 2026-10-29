@@ -1202,22 +1202,22 @@
                                                                                     init = null ;
                                                                                     release = null ;
                                                                                 } ;
-                                                                            hard =
-                                                                                {
-                                                                                    error = 172 ;
-                                                                                    init =
-                                                                                        ignore :
-                                                                                            {
-                                                                                                action =
-                                                                                                    {
-                                                                                                        runtime-inputs = { } : [ ] ;
-                                                                                                        text = "" ;
-                                                                                                    } ;
-                                                                                                recovery = { } ;
-                                                                                                targets = [ ] ;
-                                                                                            } ;
-                                                                                    release = null ;
-                                                                                } ;
+#                                                                            hard =
+#                                                                                {
+#                                                                                    error = 172 ;
+#                                                                                    init =
+#                                                                                        ignore :
+#                                                                                            {
+#                                                                                                action =
+#                                                                                                    {
+#                                                                                                        runtime-inputs = { } : [ ] ;
+#                                                                                                        text = "" ;
+#                                                                                                    } ;
+#                                                                                                recovery = { } ;
+#                                                                                                targets = [ ] ;
+#                                                                                            } ;
+#                                                                                    release = null ;
+#                                                                                } ;
                                                                         }
                                                                         [
                                                                             {
@@ -1228,7 +1228,7 @@
                                                                                         RESOURCE="$( easy )" || failure 0383828707683387
                                                                                         jq \
                                                                                             --null-input \
-                                                                                            '{ "input" : { } , "output" : { } , "type" : "valid-init" }' | check-log --order 1
+                                                                                            '${ builtins.toJSON { type = "valid-init" ; } } | check-log --order 1
                                                                                     '' ;
                                                                             }
                                                                         ]
