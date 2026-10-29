@@ -1026,7 +1026,7 @@
                                                             [
                                                                 (
                                                                     {
-                                                                        obviated-by = [ ] ;
+                                                                        obviated-by = [ "lazy-shell-resource" ] ;
                                                                         test = pkgs.nixosTest { name = "easy" ; nodes = { } ; testScript = "" ; } ;
                                                                         type = "easy" ;
                                                                     }
@@ -1183,7 +1183,8 @@
                                                                         {
                                                                             failure = _failure.implementation ;
                                                                             nixosTest = pkgs.nixosTest ;
-                                                                            obviated-by = [ "easy" "failure" "lazy-shell-application" "sequential" "trip" "visitor" "wrap" ] ;
+                                                                            obviated-by = [ ] ;
+                                                                            # obviated-by = [ "easy" "failure" "lazy-shell-application" "sequential" "trip" "visitor" "wrap" ] ;
                                                                             lazy-shell-application = _lazy-shell-application.implementation ;
                                                                             sequential = _sequential.implementation ;
                                                                             trip = _trip.implementation ;
