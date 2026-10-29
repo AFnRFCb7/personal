@@ -1079,7 +1079,7 @@
                                                                         }
                                                                         {
                                                                             initialization = "2578689542706390$HELLO7773662063242836" ;
-                                                                            invocation = input-file : output-file : ''wrap ${ input-file } "${ output-file }" 0400 --replace \\\$HOME BYE'' ;
+                                                                            invocation = input-file : output-file : ''wrap ${ input-file } "${ output-file }" 0400 --replace \\$HOME BYE'' ;
                                                                             expected-content = "2578689542706390BYE7773662063242836" ;
                                                                             expected-permissions = 0400 ;
                                                                         }
@@ -1227,7 +1227,7 @@
                                                                                         RESOURCE="$( hard )" || failure 0383828707683387
                                                                                         jq \
                                                                                             --null-input \
-                                                                                            '{ "input" : { } , "output" : { } , "type" : "valid-init" }' | check-log --order 1 2
+                                                                                            '{ "input" : { } , "output" : { } , "type" : "valid-init" }' | check-log --order 1
                                                                                     '' ;
                                                                             }
                                                                         ]
