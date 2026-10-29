@@ -1227,7 +1227,7 @@
                                                                                     ''
                                                                                         # shellcheck disable=SC2034
                                                                                         RESOURCE="$( easy )" || failure 0383828707683387
-                                                                                        jq ${ builtins.toFile "valid-init.json" ( builtins.toJSON { type = "valid-init" ; } ) } | check-log --order 1
+                                                                                        jq --sort-keys "." ${ builtins.toFile "valid-init.json" ( builtins.toJSON { type = "valid-init" ; } ) } | check-log --order 1
                                                                                     '' ;
                                                                             }
                                                                         ]
