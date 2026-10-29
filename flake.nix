@@ -759,6 +759,31 @@
                                                                         recipient = lib.mkOption { default = "688A5A79ED45AED4D010D56452EDF74F9A9A6E20" ; type = lib.types.str ; } ;
                                                                         remote = lib.mkOption { default = "git@github.com:AFnRFCb7/artifacts.git" ; type = lib.types.str ; } ;
                                                                     } ;
+                                                                lazy-shell-resources =
+                                                                    {
+                                                                        dot-ssh =
+                                                                            {
+                                                                                bootstrap =
+                                                                                    {
+                                                                                        identity =
+                                                                                            {
+                                                                                                default =
+                                                                                                    config.lazy-shell-resources
+                                                                                                        {
+                                                                                                            init = null ;
+                                                                                                            gc-root-directory = "/home/${ config.personal.name }/.gc-roots" ;
+                                                                                                            release = null ;
+                                                                                                            resources-directory = "/home/${ config.personal.name }/resources" ;
+                                                                                                        }
+                                                                                                        {
+                                                                                                            name = "identity" ;
+                                                                                                            error = "194" ;
+                                                                                                        } ;
+                                                                                                type = lib.types.package ;
+                                                                                            } ;
+                                                                                    } ;
+                                                                            } ;
+                                                                    } ;
                                                                 ledger =
                                                                     {
                                                                         branch = lib.mkOption { default = "artifact/32c193fb3a5310462e48a7c5174d9c3110f83077d13de52a9a80a40" ; type = lib.types.str ; } ;
