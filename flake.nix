@@ -1230,7 +1230,22 @@
                                                                                         pkgs.nixosTest
                                                                                             {
                                                                                                 name = "nixos-test" ;
-                                                                                                nodes = { } ;
+                                                                                                nodes =
+                                                                                                    let
+                                                                                                        shared = null ;
+                                                                                                        in
+                                                                                                            {
+                                                                                                                client =
+                                                                                                                    { ... } :
+                                                                                                                        {
+
+                                                                                                                        } ;
+                                                                                                                github =
+                                                                                                                    { ... } :
+                                                                                                                        {
+
+                                                                                                                        } ;
+                                                                                                            } ;
                                                                                                 testScript =
                                                                                                     ''
                                                                                                     '' ;
