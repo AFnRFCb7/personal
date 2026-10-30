@@ -1032,7 +1032,7 @@
                                                                     [
                                                                         (
                                                                             {
-                                                                                obviated-by = [ ] ;
+                                                                                obviated-by = [ "lazy-shell-application" ] ;
                                                                                 test = pkgs.nixosTest { name = "easy" ; nodes = { } ; testScript = "" ; } ;
                                                                                 type = "easy" ;
                                                                             }
@@ -1150,7 +1150,8 @@
                                                                         (
                                                                             checks.lazy-shell-application
                                                                                 {
-                                                                                    obviated-by = [ "easy" "failure" "trip" "visitor" ] ;
+                                                                                    obviated-by = [ ] ;
+                                                                                    # obviated-by = [ "easy" "failure" "trip" "visitor" ] ;
                                                                                     nixosTest = pkgs.nixosTest ;
                                                                                     post-test =
                                                                                         ''
