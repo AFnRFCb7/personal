@@ -1259,7 +1259,7 @@
                                                                                 {
                                                                                     lazy-shell-application = implementations.lazy-shell-application ;
                                                                                     nixosTest = pkgs.nixosTest ;
-                                                                                    obviated-by = [ "easy" "failure" "lazy-shell-application" ] ;
+                                                                                    obviated-by = [ "easy" "lazy-shell-application" ] ;
                                                                                     visitor = implementations.visitor ;
                                                                                 }
                                                                                 {
@@ -1270,10 +1270,9 @@
                                                                         (
                                                                             checks.visa
                                                                                 {
-                                                                                    failure = implementations.failure ;
                                                                                     lazy-shell-application = implementations.lazy-shell-application ;
                                                                                     nixosTest = pkgs.nixosTest ;
-                                                                                    obviated-by = [ "easy" "failure" "lazy-shell-application" "tree-serialization" ] ;
+                                                                                    obviated-by = [ "easy" "lazy-shell-application" "tree-serialization" ] ;
                                                                                     tree-serialization = implementations.tree-serialization ;
                                                                                     visitor = implementations.visitor ;
                                                                                 }
