@@ -28,24 +28,6 @@
                         wrap
                     } @flakes :
                         let
-                            # _android-application = android-application.lib { } ;
-                            _failure = failure.lib { } ;
-                            _lazy-shell-application = lazy-shell-application.lib { } ;
-                            _lazy-shell-resource = lazy-shell-resource.lib { } ;
-#                            _sally = sally.lib
-#                                {
-#                                    lazy-shell-application = _lazy-shell-application.implementation ;
-#                                } ;
-                            _sequential = sequential.lib { } ;
-                            _tree-serialization = tree-serialization.lib { } ;
-                            _trip = trip.lib { } ;
-#                            _trump5000 = trump5000.lib
-#                                {
-#                                    lazy-shell-application = _lazy-shell-application.implementation ;
-#                                } ;
-                            _visa = visa.lib { } ;
-                            _visitor = visitor.lib { } ;
-                            _wrap = wrap.lib { } ;
                             implementation =
                                 { config , lib , pkgs , ... } :
                                     let
@@ -1027,7 +1009,7 @@
                                                                         [
                                                                             (
                                                                                 {
-                                                                                    obviated-by = [ "lazy-shell-resource" ] ;
+                                                                                    obviated-by = [ ] ;
                                                                                     test = pkgs.nixosTest { name = "easy" ; nodes = { } ; testScript = "" ; } ;
                                                                                     type = "easy" ;
                                                                                 }
@@ -1184,8 +1166,7 @@
                                                                                     {
                                                                                         failure = implementations.failure ;
                                                                                         nixosTest = pkgs.nixosTest ;
-                                                                                        obviated-by = [ ] ;
-                                                                                        # obviated-by = [ "easy" "failure" "lazy-shell-application" "sequential" "trip" "visitor" "wrap" ] ;
+                                                                                        obviated-by = [ "easy" "failure" "lazy-shell-application" "sequential" "trip" "visitor" "wrap" ] ;
                                                                                         lazy-shell-application = implementations.lazy-shell-application ;
                                                                                         process-lock = "/build/process.lock" ;
                                                                                         sequential = implementations.sequential ;
