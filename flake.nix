@@ -972,10 +972,12 @@
                                                             let
                                                                 l = builtins.elemAt list index ;
                                                                 in
-                                                                    {
-                                                                        name = builtins.concatStringsSep "-" [ "check" ( builtins.toString ( index + 1 ) ) ] ;
-                                                                        value = l.test ;
-                                                                    } ;
+                                                                    builtins.trace
+                                                                        "0769938593887419 ${ l.type }"
+                                                                        {
+                                                                            name = builtins.concatStringsSep "-" [ "check" ( builtins.toString ( index + 1 ) ) ] ;
+                                                                            value = l.test ;
+                                                                        } ;
                                                     list =
                                                         builtins.sort
                                                             (
