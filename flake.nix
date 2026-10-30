@@ -1202,6 +1202,7 @@
                                                                                     process-lock = "/build/process.lock" ;
                                                                                     sequential = implementations.sequential ;
                                                                                     trip = implementations.trip ;
+                                                                                    visitor = implementations.visitor ;
                                                                                     wrap = implementations.wrap ;
                                                                                 }
                                                                                 {
