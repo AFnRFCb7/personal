@@ -1063,7 +1063,7 @@
                                                                                 checks.visitor
                                                                                     {
                                                                                         obviated-by = [ "easy" "trip" ] ;
-                                                                                        failure = _failure.implementation ;
+                                                                                        failure = implementations.failure ;
                                                                                         nixosTest = pkgs.nixosTest ;
                                                                                     }
                                                                                     {
