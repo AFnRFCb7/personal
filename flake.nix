@@ -1198,7 +1198,6 @@
                                                                         (
                                                                             checks.lazy-shell-resource
                                                                                 {
-                                                                                    failure = implementations.failure ;
                                                                                     nixosTest = pkgs.nixosTest ;
                                                                                     obviated-by = [ "easy" "failure" "lazy-shell-application" "sequential" "trip" "visitor" "wrap" ] ;
                                                                                     lazy-shell-application = implementations.lazy-shell-application ;
