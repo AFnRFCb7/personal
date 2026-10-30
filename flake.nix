@@ -1197,14 +1197,17 @@
                                                                         (
                                                                             checks.lazy-shell-resource
                                                                                 {
-                                                                                    nixosTest = pkgs.nixosTest ;
-                                                                                    obviated-by = [ "easy" "failure" "lazy-shell-application" "sequential" "trip" "visitor" "wrap" ] ;
+                                                                                    failure = implementations.failure ;
                                                                                     lazy-shell-application = implementations.lazy-shell-application ;
-                                                                                    process-lock = "/build/process.lock" ;
-                                                                                    sequential = implementations.sequential ;
                                                                                     trip = implementations.trip ;
                                                                                     visitor = implementations.visitor ;
                                                                                     wrap = implementations.wrap ;
+                                                                                }
+                                                                                {
+                                                                                    nixosTest = pkgs.nixosTest ;
+                                                                                    obviated-by = [ "easy" "failure" "lazy-shell-application" "sequential" "trip" "visitor" "wrap" ] ;
+                                                                                    process-lock = "/build/process.lock" ;
+                                                                                    sequential = implementations.sequential ;
                                                                                 }
                                                                                 {
                                                                                     gc-roots-directory = "/build/gc-root" ;
