@@ -950,7 +950,7 @@
                                                     let
                                                         lib = builtins.getAttr "lib" value ;
                                                         val = lib { } ;
-                                                        in val.check
+                                                        in val.checkchecks
                                             )
                                             flakes ;
                                     implementations =
