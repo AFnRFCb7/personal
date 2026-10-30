@@ -1110,7 +1110,7 @@
                                                                                 {
                                                                                     nixosTest = pkgs.nixosTest ;
                                                                                     obviated-by = [ "easy" "visitor" ] ;
-                                                                                    visitor = builtins.trace "2854040847139027 ${ builtins.typeOf implementations.visitor }" implementations.visitor ;
+                                                                                    visitor = implementations.visitor ;
                                                                                 }
                                                                                 {
                                                                                     initial = null ;
@@ -1166,9 +1166,6 @@
                                                                                             echo -n 4899124582768405 > /tmp/test-6439766751988115
                                                                                             echo -n 1690621093050334 > /tmp/test-7929034698529557
                                                                                         '' ;
-                                                                                    # trip = implementations.trip ;
-                                                                                    # visitor = ( flakes.visitor.lib { } ).implementation ;
-                                                                                    # visitor = builtins.trace "3514366925001010 ${ builtins.typeOf implementations.visitor }" implementations.visitor ;
                                                                                 }
                                                                                 {
                                                                                     mounts =
