@@ -1127,7 +1127,7 @@
                                                                                         initial = 9999999999999999 ;
                                                                                         expected = 0 ;
                                                                                         sequential-file = "/sequential.txt" ;
-                                                                                 f       sequential-lock = "/sequential.lock" ;
+                                                                                        sequential-lock = "/sequential.lock" ;
                                                                                     }
                                                                             )
                                                                             (
