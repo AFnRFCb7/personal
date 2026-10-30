@@ -1111,7 +1111,7 @@
                                                                                     nixosTest = pkgs.nixosTest ;
                                                                                     obviated-by = [ ] ;
                                                                                     # obviated-by = [ "easy" "visitor" ] ;
-                                                                                    visitor = implementations.visitor ;
+                                                                                    visitor = builtins.trace "2854040847139027 ${ builtins.typeOf implementations.visitor }" implementations.visitor ;
                                                                                 }
                                                                                 {
                                                                                     initial = null ;
@@ -1124,7 +1124,7 @@
                                                                             checks.sequential
                                                                                 {
                                                                                     nixosTest = pkgs.nixosTest ;
-                                                                                    obviated-by = [ "visitor" ] ;
+                                                                                    obviated-by = [ "easy" "visitor" ] ;
                                                                                     visitor = implementations.visitor ;
                                                                                 }
                                                                                 {
@@ -1138,7 +1138,7 @@
                                                                             checks.sequential
                                                                                 {
                                                                                     nixosTest = pkgs.nixosTest ;
-                                                                                    obviated-by = [ "visitor" ] ;
+                                                                                    obviated-by = [ "easy" "visitor" ] ;
                                                                                     visitor = implementations.visitor ;
                                                                                 }
                                                                                 {
