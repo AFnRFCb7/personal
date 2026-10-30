@@ -1168,7 +1168,7 @@
                                                                                         '' ;
                                                                                     trip = implementations.trip ;
                                                                                     # visitor = ( flakes.visitor.lib { } ).implementation ;
-                                                                                    visitor = builtins.trace "3514366925001010 ${ builtins.typeOf implementations.visitor }" implementations.visitor ;
+                                                                                    # visitor = builtins.trace "3514366925001010 ${ builtins.typeOf implementations.visitor }" implementations.visitor ;
                                                                                 }
                                                                                 {
                                                                                     mounts =
