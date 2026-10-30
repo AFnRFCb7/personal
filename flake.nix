@@ -1110,7 +1110,6 @@
                                                                                 {
                                                                                     nixosTest = pkgs.nixosTest ;
                                                                                     obviated-by = [ "easy" "visitor" ] ;
-                                                                                    visitor = implementations.visitor ;
                                                                                 }
                                                                                 {
                                                                                     initial = null ;
