@@ -1150,7 +1150,6 @@
                                                                         (
                                                                             checks.lazy-shell-application
                                                                                 {
-                                                                                    failure = implementations.failure ;
                                                                                     obviated-by = [ "easy" "failure" "trip" "visitor" ] ;
                                                                                     nixosTest = pkgs.nixosTest ;
                                                                                     post-test =
