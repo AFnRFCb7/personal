@@ -1223,21 +1223,21 @@
                                                                                         visitor = implementations.visitor ;
                                                                                     }
                                                                             )
-                                                                            (
-                                                                                {
-                                                                                    obviated-by = [ "easy" "failure" "lazy-shell-application" "lazy-shell-resource" "sequential" "tree-serialization" "trip" "visa" "visitor" "wrap" ] ;
-                                                                                    test =
-                                                                                        pkgs.nixosTest
-                                                                                            {
-                                                                                                name = "nixos-test" ;
-                                                                                                nodes = { } ;
-                                                                                                testScript =
-                                                                                                    ''
-                                                                                                    '' ;
-                                                                                            } ;
-                                                                                    type = "personal" ;
-                                                                                }
-                                                                            )
+#                                                                            (
+#                                                                                {
+#                                                                                    obviated-by = [ "easy" "failure" "lazy-shell-application" "lazy-shell-resource" "sequential" "tree-serialization" "trip" "visa" "visitor" "wrap" ] ;
+#                                                                                    test =
+#                                                                                        pkgs.nixosTest
+#                                                                                            {
+#                                                                                                name = "nixos-test" ;
+#                                                                                                nodes = { } ;
+#                                                                                                testScript =
+#                                                                                                    ''
+#                                                                                                    '' ;
+#                                                                                            } ;
+#                                                                                    type = "personal" ;
+#                                                                                }
+#                                                                            )
                                                                         ]
                                                             )
                                                     ) ;
