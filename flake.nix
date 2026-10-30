@@ -1165,6 +1165,7 @@
                                                                                             echo -n 4899124582768405 > /tmp/test-6439766751988115
                                                                                             echo -n 1690621093050334 > /tmp/test-7929034698529557
                                                                                         '' ;
+                                                                                    visitor = implementations.visitor ;
                                                                                 }
                                                                                 {
                                                                                     mounts =
