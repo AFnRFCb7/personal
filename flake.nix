@@ -1108,7 +1108,6 @@
                                                                         (
                                                                             checks.sequential
                                                                                 {
-                                                                                    failure = implementations.failure ;
                                                                                     nixosTest = pkgs.nixosTest ;
                                                                                     obviated-by = [ "visitor" ] ;
                                                                                     visitor = implementations.visitor ;
@@ -1123,7 +1122,6 @@
                                                                         (
                                                                             checks.sequential
                                                                                 {
-                                                                                    failure = implementations.failure ;
                                                                                     nixosTest = pkgs.nixosTest ;
                                                                                     obviated-by = [ "visitor" ] ;
                                                                                     visitor = implementations.visitor ;
@@ -1138,7 +1136,6 @@
                                                                         (
                                                                             checks.sequential
                                                                                 {
-                                                                                    failure = implementations.failure ;
                                                                                     nixosTest = pkgs.nixosTest ;
                                                                                     obviated-by = [ "visitor" ] ;
                                                                                     visitor = implementations.visitor ;
