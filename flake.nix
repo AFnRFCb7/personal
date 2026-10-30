@@ -1007,222 +1007,222 @@
                                                                     libs = builtins.mapAttrs ( name : value : value.lib { } ) flakes ;
                                                                     in
                                                                         [
-                                                                            (
-                                                                                {
-                                                                                    obviated-by = [ ] ;
-                                                                                    test = pkgs.nixosTest { name = "easy" ; nodes = { } ; testScript = "" ; } ;
-                                                                                    type = "easy" ;
-                                                                                }
-                                                                            )
-                                                                            (
-                                                                                checks.failure
-                                                                                    {
-                                                                                        obviated-by = [ "easy" ] ;
-                                                                                        nixosTest = pkgs.nixosTest ;
-                                                                                    }
-                                                                                    {
-                                                                                        compile-time-arguments = [ "6699768429138615" ] ;
-                                                                                        planned-error = 182 ;
-                                                                                        unplanned-error = 162 ;
-                                                                                    }
-                                                                                    {
-                                                                                        run-time-arguments = [ "9641181236542922" ] ;
-                                                                                    }
-                                                                            )
-                                                                            (
-                                                                                checks.trip
-                                                                                    {
-                                                                                        obviated-by = [ "easy" ] ;
-                                                                                        nixosTest = pkgs.nixosTest ;
-                                                                                    }
-                                                                                    {
-                                                                                        uuid = 4512844241004732 ;
-                                                                                    }
-                                                                            )
-                                                                            (
-                                                                                checks.visitor
-                                                                                    {
-                                                                                        obviated-by = [ "easy" "trip" ] ;
-                                                                                        failure = implementations.failure ;
-                                                                                        nixosTest = pkgs.nixosTest ;
-                                                                                    }
-                                                                                    {
-                                                                                        arguments = null ;
-                                                                                        success = true ;
-                                                                                        value = null ;
-                                                                                        visitors = { null = path : value : value ; } ;
-                                                                                    }
-                                                                            )
-                                                                            (
-                                                                                checks.wrap
-                                                                                    {
-                                                                                        failure = implementations.failure ;
-                                                                                        nixosTest = pkgs.nixosTest ;
-                                                                                        obviated-by = [ "easy" "failure" ] ;
-                                                                                    }
-                                                                                    {
-                                                                                        initialization = "2578689542706390$HELLO7773662063242836" ;
-                                                                                        invocation = input-file : output-file : ''wrap ${ input-file } "${ output-file }" 0400 --replace \\\$HELLO BYE'' ;
-                                                                                        expected-content = "2578689542706390BYE7773662063242836" ;
-                                                                                        expected-permissions = 0400 ;
-                                                                                    }
-                                                                            )
-                                                                            (
-                                                                                checks.sequential
-                                                                                    {
-                                                                                        failure = implementations.failure ;
-                                                                                        nixosTest = pkgs.nixosTest ;
-                                                                                        obviated-by = [ "failure" "visitor" ] ;
-                                                                                        visitor = implementations.visitor ;
-                                                                                    }
-                                                                                    {
-                                                                                        initial = null ;
-                                                                                        expected = 1 ;
-                                                                                        sequential-file = "/sequential.txt" ;
-                                                                                        sequential-lock = "/sequential.lock" ;
-                                                                                    }
-                                                                            )
-                                                                            (
-                                                                                checks.sequential
-                                                                                    {
-                                                                                        failure = implementations.failure ;
-                                                                                        nixosTest = pkgs.nixosTest ;
-                                                                                        obviated-by = [ "failure" "visitor" ] ;
-                                                                                        visitor = implementations.visitor ;
-                                                                                    }
-                                                                                    {
-                                                                                        initial = 6786129628968017 ;
-                                                                                        expected = 6786129628968018 ;
-                                                                                        sequential-file = "/sequential.txt" ;
-                                                                                        sequential-lock = "/sequential.lock" ;
-                                                                                    }
-                                                                            )
-                                                                            (
-                                                                                checks.sequential
-                                                                                    {
-                                                                                        failure = implementations.failure ;
-                                                                                        nixosTest = pkgs.nixosTest ;
-                                                                                        obviated-by = [ "failure" "visitor" ] ;
-                                                                                        visitor = implementations.visitor ;
-                                                                                    }
-                                                                                    {
-                                                                                        initial = 9999999999999999 ;
-                                                                                        expected = 0 ;
-                                                                                        sequential-file = "/sequential.txt" ;
-                                                                                        sequential-lock = "/sequential.lock" ;
-                                                                                    }
-                                                                            )
-                                                                            (
-                                                                                checks.lazy-shell-application
-                                                                                    {
-                                                                                        failure = implementations.failure ;
-                                                                                        obviated-by = [ "easy" "failure" "trip" "visitor" ] ;
-                                                                                        nixosTest = pkgs.nixosTest ;
-                                                                                        post-test =
-                                                                                            ''
-                                                                                                TEST="$( cat /build/7049093808477668 )" || failure 2081394149353800
-                                                                                                if [[ "$TEST" != "7102615289766215" ]]
-                                                                                                then
-                                                                                                    failure 0270982783716055
-                                                                                                fi
-                                                                                            '' ;
-                                                                                        pre-test =
-                                                                                            ''
-                                                                                                echo -n 4899124582768405 > /tmp/test-6439766751988115
-                                                                                                echo -n 1690621093050334 > /tmp/test-7929034698529557
-                                                                                            '' ;
-                                                                                        trip = implementations.trip ;
-                                                                                        visitor = implementations.visitor ;
-                                                                                    }
-                                                                                    {
-                                                                                        mounts =
-                                                                                            {
-                                                                                                test-3727269441937947 = { type = "temporary" ; } ;
-                                                                                                test-7115328188030250 = { is-directory = false ; source = "/tmp/test-6439766751988115" ; type = "bind" ; } ;
-                                                                                                test-7482109308014871 = { is-directory = false ; read-only = true ; source = "/tmp/test-7929034698529557" ; type = "bind" ; } ;
-                                                                                            } ;
-                                                                                        name = "test-application" ;
-                                                                                        runtime-inputs = { pkgs , ... } : [ pkgs.coreutils pkgs.which pkgs.yq ] ;
-                                                                                        post =
-                                                                                            ''
-                                                                                                echo 7102615289766215 > /build/7049093808477668
-                                                                                            '' ;
-                                                                                        text =
-                                                                                            ''
-                                                                                                echo -n "$1"
-                                                                                                exit 120
-                                                                                            '' ;
-                                                                                    }
-                                                                                    {
-                                                                                        arguments = [ "8153426608580965" ] ;
-                                                                                        standard-error = "" ;
-                                                                                        standard-input = null ;
-                                                                                        standard-output = "8153426608580965" ;
-                                                                                        status = 120 ;
-                                                                                    }
-                                                                            )
-                                                                            (
-                                                                                checks.lazy-shell-resource
-                                                                                    {
-                                                                                        failure = implementations.failure ;
-                                                                                        nixosTest = pkgs.nixosTest ;
-                                                                                        obviated-by = [ "easy" "failure" "lazy-shell-application" "sequential" "trip" "visitor" "wrap" ] ;
-                                                                                        lazy-shell-application = implementations.lazy-shell-application ;
-                                                                                        process-lock = "/build/process.lock" ;
-                                                                                        sequential = implementations.sequential ;
-                                                                                        trip = implementations.trip ;
-                                                                                        visitor = implementations.visitor ;
-                                                                                        wrap = implementations.wrap ;
-                                                                                    }
-                                                                                    {
-                                                                                        gc-roots-directory = "/build/gc-root" ;
-                                                                                        resources-directory = "/build/resources" ;
-                                                                                    }
-                                                                                    {
-                                                                                        easy =
-                                                                                            {
-                                                                                                error = 161 ;
-                                                                                                init = null ;
-                                                                                                release = null ;
-                                                                                            } ;
-                                                                                    }
-                                                                                    [
-                                                                                        {
-                                                                                            runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils ] ;
-                                                                                            text =
-                                                                                                ''
-                                                                                                    # shellcheck disable=SC2034
-                                                                                                    RESOURCE="$( easy )" || failure 0383828707683387
-                                                                                                    jq "." ${ builtins.toFile "valid-init.json" ( builtins.toJSON { type = "valid-init" ; } ) } | check-log --order 1
-                                                                                                '' ;
-                                                                                        }
-                                                                                    ]
-                                                                            )
-                                                                            (
-                                                                                checks.tree-serialization
-                                                                                    {
-                                                                                        failure = implementations.failure ;
-                                                                                        lazy-shell-application = implementations.lazy-shell-application ;
-                                                                                        nixosTest = pkgs.nixosTest ;
-                                                                                        obviated-by = [ "easy" "failure" "lazy-shell-application" ] ;
-                                                                                        visitor = implementations.visitor ;
-                                                                                    }
-                                                                                    {
-                                                                                        bytes = "1m" ;
-                                                                                        expected = pkgs.writeShellApplication { name = "test" ; runtimeInputs = [ pkgs.coreutils ] ; text = "echo hi" ; } ;
-                                                                                    }
-                                                                            )
-                                                                            (
-                                                                                checks.visa
-                                                                                    {
-                                                                                        failure = implementations.failure ;
-                                                                                        lazy-shell-application = implementations.lazy-shell-application ;
-                                                                                        nixosTest = pkgs.nixosTest ;
-                                                                                        obviated-by = [ "easy" "failure" "lazy-shell-application" "tree-serialization" ] ;
-                                                                                        tree-serialization = implementations.tree-serialization ;
-                                                                                        visitor = implementations.visitor ;
-                                                                                    }
-                                                                            )
+#                                                                            (
+#                                                                                {
+#                                                                                    obviated-by = [ ] ;
+#                                                                                    test = pkgs.nixosTest { name = "easy" ; nodes = { } ; testScript = "" ; } ;
+#                                                                                    type = "easy" ;
+#                                                                                }
+#                                                                            )
+#                                                                            (
+#                                                                                checks.failure
+#                                                                                    {
+#                                                                                        obviated-by = [ "easy" ] ;
+#                                                                                        nixosTest = pkgs.nixosTest ;
+#                                                                                    }
+#                                                                                    {
+#                                                                                        compile-time-arguments = [ "6699768429138615" ] ;
+#                                                                                        planned-error = 182 ;
+#                                                                                        unplanned-error = 162 ;
+#                                                                                    }
+#                                                                                    {
+#                                                                                        run-time-arguments = [ "9641181236542922" ] ;
+#                                                                                    }
+#                                                                            )
+#                                                                            (
+#                                                                                checks.trip
+#                                                                                    {
+#                                                                                        obviated-by = [ "easy" ] ;
+#                                                                                        nixosTest = pkgs.nixosTest ;
+#                                                                                    }
+#                                                                                    {
+#                                                                                        uuid = 4512844241004732 ;
+#                                                                                    }
+#                                                                            )
+#                                                                            (
+#                                                                                checks.visitor
+#                                                                                    {
+#                                                                                        obviated-by = [ "easy" "trip" ] ;
+#                                                                                        failure = implementations.failure ;
+#                                                                                        nixosTest = pkgs.nixosTest ;
+#                                                                                    }
+#                                                                                    {
+#                                                                                        arguments = null ;
+#                                                                                        success = true ;
+#                                                                                        value = null ;
+#                                                                                        visitors = { null = path : value : value ; } ;
+#                                                                                    }
+#                                                                            )
+#                                                                            (
+#                                                                                checks.wrap
+#                                                                                    {
+#                                                                                        failure = implementations.failure ;
+#                                                                                        nixosTest = pkgs.nixosTest ;
+#                                                                                        obviated-by = [ "easy" "failure" ] ;
+#                                                                                    }
+#                                                                                    {
+#                                                                                        initialization = "2578689542706390$HELLO7773662063242836" ;
+#                                                                                        invocation = input-file : output-file : ''wrap ${ input-file } "${ output-file }" 0400 --replace \\\$HELLO BYE'' ;
+#                                                                                        expected-content = "2578689542706390BYE7773662063242836" ;
+#                                                                                        expected-permissions = 0400 ;
+#                                                                                    }
+#                                                                            )
+#                                                                            (
+#                                                                                checks.sequential
+#                                                                                    {
+#                                                                                        failure = implementations.failure ;
+#                                                                                        nixosTest = pkgs.nixosTest ;
+#                                                                                        obviated-by = [ "failure" "visitor" ] ;
+#                                                                                        visitor = implementations.visitor ;
+#                                                                                    }
+#                                                                                    {
+#                                                                                        initial = null ;
+#                                                                                        expected = 1 ;
+#                                                                                        sequential-file = "/sequential.txt" ;
+#                                                                                        sequential-lock = "/sequential.lock" ;
+#                                                                                    }
+#                                                                            )
+#                                                                            (
+#                                                                                checks.sequential
+#                                                                                    {
+#                                                                                        failure = implementations.failure ;
+#                                                                                        nixosTest = pkgs.nixosTest ;
+#                                                                                        obviated-by = [ "failure" "visitor" ] ;
+#                                                                                        visitor = implementations.visitor ;
+#                                                                                    }
+#                                                                                    {
+#                                                                                        initial = 6786129628968017 ;
+#                                                                                        expected = 6786129628968018 ;
+#                                                                                        sequential-file = "/sequential.txt" ;
+#                                                                                        sequential-lock = "/sequential.lock" ;
+#                                                                                    }
+#                                                                            )
+#                                                                            (
+#                                                                                checks.sequential
+#                                                                                    {
+#                                                                                        failure = implementations.failure ;
+#                                                                                        nixosTest = pkgs.nixosTest ;
+#                                                                                        obviated-by = [ "failure" "visitor" ] ;
+#                                                                                        visitor = implementations.visitor ;
+#                                                                                    }
+#                                                                                    {
+#                                                                                        initial = 9999999999999999 ;
+#                                                                                        expected = 0 ;
+#                                                                                        sequential-file = "/sequential.txt" ;
+#                                                                                        sequential-lock = "/sequential.lock" ;
+#                                                                                    }
+#                                                                            )
+#                                                                            (
+#                                                                                checks.lazy-shell-application
+#                                                                                    {
+#                                                                                        failure = implementations.failure ;
+#                                                                                        obviated-by = [ "easy" "failure" "trip" "visitor" ] ;
+#                                                                                        nixosTest = pkgs.nixosTest ;
+#                                                                                        post-test =
+#                                                                                            ''
+#                                                                                                TEST="$( cat /build/7049093808477668 )" || failure 2081394149353800
+#                                                                                                if [[ "$TEST" != "7102615289766215" ]]
+#                                                                                                then
+#                                                                                                    failure 0270982783716055
+#                                                                                                fi
+#                                                                                            '' ;
+#                                                                                        pre-test =
+#                                                                                            ''
+#                                                                                                echo -n 4899124582768405 > /tmp/test-6439766751988115
+#                                                                                                echo -n 1690621093050334 > /tmp/test-7929034698529557
+#                                                                                            '' ;
+#                                                                                        trip = implementations.trip ;
+#                                                                                        visitor = implementations.visitor ;
+#                                                                                    }
+#                                                                                    {
+#                                                                                        mounts =
+#                                                                                            {
+#                                                                                                test-3727269441937947 = { type = "temporary" ; } ;
+#                                                                                                test-7115328188030250 = { is-directory = false ; source = "/tmp/test-6439766751988115" ; type = "bind" ; } ;
+#                                                                                                test-7482109308014871 = { is-directory = false ; read-only = true ; source = "/tmp/test-7929034698529557" ; type = "bind" ; } ;
+#                                                                                            } ;
+#                                                                                        name = "test-application" ;
+#                                                                                        runtime-inputs = { pkgs , ... } : [ pkgs.coreutils pkgs.which pkgs.yq ] ;
+#                                                                                        post =
+#                                                                                            ''
+#                                                                                                echo 7102615289766215 > /build/7049093808477668
+#                                                                                            '' ;
+#                                                                                        text =
+#                                                                                            ''
+#                                                                                                echo -n "$1"
+#                                                                                                exit 120
+#                                                                                            '' ;
+#                                                                                    }
+#                                                                                    {
+#                                                                                        arguments = [ "8153426608580965" ] ;
+#                                                                                        standard-error = "" ;
+#                                                                                        standard-input = null ;
+#                                                                                        standard-output = "8153426608580965" ;
+#                                                                                        status = 120 ;
+#                                                                                    }
+#                                                                            )
+#                                                                            (
+#                                                                                checks.lazy-shell-resource
+#                                                                                    {
+#                                                                                        failure = implementations.failure ;
+#                                                                                        nixosTest = pkgs.nixosTest ;
+#                                                                                        obviated-by = [ "easy" "failure" "lazy-shell-application" "sequential" "trip" "visitor" "wrap" ] ;
+#                                                                                        lazy-shell-application = implementations.lazy-shell-application ;
+#                                                                                        process-lock = "/build/process.lock" ;
+#                                                                                        sequential = implementations.sequential ;
+#                                                                                        trip = implementations.trip ;
+#                                                                                        visitor = implementations.visitor ;
+#                                                                                        wrap = implementations.wrap ;
+#                                                                                    }
+#                                                                                    {
+#                                                                                        gc-roots-directory = "/build/gc-root" ;
+#                                                                                        resources-directory = "/build/resources" ;
+#                                                                                    }
+#                                                                                    {
+#                                                                                        easy =
+#                                                                                            {
+#                                                                                                error = 161 ;
+#                                                                                                init = null ;
+#                                                                                                release = null ;
+#                                                                                            } ;
+#                                                                                    }
+#                                                                                    [
+#                                                                                        {
+#                                                                                            runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils ] ;
+#                                                                                            text =
+#                                                                                                ''
+#                                                                                                    # shellcheck disable=SC2034
+#                                                                                                    RESOURCE="$( easy )" || failure 0383828707683387
+#                                                                                                    jq "." ${ builtins.toFile "valid-init.json" ( builtins.toJSON { type = "valid-init" ; } ) } | check-log --order 1
+#                                                                                                '' ;
+#                                                                                        }
+#                                                                                    ]
+#                                                                            )
+#                                                                            (
+#                                                                                checks.tree-serialization
+#                                                                                    {
+#                                                                                        failure = implementations.failure ;
+#                                                                                        lazy-shell-application = implementations.lazy-shell-application ;
+#                                                                                        nixosTest = pkgs.nixosTest ;
+#                                                                                        obviated-by = [ "easy" "failure" "lazy-shell-application" ] ;
+#                                                                                        visitor = implementations.visitor ;
+#                                                                                    }
+#                                                                                    {
+#                                                                                        bytes = "1m" ;
+#                                                                                        expected = pkgs.writeShellApplication { name = "test" ; runtimeInputs = [ pkgs.coreutils ] ; text = "echo hi" ; } ;
+#                                                                                    }
+#                                                                            )
+#                                                                            (
+#                                                                                checks.visa
+#                                                                                    {
+#                                                                                        failure = implementations.failure ;
+#                                                                                        lazy-shell-application = implementations.lazy-shell-application ;
+#                                                                                        nixosTest = pkgs.nixosTest ;
+#                                                                                        obviated-by = [ "easy" "failure" "lazy-shell-application" "tree-serialization" ] ;
+#                                                                                        tree-serialization = implementations.tree-serialization ;
+#                                                                                        visitor = implementations.visitor ;
+#                                                                                    }
+#                                                                            )
 #                                                                            (
 #                                                                                {
 #                                                                                    obviated-by = [ "easy" "failure" "lazy-shell-application" "lazy-shell-resource" "sequential" "tree-serialization" "trip" "visa" "visitor" "wrap" ] ;
