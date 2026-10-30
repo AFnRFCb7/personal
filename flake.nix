@@ -951,7 +951,7 @@
                                                 builtins.sort
                                                     (
                                                         a : b :
-                                                            if builtins.elem a.type b.obviated-by && builtins.elem b.type a.obviated-by then _trip.implementation "circular dependency"
+                                                            if builtins.elem a.type b.obviated-by && builtins.elem b.type a.obviated-by then builtins.throw "circular dependency ${ a.type } ${ b.type }"
                                                             else if builtins.elem a.type b.obviated-by then true
                                                             else if builtins.elem b.type a.obviated-by then false
                                                             else "${ a.test }" < "${ b.test }"
@@ -1185,22 +1185,6 @@
                                                                                                 init = null ;
                                                                                                 release = null ;
                                                                                             } ;
-            #                                                                            hard =
-            #                                                                                {
-            #                                                                                    error = 172 ;
-            #                                                                                    init =
-            #                                                                                        ignore :
-            #                                                                                            {
-            #                                                                                                action =
-            #                                                                                                    {
-            #                                                                                                        runtime-inputs = { } : [ ] ;
-            #                                                                                                        text = "" ;
-            #                                                                                                    } ;
-            #                                                                                                recovery = { } ;
-            #                                                                                                targets = [ ] ;
-            #                                                                                            } ;
-            #                                                                                    release = null ;
-            #                                                                                } ;
                                                                                     }
                                                                                     [
                                                                                         {
@@ -1209,7 +1193,7 @@
                                                                                                 ''
                                                                                                     # shellcheck disable=SC2034
                                                                                                     RESOURCE="$( easy )" || failure 0383828707683387
-                                                                                                    jq --sort-keys "." ${ builtins.toFile "valid-init.json" ( builtins.toJSON { type = "valid-init" ; } ) } | check-log --order 1
+                                                                                                    jq "." ${ builtins.toFile "valid-init.json" ( builtins.toJSON { type = "valid-init" ; } ) } | check-log --order 1
                                                                                                 '' ;
                                                                                         }
                                                                                     ]
