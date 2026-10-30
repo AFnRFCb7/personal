@@ -1166,7 +1166,7 @@
                                                                                             echo -n 4899124582768405 > /tmp/test-6439766751988115
                                                                                             echo -n 1690621093050334 > /tmp/test-7929034698529557
                                                                                         '' ;
-                                                                                    trip = implementations.trip ;
+                                                                                    # trip = implementations.trip ;
                                                                                     # visitor = ( flakes.visitor.lib { } ).implementation ;
                                                                                     # visitor = builtins.trace "3514366925001010 ${ builtins.typeOf implementations.visitor }" implementations.visitor ;
                                                                                 }
