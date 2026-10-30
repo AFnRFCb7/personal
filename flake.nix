@@ -701,14 +701,12 @@
                                                             } ;
                                                     } ;
                                                 imports =
-                                                    [
-                                                        _failure.implementation
-                                                        _visitor.implementation
-                                                        _trip.implementation
-                                                        _lazy-shell-application.implementation
-                                                        _tree-serialization.implementation
-                                                        _visa.implementation
-                                                    ] ;
+                                                    builtins.attrValues
+                                                        (
+                                                            let
+                                                                libs = builtins.mapAttrs ( name : value : value.lib { } ) flakes ;
+                                                                in builtins.mapAttrs ( name : value : value.implementation ) libs ;
+                                                        )
                                                 options =
                                                     {
                                                         personal =
@@ -1024,7 +1022,7 @@
                                                                 let
                                                                     checks = builtins.mapAttrs ( name : value : value.check ) libs ;
                                                                     implementations = builtins.mapAttrs ( name : value : value.implementation ) libs ;
-                                                                    libs = builtins.map ( value : value.lib { } ) flakes ;
+                                                                    libs = builtins.mapAttrs ( name : value : value.lib { } ) flakes ;
                                                                     in
                                                                         [
                                                                             (
@@ -1129,7 +1127,7 @@
                                                                                         initial = 9999999999999999 ;
                                                                                         expected = 0 ;
                                                                                         sequential-file = "/sequential.txt" ;
-                                                                                        sequential-lock = "/sequential.lock" ;
+                                                                                 f       sequential-lock = "/sequential.lock" ;
                                                                                     }
                                                                             )
                                                                             (
