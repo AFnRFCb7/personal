@@ -972,12 +972,10 @@
                                                             let
                                                                 l = builtins.elemAt list index ;
                                                                 in
-                                                                    builtins.trace
-                                                                        "0769938593887419 ${ l.type }"
-                                                                        {
-                                                                            name = builtins.concatStringsSep "-" [ "check" ( builtins.toString ( index + 1 ) ) ] ;
-                                                                            value = l.test ;
-                                                                        } ;
+                                                                    {
+                                                                        name = builtins.concatStringsSep "-" [ "check" ( builtins.toString ( index + 1 ) ) ] ;
+                                                                        value = l.test ;
+                                                                    } ;
                                                     list =
                                                         builtins.sort
                                                             (
@@ -1067,7 +1065,7 @@
                                                                         (
                                                                             checks.visitor
                                                                                 {
-                                                                                    obviated-by = [ "easy" ] ;
+                                                                                    obviated-by = [ "easy" "failure" ] ;
                                                                                     nixosTest = pkgs.nixosTest ;
                                                                                 }
                                                                                 {
@@ -1080,7 +1078,6 @@
                                                                         (
                                                                             checks.gc-root
                                                                                 {
-                                                                                    failure = implementations.failure ;
                                                                                     lazy-shell-application = implementations.lazy-shell-application ;
                                                                                     nixosTest = pkgs.nixosTest ;
                                                                                     obviated-by = [ "easy" "failure" "sequential" ] ;
