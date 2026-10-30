@@ -1166,7 +1166,7 @@
                                                                                             echo -n 1690621093050334 > /tmp/test-7929034698529557
                                                                                         '' ;
                                                                                     trip = implementations.trip ;
-                                                                                    visitor = implementations.visitor ;
+                                                                                    visitor = builtins.trace "3514366925001010" implementations.visitor ;
                                                                                 }
                                                                                 {
                                                                                     mounts =
