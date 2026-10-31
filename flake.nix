@@ -686,7 +686,7 @@ imports =
     [
         ( failure.lib { } ).implementation
         ( lazy-shell-application.lib { } ).implementation
-#                        lazy-shell-resource ,
+        ( lazy-shell-resource.lib { } ).implementation
 #                        portal ,
 #                        # sally ,
 #                        sequential ,
