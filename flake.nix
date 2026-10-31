@@ -682,40 +682,6 @@
                                                                 password = config.personal.password ;
                                                             } ;
                                                     } ;
-#imports =
-#    [
-#        ( failure.lib { } ).implementation
-#        ( lazy-shell-application.lib { } ).implementation
-#        ( lazy-shell-resource.lib { } ).implementation
-#        ( portal.lib { } ).implementation
-#        ( sequential.lib { } )
-##                        tree-serialization ,
-##                        trip ,
-##                        # trump5000 ,
-##                        visa ,
-##                        visitor ,
-##                        wrap
-#    ] ;
-#imports =
-#    builtins.attrValues (
-#        builtins.mapAttrs
-#            ( name : value :
-#                let
-#                    lib = value.lib { };
-#                in
-#                    if lib == null then
-#                        throw "flake `${name}`: lib returned null"
-#                    else if !( builtins.isAttrs lib ) then
-#                        throw "flake `${name}`: lib did not return an attribute set"
-#                    else if !( lib ? implementation ) then
-#                        throw "flake `${name}`: missing implementation"
-#                    else if lib.implementation == null then
-#                        throw "flake `${name}`: implementation is null"
-#                    else
-#                        lib.implementation
-#            )
-#            flakes
-#    );
                                                 imports =
                                                     builtins.attrValues
                                                         (
