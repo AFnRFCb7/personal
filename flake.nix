@@ -17,7 +17,7 @@
                         failure ,
                         lazy-shell-application ,
                         lazy-shell-resource ,
-                        portal ,
+                        # portal ,
                         # sally ,
                         sequential ,
                         tree-serialization ,
@@ -682,21 +682,20 @@
                                                                 password = config.personal.password ;
                                                             } ;
                                                     } ;
-imports =
-    [
-        ( failure.lib { } ).implementation
-        ( lazy-shell-application.lib { } ).implementation
-        ( lazy-shell-resource.lib { } ).implementation
-        ( portal.lib { } ).implementation
-#                        # sally ,
-#                        sequential ,
-#                        tree-serialization ,
-#                        trip ,
-#                        # trump5000 ,
-#                        visa ,
-#                        visitor ,
-#                        wrap
-    ] ;
+#imports =
+#    [
+#        ( failure.lib { } ).implementation
+#        ( lazy-shell-application.lib { } ).implementation
+#        ( lazy-shell-resource.lib { } ).implementation
+#        ( portal.lib { } ).implementation
+#        ( sequential.lib { } )
+##                        tree-serialization ,
+##                        trip ,
+##                        # trump5000 ,
+##                        visa ,
+##                        visitor ,
+##                        wrap
+#    ] ;
 #imports =
 #    builtins.attrValues (
 #        builtins.mapAttrs
@@ -717,13 +716,13 @@ imports =
 #            )
 #            flakes
 #    );
-#                                                imports =
-#                                                    builtins.attrValues
-#                                                        (
-#                                                            let
-#                                                                libs = builtins.mapAttrs ( name : value : value.lib { } ) flakes ;
-#                                                                in builtins.mapAttrs ( name : value : value.implementation ) libs
-#                                                        ) ;
+                                                imports =
+                                                    builtins.attrValues
+                                                        (
+                                                            let
+                                                                libs = builtins.mapAttrs ( name : value : value.lib { } ) flakes ;
+                                                                in builtins.mapAttrs ( name : value : value.implementation ) libs
+                                                        ) ;
                                                 options =
                                                     {
                                                         personal =
