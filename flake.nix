@@ -708,7 +708,7 @@ imports =
 #                                                            let
 #                                                                libs = builtins.mapAttrs ( name : value : value.lib { } ) flakes ;
 #                                                                in builtins.mapAttrs ( name : value : value.implementation ) libs
-                                                        ) ;
+#                                                        ) ;
                                                 options =
                                                     {
                                                         personal =
