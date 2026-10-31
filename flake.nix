@@ -682,7 +682,10 @@
                                                                 password = config.personal.password ;
                                                             } ;
                                                     } ;
-imports = [ ] ;
+imports =
+    [
+        ( failure.lib { } ).implementation
+    ] ;
 #imports =
 #    builtins.attrValues (
 #        builtins.mapAttrs
