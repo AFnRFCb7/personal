@@ -685,6 +685,17 @@
 imports =
     [
         ( failure.lib { } ).implementation
+        ( lazy-shell-application.lib { } ).implementation
+#                        lazy-shell-resource ,
+#                        portal ,
+#                        # sally ,
+#                        sequential ,
+#                        tree-serialization ,
+#                        trip ,
+#                        # trump5000 ,
+#                        visa ,
+#                        visitor ,
+#                        wrap
     ] ;
 #imports =
 #    builtins.attrValues (
