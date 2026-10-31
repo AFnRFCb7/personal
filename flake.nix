@@ -682,12 +682,32 @@
                                                                 password = config.personal.password ;
                                                             } ;
                                                     } ;
-                                                imports =
-                                                    builtins.attrValues
-                                                        (
-                                                            let
-                                                                libs = builtins.mapAttrs ( name : value : value.lib { } ) flakes ;
-                                                                in builtins.mapAttrs ( name : value : value.implementation ) libs
+imports =
+    builtins.attrValues (
+        builtins.mapAttrs
+            ( name : value :
+                let
+                    lib = value.lib { };
+                in
+                    if lib == null then
+                        throw "flake `${name}`: lib returned null"
+                    else if !( builtins.isAttrs lib ) then
+                        throw "flake `${name}`: lib did not return an attribute set"
+                    else if !( lib ? implementation ) then
+                        throw "flake `${name}`: missing implementation"
+                    else if lib.implementation == null then
+                        throw "flake `${name}`: implementation is null"
+                    else
+                        lib.implementation
+            )
+            flakes
+    );
+#                                                imports =
+#                                                    builtins.attrValues
+#                                                        (
+#                                                            let
+#                                                                libs = builtins.mapAttrs ( name : value : value.lib { } ) flakes ;
+#                                                                in builtins.mapAttrs ( name : value : value.implementation ) libs
                                                         ) ;
                                                 options =
                                                     {
