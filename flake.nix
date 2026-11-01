@@ -1223,6 +1223,52 @@
                                                                                     ]
                                                                             )
                                                                             (
+                                                                                checks.lazy-shell-resource
+                                                                                    {
+                                                                                        failure = implementations.failure ;
+                                                                                        nixosTest = pkgs.nixosTest ;
+                                                                                        obviated-by = [ "easy" "failure" "lazy-shell-application" "sequential" "trip" "visitor" "wrap" ] ;
+                                                                                        lazy-shell-application = implementations.lazy-shell-application ;
+                                                                                        process-lock = "/build/process.lock" ;
+                                                                                        sequential = implementations.sequential ;
+                                                                                        trip = implementations.trip ;
+                                                                                        visitor = implementations.visitor ;
+                                                                                        wrap = implementations.wrap ;
+                                                                                    }
+                                                                                    {
+                                                                                        gc-roots-directory = "/build/gc-root" ;
+                                                                                        resources-directory = "/build/resources" ;
+                                                                                    }
+                                                                                    {
+                                                                                        easy =
+                                                                                            {
+                                                                                                error = 161 ;
+                                                                                                init = null ;
+                                                                                                release = null ;
+                                                                                            } ;
+                                                                                    }
+                                                                                    [
+                                                                                        {
+                                                                                            runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    # shellcheck disable=SC2034
+                                                                                                    RESOURCE="$( easy )" || failure 0383828707683387
+                                                                                                    jq "." ${ builtins.toFile "valid-init.json" ( builtins.toJSON { type = "valid-init" ; } ) } | check-log --order 1
+                                                                                                '' ;
+                                                                                        }
+                                                                                        {
+                                                                                            runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    # shellcheck disable=SC2034
+                                                                                                    RESOURCE="$( easy )" || failure 4468730383080944
+                                                                                                    jq "." ${ builtins.toFile "valid-release.json" ( builtins.toJSON { type = "valid-release" ; } ) } | check-log --order 1
+                                                                                                '' ;
+                                                                                        }
+                                                                                    ]
+                                                                            )
+                                                                            (
                                                                                 checks.tree-serialization
                                                                                     {
                                                                                         failure = implementations.failure ;
