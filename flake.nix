@@ -963,8 +963,9 @@
                                                     (
                                                         a : b :
                                                             if builtins.elem a.type b.obviated-by && builtins.elem b.type a.obviated-by then builtins.throw "circular dependency ${ a.type } <=> ${ b.type }"
-                                                            else if builtins.elem a.type b.obviated-by then true
-                                                            else if builtins.elem b.type a.obviated-by then false
+                                                            else if builtins.elem a.type b.obviated-by then builins.trace "${ a.type } X ${ b.type }" true
+                                                            else if builtins.elem b.type a.obviated-by then builtins.trace "${ b.type } Y ${ a.type }" false
+                                                            else if a.type != b.type then "${ a.type }" < "${ b.type }"
                                                             else "${ a.test }" < "${ b.test }"
                                                     )
                                                     (
@@ -997,7 +998,7 @@
                                                                                             (
                                                                                                 p :
                                                                                                     {
-                                                                                                        obviated-by = builtins.attrNames ( builtins.listToAttrs ( builtins.map ( value : { name = name ;  value = value ; } ) ( builtins.concatLists [ p.obviated-by ( if builtins.elem current.type p.obviated-by then closure else [ ] ) ] ) ) ) ;
+                                                                                                        obviated-by = builtins.attrNames ( builtins.listToAttrs ( builtins.map ( value : { name = value ;  value = value ; } ) ( builtins.concatLists [ p.obviated-by ( if builtins.elem current.type p.obviated-by then closure else [ ] ) ] ) ) ) ;
                                                                                                         test = p.test ;
                                                                                                         type = p.type ;
                                                                                                     }
