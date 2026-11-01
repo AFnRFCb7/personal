@@ -945,7 +945,7 @@
                                                         in
                                                             {
                                                                 name = builtins.concatStringsSep "-" [ "check" ( builtins.toString ( index + 1 ) ) ] ;
-                                                                value = ( builtins.trace "${ builtins.toString ( index + 1 ) } ${ builtins.toJSON { index = index ; obviated-by = l.obviated-by ; type = l.type ; } }" ) l.test ;
+                                                                value = ( builtins.trace "${ builtins.toString ( index + 1 ) } ${ builtins.toJSON { index = index ; previous = l.obviated-by ; type = l.type ; alpha = builtins.filter ( m : builtins.elem l.type m.obviated-by ) list ;  beta = builtins.filter ( m : builtins.elem m.type l.obviated-by ) list ; } }" ) l.test ;
                                                             } ;
                                             list =
                                                 builtins.sort
