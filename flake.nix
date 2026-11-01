@@ -950,9 +950,7 @@
                                                                         (
                                                                             builtins.toJSON
                                                                                 {
-                                                                                    index = index ;
                                                                                     next = builtins.map ( p : p.type ) ( builtins.genList ( j : builtins.elemAt list ( index + j + 1) ) ( ( builtins.length list ) - index - 1 ) ) ;
-                                                                                    obviated-by = l.obviated-by ;
                                                                                     previous = builtins.map ( p : p.type ) ( builtins.genList ( j : builtins.elemAt list j ) index ) ;
                                                                                     type = l.type ;
                                                                                 }
