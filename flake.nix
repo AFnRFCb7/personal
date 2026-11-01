@@ -951,8 +951,6 @@
                                                                             builtins.toJSON
                                                                                 {
                                                                                     index = index ;
-                                                                                    previous = l.obviated-by ;
-                                                                                    type = l.type ;
                                                                                     next =
                                                                                         builtins.attrNames
                                                                                             (
@@ -977,6 +975,8 @@
                                                                                                             )
                                                                                                     )
                                                                                             ) ;
+                                                                                    obviated-by = l.obviated-by ;
+                                                                                    type = l.type ;
                                                                                 }
                                                                         )
                                                                         l.test ;
