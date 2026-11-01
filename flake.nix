@@ -1215,8 +1215,6 @@
                                                                                             runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    # shellcheck disable=SC2034
-                                                                                                    RESOURCE="$( easy )" || failure 4468730383080944
                                                                                                     jq "." ${ builtins.toFile "valid-release.json" ( builtins.toJSON { type = "valid-release" ; } ) } | check-log --order 1
                                                                                                 '' ;
                                                                                         }
