@@ -963,7 +963,7 @@
                                                     (
                                                         a : b :
                                                             if builtins.elem a.type b.obviated-by && builtins.elem b.type a.obviated-by then builtins.throw "circular dependency ${ a.type } <=> ${ b.type }"
-                                                            else if builtins.elem a.type b.obviated-by then builins.trace "${ a.type } X ${ b.type }" true
+                                                            else if builtins.elem a.type b.obviated-by then builtins.trace "${ a.type } X ${ b.type }" true
                                                             else if builtins.elem b.type a.obviated-by then builtins.trace "${ b.type } Y ${ a.type }" false
                                                             else if a.type != b.type then "${ a.type }" < "${ b.type }"
                                                             else "${ a.test }" < "${ b.test }"
