@@ -997,7 +997,7 @@
                                                                                             (
                                                                                                 p :
                                                                                                     {
-                                                                                                        obviated-by = builtins.concatLists [ p.obviated-by ( if builtins.elem current.type p.obviated-by then closure else [ ] ) ] ;
+                                                                                                        obviated-by = builtins.attrNames ( builtins.listToAttrs ( builtins.map ( value : { name = name ;  value = value ; } ) ( builtins.concatLists [ p.obviated-by ( if builtins.elem current.type p.obviated-by then closure else [ ] ) ] ) ) ) ;
                                                                                                         test = p.test ;
                                                                                                         type = p.type ;
                                                                                                     }
