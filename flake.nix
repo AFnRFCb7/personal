@@ -983,7 +983,7 @@
                                                                                             (
                                                                                                 p :
                                                                                                     {
-                                                                                                        obviated-by = builtins.concatLists ( p.obviated-by ( if builtins.elem current.type p.obviated-by then closure else [ ] ) ) ;
+                                                                                                        obviated-by = builtins.concatLists [ p.obviated-by ( if builtins.elem current.type p.obviated-by then closure else [ ] ) ] ;
                                                                                                         test = p.test ;
                                                                                                         type = p.type ;
                                                                                                     }
