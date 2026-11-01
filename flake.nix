@@ -945,7 +945,41 @@
                                                         in
                                                             {
                                                                 name = builtins.concatStringsSep "-" [ "check" ( builtins.toString ( index + 1 ) ) ] ;
-                                                                value = ( builtins.trace ( builtins.toJSON { index = index ; previous = l.obviated-by ; type = l.type ; next = ( builtins.sort ( a : b : a < b ) ( builtins.map ( m : m.type ) ( builtins.filter ( m : builtins.elem l.type m.obviated-by ) list ) ) ) ; } ) ) l.test ;
+                                                                value =
+                                                                    builtins.trace
+                                                                        (
+                                                                            builtins.toJSON
+                                                                                {
+                                                                                    index = index ;
+                                                                                    previous = l.obviated-by ;
+                                                                                    type = l.type ;
+                                                                                    next =
+                                                                                        builtins.attrNames
+                                                                                            (
+                                                                                                builtins.listToAttrs
+                                                                                                    (
+                                                                                                        builtins.map
+                                                                                                            ( name : { name = name ; value = null ; } )
+                                                                                                            (
+                                                                                                                builtins.sort
+                                                                                                                    ( a : b : a < b )
+                                                                                                                    (
+                                                                                                                        builtins.map
+                                                                                                                            ( m : m.type )
+                                                                                                                            (
+                                                                                                                                builtins.filter
+                                                                                                                                    ( m :
+                                                                                                                                        !( builtins.elem m.type l.obviated-by )
+                                                                                                                                    )
+                                                                                                                                    list
+                                                                                                                            )
+                                                                                                                    )
+                                                                                                            )
+                                                                                                    )
+                                                                                            ) ;
+                                                                                }
+                                                                        )
+                                                                        l.test ;
                                                             } ;
                                             list =
                                                 builtins.sort
@@ -986,7 +1020,7 @@
                                                                                             (
                                                                                                 p :
                                                                                                     {
-                                                                                                        obviated-by = ( builtins.sort ( a : b : a < b ) ( builtins.concatLists [ p.obviated-by ( if builtins.elem current.type p.obviated-by then closure else [ ] ) ] ) ) ;
+                                                                                                        obviated-by = builtins.attrNames ( builtins.listToAttrs ( builtins.map ( name : { name = name ; value = null ; } ) ( builtins.sort ( a : b : a < b ) ( builtins.concatLists [ p.obviated-by ( if builtins.elem current.type p.obviated-by then closure else [ ] ) ] ) ) ) ) ;
                                                                                                         test = p.test ;
                                                                                                         type = p.type ;
                                                                                                     }
