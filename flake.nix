@@ -951,31 +951,9 @@
                                                                             builtins.toJSON
                                                                                 {
                                                                                     index = index ;
-                                                                                    next =
-                                                                                        builtins.attrNames
-                                                                                            (
-                                                                                                builtins.listToAttrs
-                                                                                                    (
-                                                                                                        builtins.map
-                                                                                                            ( name : { name = name ; value = null ; } )
-                                                                                                            (
-                                                                                                                builtins.sort
-                                                                                                                    ( a : b : a < b )
-                                                                                                                    (
-                                                                                                                        builtins.map
-                                                                                                                            ( m : m.type )
-                                                                                                                            (
-                                                                                                                                builtins.filter
-                                                                                                                                    ( m :
-                                                                                                                                        !( builtins.elem m.type l.obviated-by )
-                                                                                                                                    )
-                                                                                                                                    list
-                                                                                                                            )
-                                                                                                                    )
-                                                                                                            )
-                                                                                                    )
-                                                                                            ) ;
+                                                                                    next = builtins.genList ( j : builtins.elemAt list ( index + j - 1 ) ) ( ( builtins.length list ) - index - 1 ) ;
                                                                                     obviated-by = l.obviated-by ;
+                                                                                    previous = builtins.genList ( j : builtins.elemAt list j ) ( index - 1 ) ;
                                                                                     type = l.type ;
                                                                                 }
                                                                         )
