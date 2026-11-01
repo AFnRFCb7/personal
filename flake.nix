@@ -951,6 +951,7 @@
                                                                             builtins.toJSON
                                                                                 {
                                                                                     next = builtins.map ( p : p.type ) ( builtins.genList ( j : builtins.elemAt list ( index + j + 1) ) ( ( builtins.length list ) - index - 1 ) ) ;
+                                                                                    obviated-by = l.obviated-by ;
                                                                                     previous = builtins.map ( p : p.type ) ( builtins.genList ( j : builtins.elemAt list j ) index ) ;
                                                                                     type = l.type ;
                                                                                 }
@@ -961,7 +962,7 @@
                                                 builtins.sort
                                                     (
                                                         a : b :
-                                                            if builtins.elem a.type b.obviated-by && builtins.elem b.type a.obviated-by then builtins.throw "circular dependency ${ a.type } ${ b.type }"
+                                                            if builtins.elem a.type b.obviated-by && builtins.elem b.type a.obviated-by then builtins.throw "circular dependency ${ a.type } <=> ${ b.type }"
                                                             else if builtins.elem a.type b.obviated-by then true
                                                             else if builtins.elem b.type a.obviated-by then false
                                                             else "${ a.test }" < "${ b.test }"
@@ -996,7 +997,7 @@
                                                                                             (
                                                                                                 p :
                                                                                                     {
-                                                                                                        obviated-by = builtins.attrNames ( builtins.listToAttrs ( builtins.map ( name : { name = name ; value = null ; } ) ( builtins.sort ( a : b : a < b ) ( builtins.concatLists [ p.obviated-by ( if builtins.elem current.type p.obviated-by then closure else [ ] ) ] ) ) ) ) ;
+                                                                                                        obviated-by = builtins.concatLists [ p.obviated-by ( if builtins.elem current.type p.obviated-by then closure else [ ] ) ] ;
                                                                                                         test = p.test ;
                                                                                                         type = p.type ;
                                                                                                     }
