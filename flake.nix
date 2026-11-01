@@ -966,12 +966,15 @@
                                                                                 [
                                                                                     current.obviated-by
                                                                                     (
-                                                                                        builtins.map
-                                                                                            ( p : p.obviated-by )
+                                                                                        builtins.concatLists
                                                                                             (
-                                                                                                builtins.filter
-                                                                                                    ( p : builtins.elem p.type current.obviated-by )
-                                                                                                    previous
+                                                                                                builtins.map
+                                                                                                    ( p : p.obviated-by )
+                                                                                                    (
+                                                                                                        builtins.filter
+                                                                                                            ( p : builtins.elem p.type current.obviated-by )
+                                                                                                            previous
+                                                                                                    )
                                                                                             )
                                                                                     )
                                                                                 ] ;
