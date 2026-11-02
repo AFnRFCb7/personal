@@ -1206,9 +1206,10 @@
                                                                                             runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils pkgs.which ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    # shellcheck disable=SC2034
+                                                                                                    which easy >&2
                                                                                                     EASY="$( which easy )" || failure 3634035419636440
                                                                                                     cat "$EASY" >&2
+                                                                                                    # shellcheck disable=SC2034
                                                                                                     RESOURCE="$( easy )" || failure 0383828707683387
                                                                                                     jq "." ${ builtins.toFile "valid-init.json" ( builtins.toJSON { type = "valid-init" ; } ) } | check-log --order 1
                                                                                                 '' ;
