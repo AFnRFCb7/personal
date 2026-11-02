@@ -1206,8 +1206,10 @@
                                                                                             runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils pkgs.which ] ;
                                                                                             text =
                                                                                                 ''
+                                                                                                    echo 6064349759476282 >&2
                                                                                                     which easy >&2
                                                                                                     EASY="$( which easy )" || failure 3634035419636440
+                                                                                                    readlink --canonicalize "$EASY" >&2
                                                                                                     cat "$EASY" >&2
                                                                                                     # shellcheck disable=SC2034
                                                                                                     RESOURCE="$( easy )" || failure 0383828707683387
