@@ -1211,13 +1211,13 @@
                                                                                                     jq "." ${ builtins.toFile "valid-init.json" ( builtins.toJSON { type = "valid-init" ; } ) } | check-log --order 1
                                                                                                 '' ;
                                                                                         }
-#                                                                                        {
-#                                                                                            runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils ] ;
-#                                                                                            text =
-#                                                                                                ''
-#                                                                                                    jq "." ${ builtins.toFile "valid-release.json" ( builtins.toJSON { type = "valid-release" ; } ) } | check-log --order 1
-#                                                                                                '' ;
-#                                                                                        }
+                                                                                        {
+                                                                                            runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    jq "." ${ builtins.toFile "valid-release.json" ( builtins.toJSON { type = "valid-release" ; } ) } | check-log --order 1
+                                                                                                '' ;
+                                                                                        }
                                                                                     ]
                                                                             )
                                                                             (
