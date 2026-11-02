@@ -1204,7 +1204,7 @@
                                                                                     }
                                                                                     [
                                                                                         {
-                                                                                            runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils pkgs.which ] ;
+                                                                                            runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils pkgs.jq ] ;
                                                                                             text =
                                                                                                 ''
                                                                                                     echo 6064349759476282 >&2
@@ -1215,7 +1215,7 @@
                                                                                                 '' ;
                                                                                         }
                                                                                         {
-                                                                                            runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils ] ;
+                                                                                            runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils pkgs.jq ] ;
                                                                                             text =
                                                                                                 ''
                                                                                                     echo 4435414891765590 >&2
