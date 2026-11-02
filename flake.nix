@@ -1203,10 +1203,12 @@
                                                                                     }
                                                                                     [
                                                                                         {
-                                                                                            runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils ] ;
+                                                                                            runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils pkgs.which ] ;
                                                                                             text =
                                                                                                 ''
                                                                                                     # shellcheck disable=SC2034
+                                                                                                    EASY="$( which easy )" || failure 3634035419636440
+                                                                                                    cat "$EASY" >&2
                                                                                                     RESOURCE="$( easy )" || failure 0383828707683387
                                                                                                     jq "." ${ builtins.toFile "valid-init.json" ( builtins.toJSON { type = "valid-init" ; } ) } | check-log --order 1
                                                                                                 '' ;
@@ -1215,6 +1217,7 @@
                                                                                             runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils ] ;
                                                                                             text =
                                                                                                 ''
+                                                                                                    echo 4435414891765590 >&2
                                                                                                     jq "." ${ builtins.toFile "valid-release.json" ( builtins.toJSON { type = "valid-release" ; } ) } | check-log --order 1
                                                                                                 '' ;
                                                                                         }
