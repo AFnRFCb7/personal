@@ -1024,7 +1024,7 @@
                                                                         [
                                                                             (
                                                                                 {
-                                                                                    obviated-by = [ ] ;
+                                                                                    obviated-by = [ "lazy-shell-resource" ] ;
                                                                                     test = pkgs.nixosTest { name = "easy" ; nodes = { } ; testScript = "" ; } ;
                                                                                     type = "easy" ;
                                                                                 }
@@ -1181,7 +1181,8 @@
                                                                                     {
                                                                                         failure = implementations.failure ;
                                                                                         nixosTest = pkgs.nixosTest ;
-                                                                                        obviated-by = [ "easy" "failure" "lazy-shell-application" "sequential" "trip" "visitor" "wrap" ] ;
+                                                                                        obviated-by = [ ] ;
+                                                                                        # obviated-by = [ "easy" "failure" "lazy-shell-application" "sequential" "trip" "visitor" "wrap" ] ;
                                                                                         lazy-shell-application = implementations.lazy-shell-application ;
                                                                                         process-lock = "/build/process.lock" ;
                                                                                         sequential = implementations.sequential ;
