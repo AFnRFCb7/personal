@@ -1208,12 +1208,12 @@
                                                                                             text =
                                                                                                 ''
                                                                                                     echo 6064349759476282 >&2
-                                                                                                    which easy >&2
                                                                                                     EASY="$( which easy )" || failure 3634035419636440
                                                                                                     readlink --canonicalize "$EASY" >&2
-                                                                                                    cat "$EASY" >&2
+                                                                                                    echo 7587939858992480 >&2
                                                                                                     # shellcheck disable=SC2034
                                                                                                     RESOURCE="$( easy )" || failure 0383828707683387
+                                                                                                    echo 2914295065814997 >&2
                                                                                                     jq "." ${ builtins.toFile "valid-init.json" ( builtins.toJSON { type = "valid-init" ; } ) } | check-log --order 1
                                                                                                 '' ;
                                                                                         }
