@@ -1211,6 +1211,8 @@
                                                                                                     # shellcheck disable=SC2034
                                                                                                     RESOURCE="$( easy )" || failure 0383828707683387
                                                                                                     jq "." ${ builtins.toFile "valid-init.json" ( builtins.toJSON [ { type = "valid-init" ; } ] ) } | check-log --order 1
+                                                                                                    sleep 1
+                                                                                                    cat /build/temporary/TRACE
                                                                                                 '' ;
                                                                                         }
                                                                                         {
@@ -1219,7 +1221,6 @@
                                                                                                 ''
                                                                                                     #KLUDGE
                                                                                                     sleep 5s
-                                                                                                    cat /build/temporary/TRACE >&2
                                                                                                     jq "." ${ builtins.toFile "valid-release.json" ( builtins.toJSON [ { type = "valid-release" ; } ] ) } | check-log --order 1
                                                                                                 '' ;
                                                                                         }
