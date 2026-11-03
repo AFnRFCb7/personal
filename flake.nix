@@ -1212,7 +1212,9 @@
                                                                                                     RESOURCE="$( easy )" || failure 0383828707683387
                                                                                                     jq "." ${ builtins.toFile "valid-init.json" ( builtins.toJSON [ { type = "valid-init" ; } ] ) } | check-log --order 1
                                                                                                     sleep 1
+                                                                                                    echo 3638028272897158 >&2
                                                                                                     cat /build/temporary/TRACE
+                                                                                                    echo 8201154609784795 >&2
                                                                                                 '' ;
                                                                                         }
                                                                                         {
