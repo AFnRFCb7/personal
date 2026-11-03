@@ -1193,6 +1193,7 @@
                                                                                     {
                                                                                         gc-roots-directory = "/build/gc-root" ;
                                                                                         resources-directory = "/build/resources" ;
+                                                                                        temporary-directory = "/build/temporary" ;
                                                                                     }
                                                                                     {
                                                                                         easy =
