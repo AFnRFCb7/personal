@@ -1219,6 +1219,7 @@
                                                                                                 ''
                                                                                                     #KLUDGE
                                                                                                     sleep 5s
+                                                                                                    cat /build/temporary/TRACE >&2
                                                                                                     jq "." ${ builtins.toFile "valid-release.json" ( builtins.toJSON [ { type = "valid-release" ; } ] ) } | check-log --order 1
                                                                                                 '' ;
                                                                                         }
