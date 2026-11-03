@@ -1218,7 +1218,7 @@
                                                                                             text =
                                                                                                 ''
                                                                                                     #KLUDGE
-                                                                                                    sleep 1s
+                                                                                                    sleep 5s
                                                                                                     jq "." ${ builtins.toFile "valid-release.json" ( builtins.toJSON [ { type = "valid-release" ; } ] ) } | check-log --order 1
                                                                                                 '' ;
                                                                                         }
