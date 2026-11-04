@@ -1214,7 +1214,7 @@
                                                                                                     sleep 1
                                                                                                     echo >&2
                                                                                                     echo 3638028272897158 >&2
-                                                                                                    cat /build/temporary/TRACE
+                                                                                                    cat /build/temporary/TRACE >&2
                                                                                                     echo 8201154609784795 >&2
                                                                                                 '' ;
                                                                                         }
