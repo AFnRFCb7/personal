@@ -1216,8 +1216,8 @@
                                                                                             runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils pkgs.jq ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    sleep 3s
-                                                                                                    jq "." ${ builtins.toFile "valid-release.json" ( builtins.toJSON [ { type = "valid-release" ; } ] ) } | check-log --order 1
+                                                                                                    sleep 7s
+                                                                                                    jq "." ${ builtins.toFile "valid-release.json" ( builtins.toJSON [ { type = "personal/flake.nix:1220" ; } ] ) } | check-log --order 1
                                                                                                 '' ;
                                                                                         }
                                                                                     ]
