@@ -1217,7 +1217,7 @@
                                                                                             text =
                                                                                                 ''
                                                                                                     sleep 7s
-                                                                                                    jq "." ${ builtins.toFile "valid-release.json" ( builtins.toJSON [ { type = 0873692227149097 ; } ] ) } | check-log --order 1
+                                                                                                    jq "." ${ builtins.toFile "valid-release.json" ( builtins.toJSON [ { index = "0000000000000000" ; type = "valid-release" ; } ] ) } | check-log --order 1
                                                                                                 '' ;
                                                                                         }
                                                                                     ]
