@@ -1204,7 +1204,7 @@
                                                                                     }
                                                                                     [
                                                                                         {
-                                                                                            runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils pkgs.jq ] ;
+                                                                                            runtime-inputs = { config , pkgs , ... } : [ ( config.failure { } ) pkgs.coreutils pkgs.jq ] ;
                                                                                             text =
                                                                                                 ''
                                                                                                     # shellcheck disable=SC2034
@@ -1212,14 +1212,15 @@
                                                                                                     jq "." ${ builtins.toFile "valid-init.json" ( builtins.toJSON [ { type = "valid-init" ; } ] ) } | check-log --order 1
                                                                                                 '' ;
                                                                                         }
-#                                                                                        {
-#                                                                                            runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils pkgs.jq ] ;
-#                                                                                            text =
-#                                                                                                ''
-#                                                                                                    echo 4435414891765590 >&2
-#                                                                                                    jq "." ${ builtins.toFile "valid-release.json" ( builtins.toJSON { type = "valid-release" ; } ) } | check-log --order 1
-#                                                                                                '' ;
-#                                                                                        }
+                                                                                        {
+                                                                                            runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils pkgs.jq ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    sleep 3s
+                                                                                                    echo 4435414891765590 >&2
+                                                                                                    jq "." ${ builtins.toFile "valid-release.json" ( builtins.toJSON [ { type = "valid-release" ; } ] ) } | check-log --order 1
+                                                                                                '' ;
+                                                                                        }
                                                                                     ]
                                                                             )
                                                                             (
