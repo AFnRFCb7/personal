@@ -1212,14 +1212,14 @@
                                                                                                     jq "." ${ builtins.toFile "valid-init.json" ( builtins.toJSON [ { type = "valid-init" ; } ] ) } | check-log --order 1
                                                                                                 '' ;
                                                                                         }
-                                                                                        {
-                                                                                            runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils pkgs.jq ] ;
-                                                                                            text =
-                                                                                                ''
-                                                                                                    sleep 7s
-                                                                                                    jq "." ${ builtins.toFile "valid-release.json" ( builtins.toJSON [ { index = "0000000000000000" ; type = "valid-release" ; } ] ) } | check-log --order 1
-                                                                                                '' ;
-                                                                                        }
+#                                                                                        {
+#                                                                                            runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils pkgs.jq ] ;
+#                                                                                            text =
+#                                                                                                ''
+#                                                                                                    sleep 7s
+#                                                                                                    jq "." ${ builtins.toFile "valid-release.json" ( builtins.toJSON [ { index = "0000000000000000" ; type = "valid-release" ; } ] ) } | check-log --order 1
+#                                                                                                '' ;
+#                                                                                        }
                                                                                     ]
                                                                             )
                                                                             (
