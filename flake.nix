@@ -1179,7 +1179,7 @@
                                                                             (
                                                                                 checks.lazy-shell-resource
                                                                                     {
-                                                                                        communication = "/build/communication" ;
+                                                                                        communications-directory = "/build/communication" ;
                                                                                         failure = implementations.failure ;
                                                                                         nixosTest = pkgs.nixosTest ;
                                                                                         obviated-by = [ ] ;
