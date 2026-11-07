@@ -1218,6 +1218,7 @@
                                                                                             runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils pkgs.jq ] ;
                                                                                             text =
                                                                                                 ''
+                                                                                                    cat /tmp/master.txt >&2
                                                                                                     while [[ ! -f /build/communication/resource.flag ]]
                                                                                                     do
                                                                                                         sleep 1
