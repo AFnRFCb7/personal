@@ -1218,9 +1218,11 @@
                                                                                             runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils pkgs.jq ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    sleep 3s
-                                                                                                    # echo 4435414891765590 >&2
-                                                                                                    # jq "." ${ builtins.toFile "valid-release.json" ( builtins.toJSON [ { type = "valid-release" ; } ] ) } | check-log --order 1
+                                                                                                    while [[ ! -f /build/communication/resource.flag ]]
+                                                                                                    do
+                                                                                                        sleep 1
+                                                                                                    done
+                                                                                                    jq "." ${ builtins.toFile "valid-release.json" ( builtins.toJSON [ { type = "valid-release" ; } ] ) } | check-log --order 1
                                                                                                 '' ;
                                                                                         }
                                                                                     ]
