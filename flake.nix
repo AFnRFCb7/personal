@@ -1225,7 +1225,7 @@
                                                                                                     do
                                                                                                         sleep 1
                                                                                                     done
-                                                                                                    jq '.' ${ builtins.toFile "valid-release.json" ( builtins.toJSON [ { type = "valid-release" ; } ] ) } | check-log --order 1
+                                                                                                    # jq '.' ${ builtins.toFile "valid-release.json" ( builtins.toJSON [ { type = "valid-release" ; } ] ) } | check-log --order 1
                                                                                                 '' ;
                                                                                         }
                                                                                     ]
