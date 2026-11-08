@@ -1217,13 +1217,10 @@
                                                                                                 '' ;
                                                                                         }
                                                                                         {
-                                                                                            runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils pkgs.jq ] ;
+                                                                                            runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils pkgs.jq pkgs.inotify-tools ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    while [[ ! -f /build/communication/resource.flag ]]
-                                                                                                    do
-                                                                                                        sleep 1s
-                                                                                                    done
+                                                                                                    inotifywait --quiet --event create /build/communication
                                                                                                     TYPE=0619721786616904
                                                                                                     jq --null-input --arg TYPE "$TYPE" '[ { "type" : $TYPE } ]' | check-log --order 1
                                                                                                 '' ;
