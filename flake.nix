@@ -1211,6 +1211,8 @@
                                                                                                     # shellcheck disable=SC2034
                                                                                                     RESOURCE="$( easy )" || failure 0383828707683387
                                                                                                     jq "." ${ builtins.toFile "valid-init.json" ( builtins.toJSON [ { type = "valid-init" ; } ] ) } | check-log --order 1
+                                                                                                    TYPE=0619721786616904
+                                                                                                    jq --null-input --arg TYPE "$TYPE" '[ { "type" : $TYPE } ]' | yq eval --prettyPrint '.' > /build/resources/log.yaml
                                                                                                     touch /build/communication/resource.flag
                                                                                                 '' ;
                                                                                         }
@@ -1218,9 +1220,12 @@
                                                                                             runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils pkgs.jq ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    sleep 3s
-                                                                                                    # echo 4435414891765590 >&2
-                                                                                                    # jq "." ${ builtins.toFile "valid-release.json" ( builtins.toJSON [ { type = "valid-release" ; } ] ) } | check-log --order 1
+                                                                                                    while [[ ! -f /build/communication/resource.flag ]]
+                                                                                                    do
+                                                                                                        sleep 1s
+                                                                                                    done
+                                                                                                    TYPE=0619721786616904
+                                                                                                    jq --null-input --arg TYPE "$TYPE" '[ { "type" : $TYPE } ]' | check-log --order 1
                                                                                                 '' ;
                                                                                         }
                                                                                     ]
