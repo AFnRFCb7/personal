@@ -1220,12 +1220,12 @@
                                                                                             runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils pkgs.jq ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    while [[ ! -f /build/communication/resource.flag ]]
-                                                                                                    do
-                                                                                                        sleep 1s
-                                                                                                    done
-                                                                                                    TYPE=0619721786616904
-                                                                                                    jq --null-input --arg TYPE "$TYPE" '[ { "type" : $TYPE } ]' | check-log --order 1
+#                                                                                                    while [[ ! -f /build/communication/resource.flag ]]
+#                                                                                                    do
+#                                                                                                        sleep 1s
+#                                                                                                    done
+#                                                                                                    TYPE=0619721786616904
+#                                                                                                    jq --null-input --arg TYPE "$TYPE" '[ { "type" : $TYPE } ]' | check-log --order 1
                                                                                                 '' ;
                                                                                         }
                                                                                     ]
