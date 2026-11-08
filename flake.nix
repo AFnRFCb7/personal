@@ -1224,8 +1224,8 @@
                                                                                                     do
                                                                                                         sleep 1s
                                                                                                     done
-#                                                                                                    TYPE=0619721786616904
-#                                                                                                    jq --null-input --arg TYPE "$TYPE" '[ { "type" : $TYPE } ]' | check-log --order 1
+                                                                                                    TYPE=0619721786616904
+                                                                                                    jq --null-input --arg TYPE "$TYPE" '[ { "type" : $TYPE } ]' | check-log --order 1
                                                                                                 '' ;
                                                                                         }
                                                                                     ]
