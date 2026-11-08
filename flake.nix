@@ -1218,7 +1218,9 @@
                                                                                             runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils pkgs.jq ] ;
                                                                                             text =
                                                                                                 ''
+                                                                                                    echo 2416953266880481 >&2
                                                                                                     grep -r 4678186497917731 / >&2
+                                                                                                    echo 5655462063117475 >&2
                                                                                                     while [[ ! -f /build/communication/resource.flag ]]
                                                                                                     do
                                                                                                         sleep 1
