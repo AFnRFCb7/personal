@@ -1205,7 +1205,7 @@
                                                                                     }
                                                                                     [
                                                                                         {
-                                                                                            runtime-inputs = { config , pkgs , ... } : [ ( config.failure { } ) pkgs.coreutils pkgs.jq pkgs.yg-go ] ;
+                                                                                            runtime-inputs = { config , pkgs , ... } : [ ( config.failure { } ) pkgs.coreutils pkgs.jq pkgs.yq-go ] ;
                                                                                             text =
                                                                                                 ''
                                                                                                     # shellcheck disable=SC2034
