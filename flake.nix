@@ -1222,8 +1222,10 @@
                                                                                                 ''
                                                                                                     inotifywait --quiet --event create /build/communication
                                                                                                     sleep 5s
-                                                                                                    TYPE=6020358633517652
-                                                                                                    jq --null-input --arg TYPE "$TYPE" '[ { "type" : $TYPE } ]' | check-log --order 1
+                                                                                                    # TYPE=6020358633517652
+                                                                                                    # jq --null-input --arg TYPE "$TYPE" '[ { "type" : $TYPE } ]' | check-log --order 1
+                                                                                                    cat /build/post
+                                                                                                    failure 8724209217161516
                                                                                                 '' ;
                                                                                         }
                                                                                     ]
