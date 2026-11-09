@@ -1211,19 +1211,21 @@
                                                                                                     # shellcheck disable=SC2034
                                                                                                     RESOURCE="$( easy )" || failure 0383828707683387
                                                                                                     jq "." ${ builtins.toFile "valid-init.json" ( builtins.toJSON [ { type = "valid-init" ; } ] ) } | check-log --order 1
-                                                                                                    TYPE=0619721786616904
-                                                                                                    jq --null-input --arg TYPE "$TYPE" '[ { "type" : $TYPE } ]' | yq eval --prettyPrint '.' >> /build/resources/log.yaml
+                                                                                                    # TYPE=0619721786616904
+                                                                                                    # jq --null-input --arg TYPE "$TYPE" '[ { "type" : $TYPE } ]' | yq eval --prettyPrint '.' >> /build/resources/log.yaml
                                                                                                     touch /build/communication/resource.flag
                                                                                                 '' ;
                                                                                         }
                                                                                         {
-                                                                                            runtime-inputs = { config , pkgs , ... } : [ pkgs.coreutils pkgs.jq pkgs.inotify-tools ] ;
+                                                                                            runtime-inputs = { config , pkgs , ... } : [ ( config.failure { } ) pkgs.coreutils pkgs.jq pkgs.inotify-tools ] ;
                                                                                             text =
                                                                                                 ''
                                                                                                     inotifywait --quiet --event create /build/communication
                                                                                                     sleep 5s
-                                                                                                    TYPE=0619721786616904
-                                                                                                    jq --null-input --arg TYPE "$TYPE" '[ { "type" : $TYPE } ]' | check-log --order 1
+                                                                                                    # TYPE=0619721786616904
+                                                                                                    # jq --null-input --arg TYPE "$TYPE" '[ { "type" : $TYPE } ]' | check-log --order 1
+                                                                                                    cat /build/post >&2
+                                                                                                    failure 9658189851950918
                                                                                                 '' ;
                                                                                         }
                                                                                     ]
