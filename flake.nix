@@ -1222,6 +1222,9 @@
                                                                                                 ''
                                                                                                     inotifywait --quiet --event create /build/communication
                                                                                                     sleep 20s
+                                                                                                    echo 1799282177009749 >&2
+                                                                                                    cat /build/resources/log.yaml >&2
+                                                                                                    echo 9401779663403370 >&2
                                                                                                     TYPE=0619721786616904
                                                                                                     jq --null-input --arg TYPE "$TYPE" '[ { "type" : $TYPE } ]' | check-log --order 1
                                                                                                 '' ;
