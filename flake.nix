@@ -1222,8 +1222,9 @@
                                                                                                 ''
                                                                                                     inotifywait --quiet --event create /build/communication
                                                                                                     sleep 20s
-                                                                                                    TYPE=0619721786616904
-                                                                                                    jq --null-input --arg TYPE "$TYPE" '[ { "type" : $TYPE } ]' | check-log --order 1
+                                                                                                    TYPE_1=0619721786616904
+                                                                                                    TYPE_2=9108435534527325
+                                                                                                    jq --null-input --arg TYPE_1 "$TYPE_1" --arg TYPE_2 "$TYPE_2" '[ { "type" : $TYPE_1 } , { "type" : $TYPE_2 } ]' | check-log --order 1 2
                                                                                                 '' ;
                                                                                         }
                                                                                     ]
