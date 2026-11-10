@@ -1221,7 +1221,7 @@
                                                                                             text =
                                                                                                 ''
                                                                                                     inotifywait --quiet --event create /build/communication
-                                                                                                    sleep 5s
+                                                                                                    sleep 20s
                                                                                                     TYPE=0619721786616904
                                                                                                     jq --null-input --arg TYPE "$TYPE" '[ { "type" : $TYPE } ]' | check-log --order 1
                                                                                                 '' ;
