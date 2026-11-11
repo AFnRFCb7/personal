@@ -1211,8 +1211,6 @@
                                                                                                     # shellcheck disable=SC2034
                                                                                                     RESOURCE="$( easy )" || failure 0383828707683387
                                                                                                     jq "." ${ builtins.toFile "valid-init.json" ( builtins.toJSON [ { type = "valid-init" ; } ] ) } | check-log --order 1
-                                                                                                    TYPE=0619721786616904
-                                                                                                    jq --null-input --arg TYPE "$TYPE" '[ { "index" : "0000000000000001" , "type" : $TYPE } ]' | yq eval --prettyPrint '.' >> /build/resources/log.yaml
                                                                                                     touch /build/communication/resource.flag
                                                                                                 '' ;
                                                                                         }
@@ -1222,9 +1220,8 @@
                                                                                                 ''
                                                                                                     inotifywait --quiet --event create /build/communication
                                                                                                     sleep 20s
-                                                                                                    TYPE_1=0619721786616904
-                                                                                                    TYPE_2=9108435534527325
-                                                                                                    jq --null-input --arg TYPE_1 "$TYPE_1" --arg TYPE_2 "$TYPE_2" '[ { "type" : $TYPE_1 } , { "type" : $TYPE_2 } ]' | check-log --order 1 2 --order 2 1
+                                                                                                    TYPE=9108435534527325
+                                                                                                    jq --null-input --arg INDEX "0000000000000001" --arg TYPE "$TYPE" '[ { "index" : $INDEX , "type" : $TYPE } ]' | check-log --order 1 2 --order 2 1
                                                                                                 '' ;
                                                                                         }
                                                                                     ]
