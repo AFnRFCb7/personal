@@ -1212,7 +1212,7 @@
                                                                                                     RESOURCE="$( easy )" || failure 0383828707683387
                                                                                                     jq "." ${ builtins.toFile "valid-init.json" ( builtins.toJSON [ { type = "valid-init" ; } ] ) } | check-log --order 1
                                                                                                     TYPE=0619721786616904
-                                                                                                    jq --null-input --arg TYPE "$TYPE" '[ { "type" : $TYPE } ]' | yq eval --prettyPrint '.' >> /build/resources/log.yaml
+                                                                                                    jq --null-input --arg TYPE "$TYPE" '[ { "index" : "0000000000000001" , "type" : $TYPE } ]' | yq eval --prettyPrint '.' >> /build/resources/log.yaml
                                                                                                     touch /build/communication/resource.flag
                                                                                                 '' ;
                                                                                         }
