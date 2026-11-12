@@ -18,7 +18,7 @@
                         lazy-shell-application ,
                         lazy-shell-resource ,
                         # portal ,
-                        personal ,
+                        promotor ,
                         # sally ,
                         sequential ,
                         tree-serialization ,
