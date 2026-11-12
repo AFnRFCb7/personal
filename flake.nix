@@ -18,6 +18,7 @@
                         lazy-shell-application ,
                         lazy-shell-resource ,
                         # portal ,
+                        personal ,
                         # sally ,
                         sequential ,
                         tree-serialization ,
