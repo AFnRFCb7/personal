@@ -467,9 +467,6 @@
                                                             {
                                                                 sessionVariables =
                                                                     {
-                                                                        RESTORE = config.promoter.actions.restore ;
-                                                                        POST_COMMIT = config.promoter.actions.post ;
-                                                                        PRE_COMMIT = config.promoter.actions.pre ;
 #                                                                        RESOURCES = "${ builtins.toString resources }" ;
                                                                         IS_NIX_FLAKE_CHECK= "false" ;
                                                                     } ;
