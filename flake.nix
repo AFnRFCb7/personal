@@ -15,6 +15,7 @@
                     {
                         # android-application ,
                         failure ,
+                        lazy-node-packager ,
                         lazy-shell-application ,
                         lazy-shell-resource ,
                         # portal ,
