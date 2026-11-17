@@ -18,6 +18,7 @@
                         failure ,
                         hello-world-express ,
                         lazy-node-packager ,
+                        lazy-node-application ,
                         lazy-shell-application ,
                         lazy-shell-resource ,
                         # portal ,
