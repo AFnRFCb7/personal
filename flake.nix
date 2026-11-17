@@ -14,7 +14,7 @@
                     } :
                     {
                         # android-application ,
-                        express ,
+                        express-package ,
                         failure ,
                         hello-world-express ,
                         lazy-node-packager ,
