@@ -1,4 +1,4 @@
-# 4115944124362533
+# 6523181471328456
 {
     inputs = { } ;
     outputs =
@@ -14,7 +14,9 @@
                     } :
                     {
                         # android-application ,
+                        express ,
                         failure ,
+                        hello-world-express ,
                         lazy-node-packager ,
                         lazy-shell-application ,
                         lazy-shell-resource ,
