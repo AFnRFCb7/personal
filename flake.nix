@@ -14,6 +14,7 @@
                     } :
                     {
                         # android-application ,
+                        body-parser-package ,
                         express-package ,
                         failure ,
                         hello-world-express ,
