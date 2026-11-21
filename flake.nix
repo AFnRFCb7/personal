@@ -15,8 +15,8 @@
                     {
                         # android-application ,
                         body-parser-package ,
-                        # db-migrate-node-package ,
-                        # db-migrate-pg-node-package ,
+                        db-migrate-node-package ,
+                        db-migrate-pg-node-package ,
                         express-package ,
                         failure ,
                         hello-world-express ,
