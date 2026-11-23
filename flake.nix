@@ -26,6 +26,7 @@
                         lazy-shell-resource ,
                         # portal ,
                         promoter ,
+                        promoter-hydra-module ,
                         # sally ,
                         sequential ,
                         tree-serialization ,
