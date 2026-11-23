@@ -25,7 +25,7 @@
                         lazy-shell-application ,
                         lazy-shell-resource ,
                         # portal ,
-                        promoter ,
+                        # promoter ,
                         promoter-hydra-module ,
                         # sally ,
                         sequential ,
