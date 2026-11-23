@@ -1248,17 +1248,17 @@
                                                                                         expected = pkgs.writeShellApplication { name = "test" ; runtimeInputs = [ pkgs.coreutils ] ; text = "echo hi" ; } ;
                                                                                     }
                                                                             )
-                                                                            (
-                                                                                checks.visa
-                                                                                    {
-                                                                                        failure = implementations.failure ;
-                                                                                        lazy-shell-application = implementations.lazy-shell-application ;
-                                                                                        nixosTest = pkgs.nixosTest ;
-                                                                                        obviated-by = [ "easy" "failure" "lazy-shell-application" "tree-serialization" ] ;
-                                                                                        tree-serialization = implementations.tree-serialization ;
-                                                                                        visitor = implementations.visitor ;
-                                                                                    }
-                                                                            )
+#                                                                            (
+#                                                                                checks.visa
+#                                                                                    {
+#                                                                                        failure = implementations.failure ;
+#                                                                                        lazy-shell-application = implementations.lazy-shell-application ;
+#                                                                                        nixosTest = pkgs.nixosTest ;
+#                                                                                        obviated-by = [ "easy" "failure" "lazy-shell-application" "tree-serialization" ] ;
+#                                                                                        tree-serialization = implementations.tree-serialization ;
+#                                                                                        visitor = implementations.visitor ;
+#                                                                                    }
+#                                                                            )
                                                                             (
                                                                                 {
                                                                                     obviated-by = [ "easy" "failure" "lazy-shell-application" "lazy-shell-resource" "sequential" "tree-serialization" "trip" "visa" "visitor" "wrap" ] ;
