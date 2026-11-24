@@ -694,12 +694,15 @@
                                                             } ;
                                                     } ;
                                                 imports =
-                                                    builtins.attrValues
-                                                        (
-                                                            let
-                                                                libs = builtins.mapAttrs ( name : value : value.lib { } ) flakes ;
-                                                                in builtins.mapAttrs ( name : value : value.implementation ) libs
-                                                        ) ;
+                                                    let
+                                                        modules = builtins.filterAttrs ( name : value : name != "promoter-machine" ) flakes ;
+                                                        in
+                                                            builtins.attrValues
+                                                                (
+                                                                    let
+                                                                        libs = builtins.mapAttrs ( name : value : value.lib { } ) modules ;
+                                                                        in builtins.mapAttrs ( name : value : value.implementation ) libs
+                                                                ) ;
                                                 options =
                                                     {
                                                         personal =
