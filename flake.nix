@@ -30,6 +30,7 @@
                         promoter-machine ,
                         # sally ,
                         sequential ,
+                        ssh-key-core ,
                         tree-serialization ,
                         trip ,
                         # trump5000 ,
