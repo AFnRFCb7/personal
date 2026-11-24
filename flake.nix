@@ -27,7 +27,7 @@
                         # portal ,
                         # promoter ,
                         promoter-core ,
-                        # promoter-machine ,
+                        promoter-machine ,
                         # sally ,
                         sequential ,
                         ssh-key-core ,
