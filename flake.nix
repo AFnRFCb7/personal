@@ -695,7 +695,7 @@
                                                     } ;
                                                 imports =
                                                     let
-                                                        modules = builtins.filterAttrs ( name : value : name != "promoter-machine" ) flakes ;
+                                                        modules = lib.filterAttrs ( name : value : name != "promoter-machine" ) flakes ;
                                                         in
                                                             builtins.attrValues
                                                                 (
